@@ -4,29 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>غرفة الأسرار - Secrets Room</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* تصميم إضافي */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .lang-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .user-info-screen {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .screen-title {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .screen-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .start-btn {
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px auto 0;
+            justify-content: center;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* التصميم بالإنجليزي */
+        body.en {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        body.en .form-group {
+            text-align: left;
+        }
+        
+        body.en .user-info-screen {
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
+    <!-- زرار اختيار اللغة -->
+    <div class="language-selector">
+        <button class="lang-btn" onclick="toggleLanguage()">
+            <span class="lang-text-ar">🌐 عربي</span>
+            <span class="lang-text-en" style="display: none;">🌐 English</span>
+        </button>
+    </div>
+    
     <div class="container">
         <div class="site-name-container">
             <h1 class="site-title">غرفة الأسرار</h1>
             <div class="site-subtitle">Secrets Room</div>
         </div>
         
-        <div class="main-content">
-            <h1>رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
+        <!-- شاشة معلومات المستخدم -->
+        <div id="userInfoScreen" class="user-info-screen">
+            <h2 class="screen-title">معلومات أساسية</h2>
+            <h3 class="screen-subtitle">Basic Information</h3>
+            
+            <div class="form-group">
+                <label class="form-label">العمر / Age</label>
+                <input type="number" id="userAge" class="form-input" placeholder="أدخل عمرك / Enter your age" min="13" max="100">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">الجنس / Gender</label>
+                <select id="userGender" class="form-select">
+                    <option value="">اختر / Select</option>
+                    <option value="male">ذكر / Male</option>
+                    <option value="female">أنثى / Female</option>
+                    <option value="other">آخر / Other</option>
+                </select>
+            </div>
+            
+            <button class="start-btn" onclick="startAnalysis()">
+                <span class="btn-text-ar">ابدأ التحليل</span>
+                <span class="btn-text-en" style="display: none;">Start Analysis</span>
+                <span class="btn-icon">🔍</span>
+            </button>
+        </div>
+        
+        <!-- الشاشة الرئيسية (مخفيّة في البداية) -->
+        <div id="mainScreen" class="main-screen" style="display: none;">
+            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
+            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
             
             <div class="sections">
-                <div class="section" onclick="window.location.href='quiz.html'">
+                <div class="section" onclick="showQuickAnalysis('vision')">
+                    <div class="section-icon">👁️</div>
+                    <div class="section-text-ar">الرؤية الداخلية</div>
+                    <div class="section-text-en" style="display: none;">Inner Vision</div>
+                </div>
+                <div class="section" onclick="showQuickAnalysis('analysis')">
                     <div class="section-icon">🧠</div>
-                    <div class="section-text">ابدأ التحليل الشامل</div>
-                    <div class="section-subtext">اختبار متكامل بجميع النظريات النفسية</div>
+                    <div class="section-text-ar">التحليل العميق</div>
+                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
+                </div>
+                <div class="section" onclick="showQuickAnalysis('healing')">
+                    <div class="section-icon">💚</div>
+                    <div class="section-text-ar">الشفاء النفسي</div>
+                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
+                </div>
+                <div class="section" onclick="showQuickAnalysis('revelation')">
+                    <div class="section-icon">🔮</div>
+                    <div class="section-text-ar">الكشف الصادق</div>
+                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
                 </div>
             </div>
             
-            <div class="warning">
+            <div class="warning-ar">
                 ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
+            </div>
+            <div class="warning-en" style="display: none;">
+                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
+            </div>
+            
+            <button class="full-analysis-btn" onclick="startFullAnalysis()">
+                <span class="btn-text-ar">التحليل الكامل</span>
+                <span class="btn-text-en" style="display: none;">Full Analysis</span>
+            </button>
+        </div>
+        
+        <!-- نافذة التحليل السريع -->
+        <div id="quickAnalysisModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeQuickAnalysis()">&times;</span>
+                <h2 class="modal-title-ar" id="quickModalTitle">التحليل السريع</h2>
+                <h2 class="modal-title-en" id="quickModalTitleEn" style="display: none;">Quick Analysis</h2>
+                
+                <div class="analysis-content" id="quickAnalysisContent">
+                    <!-- المحتوى الديناميكي -->
+                </div>
+                
+                <div class="social-share">
+                    <button class="share-btn" onclick="shareAnalysis()">
+                        <span class="btn-text-ar">مشاركة على السوشيال ميديا</span>
+                        <span class="btn-text-en" style="display: none;">Share on Social Media</span>
+                        <span class="share-icon">📱</span>
+                    </button>
+                </div>
+                
+                <button class="continue-btn" onclick="showFullReport()">
+                    <span class="btn-text-ar">عرض التقرير الكامل</span>
+                    <span class="btn-text-en" style="display: none;">View Full Report</span>
+                </button>
             </div>
         </div>
         
@@ -34,5 +230,172 @@
             © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
         </div>
     </div>
+    
+    <script>
+        // متغيرات النظام
+        let currentUser = {
+            age: null,
+            gender: null,
+            language: 'ar' // ar or en
+        };
+        
+        // تحليلات سريعة مبنية على المحتوى الأصلي
+        const quickAnalyses = {
+            vision: {
+                ar: [
+                    "لقد اكتشفت جانبًا مخفيًا من شخصيتك...",
+                    "رؤية داخلية قوية تشير إلى وعي عالٍ...",
+                    "البصيرة التي لديك تفوق التوقعات العادية..."
+                ],
+                en: [
+                    "You have discovered a hidden aspect of your personality...",
+                    "Strong inner vision indicates high awareness...",
+                    "Your insight exceeds normal expectations..."
+                ]
+            },
+            analysis: {
+                ar: [
+                    "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة...",
+                    "العمق العاطفي الذي تمتلكه مذهل...",
+                    "القدرة على فهم الذات تتطور بشكل متسارع..."
+                ],
+                en: [
+                    "Your psychological analysis indicates unexpected inner strength...",
+                    "The emotional depth you possess is amazing...",
+                    "Your ability to understand yourself is rapidly evolving..."
+                ]
+            },
+            healing: {
+                ar: [
+                    "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا...",
+                    "الشفاء النفسي يسير في المسار الصحيح...",
+                    "التحول الداخلي يحدث بشكل طبيعي ومريح..."
+                ],
+                en: [
+                    "The healing process has begun, and you will gradually feel the change...",
+                    "Psychological healing is on the right track...",
+                    "Inner transformation occurs naturally and comfortably..."
+                ]
+            },
+            revelation: {
+                ar: [
+                    "الحقيقة التي كنت تبحث عنها هي: أنت أقوى مما تتخيل...",
+                    "الكشف الصادق يُظهر قدرات لم تكتشفها بعد...",
+                    "الحقيقة الداخلية تحررك من القيود الوهمية..."
+                ],
+                en: [
+                    "The truth you were looking for is: You are stronger than you imagine...",
+                    "Honest revelation shows abilities you haven't discovered yet...",
+                    "Inner truth frees you from imaginary constraints..."
+                ]
+            }
+        };
+        
+        // دالة تبديل اللغة
+        function toggleLanguage() {
+            if (currentUser.language === 'ar') {
+                currentUser.language = 'en';
+                document.body.classList.add('en');
+            } else {
+                currentUser.language = 'ar';
+                document.body.classList.remove('en');
+            }
+        }
+        
+        // دالة بدء التحليل
+        function startAnalysis() {
+            const age = document.getElementById('userAge').value;
+            const gender = document.getElementById('userGender').value;
+            
+            if (!age || !gender) {
+                alert(currentUser.language === 'ar' ? 'من فضلك أدخل العمر والجنس' : 'Please enter age and gender');
+                return;
+            }
+            
+            if (age < 13) {
+                alert(currentUser.language === 'ar' ? 'عذراً، يجب أن يكون العمر 13 سنة فأكثر' : 'Sorry, age must be 13 or older');
+                return;
+            }
+            
+            currentUser.age = age;
+            currentUser.gender = gender;
+            
+            // إخفاء شاشة المعلومات وإظهار الشاشة الرئيسية
+            document.getElementById('userInfoScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
+        }
+        
+        // دالة إظهار التحليل السريع
+        function showQuickAnalysis(type) {
+            const modal = document.getElementById('quickAnalysisModal');
+            const content = document.getElementById('quickAnalysisContent');
+            
+            // اختيار تحليل عشوائي
+            const analyses = quickAnalyses[type][currentUser.language];
+            const randomIndex = Math.floor(Math.random() * analyses.length);
+            const analysisText = analyses[randomIndex];
+            
+            // تحديث العنوان
+            const titles = {
+                vision: {ar: "الرؤية الداخلية", en: "Inner Vision"},
+                analysis: {ar: "التحليل العميق", en: "Deep Analysis"},
+                healing: {ar: "الشفاء النفسي", en: "Psychological Healing"},
+                revelation: {ar: "الكشف الصادق", en: "Honest Revelation"}
+            };
+            
+            if (currentUser.language === 'ar') {
+                document.getElementById('quickModalTitle').textContent = titles[type].ar;
+                document.getElementById('quickModalTitleEn').style.display = 'none';
+            } else {
+                document.getElementById('quickModalTitleEn').textContent = titles[type].en;
+                document.getElementById('quickModalTitle').style.display = 'none';
+            }
+            
+            // تحديث المحتوى
+            content.textContent = analysisText;
+            
+            // إظهار النافذة
+            modal.style.display = 'flex';
+        }
+        
+        // دالة إغلاق التحليل السريع
+        function closeQuickAnalysis() {
+            document.getElementById('quickAnalysisModal').style.display = 'none';
+        }
+        
+        // دالة مشاركة التحليل
+        function shareAnalysis() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: currentUser.language === 'ar' ? 'تحليلي النفسي' : 'My Psychological Analysis',
+                    text: shareText
+                }).catch(console.error);
+            } else {
+                // نسخ للحافظة
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert(currentUser.language === 'ar' ? 'تم نسخ النص للحافظة!' : 'Text copied to clipboard!');
+                });
+            }
+        }
+        
+        // دالة عرض التقرير الكامل
+        function showFullReport() {
+            alert(currentUser.language === 'ar' ? 
+                'ميزة التقرير الكامل ستكون متاحة في الإصدار القادم!' : 
+                'Full report feature will be available in the next version!');
+        }
+        
+        // دالة بدء التحليل الكامل
+        function startFullAnalysis() {
+            alert(currentUser.language === 'ar' ? 
+                'ميزة التحليل الكامل ستكون متاحة في الإصدار القادم!' : 
+                'Full analysis feature will be available in the next version!');
+        }
+    </script>
 </body>
 </html>
