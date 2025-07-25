@@ -233,7 +233,7 @@
                     <p>الاختبار зайِtakes حوالي 10-15 دقيقة. استعد نفسياً وابدأ رحلتك الداخلية.</p>
                 </div>
                 
-                <button class="start-btn" onclick="startComprehensiveQuiz()">
+                <button class="start-btn" onclick="startQuiz()">
                     <span class="btn-text">بدء الاختبار العميق</span>
                     <span class="btn-icon">🔍</span>
                 </button>
@@ -263,10 +263,366 @@
         </div>
     </div>
     
-    <script src="script.js"></script>
     <script>
-        // دالة بدء الاختبار المتكامل
-        function startComprehensiveQuiz() {
+        // بيانات الاختبار
+        const quizData = {
+            questions: [
+                // أسئلة فرويد - اللاوعي والرغبات المكبوتة
+                {
+                    id: 1,
+                    category: "freud",
+                    question: "في أحلامك، ما هو الشيء الأكثر تكرارًا الذي تراه؟",
+                    options: [
+                        {text: "الماء أو البحار", points: {freud: 5, jung: 3, adler: 1}},
+                        {text: "الأشخاص المهمين في حياتك", points: {freud: 3, jung: 5, adler: 4}},
+                        {text: "الأماكن المظلمة أو المجهولة", points: {freud: 4, jung: 4, adler: 2}},
+                        {text: "الأشياء المفقودة", points: {freud: 5, jung: 2, adler: 3}}
+                    ]
+                },
+                {
+                    id: 2,
+                    category: "freud",
+                    question: "عندما تشعر بالتوتر، ما هو أول شيء تفكر فيه؟",
+                    options: [
+                        {text: "الطفولة أو الذكريات القديمة", points: {freud: 5, jung: 3, adler: 2}},
+                        {text: "المستقبل والتحديات القادمة", points: {freud: 1, jung: 4, adler: 5}},
+                        {text: "العلاقات مع الآخرين", points: {freud: 3, jung: 5, adler: 4}},
+                        {text: "النجاح أو الفشل", points: {freud: 2, jung: 2, adler: 5}}
+                    ]
+                },
+                
+                // أسئلة يونغ - اللاوعي الجمعي والأنماط الأصلية
+                {
+                    id: 3,
+                    category: "jung",
+                    question: "ما نوع الشخصيات التي تجذبك أكثر في الأفلام والكتب؟",
+                    options: [
+                        {text: "الأبطال الذين يخوضون مغامرات", points: {jung: 5, mbti: {ESTP: 3, ENFP: 2}, bigFive: {openness: 4}}},
+                        {text: "الشخصيات المعقدة ذات الأسرار", points: {jung: 5, mbti: {INTJ: 4, INTP: 3}, bigFive: {openness: 5}}},
+                        {text: "الشخصيات التي تساعد الآخرين", points: {jung: 4, mbti: {ENFJ: 5, ISFJ: 4}, bigFive: {agreeableness: 5}}},
+                        {text: "الشخصيات التي تسعى للسلطة", points: {jung: 3, mbti: {ENTJ: 5, ESTJ: 4}, bigFive: {conscientiousness: 4}}}
+                    ]
+                },
+                {
+                    id: 4,
+                    category: "jung",
+                    question: "كيف تصف علاقتك مع الجانب المظلم من شخصيتك؟",
+                    options: [
+                        {text: "أقبله وأفهمه", points: {jung: 5, freud: 3, bigFive: {neuroticism: 2}}},
+                        {text: "أحاول تجنبه", points: {jung: 2, freud: 4, bigFive: {neuroticism: 4}}},
+                        {text: "لا أفكر فيه كثيرًا", points: {jung: 1, freud: 2, bigFive: {neuroticism: 1}}},
+                        {text: "أحاول دمجه مع الجانب الإيجابي", points: {jung: 5, freud: 2, bigFive: {openness: 5}}}
+                    ]
+                },
+                
+                // أسئلة أدلر - Complex والتفوق
+                {
+                    id: 5,
+                    category: "adler",
+                    question: "ما هو أكبر تحدٍ تواجهه في حياتك الاجتماعية؟",
+                    options: [
+                        {text: "الشعور بأنني أقل من الآخرين", points: {adler: 5, bigFive: {neuroticism: 4}, freud: 3}},
+                        {text: "الشعور بأنني مختلف عن الآخرين", points: {adler: 4, jung: 4, mbti: {INTP: 3, INFP: 3}}},
+                        {text: "الخوف من الرفض أو النقد", points: {adler: 3, bigFive: {neuroticism: 5}, freud: 4}},
+                        {text: "الرغبة في أن أكون الأفضل دائماً", points: {adler: 4, bigFive: {conscientiousness: 5}, mbti: {ENTJ: 4}}}
+                    ]
+                },
+                {
+                    id: 6,
+                    category: "adler",
+                    question: "كيف تتعامل مع المنافسة؟",
+                    options: [
+                        {text: "أتنافس بقوة لأثبت نفسي", points: {adler: 5, bigFive: {conscientiousness: 4}, mbti: {ESTJ: 3}}},
+                        {text: "أفضل التعاون على المنافسة", points: {adler: 2, bigFive: {agreeableness: 5}, mbti: {ISFJ: 4}}},
+                        {text: "أتنافس لكن بعدل واحترام", points: {adler: 3, bigFive: {agreeableness: 4, conscientiousness: 3}, mbti: {ENFJ: 4}}},
+                        {text: "أتجنب المنافسة قدر الإمكان", points: {adler: 1, bigFive: {neuroticism: 3}, freud: 2}}
+                    ]
+                },
+                
+                // أسئلة MBTI
+                {
+                    id: 7,
+                    category: "mbti",
+                    question: "في المجموعات الاجتماعية، أنت عادةً:",
+                    options: [
+                        {text: "أتحدث أكثر مما أستمع", points: {mbti: {ESTP: 4, ENFP: 3, ENTJ: 3}, bigFive: {extraversion: 5}}},
+                        {text: "أستمع أكثر مما أتحدث", points: {mbti: {INTJ: 4, INTP: 5, INFJ: 4}, bigFive: {extraversion: 1}}},
+                        {text: "أتحدث عند الحاجة فقط", points: {mbti: {ISTJ: 3, ISFJ: 3}, bigFive: {extraversion: 2}}},
+                        {text: "أشارك بحماس وطاقة", points: {mbti: {ESFP: 5, ENFJ: 3}, bigFive: {extraversion: 4}}}
+                    ]
+                },
+                {
+                    id: 8,
+                    category: "mbti",
+                    question: "كيف تفضل تنظيم وقتك؟",
+                    options: [
+                        {text: "بحسب الخطة والجدول المحدد", points: {mbti: {ISTJ: 5, ESTJ: 4, INTJ: 3}, bigFive: {conscientiousness: 5}}},
+                        {text: "بحسب المزاج والفرص المتاحة", points: {mbti: {ESFP: 4, ENFP: 5, ISFP: 3}, bigFive: {openness: 4}}},
+                        {text: "بحسب الأولويات المتغيرة", points: {mbti: {ENFJ: 3, INFP: 3}, bigFive: {openness: 3}}},
+                        {text: "بحسب الضغوط والمواعيد النهائية", points: {mbti: {ESTP: 3, ENTJ: 4}, bigFive: {conscientiousness: 2}}}
+                    ]
+                },
+                
+                // أسئلة Big Five
+                {
+                    id: 9,
+                    category: "bigFive",
+                    question: "ما مدى اهتمامك بالتجارب الجديدة والمغامرات؟",
+                    options: [
+                        {text: "أحب التجارب الجديدة جداً", points: {bigFive: {openness: 5}, mbti: {ENFP: 4, ENTP: 5}}},
+                        {text: "أحب بعض التجارب الجديدة", points: {bigFive: {openness: 3}, mbti: {INFP: 3, ESFP: 3}}},
+                        {text: "أفضل الأمور المألوفة", points: {bigFive: {openness: 2}, mbti: {ISTJ: 4, ISFJ: 3}}},
+                        {text: "أخشى التجارب الجديدة", points: {bigFive: {openness: 1, neuroticism: 4}, mbti: {INTJ: 2, INFJ: 2}}}
+                    ]
+                },
+                {
+                    id: 10,
+                    category: "bigFive",
+                    question: "ما مدى اهتمامك بمشاعر الآخرين؟",
+                    options: [
+                        {text: "أهتم جداً ودائماً", points: {bigFive: {agreeableness: 5}, mbti: {INFP: 5, ENFJ: 5}}},
+                        {text: "أهتم لكن بحدود", points: {bigFive: {agreeableness: 3}, mbti: {ISFP: 3, ESFJ: 4}}},
+                        {text: "أهتم عند الحاجة فقط", points: {bigFive: {agreeableness: 2}, mbti: {ISTJ: 2, ESTJ: 1}}},
+                        {text: "أركز أكثر على نفسي", points: {bigFive: {agreeableness: 1}, mbti: {INTJ: 3, ENTJ: 2}}}
+                    ]
+                },
+                // أسئلة إضافية لتكمل 30 سؤال
+                {
+                    id: 11,
+                    category: "freud",
+                    question: "ما هو أول شيء تفكر فيه عند الاستيقاظ؟",
+                    options: [
+                        {text: "الخطة ليومي", points: {freud: 2, bigFive: {conscientiousness: 4}}},
+                        {text: "الأشخاص المهمين", points: {freud: 3, jung: 4}},
+                        {text: "القلق من المستقبل", points: {freud: 4, bigFive: {neuroticism: 5}}},
+                        {text: "أفكار إبداعية", points: {freud: 1, bigFive: {openness: 5}}}
+                    ]
+                },
+                {
+                    id: 12,
+                    category: "jung",
+                    question: "أي من هذه البيئات تشعر فيها بالراحة أكثر؟",
+                    options: [
+                        {text: "المكتبة الهادئة", points: {jung: 4, bigFive: {openness: 4}}},
+                        {text: "الحفلات الصاخبة", points: {jung: 2, bigFive: {extraversion: 5}}},
+                        {text: "الطبيعة البرية", points: {jung: 5, bigFive: {openness: 3}}},
+                        {text: "المنزل مع العائلة", points: {jung: 3, bigFive: {agreeableness: 4}}}
+                    ]
+                },
+                {
+                    id: 13,
+                    category: "adler",
+                    question: "كيف تتعامل مع النقد البناء؟",
+                    options: [
+                        {text: "أقبله وأستفيد منه", points: {adler: 4, bigFive: {openness: 4}}},
+                        {text: "أشعر بالألم لكن أتعلم", points: {adler: 3, bigFive: {neuroticism: 3}}},
+                        {text: "أرفضه واحياناً أصاب بالغضب", points: {adler: 2, bigFive: {neuroticism: 4}}},
+                        {text: "أتجاهله تماماً", points: {adler: 1, bigFive: {openness: 2}}}
+                    ]
+                },
+                {
+                    id: 14,
+                    category: "mbti",
+                    question: "عند حل المشكلات، تفضل:",
+                    options: [
+                        {text: "التفكير المنطقي أولاً", points: {mbti: {INTJ: 5, ENTJ: 4}, bigFive: {openness: 3}}},
+                        {text: "الاعتماد على المشاعر", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {agreeableness: 5}}},
+                        {text: "طلب المساعدة من الآخرين", points: {mbti: {ENFJ: 4, ESFJ: 5}, bigFive: {extraversion: 4}}},
+                        {text: "التجربة والخطأ", points: {mbti: {ESTP: 4, ISFP: 3}, bigFive: {openness: 5}}}
+                    ]
+                },
+                {
+                    id: 15,
+                    category: "bigFive",
+                    question: "كيف تتعامل مع الضغوط اليومية؟",
+                    options: [
+                        {text: "أخطط مسبقاً للتعامل معها", points: {bigFive: {conscientiousness: 5, neuroticism: 1}}},
+                        {text: "أتعامل معها حسب الظروف", points: {bigFive: {openness: 4, neuroticism: 2}}},
+                        {text: "أشعر بالتوتر لكن أتحمل", points: {bigFive: {neuroticism: 4, conscientiousness: 3}}},
+                        {text: "أتأثر بشدة وأحتاج وقت للتعافي", points: {bigFive: {neuroticism: 5, openness: 2}}}
+                    ]
+                },
+                {
+                    id: 16,
+                    category: "freud",
+                    question: "ما نوع الذكريات الطفولية التي تتذكرها أكثر؟",
+                    options: [
+                        {text: "الألعاب والمرح", points: {freud: 2, bigFive: {openness: 4}}},
+                        {text: "العلاقات مع الوالدين", points: {freud: 5, adler: 4}},
+                        {text: "الإنجازات الصغيرة", points: {freud: 3, bigFive: {conscientiousness: 4}}},
+                        {text: "المواقف الصعبة", points: {freud: 4, bigFive: {neuroticism: 4}}}
+                    ]
+                },
+                {
+                    id: 17,
+                    category: "jung",
+                    question: "ما هو الجانب الأكثر أهمية في شخصيتك؟",
+                    options: [
+                        {text: "العقل والتفكير", points: {jung: 3, mbti: {INTJ: 5, INTP: 5}}},
+                        {text: "القلب والمشاعر", points: {jung: 4, mbti: {INFP: 5, ENFP: 4}}},
+                        {text: "القوة والإرادة", points: {jung: 2, mbti: {ENTJ: 5, ESTJ: 4}}},
+                        {text: "الحس والحدس", points: {jung: 5, mbti: {INFJ: 5, ENFJ: 3}}}
+                    ]
+                },
+                {
+                    id: 18,
+                    category: "adler",
+                    question: "ما هو هدفك الرئيسي في الحياة؟",
+                    options: [
+                        {text: "النجاح المهني", points: {adler: 4, bigFive: {conscientiousness: 5}}},
+                        {text: "السعادة الشخصية", points: {adler: 3, bigFive: {agreeableness: 4}}},
+                        {text: "خدمة الآخرين", points: {adler: 5, bigFive: {agreeableness: 5}}},
+                        {text: "اكتشاف الذات", points: {adler: 2, bigFive: {openness: 5}}}
+                    ]
+                },
+                {
+                    id: 19,
+                    category: "mbti",
+                    question: "في العمل، تفضل:",
+                    options: [
+                        {text: "العمل الفردي", points: {mbti: {INTJ: 5, INTP: 4}, bigFive: {extraversion: 1}}},
+                        {text: "العمل الجماعي", points: {mbti: {ENFJ: 5, ESFJ: 4}, bigFive: {extraversion: 5}}},
+                        {text: "قيادة الفريق", points: {mbti: {ENTJ: 5, ESTJ: 4}, bigFive: {extraversion: 4}}},
+                        {text: "العمل المتنوع", points: {mbti: {ENFP: 4, ESFP: 3}, bigFive: {openness: 5}}}
+                    ]
+                },
+                {
+                    id: 20,
+                    category: "bigFive",
+                    question: "ما مدى ثقتك بنفسك؟",
+                    options: [
+                        {text: "ثقة عالية جداً", points: {bigFive: {neuroticism: 1, conscientiousness: 5}}},
+                        {text: "ثقة متوسطة", points: {bigFive: {neuroticism: 2, conscientiousness: 3}}},
+                        {text: "ثقة متقلبة", points: {bigFive: {neuroticism: 4, conscientiousness: 2}}},
+                        {text: "ثقة منخفضة", points: {bigFive: {neuroticism: 5, conscientiousness: 1}}}
+                    ]
+                },
+                {
+                    id: 21,
+                    category: "freud",
+                    question: "ما هو موقفك من العلاقات العاطفية؟",
+                    options: [
+                        {text: "أساسية جداً في حياتي", points: {freud: 4, bigFive: {agreeableness: 5}}},
+                        {text: "مهمة لكن ليست أساسية", points: {freud: 3, bigFive: {agreeableness: 3}}},
+                        {text: "أفضل العيش بمفردي", points: {freud: 2, bigFive: {extraversion: 1}}},
+                        {text: "أخشى من الارتباط", points: {freud: 5, bigFive: {neuroticism: 5}}}
+                    ]
+                },
+                {
+                    id: 22,
+                    category: "jung",
+                    question: "كيف تتعامل مع التغيير؟",
+                    options: [
+                        {text: "أتقبله بسهولة", points: {jung: 4, bigFive: {openness: 5}}},
+                        {text: "أحتاج وقت للتكيف", points: {jung: 3, bigFive: {openness: 3}}},
+                        {text: "أشعر بالقلق منه", points: {jung: 2, bigFive: {neuroticism: 4}}},
+                        {text: "أرفضه تماماً", points: {jung: 1, bigFive: {openness: 1}}}
+                    ]
+                },
+                {
+                    id: 23,
+                    category: "adler",
+                    question: "ما هو أكبر إنجاز حققته؟",
+                    options: [
+                        {text: "تحقيق حلم طال انتظاره", points: {adler: 5, bigFive: {conscientiousness: 5}}},
+                        {text: "مساعدة شخص في حاجة", points: {adler: 4, bigFive: {agreeableness: 5}}},
+                        {text: "تعلم مهارة جديدة", points: {adler: 3, bigFive: {openness: 5}}},
+                        {text: "التغلب على صعوبة نفسية", points: {adler: 4, bigFive: {neuroticism: 2}}}
+                    ]
+                },
+                {
+                    id: 24,
+                    category: "mbti",
+                    question: "كيف تتخذ القرارات المهمة؟",
+                    options: [
+                        {text: "بعد تفكير عميق وتحليل", points: {mbti: {INTJ: 5, INTP: 4}, bigFive: {openness: 4}}},
+                        {text: "بحسب مشاعري وحدسي", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {openness: 3}}},
+                        {text: "بعد استشارة الآخرين", points: {mbti: {ENFJ: 4, ESFJ: 5}, bigFive: {agreeableness: 5}}},
+                        {text: "بحسب الظروف والوقت", points: {mbti: {ESTP: 4, ESFP: 3}, bigFive: {openness: 2}}}
+                    ]
+                },
+                {
+                    id: 25,
+                    category: "bigFive",
+                    question: "ما مدى اهتمامك بالتفاصيل؟",
+                    options: [
+                        {text: "أهتم جداً بالتفاصيل الدقيقة", points: {bigFive: {conscientiousness: 5, openness: 3}}},
+                        {text: "أهتم بالتفاصيل المهمة فقط", points: {bigFive: {conscientiousness: 4, openness: 2}}},
+                        {text: "أهتم بالصورة العامة أكثر", points: {bigFive: {conscientiousness: 2, openness: 4}}},
+                        {text: "أهمل التفاصيل غالباً", points: {bigFive: {conscientiousness: 1, openness: 3}}}
+                    ]
+                },
+                {
+                    id: 26,
+                    category: "freud",
+                    question: "ما هو أكبر خوف لديك؟",
+                    options: [
+                        {text: "الرفض من الآخرين", points: {freud: 4, bigFive: {neuroticism: 5}}},
+                        {text: "الفشل في تحقيق الأهداف", points: {freud: 3, bigFive: {neuroticism: 4}}},
+                        {text: "الوحدة والعزلة", points: {freud: 5, bigFive: {extraversion: 2}}},
+                        {text: "عدم معرفة الذات", points: {freud: 2, bigFive: {openness: 4}}}
+                    ]
+                },
+                {
+                    id: 27,
+                    category: "jung",
+                    question: "ما نوع الأحلام التي تراها؟",
+                    options: [
+                        {text: "أحلام واقعية وواضحة", points: {jung: 2, bigFive: {openness: 2}}},
+                        {text: "أحلام رمزية ومعقدة", points: {jung: 5, bigFive: {openness: 5}}},
+                        {text: "أحلام عاطفية وحسية", points: {jung: 4, bigFive: {agreeableness: 4}}},
+                        {text: "نادراً ما أتذكر أحلامي", points: {jung: 1, bigFive: {openness: 1}}}
+                    ]
+                },
+                {
+                    id: 28,
+                    category: "adler",
+                    question: "كيف تتعامل مع الصعوبات؟",
+                    options: [
+                        {text: "أواجهها بجرأة", points: {adler: 5, bigFive: {neuroticism: 1}}},
+                        {text: "أبحث عن حلول إبداعية", points: {adler: 4, bigFive: {openness: 5}}},
+                        {text: "أطلب المساعدة من الآخرين", points: {adler: 3, bigFive: {agreeableness: 5}}},
+                        {text: "أتألم لكن أستمر", points: {adler: 4, bigFive: {neuroticism: 3}}}
+                    ]
+                },
+                {
+                    id: 29,
+                    category: "mbti",
+                    question: "ما هو نمط تفكيرك الأساسي؟",
+                    options: [
+                        {text: "تحليلي ومنطقي", points: {mbti: {INTJ: 5, INTP: 5}, bigFive: {openness: 4}}},
+                        {text: "عاطفي وحسّاس", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {agreeableness: 5}}},
+                        {text: "عملي وواقعي", points: {mbti: {ISTJ: 5, ESTJ: 4}, bigFive: {conscientiousness: 5}}},
+                        {text: "حدسي وبصيري", points: {mbti: {INFJ: 5, ENFJ: 4}, bigFive: {openness: 4}}}
+                    ]
+                },
+                {
+                    id: 30,
+                    category: "bigFive",
+                    question: "ما مدى انضباطك الذاتي؟",
+                    options: [
+                        {text: "منضبط جداً في جميع الأمور", points: {bigFive: {conscientiousness: 5, neuroticism: 1}}},
+                        {text: "منضبط في الأمور المهمة", points: {bigFive: {conscientiousness: 4, neuroticism: 2}}},
+                        {text: "منضبط أحياناً", points: {bigFive: {conscientiousness: 3, neuroticism: 3}}},
+                        {text: "أعاني من عدم الانضباط", points: {bigFive: {conscientiousness: 1, neuroticism: 4}}}
+                    ]
+                }
+            ]
+        };
+
+        // متغيرات النظام
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let userScores = {
+            freud: 0,
+            jung: 0,
+            adler: 0,
+            mbti: {INTJ: 0, INTP: 0, ENTJ: 0, ENTP: 0, INFJ: 0, INFP: 0, ENFJ: 0, ENFP: 0, ISTJ: 0, ISFJ: 0, ESTJ: 0, ESFJ: 0, ISTP: 0, ISFP: 0, ESTP: 0, ESFP: 0},
+            bigFive: {openness: 0, conscientiousness: 0, extraversion: 0, agreeableness: 0, neuroticism: 0}
+        };
+
+        // دالة بدء الاختبار
+        function startQuiz() {
             document.querySelector('.quiz-intro').style.display = 'none';
             document.getElementById('quizContent').style.display = 'block';
             showQuestion();
@@ -274,13 +630,13 @@
 
         // دالة عرض السؤال
         function showQuestion() {
-            const question = comprehensiveQuiz.questions[currentQuestion];
+            const question = quizData.questions[currentQuestion];
             
             // تحديث عداد الأسئلة
-            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${comprehensiveQuiz.questions.length}`;
+            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${quizData.questions.length}`;
             
             // تحديث شريط التقدم
-            const progress = ((currentQuestion + 1) / comprehensiveQuiz.questions.length) * 100;
+            const progress = ((currentQuestion + 1) / quizData.questions.length) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
             
             // عرض السؤال
@@ -302,7 +658,7 @@
 
         // دالة اختيار الإجابة
         function selectOption(optionIndex) {
-            const question = comprehensiveQuiz.questions[currentQuestion];
+            const question = quizData.questions[currentQuestion];
             const selectedOption = question.options[optionIndex];
             
             // حفظ الإجابة
@@ -327,12 +683,12 @@
             
             // الانتقال للسؤال التالي تلقائيًا بعد ثوانٍ
             setTimeout(() => {
-                if (currentQuestion < comprehensiveQuiz.questions.length - 1) {
+                if (currentQuestion < quizData.questions.length - 1) {
                     currentQuestion++;
                     showQuestion();
                 } else {
                     // نهاية الاختبار - الانتقال لصفحة النتائج
-                    alert('تم الانتهاء من الاختبار! النتائج المفصلة ستظهر في الصفحة التالية.');
+                    showResults();
                 }
             }, 1000);
         }
@@ -369,7 +725,7 @@
                 // خصم النقاط السابقة
                 const previousAnswer = userAnswers[currentQuestion - 1];
                 if (previousAnswer) {
-                    const previousPoints = comprehensiveQuiz.questions[currentQuestion - 1].options[previousAnswer.optionIndex].points;
+                    const previousPoints = quizData.questions[currentQuestion - 1].options[previousAnswer.optionIndex].points;
                     revertScores(previousPoints);
                     userAnswers[currentQuestion - 1] = null;
                 }
@@ -394,6 +750,15 @@
                     userScores.bigFive[trait] -= points.bigFive[trait];
                 }
             }
+        }
+
+        // دالة عرض النتائج
+        function showResults() {
+            // حفظ النتائج في localStorage
+            localStorage.setItem('quizResults', JSON.stringify(userScores));
+            
+            // الانتقال لصفحة النتائج
+            window.location.href = 'results.html';
         }
     </script>
 </body>
