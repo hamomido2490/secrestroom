@@ -1,0 +1,155 @@
+/* التصميم الأساسي */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Tajawal', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #e6e6e6;
+    direction: rtl;
+    text-align: center;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* اسم الموقع */
+.site-name-container {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.site-title {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(45deg, #3498db, #8e44ad, #f39c12);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 300% 300%;
+    animation: gradientShift 3s ease infinite;
+    text-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
+    letter-spacing: 1px;
+}
+
+.site-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 15px;
+    font-weight: 400;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* المحتوى الرئيسي */
+.main-content h1 {
+    font-size: 28px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    background: linear-gradient(to left, #fff, #a0a0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.section:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.section-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.section-text {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.section-subtext {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.warning {
+    font-size: 16px;
+    color: #ff6b6b;
+    font-weight: bold;
+    margin-top: 40px;
+    padding: 25px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 20px;
+    border-right: 5px solid #ff6b6b;
+}
+
+.copyright {
+    margin-top: 50px;
+    padding: 25px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* تصميم الهاتف */
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 2.5rem;
+    }
+    
+    .site-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .main-content h1 {
+        font-size: 22px;
+    }
+    
+    .section {
+        padding: 25px 15px;
+    }
+    
+    .section-icon {
+        font-size: 3rem;
+    }
+    
+    .section-text {
+        font-size: 1.5rem;
+    }
+}

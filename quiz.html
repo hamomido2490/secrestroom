@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار متكامل - غرفة الأسرار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* تصميم إضافي لصفحة الاختبار */
+        .quiz-header {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+        }
+
+        .quiz-main-title {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .quiz-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .intro-text ul {
+            text-align: right;
+            margin: 20px 0;
+            padding-right: 20px;
+        }
+
+        .intro-text li {
+            margin: 10px 0;
+            color: #3498db;
+        }
+
+        .start-btn {
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 0 auto;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-icon {
+            font-size: 1.8rem;
+        }
+
+        /* محتوى الاختبار */
+        .quiz-content {
+            margin-top: 30px;
+        }
+
+        .quiz-progress-container {
+            margin-bottom: 30px;
+        }
+
+        .question-counter {
+            font-size: 18px;
+            color: #8e44ad;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 22px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: right;
+            font-size: 18px;
+        }
+
+        .option:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-3px);
+            border-color: #3498db;
+        }
+
+        .option.selected {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: #2ecc71;
+            transform: scale(1.02);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .prev-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .next-btn {
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .home-btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1 class="quiz-main-title">اختبار التحليل النفسي المتكامل</h1>
+            <div class="quiz-subtitle">بناءً على جميع النظريات النفسية الحديثة والكلاسيكية</div>
+        </div>
+        
+        <div class="quiz-container">
+            <div class="quiz-intro">
+                <div class="intro-text">
+                    <p>مرحبًا بك في أعمق اختبار نفسي متكامل. هذا الاختبار يحتوي على 30 سؤالًا مصممة بعناية لتحليل شخصيتك من جميع الزوايا النفسية.</p>
+                    <p>الاختبار مبني على نظريات:</p>
+                    <ul>
+                        <li>فرويد - التحليل النفسي الكلاسيكي</li>
+                        <li>يونغ - التحليل النفسي التحليلي</li>
+                        <li>أدلر - علم النفس الفردي</li>
+                        <li>MBTI - أنواع الشخصية الـ16</li>
+                        <li>Big Five - السمات الخمس الكبرى</li>
+                        <li>وكثير من النظريات الأخرى</li>
+                    </ul>
+                    <p>الاختبار зайِtakes حوالي 10-15 دقيقة. استعد نفسياً وابدأ رحلتك الداخلية.</p>
+                </div>
+                
+                <button class="start-btn" onclick="startComprehensiveQuiz()">
+                    <span class="btn-text">بدء الاختبار العميق</span>
+                    <span class="btn-icon">🔍</span>
+                </button>
+            </div>
+            
+            <div class="quiz-content" id="quizContent" style="display: none;">
+                <div class="quiz-progress-container">
+                    <div class="question-counter" id="questionCounter">السؤال 1 من 30</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                
+                <div class="question-container" id="questionContainer">
+                    <!-- الأسئلة هتظهر هنا -->
+                </div>
+                
+                <div class="quiz-navigation">
+                    <button class="nav-btn prev-btn" id="prevBtn" onclick="previousQuestion()">السابق</button>
+                    <button class="nav-btn next-btn" id="nextBtn" onclick="nextQuestion()">التالي</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="back-to-home">
+            <button class="home-btn" onclick="window.location.href='index.html'">العودة للرئيسية</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // دالة بدء الاختبار المتكامل
+        function startComprehensiveQuiz() {
+            document.querySelector('.quiz-intro').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            showQuestion();
+        }
+
+        // دالة عرض السؤال
+        function showQuestion() {
+            const question = comprehensiveQuiz.questions[currentQuestion];
+            
+            // تحديث عداد الأسئلة
+            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${comprehensiveQuiz.questions.length}`;
+            
+            // تحديث شريط التقدم
+            const progress = ((currentQuestion + 1) / comprehensiveQuiz.questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // عرض السؤال
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = `
+                <div class="question-text">${question.question}</div>
+                <div class="options-container" id="optionsContainer">
+                    ${question.options.map((option, index) => `
+                        <div class="option" onclick="selectOption(${index})">
+                            ${option.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // تحديث أزرار التنقل
+            document.getElementById('prevBtn').style.display = currentQuestion === 0 ? 'none' : 'block';
+        }
+
+        // دالة اختيار الإجابة
+        function selectOption(optionIndex) {
+            const question = comprehensiveQuiz.questions[currentQuestion];
+            const selectedOption = question.options[optionIndex];
+            
+            // حفظ الإجابة
+            userAnswers[currentQuestion] = {
+                questionId: question.id,
+                optionIndex: optionIndex,
+                points: selectedOption.points
+            };
+            
+            // تحديث النقاط
+            updateScores(selectedOption.points);
+            
+            // تمييز الخيار المختار
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // الانتقال للسؤال التالي تلقائيًا بعد ثوانٍ
+            setTimeout(() => {
+                if (currentQuestion < comprehensiveQuiz.questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    // نهاية الاختبار - الانتقال لصفحة النتائج
+                    alert('تم الانتهاء من الاختبار! النتائج المفصلة ستظهر في الصفحة التالية.');
+                }
+            }, 1000);
+        }
+
+        // دالة تحديث النقاط
+        function updateScores(points) {
+            // تحديث نقاط فرويد
+            if (points.freud) userScores.freud += points.freud;
+            
+            // تحديث نقاط يونغ
+            if (points.jung) userScores.jung += points.jung;
+            
+            // تحديث نقاط أدلر
+            if (points.adler) userScores.adler += points.adler;
+            
+            // تحديث نقاط MBTI
+            if (points.mbti) {
+                for (let type in points.mbti) {
+                    userScores.mbti[type] += points.mbti[type];
+                }
+            }
+            
+            // تحديث نقاط Big Five
+            if (points.bigFive) {
+                for (let trait in points.bigFive) {
+                    userScores.bigFive[trait] += points.bigFive[trait];
+                }
+            }
+        }
+
+        // دالة السؤال السابق
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                // خصم النقاط السابقة
+                const previousAnswer = userAnswers[currentQuestion - 1];
+                if (previousAnswer) {
+                    const previousPoints = comprehensiveQuiz.questions[currentQuestion - 1].options[previousAnswer.optionIndex].points;
+                    revertScores(previousPoints);
+                    userAnswers[currentQuestion - 1] = null;
+                }
+                
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        // دالة إرجاع النقاط
+        function revertScores(points) {
+            if (points.freud) userScores.freud -= points.freud;
+            if (points.jung) userScores.jung -= points.jung;
+            if (points.adler) userScores.adler -= points.adler;
+            if (points.mbti) {
+                for (let type in points.mbti) {
+                    userScores.mbti[type] -= points.mbti[type];
+                }
+            }
+            if (points.bigFive) {
+                for (let trait in points.bigFive) {
+                    userScores.bigFive[trait] -= points.bigFive[trait];
+                }
+            }
+        }
+    </script>
+</body>
+</html>
