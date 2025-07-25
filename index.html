@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غرفة الأسرار - Secrets Room</title>
+    <title>اختبار متكامل - غرفة الأسرار</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* التصميم الأساسي */
@@ -27,29 +27,6 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-        }
-
-        /* زرار تبديل اللغة */
-        .language-selector {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .lang-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .lang-btn:hover {
-            background: rgba(52, 152, 219, 0.2);
         }
 
         /* اسم الموقع */
@@ -89,8 +66,34 @@
             font-weight: 400;
         }
 
-        /* شاشة معلومات المستخدم */
-        .user-info-screen {
+        /* المحتوى الرئيسي */
+        .main-content {
+            text-align: center;
+        }
+
+        .quiz-header {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-title {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .quiz-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* شاشة الاختيار */
+        .selection-screen {
             background: rgba(255, 255, 255, 0.03);
             padding: 40px;
             border-radius: 25px;
@@ -98,201 +101,257 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .screen-title {
-            font-size: 2.5rem;
+        .selection-title {
+            font-size: 2.2rem;
             color: #3498db;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .screen-subtitle {
-            font-size: 1.3rem;
+        .selection-description {
+            font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            text-align: right;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e0e0e0;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 1.1rem;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: #3498db;
-            background: rgba(52, 152, 219, 0.1);
-        }
-
-        .start-btn {
-            padding: 20px 40px;
-            background: linear-gradient(45deg, #3498db, #8e44ad);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: bold;
-            font-size: 1.5rem;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 30px auto 0;
-            justify-content: center;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        /* المحتوى الرئيسي */
-        .main-screen {
-            text-align: center;
-        }
-
-        .main-title-ar, .main-title-en {
-            font-size: 28px;
-            margin-bottom: 40px;
             line-height: 1.6;
-            background: linear-gradient(to left, #fff, #a0a0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .sections {
+        .analysis-types {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
         }
 
-        .section {
+        .analysis-type {
             background: rgba(255, 255, 255, 0.05);
-            padding: 30px 15px;
-            border-radius: 20px;
+            padding: 25px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
         }
 
-        .section:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        .analysis-type:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-5px);
+            border-color: #3498db;
         }
 
-        .section-icon {
+        .type-icon {
             font-size: 3rem;
             margin-bottom: 15px;
         }
 
-        .section-text-ar, .section-text-en {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .type-title {
+            font-size: 1.5rem;
             color: #3498db;
+            margin-bottom: 10px;
         }
 
-        .warning-ar, .warning-en {
-            font-size: 16px;
-            color: #ff6b6b;
+        .type-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .type-questions {
+            font-size: 0.9rem;
+            color: #f39c12;
             font-weight: bold;
-            margin: 40px 0;
-            padding: 25px;
-            background: rgba(255, 107, 107, 0.1);
-            border-radius: 20px;
-            border-right: 5px solid #ff6b6b;
         }
 
-        /* زرار التحليل الكامل */
-        .full-analysis-btn {
-            padding: 18px 35px;
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
-            color: white;
+        /* شاشة الاختبار */
+        .quiz-screen {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .quiz-progress {
+            margin-bottom: 30px;
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            color: #8e44ad;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: right;
+            font-size: 1.1rem;
+        }
+
+        .option:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-3px);
+            border-color: #3498db;
+        }
+
+        .option.selected {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: #2ecc71;
+            transform: scale(1.02);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            margin: 20px auto;
-            display: block;
         }
 
-        .full-analysis-btn:hover {
+        .prev-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .next-btn {
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+        }
+
+        .nav-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* أماكن الإعلانات */
-        .ad-container {
+        /* شاشة النتائج */
+        .results-screen {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .results-header {
+            margin-bottom: 30px;
+        }
+
+        .results-title {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .results-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .analysis-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-right: 4px solid #3498db;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 15px 0;
+            color: #e0e0e0;
+        }
+
+        .action-buttons {
             display: flex;
             justify-content: center;
-            margin: 15px 0;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
 
-        .ad-container:hover {
-            opacity: 1;
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .ad-unit {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 10px 15px;
-            min-height: 90px;
-            min-width: 300px;
-            max-width: 728px;
-            text-align: center;
+        .save-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
         }
 
-        .ad-label {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 5px;
+        .home-btn {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
         }
 
-        .ad-content {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* إعلان علوي */
-        .top-ad {
-            margin-top: 10px;
-        }
-
-        /* إعلان سفلي */
-        .bottom-ad {
-            margin-bottom: 20px;
-        }
-
-        /* إعلان داخلي */
-        .inline-ad {
-            margin: 25px auto;
-            max-width: 500px;
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
         .copyright {
@@ -301,27 +360,6 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* زرار التحكم في الإعلانات */
-        .settings-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 15px;
-            background: rgba(52, 152, 219, 0.2);
-            color: white;
-            border: 1px solid rgba(52, 152, 219, 0.5);
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .settings-btn:hover {
-            background: rgba(52, 152, 219, 0.4);
         }
 
         /* تصميم الهاتف */
@@ -334,391 +372,898 @@
                 font-size: 1.2rem;
             }
             
-            .main-title-ar, .main-title-en {
-                font-size: 22px;
-            }
-            
-            .sections {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .section {
-                padding: 20px 10px;
-            }
-            
-            .section-icon {
-                font-size: 2.5rem;
-            }
-            
-            .section-text-ar, .section-text-en {
-                font-size: 16px;
-            }
-            
-            .warning-ar, .warning-en {
-                font-size: 14px;
-                padding: 20px;
-            }
-            
-            .full-analysis-btn {
-                padding: 15px 25px;
-                font-size: 1.1rem;
-            }
-            
-            .user-info-screen {
-                padding: 25px;
-            }
-            
-            .screen-title {
+            .quiz-title, .selection-title, .results-title {
                 font-size: 2rem;
             }
             
-            .form-group {
-                margin-bottom: 20px;
-            }
-            
-            .form-label {
+            .quiz-description, .selection-description, .results-description {
                 font-size: 1.1rem;
             }
             
-            .form-input, .form-select {
-                padding: 12px;
-                font-size: 1rem;
+            .question-text {
+                font-size: 1.2rem;
             }
             
-            .start-btn {
-                padding: 15px 30px;
+            .option {
+                font-size: 1rem;
+                padding: 15px;
+            }
+            
+            .analysis-types {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .analysis-type {
+                padding: 20px;
+            }
+            
+            .type-icon {
+                font-size: 2.5rem;
+            }
+            
+            .type-title {
                 font-size: 1.3rem;
             }
             
-            .ad-unit {
-                min-width: 250px;
-                padding: 8px 12px;
+            .type-description {
+                font-size: 0.9rem;
             }
             
-            .ad-label {
-                font-size: 9px;
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
             }
             
-            .ad-content {
-                font-size: 11px;
+            .action-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- زرار تبديل اللغة -->
-    <div class="language-selector">
-        <button class="lang-btn" onclick="toggleLanguage()">
-            <span class="lang-text-ar">🌐 عربي</span>
-            <span class="lang-text-en" style="display: none;">🌐 English</span>
-        </button>
-    </div>
-    
-    <!-- زرار التحكم في الإعلانات -->
-    <button class="settings-btn" onclick="openSettingsPanel()">
-        ⚙️ إعدادات الإعلانات
-    </button>
-    
-    <!-- إعلان علوي صغير -->
-    <div class="ad-container top-ad">
-        <div class="ad-unit ad-top">
-            <div class="ad-label">إعلان</div>
-            <div class="ad-content">
-                <span class="ad-text">مساحة إعلانية (728x90)</span>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="site-name-container">
             <h1 class="site-title">غرفة الأسرار</h1>
             <div class="site-subtitle">Secrets Room</div>
         </div>
         
-        <!-- شاشة معلومات المستخدم -->
-        <div id="userInfoScreen" class="user-info-screen">
-            <h2 class="screen-title">معلومات أساسية</h2>
-            <h3 class="screen-subtitle">Basic Information</h3>
+        <!-- شاشة الاختيار -->
+        <div id="selectionScreen" class="selection-screen">
+            <div class="selection-title" id="selectionTitle">اختر نوع التحليل</div>
+            <div class="selection-description" id="selectionDescription">اختر ما يناسبك من أنواع التحليل لتبدأ رحلتك الداخلية</div>
             
-            <div class="form-group">
-                <label class="form-label">العمر / Age</label>
-                <input type="number" id="userAge" class="form-input" placeholder="أدخل عمرك / Enter your age" min="13" max="100">
+            <div class="analysis-types">
+                <div class="analysis-type" onclick="startQuiz('vision')">
+                    <div class="type-icon">👁️</div>
+                    <div class="type-title" id="visionTitle">الرؤية الداخلية</div>
+                    <div class="type-description" id="visionDescription">تحليل عميق لقدراتك البصرية والاستباقية</div>
+                    <div class="type-questions" id="visionQuestions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startQuiz('analysis')">
+                    <div class="type-icon">🧠</div>
+                    <div class="type-title" id="analysisTitle">التحليل العميق</div>
+                    <div class="type-description" id="analysisDescription">فهم تحليلي شامل لقدراتك العقلية</div>
+                    <div class="type-questions" id="analysisQuestions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startQuiz('healing')">
+                    <div class="type-icon">💚</div>
+                    <div class="type-title" id="healingTitle">الشفاء النفسي</div>
+                    <div class="type-description" id="healingDescription">تحليل لمهاراتك في التعافي والتحول الداخلي</div>
+                    <div class="type-questions" id="healingQuestions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startQuiz('revelation')">
+                    <div class="type-icon">🔮</div>
+                    <div class="type-title" id="revelationTitle">الكشف الصادق</div>
+                    <div class="type-description" id="revelationDescription">اكتشاف الحقيقة الداخلية والقدرات المخفية</div>
+                    <div class="type-questions" id="revelationQuestions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startQuiz('full')" style="grid-column: 1 / -1;">
+                    <div class="type-icon">📊</div>
+                    <div class="type-title" id="fullTitle">التحليل الكامل</div>
+                    <div class="type-description" id="fullDescription">تحليل متكامل بجميع النظريات النفسية الحديثة والكلاسيكية</div>
+                    <div class="type-questions" id="fullQuestions">30 سؤال من جميع المجالات</div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label class="form-label">الجنس / Gender</label>
-                <select id="userGender" class="form-select">
-                    <option value="">اختر / Select</option>
-                    <option value="male">ذكر / Male</option>
-                    <option value="female">أنثى / Female</option>
-                    <option value="other">آخر / Other</option>
-                </select>
-            </div>
-            
-            <button class="start-btn" onclick="startAnalysis()">
-                <span class="btn-text-ar">ابدأ التحليل</span>
-                <span class="btn-text-en" style="display: none;">Start Analysis</span>
-                <span class="btn-icon">🔍</span>
+            <button class="home-btn" onclick="window.location.href='index.html'">
+                <span class="btn-text-ar">العودة للرئيسية</span>
             </button>
         </div>
         
-        <!-- الشاشة الرئيسية (مخفيّة في البداية) -->
-        <div id="mainScreen" class="main-screen" style="display: none;">
-            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
-            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
+        <!-- شاشة الاختبار -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1 class="quiz-title" id="quizTitle">اختبار التحليل النفسي</h1>
+                <p class="quiz-description" id="quizDescription">أجب عن الأسئلة بصراحة لتحليل عميق لشخصيتك</p>
+            </div>
             
-            <div class="sections">
-                <div class="section" onclick="showQuickAnalysis('vision')">
-                    <div class="section-icon">👁️</div>
-                    <div class="section-text-ar">الرؤية الداخلية</div>
-                    <div class="section-text-en" style="display: none;">Inner Vision</div>
-                </div>
-                <div class="section" onclick="showQuickAnalysis('analysis')">
-                    <div class="section-icon">🧠</div>
-                    <div class="section-text-ar">التحليل العميق</div>
-                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
-                </div>
-                <div class="section" onclick="showQuickAnalysis('healing')">
-                    <div class="section-icon">💚</div>
-                    <div class="section-text-ar">الشفاء النفسي</div>
-                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
-                </div>
-                <div class="section" onclick="showQuickAnalysis('revelation')">
-                    <div class="section-icon">🔮</div>
-                    <div class="section-text-ar">الكشف الصادق</div>
-                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
+            <div class="quiz-progress">
+                <div class="question-counter" id="questionCounter">السؤال 1 من 10</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="warning-ar">
-                ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
-            </div>
-            <div class="warning-en" style="display: none;">
-                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
+            <div class="question-container">
+                <div class="question-text" id="questionText">
+                    <!-- السؤال هيدخل هنا ديناميكيًا -->
+                </div>
+                
+                <div class="options-container" id="optionsContainer">
+                    <!-- الخيارات هتظهر هنا ديناميكيًا -->
+                </div>
             </div>
             
-            <button class="full-analysis-btn" onclick="startFullAnalysis()">
-                <span class="btn-text-ar">التحليل الكامل</span>
-                <span class="btn-text-en" style="display: none;">Full Analysis</span>
-            </button>
+            <div class="quiz-navigation">
+                <button class="nav-btn prev-btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">السابق</button>
+                <button class="nav-btn next-btn" id="nextBtn" onclick="nextQuestion()">التالي</button>
+            </div>
         </div>
         
-        <!-- إعلان داخلي -->
-        <div class="ad-container inline-ad">
-            <div class="ad-unit ad-inline">
-                <div class="ad-label">إعلان</div>
-                <div class="ad-content">
-                    <span class="ad-text">إعلان داخلي (300x250)</span>
-                </div>
+        <!-- شاشة النتائج -->
+        <div id="resultsScreen" class="results-screen">
+            <div class="results-header">
+                <h1 class="results-title" id="resultsTitle">تقرير التحليل النفسي</h1>
+                <p class="results-description" id="resultsDescription">بناءً على إجاباتك الحقيقية</p>
+            </div>
+            
+            <div id="resultsContent">
+                <!-- محتوى النتائج هيدخل هنا ديناميكيًا -->
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn save-btn" onclick="saveReport()">
+                    <span class="btn-icon">💾</span>
+                    <span class="btn-text-ar">حفظ التقرير</span>
+                </button>
+                <button class="action-btn home-btn" onclick="window.location.href='index.html'">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text-ar">العودة للرئيسية</span>
+                </button>
             </div>
         </div>
-    </div>
-    
-    <!-- إعلان سفلي -->
-    <div class="ad-container bottom-ad">
-        <div class="ad-unit ad-bottom">
-            <div class="ad-label">إعلان</div>
-            <div class="ad-content">
-                <span class="ad-text">مساحة إعلانية سفلية (728x90)</span>
-            </div>
+        
+        <div class="copyright">
+            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
         </div>
-    </div>
-    
-    <div class="copyright">
-        © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
     </div>
     
     <script>
         // متغيرات النظام
-        let currentUser = {
-            age: null,
-            gender: null,
-            language: 'ar' // ar or en
-        };
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let quizType = null;
+        let quizQuestions = [];
         
-        // دالة تبديل اللغة
-        function toggleLanguage() {
-            if (currentUser.language === 'ar') {
-                currentUser.language = 'en';
-                document.body.classList.add('en');
-                // تحديث النصوص
-                document.querySelector('.lang-text-ar').style.display = 'none';
-                document.querySelector('.lang-text-en').style.display = 'inline';
-                document.querySelector('.screen-title').textContent = 'Basic Information';
-                document.querySelector('.screen-subtitle').textContent = 'Basic Information';
-                document.querySelector('.form-label[for="userAge"]').textContent = 'Age';
-                document.querySelector('.form-label[for="userGender"]').textContent = 'Gender';
-                document.querySelector('.start-btn .btn-text-ar').style.display = 'none';
-                document.querySelector('.start-btn .btn-text-en').style.display = 'inline';
-                document.querySelector('.main-title-ar').style.display = 'none';
-                document.querySelector('.main-title-en').style.display = 'block';
-                document.querySelector('.warning-ar').style.display = 'none';
-                document.querySelector('.warning-en').style.display = 'block';
-                document.querySelector('.full-analysis-btn .btn-text-ar').style.display = 'none';
-                document.querySelector('.full-analysis-btn .btn-text-en').style.display = 'inline';
-                // تحديث نصوص الأقسام
-                document.querySelectorAll('.section-text-ar').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.section-text-en').forEach(el => el.style.display = 'block');
-            } else {
-                currentUser.language = 'ar';
-                document.body.classList.remove('en');
-                // تحديث النصوص
-                document.querySelector('.lang-text-en').style.display = 'none';
-                document.querySelector('.lang-text-ar').style.display = 'inline';
-                document.querySelector('.screen-title').textContent = 'معلومات أساسية';
-                document.querySelector('.screen-subtitle').textContent = 'Basic Information';
-                document.querySelector('.form-label[for="userAge"]').textContent = 'العمر / Age';
-                document.querySelector('.form-label[for="userGender"]').textContent = 'الجنس / Gender';
-                document.querySelector('.start-btn .btn-text-en').style.display = 'none';
-                document.querySelector('.start-btn .btn-text-ar').style.display = 'inline';
-                document.querySelector('.main-title-en').style.display = 'none';
-                document.querySelector('.main-title-ar').style.display = 'block';
-                document.querySelector('.warning-en').style.display = 'none';
-                document.querySelector('.warning-ar').style.display = 'block';
-                document.querySelector('.full-analysis-btn .btn-text-en').style.display = 'none';
-                document.querySelector('.full-analysis-btn .btn-text-ar').style.display = 'inline';
-                // تحديث نصوص الأقسام
-                document.querySelectorAll('.section-text-en').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.section-text-ar').forEach(el => el.style.display = 'block');
+        // دالة الحصول على نوع الاختبار من URL
+        function getQuizTypeFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('type') || 'vision';
+        }
+        
+        // دالة بدء الاختبار
+        function startQuiz(type) {
+            quizType = type;
+            currentQuestion = 0;
+            userAnswers = [];
+            
+            // إخفاء شاشة الاختيار وإظهار شاشة الاختبار
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            document.getElementById('resultsScreen').style.display = 'none';
+            
+            // تحديد الأسئلة حسب النوع
+            setQuizQuestions();
+            
+            // عرض السؤال الأول
+            showQuestion();
+        }
+        
+        // دالة تحديد الأسئلة حسب النوع
+        function setQuizQuestions() {
+            const allQuestions = {
+                vision: [
+                    {
+                        id: 1,
+                        question: "في أحلامك، ما هو الشيء الأكثر تكرارًا الذي تراه؟",
+                        options: [
+                            "الماء أو البحار",
+                            "الأشخاص المهمين في حياتك",
+                            "الأماكن المظلمة أو المجهولة",
+                            "الأشياء المفقودة"
+                        ]
+                    },
+                    {
+                        id: 2,
+                        question: "كيف تصف قدرتك على توقع المستقبل؟",
+                        options: [
+                            "لدي قدرة استثنائية على التنبؤ",
+                            "أستطيع توقع بعض الأمور بشكل صحيح",
+                            "أعتمد على التحليل أكثر من الحدس",
+                            "أفضل التعامل مع الحاضر"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        question: "ما مدى ثقتك في حدسك عند اتخاذ القرارات؟",
+                        options: [
+                            "أعتمد بشكل كبير على حدسي",
+                            "أستخدم حدسي كدليل إضافي",
+                            "أفضل الاعتماد على المنطق فقط",
+                            "أعتبره أحيانًا مخادعًا"
+                        ]
+                    },
+                    {
+                        id: 4,
+                        question: "عندما تحل مشكلة معقدة، كيف تبدأ؟",
+                        options: [
+                            "أرى الحل كاملاً من البداية",
+                            "أحلل العناصر واحدة تلو الأخرى",
+                            "أبحث عن أمثلة مشابهة",
+                            "أجرب حلول مختلفة"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        question: "ما نوع الأحلام التي تراها عادة؟",
+                        options: [
+                            "أحلام رمزية ومعقدة",
+                            "أحلام واضحة وواقعية",
+                            "أحلام عاطفية وحسية",
+                            "أحلام مغامرات وأفعال"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        question: "كيف تتعامل مع المعلومات التي لا يفهمها الآخرون؟",
+                        options: [
+                            "أحاول تفسيرها للآخرين بطرق مبسطة",
+                            "أحتفظ بها لنفسي لأنهم لن يفهموا",
+                            "أبحث عن أشخاص يستطيعون فهمها",
+                            "لا أعطيها أهمية كبيرة"
+                        ]
+                    },
+                    {
+                        id: 7,
+                        question: "ما مدى أهمية البصيرة بالنسبة لك؟",
+                        options: [
+                            "هي أهم شيء في حياتي",
+                            "مهمة لكن ليست حاسمة",
+                            "متوسطة في الأهمية",
+                            "لا أعطيها أهمية كبيرة"
+                        ]
+                    },
+                    {
+                        id: 8,
+                        question: "كيف تصف تفاعلك مع الأسرار والحقائق المخفية؟",
+                        options: [
+                            "أكتشفها بسهولة طبيعية",
+                            "أحتاج وقت للكشف عنها",
+                            "أفضل عدم معرفتها أحيانًا",
+                            "أبحث عنها بنشاط"
+                        ]
+                    },
+                    {
+                        id: 9,
+                        question: "ما هو دور الحدس في حياتك اليومية؟",
+                        options: [
+                            "دليل أساسي في جميع القرارات",
+                            "مصدر إضافي للمعلومات",
+                            "أداة مساعدة أحيانًا",
+                            "نادرًا ما أعتمد عليه"
+                        ]
+                    },
+                    {
+                        id: 10,
+                        question: "كيف تصف قدرتك على رؤية الحقيقة وراء الأشياء؟",
+                        options: [
+                            "استثنائية جداً ومتطورة",
+                            "جيدة وقابلة للتطوير",
+                            "متوسطة وتحتاج تحسين",
+                            "محدودة وتحتاج مساعدة"
+                        ]
+                    }
+                ],
+                
+                analysis: [
+                    {
+                        id: 1,
+                        question: "عندما تواجه مشكلة معقدة، كيف تتعامل معها عادة؟",
+                        options: [
+                            "أحللها من جميع الزوايا بعمق",
+                            "أبحث عن حلول عملية سريعة", 
+                            "أطلب المساعدة من الآخرين",
+                            "أتجنب التفكير فيها مؤقتًا"
+                        ]
+                    },
+                    {
+                        id: 2,
+                        question: "ما هو أسلوب تفكيرك الأساسي؟",
+                        options: [
+                            "تحليلي ومنطقي",
+                            "عاطفي وحسّاس",
+                            "عملي وواقعي",
+                            "حدسي وبصيري"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        question: "كيف تحل التناقضات في المعلومات؟",
+                        options: [
+                            "أحلل كل جزء بعناية",
+                            "أبحث عن مصدر موثوق",
+                            "أعتمد على حكمتي",
+                            "أتجاهل التناقضات البسيطة"
+                        ]
+                    },
+                    {
+                        id: 4,
+                        question: "ما نوع الأسئلة التي تثير فضولك أكثر؟",
+                        options: [
+                            "الأسئلة الفلسفية والمعقدة",
+                            "الأسئلة العلمية والعملية",
+                            "الأسئلة الاجتماعية والعاطفية",
+                            "الأسئلة الإبداعية والمغامرة"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        question: "كيف تقيم المعلومات الجديدة؟",
+                        options: [
+                            "أحللها نقدياً أولاً",
+                            "أقبلها ثم أحللها",
+                            "أبحث عن رأي الآخرين أولاً",
+                            "أجربها عمليًا"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        question: "ما مدى قدرتك على فهم دوافع الآخرين؟",
+                        options: [
+                            "أفهمها بسهولة تامة",
+                            "أفهم بعض المشاعر الأساسية",
+                            "أحتاج وقت لفهمها",
+                            "أجد صعوبة في فهمها"
+                        ]
+                    },
+                    {
+                        id: 7,
+                        question: "كيف تتعامل مع النقد البناء؟",
+                        options: [
+                            "أقبله وأستفيد منه فورًا",
+                            "أشعر بالألم لكن أتعلم",
+                            "أحتاج وقت لتحليله",
+                            "أرفضه في البداية"
+                        ]
+                    },
+                    {
+                        id: 8,
+                        question: "ما هو مستوى تركيزك عند التحليل؟",
+                        options: [
+                            "عالي جداً ومستمر",
+                            "جيد مع بعض الانقطاعات",
+                            "متوسط ويعتمد على الموقف",
+                            "منخفض نسبيًا"
+                        ]
+                    },
+                    {
+                        id: 9,
+                        question: "كيف تتعامل مع المعلومات المعقدة؟",
+                        options: [
+                            "أقسمها إلى أجزاء صغيرة",
+                            "أحاول فهمها ككل",
+                            "أطلب توضيحات إضافية",
+                            "أبحث عن أمثلة توضيحية"
+                        ]
+                    },
+                    {
+                        id: 10,
+                        question: "كيف تصف قدرتك على ربط الأفكار؟",
+                        options: [
+                            "استثنائية وسريعة",
+                            "جيدة ومنظمة",
+                            "متوسطة وتحتاج وقت",
+                            "محدودة وتحتاج مساعدة"
+                        ]
+                    }
+                ],
+                
+                healing: [
+                    {
+                        id: 1,
+                        question: "كيف تتعامل مع الصدمات النفسية؟",
+                        options: [
+                            "أتعامل معها بقوة ونضج",
+                            "أحتاج وقت للتعافي",
+                            "أجد صعوبة في التعافي",
+                            "أتأثر بشدة طويلة"
+                        ]
+                    },
+                    {
+                        id: 2,
+                        question: "ما مدى مرونتك النفسية؟",
+                        options: [
+                            "مرن جداً وأستطيع التكيف مع أي موقف",
+                            "مرن إلى حد معقول",
+                            "محدودة في بعض المجالات",
+                            "أجد صعوبة في التكيف"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        question: "كيف تصف حالتك النفسية العامة؟",
+                        options: [
+                            "مستقرة ومتحسّنة",
+                            "معتدلة ومع بعض التحديات",
+                            "غير مستقرة وتحتاج تحسين",
+                            "متوترة ومعقدة"
+                        ]
+                    },
+                    {
+                        id: 4,
+                        question: "ما هو دور العلاقات الاجتماعية في شفائك؟",
+                        options: [
+                            "أساسي ومحفز",
+                            "مهم لكن ليس كافيًا",
+                            "مفيد في بعض المواقف",
+                            "ثانوي مقارنة بالعلاج الذاتي"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        question: "كيف تتعامل مع الخيبة؟",
+                        options: [
+                            "أتعلم منها واتطور",
+                            "أتألم لكن أتعافى",
+                            "أحتاج وقت للتعافي",
+                            "أخشى من معرفتها"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        question: "ما مدى أهمية التأمل في حياتك؟",
+                        options: [
+                            "أساسي و quotidاني",
+                            "مهم لكن غير منتظم",
+                            "مفيد أحيانًا",
+                            "نادرًا ما أمارسه"
+                        ]
+                    },
+                    {
+                        id: 7,
+                        question: "كيف تصف قدرتك على الصفح؟",
+                        options: [
+                            "أستطيع أن أصفح بسهولة",
+                            "أحتاج وقت للصفح",
+                            "أجد صعوبة في الصفح",
+                            "لا أستطيع أن أصفح أحيانًا"
+                        ]
+                    },
+                    {
+                        id: 8,
+                        question: "ما هو أسلوبك في التعامل مع التوتر؟",
+                        options: [
+                            "أحلله وأفهم أسبابه",
+                            "أمارس تقنيات الاسترخاء",
+                            "أتحدث مع شخص أثق به",
+                            "أبتعد عن مصدر التوتر"
+                        ]
+                    },
+                    {
+                        id: 9,
+                        question: "كيف تتعامل مع النقد؟",
+                        options: [
+                            "أعتبره فرصة للنمو",
+                            "أتألم منه لكن أتعلم",
+                            "أحتاج وقت للتكيف",
+                            "أشعر بالقلق منه"
+                        ]
+                    },
+                    {
+                        id: 10,
+                        question: "ما مدى أهمية الشفاء النفسي بالنسبة لك؟",
+                        options: [
+                            "هو أهم شيء في حياتي",
+                            "مهم لكن ليس الأهم",
+                            "مهم في بعض المجالات",
+                            "لا أعطيها أهمية كبيرة"
+                        ]
+                    }
+                ],
+                
+                revelation: [
+                    {
+                        id: 1,
+                        question: "ما مدى استعدادك لمواجهة الحقيقة؟",
+                        options: [
+                            "مستعد تماماً مهما كانت الصعبة",
+                            "مستعد لكن بحذر",
+                            "أفضل تجنب بعض الحقائق",
+                            "أخشى مواجهة الحقيقة أحيانًا"
+                        ]
+                    },
+                    {
+                        id: 2,
+                        question: "كيف تتعامل مع المفاجآت؟",
+                        options: [
+                            "أقبلها بصدر رحب",
+                            "أحتاج وقت للتكيف",
+                            "أشعر بالقلق منها",
+                            "أرفضها في البداية"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        question: "ما مدى صدقك مع نفسك؟",
+                        options: [
+                            "صادق تماماً مع نفسي",
+                            "صادق في معظم الأمور",
+                            "أجد صعوبة في الصدق مع نفسي",
+                            "أكذب على نفسي أحيانًا"
+                        ]
+                    },
+                    {
+                        id: 4,
+                        question: "كيف تصف قدرتك على اكتشاف الحقائق الخفية؟",
+                        options: [
+                            "لدي قدرة استثنائية على الاكتشاف",
+                            "أكتشف بعض الحقائق أحيانًا",
+                            "نادرًا ما أكتشف الحقائق",
+                            "أعتمد على الآخرين لاكتشاف الحقائق"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        question: "ما مدى أهمية الحقيقة بالنسبة لك؟",
+                        options: [
+                            "هي أهم شيء في حياتي",
+                            "مهمة لكن ليست الأهم",
+                            "مهمة في بعض المجالات",
+                            "لا أعطيها أهمية كبيرة"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        question: "كيف تتعامل مع الأسرار الشخصية؟",
+                        options: [
+                            "أكشفها تدريجيًا لنفسي",
+                            "أحتفظ بها داخليًا",
+                            "أشاركها مع شخص أثق به",
+                            "أخشى من الكشف عنها"
+                        ]
+                    },
+                    {
+                        id: 7,
+                        question: "ما هو دور الانعزال في اكتشافك الداخلي؟",
+                        options: [
+                            "أساسي لفهم الذات",
+                            "مهم في بعض الأوقات",
+                            "مفيد أحيانًا",
+                            "أفضل التفاعل الاجتماعي"
+                        ]
+                    },
+                    {
+                        id: 8,
+                        question: "كيف تصف رحلتك في فهم الذات؟",
+                        options: [
+                            "متقدمة ومتطورة",
+                            "مستمرة ومفيدة",
+                            "متوسطة وتحتاج تطوير",
+                            "مبتدئة وتحتاج دعم"
+                        ]
+                    },
+                    {
+                        id: 9,
+                        question: "ما هو دور الكتابة في كشفك الداخلي؟",
+                        options: [
+                            "أساسي ومحفز",
+                            "مهم لكن غير منتظم",
+                            "مفيد أحيانًا",
+                            "نادرًا ما أمارسه"
+                        ]
+                    },
+                    {
+                        id: 10,
+                        question: "كيف تتعامل مع المعرفة المؤلمة عن نفسك؟",
+                        options: [
+                            "أقبلها وأتعلم منها",
+                            "أتألم لكن أتعامل معها",
+                            "أحتاج وقت للتعامل معها",
+                            "أخشى من معرفتها"
+                        ]
+                    }
+                ],
+                
+                full: [
+                    // أسئلة الرؤية الداخلية (10 سؤال)
+                    ...allQuestions.vision,
+                    
+                    // أسئلة التحليل العميق (10 سؤال)
+                    ...allQuestions.analysis,
+                    
+                    // أسئلة الشفاء النفسي (10 سؤال)
+                    ...allQuestions.healing,
+                    
+                    // أسئلة الكشف الصادق (10 سؤال)
+                    ...allQuestions.revelation
+                ]
+            };
+            
+            quizQuestions = allQuestions[quizType] || allQuestions.vision;
+        }
+        
+        // دالة عرض السؤال
+        function showQuestion() {
+            const question = quizQuestions[currentQuestion];
+            
+            // تحديث عنوان الاختبار
+            const titles = {
+                vision: "اختبار الرؤية الداخلية",
+                analysis: "اختبار التحليل العميق",
+                healing: "اختبار الشفاء النفسي",
+                revelation: "اختبار الكشف الصادق",
+                full: "اختبار التحليل الشامل"
+            };
+            
+            const descriptions = {
+                vision: "اختبار مخصص لقدراتك البصرية والاستباقية",
+                analysis: "اختبار مخصص لقدراتك التحليلية والعقلية",
+                healing: "اختبار مخصص لقدراتك على التعافي والتحول الداخلي",
+                revelation: "اختبار مخصص لاكتشاف الحقيقة الداخلية والقدرات المخفية",
+                full: "اختبار شامل بجميع النظريات النفسية الحديثة والكلاسيكية"
+            };
+            
+            document.getElementById('quizTitle').textContent = titles[quizType];
+            document.getElementById('quizDescription').textContent = descriptions[quizType];
+            
+            // تحديث رقم السؤال
+            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${quizQuestions.length}`;
+            
+            // تحديث شريط التقدم
+            const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // تحديث نص السؤال
+            document.getElementById('questionText').textContent = question.question;
+            
+            // تحديث الخيارات
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // تحديث أزرار التنقل
+            document.getElementById('prevBtn').style.display = currentQuestion === 0 ? 'none' : 'block';
+        }
+        
+        // دالة اختيار الإجابة
+        function selectOption(optionIndex) {
+            // حفظ الإجابة
+            userAnswers[currentQuestion] = optionIndex;
+            
+            // تمييز الخيار المختار
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // الانتقال للسؤال التالي أو عرض النتائج
+            setTimeout(() => {
+                if (currentQuestion < quizQuestions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            }, 500);
+        }
+        
+        // دالة السؤال السابق
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                userAnswers[currentQuestion] = null;
+                currentQuestion--;
+                showQuestion();
             }
         }
         
-        // دالة بدء التحليل
-        function startAnalysis() {
-            const age = document.getElementById('userAge').value;
-            const gender = document.getElementById('userGender').value;
-            
-            if (!age || !gender) {
-                alert(currentUser.language === 'ar' ? 'من فضلك أدخل العمر والجنس' : 'Please enter age and gender');
-                return;
+        // دالة السؤال التالي
+        function nextQuestion() {
+            if (currentQuestion < quizQuestions.length - 1) {
+                currentQuestion++;
+                showQuestion();
             }
-            
-            if (age < 13) {
-                alert(currentUser.language === 'ar' ? 'عذراً، يجب أن يكون العمر 13 سنة فأكثر' : 'Sorry, age must be 13 or older');
-                return;
-            }
-            
-            currentUser.age = age;
-            currentUser.gender = gender;
-            
-            // إخفاء شاشة المعلومات وإظهار الشاشة الرئيسية
-            document.getElementById('userInfoScreen').style.display = 'none';
-            document.getElementById('mainScreen').style.display = 'block';
         }
         
-        // دالة إظهار التحليل السريع
-        function showQuickAnalysis(type) {
-            // في الإصدار البسيط، نعرض رسالة توضيحية
-            const messages = {
+        // دالة عرض النتائج
+        function showResults() {
+            // إخفاء شاشة الاختبار وإظهار شاشة النتائج
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            
+            // تحديث عنوان النتائج
+            const resultTitles = {
+                vision: "تقرير الرؤية الداخلية",
+                analysis: "تقرير التحليل العميق",
+                healing: "تقرير الشفاء النفسي",
+                revelation: "تقرير الكشف الصادق",
+                full: "تقرير التحليل الشامل"
+            };
+            
+            const resultDescriptions = {
+                vision: "بناءً على إجاباتك في اختبار الرؤية الداخلية",
+                analysis: "بناءً على إجاباتك في اختبار التحليل العميق",
+                healing: "بناءً على إجاباتك في اختبار الشفاء النفسي",
+                revelation: "بناءً على إجاباتك في اختبار الكشف الصادق",
+                full: "بناءً على إجاباتك في الاختبار الشامل"
+            };
+            
+            document.getElementById('resultsTitle').textContent = resultTitles[quizType];
+            document.getElementById('resultsDescription').textContent = resultDescriptions[quizType];
+            
+            // بناء محتوى النتائج
+            const resultsContent = document.getElementById('resultsContent');
+            
+            // حساب النتيجة النهائية
+            const totalScore = userAnswers.reduce((sum, answer) => sum + (answer + 1), 0);
+            const maxScore = quizQuestions.length * 4;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // تحديد نوع التحليل للعنوان
+            const analysisTitles = {
+                vision: "الرؤية الداخلية",
+                analysis: "التحليل العميق",
+                healing: "الشفاء النفسي",
+                revelation: "الكشف الصادق",
+                full: "التحليل الشامل"
+            };
+            
+            // عرض النتائج
+            resultsContent.innerHTML = `
+                <div class="analysis-section">
+                    <div class="section-title">${analysisTitles[quizType]}</div>
+                    <div class="section-content">
+                        ${getAnalysisText(quizType, percentage)}
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="section-title">التوصيات للتطوير</div>
+                    <div class="section-content">
+                        ${getRecommendations(quizType, percentage)}
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="section-title">الخلاصة</div>
+                    <div class="section-content">
+                        ${getSummary(quizType, percentage)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // دالة الحصول على نص التحليل
+        function getAnalysisText(type, percentage) {
+            const analyses = {
                 vision: {
-                    ar: "لقد اكتشفت جانبًا مخفيًا من شخصيتك...",
-                    en: "You have discovered a hidden aspect of your personality..."
+                    high: "لقد اكتشفت جانبًا مخفيًا من شخصيتك... رؤية داخلية قوية تشير إلى وعي عالٍ... البصيرة التي لديك تفوق التوقعات العادية...",
+                    medium: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة... العمق العاطفي الذي تمتلكه مذهل... القدرة على فهم الذات تتطور بشكل متسارع...",
+                    low: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا... الشفاء النفسي يسير في المسار الصحيح... التحول الداخلي يحدث بشكل طبيعي ومريح..."
                 },
                 analysis: {
-                    ar: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة...",
-                    en: "Your psychological analysis indicates unexpected inner strength..."
+                    high: "لقد اكتشفت جانبًا مخفيًا من شخصيتك... رؤية داخلية قوية تشير إلى وعي عالٍ... البصيرة التي لديك تفوق التوقعات العادية...",
+                    medium: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة... العمق العاطفي الذي تمتلكه مذهل... القدرة على فهم الذات تتطور بشكل متسارع...",
+                    low: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا... الشفاء النفسي يسير في المسار الصحيح... التحول الداخلي يحدث بشكل طبيعي ومريح..."
                 },
                 healing: {
-                    ar: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا...",
-                    en: "The healing process has begun, and you will gradually feel the change..."
+                    high: "لقد اكتشفت جانبًا مخفيًا من شخصيتك... رؤية داخلية قوية تشير إلى وعي عالٍ... البصيرة التي لديك تفوق التوقعات العادية...",
+                    medium: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة... العمق العاطفي الذي تمتلكه مذهل... القدرة على فهم الذات تتطور بشكل متسارع...",
+                    low: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا... الشفاء النفسي يسير في المسار الصحيح... التحول الداخلي يحدث بشكل طبيعي ومريح..."
                 },
                 revelation: {
-                    ar: "الحقيقة التي كنت تبحث عنها هي: أنت أقوى مما تتخيل...",
-                    en: "The truth you were looking for is: You are stronger than you imagine..."
+                    high: "لقد اكتشفت جانبًا مخفيًا من شخصيتك... رؤية داخلية قوية تشير إلى وعي عالٍ... البصيرة التي لديك تفوق التوقعات العادية...",
+                    medium: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة... العمق العاطفي الذي تمتلكه مذهل... القدرة على فهم الذات تتطور بشكل متسارع...",
+                    low: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا... الشفاء النفسي يسير في المسار الصحيح... التحول الداخلي يحدث بشكل طبيعي ومريح..."
+                },
+                full: {
+                    high: "لقد اكتشفت جانبًا مخفيًا من شخصيتك... رؤية داخلية قوية تشير إلى وعي عالٍ... البصيرة التي لديك تفوق التوقعات العادية...",
+                    medium: "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة... العمق العاطفي الذي تمتلكه مذهل... القدرة على فهم الذات تتطور بشكل متسارع...",
+                    low: "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا... الشفاء النفسي يسير في المسار الصحيح... التحول الداخلي يحدث بشكل طبيعي ومريح..."
                 }
             };
             
-            const message = messages[type][currentUser.language];
-            alert(message);
+            if (percentage >= 70) return analyses[type].high;
+            else if (percentage >= 40) return analyses[type].medium;
+            else return analyses[type].low;
         }
         
-        // دالة بدء التحليل الكامل
-        function startFullAnalysis() {
-            // في الإصدار البسيط، نعرض رسالة توضيحية
-            const messages = {
-                ar: "جارٍ تجهيز التحليل الكامل...\nهذا التحليل يحتوي على تحليل مفصل بجميع النظريات النفسية!",
-                en: "Preparing full analysis...\nThis analysis contains detailed analysis of all psychological theories!"
+        // دالة الحصول على التوصيات
+        function getRecommendations(type, percentage) {
+            const recommendations = {
+                vision: [
+                    "مارس التأمل اليومي لتعزيز الرؤية الداخلية",
+                    "اكتب الملاحظات البصيرية في مذكرة شخصية",
+                    "شارك بصيرتك مع الآخرين بطريقة بناءة",
+                    "طور قدرات التنبؤ الاجتماعي"
+                ],
+                analysis: [
+                    "تعلم أدوات تحليل سلوكية إضافية",
+                    "مارس التحليل العاطفي المنتظم",
+                    "طور مهارات الاستماع النفسي",
+                    "ادرس أنماط الشخصية المختلفة"
+                ],
+                healing: [
+                    "تابع ممارسة تقنيات الشفاء النفسي",
+                    "ابني شبكة دعم اجتماعي قوية",
+                    "طور آليات تنظيم عاطفي متقدمة",
+                    "مارس التسامح مع الذات"
+                ],
+                revelation: [
+                    "وثق الاكتشافات الشخصية في يوميات",
+                    "شارك الحقيقة المكتشفة مع مختص نفسي",
+                    "طور خطة عمل بناءً على الكشف الجديد",
+                    "احتفل بالتحولات الإيجابية"
+                ],
+                full: [
+                    "تابع تطوير جميع جوانب شخصيتك",
+                    "مارس الوعي الذاتي يوميًا",
+                    "ابني علاقات إيجابية مع الآخرين",
+                    "استثمر في تعلمك الشخصي المستمر"
+                ]
             };
             
-            alert(messages[currentUser.language]);
-            
-            // عرض تحليل تفصيلي بسيط
-            setTimeout(() => {
-                const fullAnalysis = currentUser.language === 'ar' ? 
-                    `تحليلك النفسي الكامل:
-الرؤية الداخلية: لديك قدرات بصرية استثنائية
-التحليل العميق: تفهم التعقيدات النفسية بعمق
-الشفاء النفسي: قدرتك على التعافي مذهلة  
-الكشف الصادق: الحقيقة التي اكتشفتها ستغير حياتك
-تحليلك يشير إلى عمق نفسي استثنائي وقدرات تحليلية متطورة.` :
-                    `Your complete psychological analysis:
-Inner Vision: You have exceptional visual abilities
-Deep Analysis: You understand psychological complexities deeply
-Psychological Healing: Your ability to recover is amazing
-Honest Revelation: The truth you discovered will change your life
-Your analysis indicates exceptional psychological depth and developed analytical abilities.`;
-                
-                // عرض التحليل الكامل في نافذة جديدة
-                const newWindow = window.open('', '_blank');
-                newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html lang="${currentUser.language}">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>التحليل الكامل - غرفة الأسرار</title>
-                        <style>
-                            body {
-                                font-family: 'Tajawal', 'Arial', sans-serif;
-                                background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-                                color: #e6e6e6;
-                                margin: 0;
-                                padding: 20px;
-                                direction: ${currentUser.language === 'ar' ? 'rtl' : 'ltr'};
-                                text-align: ${currentUser.language === 'ar' ? 'right' : 'left'};
-                            }
-                            .container {
-                                max-width: 800px;
-                                margin: 0 auto;
-                                background: rgba(255, 255, 255, 0.03);
-                                padding: 30px;
-                                border-radius: 25px;
-                                border: 1px solid rgba(255, 255, 255, 0.1);
-                            }
-                            h1 {
-                                color: #3498db;
-                                text-align: center;
-                            }
-                            .analysis-section {
-                                background: rgba(255, 255, 255, 0.05);
-                                padding: 20px;
-                                border-radius: 15px;
-                                margin: 20px 0;
-                                border-right: 4px solid #3498db;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h1>${currentUser.language === 'ar' ? 'التقرير النفسي الكامل' : 'Complete Psychological Report'}</h1>
-                            <div class="analysis-section">
-                                <pre>${fullAnalysis}</pre>
-                            </div>
-                            <p style="text-align: center; margin-top: 30px;">
-                                ${currentUser.language === 'ar' ? '© 2025 غرفة الأسرار - Secrets Room' : '© 2025 Secrets Room - غرفة الأسرار'}
-                            </p>
-                        </div>
-                    </body>
-                    </html>
-                `);
-                newWindow.document.close();
-            }, 1000);
+            return `
+                <ul style="text-align: right; padding-right: 20px;">
+                    ${recommendations[type].map(rec => `<li style="margin: 10px 0;">${rec}</li>`).join('')}
+                </ul>
+            `;
         }
         
-        // دالة فتح لوحة الإعدادات
-        function openSettingsPanel() {
-            alert('ميزة التحكم في الإعلانات ستكون متاحة في الإصدار الكامل!');
+        // دالة الحصول على الخلاصة
+        function getSummary(type, percentage) {
+            const summaries = {
+                vision: "الرؤية الداخلية التي تمتلكها تتجاوز التوقعات العادية. الوعي العميق والبصيرة الاستثنائية تجعلك قادرًا على رؤية ما لا يراه الآخرون. هذا المستوى من الرؤية يتطلب توازنًا نفسيًا عاليًا وقدرات تحليلية متطورة.",
+                analysis: "التحليل العميق الذي تمتلكه يشير إلى قدرات فائقة في فهم التعقيدات النفسية. القدرة على تفكيك الأنماط السلوكية وفهم الدوافع الداخلية تجعلك محللًا نفسيًا موهوبًا بطبيعتك.",
+                healing: "عملية الشفاء النفسي التي تمر بها الآن تسير في المسار الصحيح. القدرة على التعافي من الصدمات والتحول الداخلي تشير إلى قوة نفسية استثنائية ومرونة عاطفية عالية.",
+                revelation: "الكشف الصادق الذي تصل إليه الآن يفتح أبوابًا جديدة للفهم الذاتي. الحقيقة التي تكتشفها تغير نظرتك للعالم وتوجهك نحو نمو حقيقي ومفيد.",
+                full: "التحليل الشامل الذي أجريته يشير إلى عمق نفسي استثنائي وقدرات تحليلية متطورة. الوعي الذاتي والبصيرة الداخلية تجعلك قادرًا على رؤية ما لا يراه الآخرون وفهم التعقيدات النفسية بطرق فريدة."
+            };
+            
+            return summaries[type];
         }
+        
+        // دالة حفظ التقرير
+        function saveReport() {
+            alert('ميزة حفظ التقرير ستكون متاحة في الإصدار القادم!');
+        }
+        
+        // تهيئة النظام عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // الحصول على نوع الاختبار من URL
+            const type = getQuizTypeFromURL();
+            
+            // إذا كان هناك نوع محدد، ابدأ الاختبار مباشرة
+            if (type && type !== 'null') {
+                startQuiz(type);
+            }
+        });
     </script>
 </body>
 </html>
