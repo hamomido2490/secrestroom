@@ -1,64 +1,145 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج التحليل المتكامل - غرفة الأسرار</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="site-name-container">
-            <h1 class="site-title">غرفة الأسرار</h1>
-            <div class="site-subtitle">Secrets Room</div>
-        </div>
-        
-        <div class="main-content">
-            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
-            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
-            
-            <div class="sections">
-                <div class="section" onclick="window.location.href='quiz.html#vision'">
-                    <div class="section-icon">👁️</div>
-                    <div class="section-text-ar">الرؤية الداخلية</div>
-                    <div class="section-text-en" style="display: none;">Inner Vision</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#analysis'">
-                    <div class="section-icon">🧠</div>
-                    <div class="section-text-ar">التحليل العميق</div>
-                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#healing'">
-                    <div class="section-icon">💚</div>
-                    <div class="section-text-ar">الشفاء النفسي</div>
-                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#revelation'">
-                    <div class="section-icon">🔮</div>
-                    <div class="section-text-ar">الكشف الصادق</div>
-                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
-                </div>
-            </div>
-            
-            <div class="warning-ar">
-                ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
-            </div>
-            <div class="warning-en" style="display: none;">
-                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
-            </div>
-            
-            <button class="full-analysis-btn" onclick="window.location.href='quiz.html'">
-                <span class="btn-text-ar">التحليل الكامل</span>
-                <span class="btn-text-en" style="display: none;">Full Analysis</span>
-            </button>
-        </div>
-        
-        <div class="copyright">
-            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
-        </div>
-    </div>
+// خوارزميات تحليل الإجابات وتوليد النتائج
+function analyzePersonality(answers, demographics) {
+    const results = {
+        theories: {},
+        summary: {},
+        recommendations: []
+    };
+
+    // 1. تحليل نموذج العوامل الخمسة الكبرى
+    results.theories.bigfive = analyzeBigFive(answers);
     
-    <script src="script.js"></script>
-</body>
-</html>
+    // 2. تحليل MBTI
+    results.theories.mbti = analyzeMBTI(answers);
+    
+    // 3. تحليل Enneagram
+    results.theories.enneagram = analyzeEnneagram(answers);
+    
+    // 4. التحليل الفرويدي
+    results.theories.freudian = analyzeFreudian(answers);
+    
+    // 5. التحليل اليونغي
+    results.theories.jungian = analyzeJungian(answers);
+    
+    // 6. تحليل أنماط التعلق
+    results.theories.attachment = analyzeAttachmentStyle(answers);
+    
+    // 7. تحليل الذكاء العاطفي
+    results.theories.eq = analyzeEmotionalIntelligence(answers);
+    
+    // 8. تحليل مثلث الظلام
+    results.theories.dark_triad = analyzeDarkTriad(answers);
+    
+    // 9. تحليل DISC
+    results.theories.disc = analyzeDISC(answers);
+    
+    // 10. تحليل لغة الجسد
+    results.theories.body_language = analyzeBodyLanguageTendencies(answers);
+
+    // إنشاء ملخص شامل
+    results.summary = generateSummary(results.theories, demographics);
+    
+    // توليد التوصيات
+    results.recommendations = generateRecommendations(results.theories);
+    
+    return results;
+}
+
+// تحليل نموذج العوامل الخمسة
+function analyzeBigFive(answers) {
+    const traits = {
+        openness: { score: 0, facets: {} },
+        conscientiousness: { score: 0, facets: {} },
+        extraversion: { score: 0, facets: {} },
+        agreeableness: { score: 0, facets: {} },
+        neuroticism: { score: 0, facets: {} }
+    };
+    
+    // حساب الدرجات (تفاصيل الخوارزمية)
+    answers.forEach(answer => {
+        if (answer.scores?.bigfive) {
+            for (const trait in answer.scores.bigfive) {
+                traits[trait].score += answer.scores.bigfive[trait];
+            }
+        }
+    });
+    
+    // تطبيع الدرجات
+    for (const trait in traits) {
+        traits[trait].score = normalizeScore(traits[trait].score, 50);
+    }
+    
+    return traits;
+}
+
+// تحليل MBTI
+function analyzeMBTI(answers) {
+    const dimensions = {
+        introversion: { score: 0, opposite: 'extraversion' },
+        intuition: { score: 0, opposite: 'sensing' },
+        thinking: { score: 0, opposite: 'feeling' },
+        judging: { score: 0, opposite: 'perceiving' }
+    };
+    
+    answers.forEach(answer => {
+        if (answer.scores?.mbti) {
+            for (const dim in answer.scores.mbti) {
+                dimensions[dim].score += answer.scores.mbti[dim];
+            }
+        }
+    });
+    
+    // تحديد النوع
+    let mbtiType = '';
+    mbtiType += dimensions.introversion.score >= 0 ? 'I' : 'E';
+    mbtiType += dimensions.intuition.score >= 0 ? 'N' : 'S';
+    mbtiType += dimensions.thinking.score >= 0 ? 'T' : 'F';
+    mbtiType += dimensions.judging.score >= 0 ? 'J' : 'P';
+    
+    return {
+        type: mbtiType,
+        dimensions: dimensions,
+        description: mbtiTypes[mbtiType].description[appState.currentLanguage],
+        strengths: mbtiTypes[mbtiType].strengths[appState.currentLanguage],
+        weaknesses: mbtiTypes[mbtiType].weaknesses[appState.currentLanguage]
+    };
+}
+
+// باقي دوال التحليل لكل نظرية...
+
+// توليد الملخص
+function generateSummary(theories, demographics) {
+    const summary = {
+        primaryType: '',
+        traits: [],
+        interactionStyle: '',
+        thinkingStyle: '',
+        decisionMaking: ''
+    };
+    
+    // تحديد النوع الأساسي (MBTI + Enneagram)
+    summary.primaryType = ${theories.mbti.type}-${theories.enneagram.type};
+    
+    // استخلاص السمات الرئيسية
+    summary.traits = [
+        { name: 'الإبداع', value: theories.bigfive.openness.score },
+        { name: 'الانضباط', value: theories.bigfive.conscientiousness.score },
+        { name: 'الاجتماعية', value: theories.bigfive.extraversion.score },
+        { name: 'التعاطف', value: theories.bigfive.agreeableness.score },
+        { name: 'الحساسية', value: theories.bigfive.neuroticism.score }
+    ];
+    
+    // تحديد أنماط التفاعل
+    summary.interactionStyle = determineInteractionStyle(theories);
+    summary.thinkingStyle = determineThinkingStyle(theories);
+    summary.decisionMaking = determineDecisionMaking(theories);
+    
+    return summary;
+}
+
+// مساعدات التحليل
+function normalizeScore(score, max) {
+    return Math.min(Math.round((score / max) * 100), 100);
+}
+
+export { analyzePersonality };
