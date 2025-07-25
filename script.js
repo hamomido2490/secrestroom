@@ -294,6 +294,20 @@ function updateScores(points) {
     }
 }
 
+// دالة إغلاق التحليل السريع
+function closeQuickAnalysis() {
+    document.getElementById('quickAnalysisModal').style.display = 'none';
+}
+
+// دالة عرض النتائج
+function showResults() {
+    // حفظ النتائج في localStorage
+    localStorage.setItem('quizResults', JSON.stringify(userScores));
+    
+    // الانتقال لصفحة النتائج
+    window.location.href = 'results.html';
+}
+
 // دالة السؤال السابق
 function previousQuestion() {
     if (currentQuestion > 0) {
@@ -327,39 +341,7 @@ function revertScores(points) {
     }
 }
 
-// دالة عرض النتائج (временно)
-function showResults() {
-    alert('تم الانتهاء من الاختبار! النتائج المفصلة ستظهر في الصفحة التالية.');
-    // هنا هنقل المستخدم لصفحة النتائج
-    // window.location.href = 'results.html';
-    
-    // للتجربة الآن، نعرض النقاط
-    console.log('النتائج:', userScores);
-    console.log('أعلى نوع MBTI:', getHighestMBTI());
-    console.log('السمات الخمس الكبرى:', userScores.bigFive);
-}
-
-// دالة الحصول على أعلى نوع MBTI
-function getHighestMBTI() {
-    let highestType = '';
-    let highestScore = 0;
-    
-    for (let type in userScores.mbti) {
-        if (userScores.mbti[type] > highestScore) {
-            highestScore = userScores.mbti[type];
-            highestType = type;
-        }
-    }
-    
-    return {type: highestType, score: highestScore};
-}
-
-// دالة حساب النسب المئوية
-function calculatePercentages() {
-    // هذا سيتم تطويره لاحقًا
-    return {
-        freud: Math.min(100, Math.max(0, userScores.freud)),
-        jung: Math.min(100, Math.max(0, userScores.jung)),
-        adler: Math.min(100, Math.max(0, userScores.adler))
-    };
+// دالة بدء التحليل الكامل
+function startFullAnalysis() {
+    alert('ميزة التحليل الكامل ستكون متاحة في الإصدار القادم!');
 }
