@@ -1,62 +1,468 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غرفة الأسرار - Secrets Room</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="موقع تحليل الشخصية المتقدم باستخدام 12 مدرسة نفسية">
+    <title>غرفة الأسرار | Secrets Room - التحليل النفسي الشامل</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/images/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="site-name-container">
-            <h1 class="site-title">غرفة الأسرار</h1>
-            <div class="site-subtitle">Secrets Room</div>
-        </div>
-        
-        <div class="main-content">
-            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
-            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
-            
-            <div class="sections">
-                <div class="section" onclick="window.location.href='quiz.html#vision'">
-                    <div class="section-icon">👁️</div>
-                    <div class="section-text-ar">الرؤية الداخلية</div>
-                    <div class="section-text-en" style="display: none;">Inner Vision</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#analysis'">
-                    <div class="section-icon">🧠</div>
-                    <div class="section-text-ar">التحليل العميق</div>
-                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#healing'">
-                    <div class="section-icon">💚</div>
-                    <div class="section-text-ar">الشفاء النفسي</div>
-                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#revelation'">
-                    <div class="section-icon">🔮</div>
-                    <div class="section-text-ar">الكشف الصادق</div>
-                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
-                </div>
-            </div>
-            
-            <div class="warning-ar">
-                ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
-            </div>
-            <div class="warning-en" style="display: none;">
-                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
-            </div>
-            
-            <button class="full-analysis-btn" onclick="window.location.href='quiz.html'">
-                <span class="btn-text-ar">التحليل الكامل</span>
-                <span class="btn-text-en" style="display: none;">Full Analysis</span>
-            </button>
-        </div>
-        
-        <div class="copyright">
-            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
+    <!-- شاشة التحميل -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>جاري تحميل التحليل النفسي...</p>
         </div>
     </div>
+
+    <!-- الهيدر -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="assets/images/logo.png" alt="شعار غرفة الأسرار" class="main-logo">
+                <h1 class="site-title">غرفة الأسرار <span class="en-title">Secrets Room</span></h1>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active" data-section="home">الرئيسية</a></li>
+                    <li><a href="#theories" class="nav-link" data-section="theories">المدارس النفسية</a></li>
+                    <li><a href="#testimonials" class="nav-link" data-section="testimonials">تجارب المستخدمين</a></li>
+                    <li><a href="#about" class="nav-link" data-section="about">عن المشروع</a></li>
+                    <li class="language-switcher">
+                        <button id="languageToggle" class="lang-btn">English</button>
+                    </li>
+                </ul>
+            </nav>
+            
+            <button class="mobile-menu-btn">
+                <span class="menu-icon"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- قسم الترحيب -->
+        <section id="home" class="section active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">اكتشف أعماق شخصيتك</h2>
+                    <p class="hero-subtitle">تحليل نفسي متقدم يعتمد على 12 مدرسة نفسية رائدة</p>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <img src="assets/icons/accuracy.png" alt="دقة عالية">
+                            <p>دقة تحليل تصل إلى 94%</p>
+                        </div>
+                        <div class="feature-item">
+                            <img src="assets/icons/theories.png" alt="نظريات متعددة">
+                            <p>12 مدرسة نفسية معتمدة</p>
+                        </div>
+                        <div class="feature-item">
+                            <img src="assets/icons/privacy.png" alt="خصوصية">
+                            <p>نتائج خاصة بك فقط</p>
+                        </div>
+                    </div>
+                    <button id="startTestBtn" class="main-cta-btn">ابدأ الاختبار الآن</button>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/images/psychology-hero.png" alt="رسمة تحليل نفسي">
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم بيانات المستخدم -->
+        <section id="demographics" class="section hidden">
+            <div class="demographics-form">
+                <h2 class="section-title">بيانات أساسية</h2>
+                <p class="section-subtitle">لتحقيق دقة أعلى في التحليل، نرجو تزويدنا ببعض المعلومات</p>
+
+                <div class="form-group">
+                    <label for="userName">الاسم (اختياري):</label>
+                    <input type="text" id="userName" placeholder="ادخل اسمك">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userAge">العمر:</label>
+                    <input type="number" id="userAge" min="12" max="100" required>
+                    <span class="validation-message">يجب أن يكون العمر بين 12 و100 سنة</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>الجنس:</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="genderMale" name="gender" value="male" required>
+                            <label for="genderMale">ذكر</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="genderFemale" name="gender" value="female">
+                            <label for="genderFemale">أنثى</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="genderOther" name="gender" value="other">
+                            <label for="genderOther">آخر</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEducation">المستوى التعليمي:</label>
+                    <select id="userEducation" required>
+                        <option value="">اختر المستوى التعليمي</option>
+                        <option value="school">مرحلة مدرسية</option>
+                        <option value="diploma">دبلوم</option>
+                        <option value="bachelor">بكالوريوس</option>
+                        <option value="master">ماجستير</option>
+                        <option value="phd">دكتوراه</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button id="submitDemographics" class="main-cta-btn">بدء الاختبار</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الاختبار -->
+        <section id="test" class="section hidden">
+            <div class="test-container">
+                <div class="test-header">
+                    <div class="test-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">السؤال 1 من 30</span>
+                    </div>
+                    <div class="theory-indicator">
+                        <span id="currentTheory">التحليل الفرويدي</span>
+                    </div>
+                </div>
+                
+                <div class="question-wrapper">
+                    <div class="question-container">
+                        <!-- سيتم تعبئته ديناميكيًا -->
+                    </div>
+                    
+                    <div class="question-navigation">
+                        <button id="prevQuestion" class="nav-btn" disabled>
+                            <span class="btn-icon">←</span> السابق
+                        </button>
+                        <button id="nextQuestion" class="nav-btn">
+                            التالي <span class="btn-icon">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم النتائج -->
+        <section id="results" class="section hidden">
+            <div class="results-container">
+
+       <!-- النتائج المختصرة -->
+                <div class="quick-results">
+                    <div class="results-header">
+                        <h2 class="section-title">تحليل شخصيتك</h2>
+                        <p class="user-greeting">مرحباً <span id="resultUserName">عزيزي</span>، إليك نتائج تحليل شخصيتك:</p>
+                    </div>
+                    
+                    <div class="personality-summary">
+                        <div class="summary-card primary">
+                            <h3>نوع شخصيتك الأساسي</h3>
+                            <div class="personality-type">
+                                <div class="type-icon">
+                                    <img src="assets/icons/mbti/intj.png" alt="INTJ">
+                                </div>
+                                <div class="type-info">
+                                    <h4 id="primaryType">المفكر الاستراتيجي</h4>
+                                    <p id="primaryTypeDesc">لديك عقل تحليلي وقدرة على رؤية الصورة الكبيرة...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <h3>نمط التعامل</h3>
+                                <div class="progress-circle" id="interactionStyle">
+                                    <svg viewBox="0 0 36 36">
+                                        <path d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#eee" stroke-width="2"/>
+                                        <path class="circle-chart-circle" 
+                                          d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#6a1b9a" stroke-width="2"
+                                          stroke-dasharray="75, 100"/>
+                                    </svg>
+                                    <span class="progress-value">75%</span>
+                                </div>
+                                <p id="interactionStyleDesc">تميل إلى التحفظ في التعاملات الاجتماعية</p>
+                            </div>
+                            
+                            <div class="summary-card">
+                                <h3>نمط التفكير</h3>
+                                <div class="progress-circle" id="thinkingStyle">
+                                    <svg viewBox="0 0 36 36">
+                                        <path d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#eee" stroke-width="2"/>
+                                        <path class="circle-chart-circle" 
+                                          d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#6a1b9a" stroke-width="2"
+                                          stroke-dasharray="60, 100"/>
+                                    </svg>
+                                    <span class="progress-value">60%</span>
+                                </div>
+                                <p id="thinkingStyleDesc">تفكيرك تحليلي ومنطقي</p>
+                            </div>
+                        
+                              <div class="summary-card">
+                                <h3>نمط اتخاذ القرار</h3>
+                                <div class="progress-circle" id="decisionStyle">
+                                    <svg viewBox="0 0 36 36">
+                                        <path d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#eee" stroke-width="2"/>
+                                        <path class="circle-chart-circle" 
+                                          d="M18 2.0845
+                                          a 15.9155 15.9155 0 0 1 0 31.831
+                                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                                          fill="none" stroke="#6a1b9a" stroke-width="2"
+                                          stroke-dasharray="85, 100"/>
+                                    </svg>
+                                    <span class="progress-value">85%</span>
+                                </div>
+                                <p id="decisionStyleDesc">تتخذ قراراتك بناءً على الحقائق والمنطق</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="share-actions">
+                        <h3>شارك نتيجتك</h3>
+                        <div class="share-buttons">
+                            <button class="share-btn facebook">
+                                <img src="assets/icons/facebook.png" alt="فيسبوك">
+                                فيسبوك
+                            </button>
+                            <button class="share-btn twitter">
+                                <img src="assets/icons/twitter.png" alt="تويتر">
+                                تويتر
+                            </button>
+                            <button class="share-btn whatsapp">
+                                <img src="assets/icons/whatsapp.png" alt="واتساب">
+                                واتساب
+                            </button>
+                        </div>
+                        
+                        <div class="result-actions">
+                            <button id="viewFullReportBtn" class="main-cta-btn">عرض التقرير الكامل</button>
+                            <button id="downloadPDFBtn" class="secondary-btn">
+                                <img src="assets/icons/download.png" alt="تحميل">
+                                تحميل PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- النتائج التفصيلية -->
+                <div class="detailed-results hidden">
+                    <div class="results-header">
+                        <h2 class="section-title">التقرير النفسي الكامل</h2>
+                        <button id="backToSummary" class="back-btn">
+                            <span class="btn-icon">←</span> العودة للنتائج المختصرة
+                        </button>
+                    </div>
+                    
+                    <div class="theory-tabs">
+                        <button class="theory-tab active" data-theory="freudian">فرويد</button>
+                        <button class="theory-tab" data-theory="jungian">يونغ</button>
+                        <button class="theory-tab" data-theory="adlerian">أدلر</button>
+                        <button class="theory-tab" data-theory="kleinian">كلاين</button>
+                        <button class="theory-tab" data-theory="fromm">فروم</button>
+                        <button class="theory-tab" data-theory="existential">الوجودية</button>
+                        <button class="theory-tab" data-theory="trait">سمات الشخصية</button>
+                        <button class="theory-tab" data-theory="ta">تحليل التفاعلات</button>
+                        <button class="theory-tab" data-theory="cbt">CBT</button>
+                        <button class="theory-tab" data-theory="mbti">MBTI</button>
+                        <button class="theory-tab" data-theory="enneagram">التوافقي</button>
+                        <button class="theory-tab" data-theory="bigfive">العوامل الخمسة</button>
+                    </div>
+                    
+                    <div class="theory-content">
+                        <div id="freudian-content" class="theory-details active">
+                            <!-- محتوى نظرية فرويد -->
+                        </div>
+                        
+                        <div id="jungian-content" class="theory-details">
+                            <!-- محتوى نظرية يونغ -->
+                        </div>
+                        
+                        <!-- باقي النظريات -->
+                    </div>
+                    
+                    <div class="progress-tracking">
+                        <h3>تتبع تطورك الشخصي</h3>
+                        
+                        <div class="tracking-options">
+                            <div class="timeframe-selector">
+                                <label>الفترة الزمنية:</label>
+                                <select id="progressTimeframe">
+                                    <option value="week">أسبوع</option>
+                                    <option value="month">شهر</option>
+                                    <option value="3months">3 أشهر</option>
+                                    <option value="6months">6 أشهر</option>
+                                    <option value="year">سنة</option>
+                                </select>
+                            </div>
+                            
+                            <button id="scheduleTestBtn" class="secondary-btn">
+                                <img src="assets/icons/calendar.png" alt="جدولة">
+                                جدولة الاختبار القادم
+                            </button>
+                        </div>
+                        
+                        <div class="progress-charts">
+                            <div class="chart-container">
+                                <canvas id="personalityProgressChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="traitsComparisonChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="improvement-tips">
+                            <h4>نصائح للتطوير</h4>
+                            <ul class="tips-list">
+                                <!-- سيتم تعبئتها ديناميكيًا -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- قسم المدارس النفسية -->
+        <section id="theories" class="section hidden">
+            <div class="theories-container">
+                <h2 class="section-title">المدارس النفسية المعتمدة</h2>
+                <p class="section-subtitle">نستخدم في تحليلنا 12 مدرسة نفسية رئيسية لتقديم رؤية شاملة</p>
+                
+                <div class="theory-cards">
+                    <!-- سيتم تعبئتها ديناميكيًا من theories.js -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- باقي الأقسام -->
+    </main>
+
+    <!-- الفوتر -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>غرفة الأسرار</h3>
+
+                <p>منصة التحليل النفسي الأكثر تقدمًا في العالم العربي</p>
+                <p class="copyright">© 2025 Mohammed Tarek. جميع الحقوق محفوظة.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                    <li><a href="terms.html">شروط الاستخدام</a></li>
+                    <li><a href="#about">عن المشروع</a></li>
+                    <li><a href="#" id="adSettingsLink">إعدادات الإعلانات</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>اتصل بنا</h3>
+                <p>info@secretsroom.com</p>
+                <div class="social-links">
+                    <a href="#"><img src="assets/icons/facebook.png" alt="فيسبوك"></a>
+                    <a href="#"><img src="assets/icons/twitter.png" alt="تويتر"></a>
+                    <a href="#"><img src="assets/icons/instagram.png" alt="إنستغرام"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- النماذج المنبثقة -->
+    <div id="adSettingsModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>إعدادات الإعلانات</h2>
+            <form id="adSettingsForm">
+                <div class="form-group">
+                    <label for="adFrequency">تكرار الإعلانات:</label>
+                    <select id="adFrequency">
+                        <option value="minimal">حد أدنى</option>
+                        <option value="normal" selected>عادي</option>
+                        <option value="frequent">متكرر</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adTypes">أنواع الإعلانات:</label>
+                    <div class="checkbox-group">
+                        <div>
+                            <input type="checkbox" id="textAds" checked>
+                            <label for="textAds">إعلانات نصية</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="imageAds" checked>
+                            <label for="imageAds">إعلانات صورية</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="videoAds">
+                            <label for="videoAds">إعلانات فيديو</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adSensitivity">حساسية المحتوى:</label>
+                    <select id="adSensitivity">
+                        <option value="high">عالية (إعلانات محافظة)</option>
+                        <option value="medium" selected>متوسطة</option>
+                        <option value="low">منخفضة</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="main-cta-btn">حفظ الإعدادات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- الإعلانات -->
+    <div class="ad-container top-ad">
+        <div class="ad-content">
+            <span class="ad-label">إعلان</span>
+            <div id="adBannerTop"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="theories.js"></script>
+    <script src="questions.js"></script>
+    <script src="results.js"></script>
+    <script src="script.js"></script>
+    <script src="lib/pdfkit.js"></script>
+    <script src="lib/translation.js"></script>
 </body>
 </html>
