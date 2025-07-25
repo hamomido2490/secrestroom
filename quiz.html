@@ -263,7 +263,7 @@
                 <div class="progress-bar" id="progressBar"></div>
             </div>
             
-            <div class="question-container">
+            <div class="question-container" id="questionContainer" style="display: block;">
                 <div class="question-number" id="questionNumber">السؤال 1 من 10</div>
                 <div class="question-text" id="questionText">
                     <!-- السؤال هيدخل هنا ديناميكيًا -->
@@ -668,13 +668,13 @@
         // أسئلة التحليل الشامل (30 سؤال)
         const fullAnalysisQuestions = [
             // أسئلة الرؤية الداخلية (10 سؤال)
-            ...individualQuestions.vision.map(q => ({...q, category: 'vision'})),
+            ...individualQuestions.vision,
             
             // أسئلة التحليل العميق (10 سؤال)
-            ...individualQuestions.analysis.map(q => ({...q, category: 'analysis'})),
+            ...individualQuestions.analysis,
             
             // أسئلة الشفاء النفسي (10 سؤال)
-            ...individualQuestions.healing.map(q => ({...q, category: 'healing'}))
+            ...individualQuestions.healing
         ];
         
         // دالة إظهار شاشة الاختيار
