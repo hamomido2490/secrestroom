@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>غرفة الأسرار - البداية</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>غرفة الأسرار - Secrets Room</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="index-page">
+<body>
     <div class="container">
-        <h1>مرحباً بك في غرفة الأسرار</h1>
-        <p>هل أنت مستعد لاكتشاف شخصيتك الحقيقية؟</p>
-        <a href="quiz.html" class="start-button">ابدأ الاختبار</a>
+        <div class="site-name-container">
+            <h1 class="site-title">غرفة الأسرار</h1>
+            <div class="site-subtitle">Secrets Room</div>
+        </div>
+        
+        <div class="main-content">
+            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
+            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
+            
+            <div class="sections">
+                <div class="section" onclick="window.location.href='quiz.html#vision'">
+                    <div class="section-icon">👁️</div>
+                    <div class="section-text-ar">الرؤية الداخلية</div>
+                    <div class="section-text-en" style="display: none;">Inner Vision</div>
+                </div>
+                <div class="section" onclick="window.location.href='quiz.html#analysis'">
+                    <div class="section-icon">🧠</div>
+                    <div class="section-text-ar">التحليل العميق</div>
+                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
+                </div>
+                <div class="section" onclick="window.location.href='quiz.html#healing'">
+                    <div class="section-icon">💚</div>
+                    <div class="section-text-ar">الشفاء النفسي</div>
+                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
+                </div>
+                <div class="section" onclick="window.location.href='quiz.html#revelation'">
+                    <div class="section-icon">🔮</div>
+                    <div class="section-text-ar">الكشف الصادق</div>
+                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
+                </div>
+            </div>
+            
+            <div class="warning-ar">
+                ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
+            </div>
+            <div class="warning-en" style="display: none;">
+                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
+            </div>
+            
+            <button class="full-analysis-btn" onclick="window.location.href='quiz.html'">
+                <span class="btn-text-ar">التحليل الكامل</span>
+                <span class="btn-text-en" style="display: none;">Full Analysis</span>
+            </button>
+        </div>
+        
+        <div class="copyright">
+            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
+        </div>
     </div>
 </body>
 </html>
