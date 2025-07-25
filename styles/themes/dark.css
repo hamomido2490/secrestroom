@@ -1,0 +1,17 @@
+:root {
+  --primary-color: #9c4dcc;
+  --background-color: #121212;
+  --card-background: #1e1e1e;
+  --text-color: #e0e0e0;
+  --border-color: #333;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.theory-card {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
