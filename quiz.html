@@ -3,62 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج التحليل المتكامل - غرفة الأسرار</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>التحليل النفسي - غرفة الأسرار</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            text-align: center;
+            direction: rtl;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .quiz-box {
+            background: white;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 600;
+        }
+        .option {
+            display: block;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+        }
+        .option input[type="radio"] {
+            margin-left: 10px;
+        }
+        .next-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #009688, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .progress-bar {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 10px;
+        }
+        .progress {
+            background: linear-gradient(45deg, #009688, #4caf50);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .question-number {
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="site-name-container">
-            <h1 class="site-title">غرفة الأسرار</h1>
-            <div class="site-subtitle">Secrets Room</div>
+    <div class="quiz-box">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
         </div>
-        
-        <div class="main-content">
-            <h1 class="main-title-ar">رحلة عميقة إلى أعماق نفسك... هل أنت مستعد لمواجهة الحقيقة؟</h1>
-            <h1 class="main-title-en" style="display: none;">A deep journey into the depths of your soul... Are you ready to face the truth?</h1>
-            
-            <div class="sections">
-                <div class="section" onclick="window.location.href='quiz.html#vision'">
-                    <div class="section-icon">👁️</div>
-                    <div class="section-text-ar">الرؤية الداخلية</div>
-                    <div class="section-text-en" style="display: none;">Inner Vision</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#analysis'">
-                    <div class="section-icon">🧠</div>
-                    <div class="section-text-ar">التحليل العميق</div>
-                    <div class="section-text-en" style="display: none;">Deep Analysis</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#healing'">
-                    <div class="section-icon">💚</div>
-                    <div class="section-text-ar">الشفاء النفسي</div>
-                    <div class="section-text-en" style="display: none;">Psychological Healing</div>
-                </div>
-                <div class="section" onclick="window.location.href='quiz.html#revelation'">
-                    <div class="section-icon">🔮</div>
-                    <div class="section-text-ar">الكشف الصادق</div>
-                    <div class="section-text-en" style="display: none;">Honest Revelation</div>
-                </div>
-            </div>
-            
-            <div class="warning-ar">
-                ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
-            </div>
-            <div class="warning-en" style="display: none;">
-                ⚠️This analysis is deep and honest. Make sure you are psychologically ready before starting.
-            </div>
-            
-            <button class="full-analysis-btn" onclick="window.location.href='quiz.html'">
-                <span class="btn-text-ar">التحليل الكامل</span>
-                <span class="btn-text-en" style="display: none;">Full Analysis</span>
-            </button>
+        <div class="question-number" id="question-number">السؤال 1 من 30</div>
+        <div id="quiz-container">
+            <!-- Dynamic Content -->
         </div>
-        
-        <div class="copyright">
-            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
-        </div>
+        <button class="next-btn" onclick="nextQuestion()">التالي</button>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        const questions = [
+            // الأسئلة الديموغرافية
+            { 
+                type: 'demographic', 
+                question: 'ما هو جنسك؟', 
+                options: ['ذكر', 'أنثى'],
+                category: 'demographic'
+            },
+            { 
+                type: 'demographic', 
+                question: 'كم عمرك؟', 
+                options: ['أقل من 18', '18-25', '26-35', '36-50', 'أكثر من 50'],
+                category: 'demographic'
+            },
+            
+            // فرويد - التحليل النفسي الكلاسيكي
+            { 
+                question: 'أشعر أن أحلامي تحتوي على رموز ومعانٍ خفية.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'freud',
+                theory: 'فرويد - اللاوعي'
+            },
+            { 
+                question: 'غالباً ما أتصرف بناءً على رغبات لا أفهمها تماماً.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'freud',
+                theory: 'فرويد - الآليات الدفاعية'
+            },
+            { 
+                question: 'أشعر أن طفولتي تؤثر بشكل كبير على شخصيتي اليوم.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'freud',
+                theory: 'فرويد - مراحل النمو'
+            },
+            
+            // أدلر - علم النفس الفردي
+            { 
+                question: 'أسعى باستمرار لتحقيق التفوق والتميز في حياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'adler',
+                theory: 'أدلر - التفوق'
+            },
+            { 
+                question: 'أشعر بأن لدي شعور بالعجز في بعض جوانب حياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'adler',
+                theory: 'أدلر - شعور القصور'
+            },
+            { 
+                question: 'أهتم كثيراً بتقدير الآخرين واحترامهم لي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'adler',
+                theory: 'أدلر - المجتمع'
+            },
+            
+            // يونغ - التحليل النفسي التحليلي
+            { 
+                question: 'أشعر أن لدي جانباً ظلياً لا أظهره للآخرين.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'jung',
+                theory: 'يونغ - الجانب الظلي'
+            },
+            { 
+                question: 'غالباً ما أشعر بوجود أنماط متكررة في حياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'jung',
+                theory: 'يونغ - الأركيتايبات'
+            },
+            { 
+                question: 'أهتم بالرموز والمعاني الروحية في حياتي اليومية.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'jung',
+                theory: 'يونغ - اللاوعي الجماعي'
+            },
+            
+            // كلاين - العلاقات الموضوعية
+            { 
+                question: 'أشعر أن علاقاتي مع الآخرين تعكس تجارب طفولتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'klein',
+                theory: 'كلاين - العلاقات المبكرة'
+            },
+            { 
+                question: 'أجد صعوبة في الثقة بالآخرين حتى بعد معرفتهم لفترة.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'klein',
+                theory: 'كلاين - القلق'
+            },
+            { 
+                question: 'أحتاج إلى شعور الأمان والاستقرار في علاقاتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'klein',
+                theory: 'كلاين - الأمان العاطفي'
+            },
+            
+            // فروم - التحليل النفسي الثقافي
+            { 
+                question: 'أشعر أن المجتمع يؤثر على قراراتي أكثر مما أدرك.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'fromm',
+                theory: 'فروم - المجتمع والفرد'
+            },
+            { 
+                question: 'أهتم بالحرية الشخصية أكثر من الأمان الاجتماعي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'fromm',
+                theory: 'فروم - الحرية'
+            },
+            { 
+                question: 'أشعر أنني أبحث عن المعنى والهدف في حياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'fromm',
+                theory: 'فروم - الهروب من الحرية'
+            },
+            
+            // التحليل النفسي الوجودي
+            { 
+                question: 'أفكر كثيراً في مسألة الموت وذاتيتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'existential',
+                theory: 'الوجودي - الموت'
+            },
+            { 
+                question: 'أشعر بمسؤوليتي الكاملة عن اختياراتي وحياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'existential',
+                theory: 'الوجودي - المسؤولية'
+            },
+            { 
+                question: 'أبحث عن المصداقية والصدق في علاقاتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'existential',
+                theory: 'الوجودي - المصداقية'
+            },
+            
+            // CBT - التحليل السلوكي المعرفي
+            { 
+                question: 'أدرك أن أفكارتي تؤثر على مشاعري وسلوكياتي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'cbt',
+                theory: 'CBT - العلاقة بين الأفكار والمشاعر'
+            },
+            { 
+                question: 'أحاول تحدي الأفكار السلبية التي تطرأ على ذهني.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'cbt',
+                theory: 'CBT - التحدي المعرفي'
+            },
+            { 
+                question: 'أضع أهدافاً واقعية وقابلة للقياس لنفسي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'cbt',
+                theory: 'CBT - الهدف المحدد'
+            },
+            
+            // MBTI - مؤشر مايرز بريغز
+            { 
+                question: 'أفضل التخطيط المسبق على التصرف باندفاع.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'mbti',
+                theory: 'MBTI - التخطيط'
+            },
+            { 
+                question: 'أهتم بالتفاصيل أكثر من الصورة العامة.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'mbti',
+                theory: 'MBTI - التفاصيل'
+            },
+            { 
+                question: 'أجد الطاقة في التفاعل مع الآخرين أكثر من الوحدة.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'mbti',
+                theory: 'MBTI - الانبساط'
+            },
+            
+            // Big Five - السمات الخمس الكبرى
+            { 
+                question: 'أكون متفتحاً للتجارب والأشياء الجديدة.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'bigfive',
+                theory: 'Big Five - الانفتاح'
+            },
+            { 
+                question: 'أكون متعاوناً ومرناً في علاقاتي مع الآخرين.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'bigfive',
+                theory: 'Big Five - agreeableness'
+            },
+            { 
+                question: 'أكون منظماً ومهذباً في سلوكياتي اليومية.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'bigfive',
+                theory: 'Big Five - الوعي'
+            },
+            
+            // Transactional Analysis - تحليل التفاعلات
+            { 
+                question: 'أجد نفسي أتصرف أحياناً كطفل حتى مع الكبار.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'ta',
+                theory: 'TA - الحالة الطفلية'
+            },
+            { 
+                question: 'أحاول أن أكون ناضجاً ومتحكماً في مواقفي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'ta',
+                theory: 'TA - الحالة الوالدية'
+            },
+            { 
+                question: 'أستطيع التعامل مع الآخرين بشكل عقلاني ومنطقي.', 
+                options: ['موافق تماماً', 'موافق', 'محايد', 'غير موافق', 'غير موافق تماماً'],
+                category: 'ta',
+                theory: 'TA - الحالة البالغة'
+            }
+        ];
+
+        let currentIndex = 0;
+        let answers = [];
+
+        function updateProgress() {
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('question-number').textContent = `السؤال ${currentIndex + 1} من ${questions.length}`;
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `<div class="question">${q.question}</div>`;
+            q.options.forEach((opt, idx) => {
+                container.innerHTML += `
+                    <label class="option">
+                        <input type="radio" name="answer" value="${idx}"> ${opt}
+                    </label>
+                `;
+            });
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) {
+                alert('الرجاء اختيار إجابة');
+                return;
+            }
+            answers.push({ 
+                question: questions[currentIndex].question, 
+                answer: questions[currentIndex].options[selected.value],
+                category: questions[currentIndex].category,
+                theory: questions[currentIndex].theory
+            });
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                renderQuestion();
+            } else {
+                calculateResults();
+            }
+        }
+
+        function calculateResults() {
+            // تحليل النتائج حسب الفئات
+            const categories = {};
+            answers.forEach(answer => {
+                if (answer.category !== 'demographic') {
+                    if (!categories[answer.category]) {
+                        categories[answer.category] = [];
+                    }
+                    categories[answer.category].push(answer);
+                }
+            });
+
+            // حساب النتائج لكل فئة
+            const results = {
+                demographic: {
+                    gender: answers[0].answer,
+                    age: answers[1].answer
+                },
+                analysis: categories,
+                timestamp: new Date().toISOString()
+            };
+
+            localStorage.setItem('psychologyAnalysis', JSON.stringify(results));
+            window.location.href = 'result.html';
+        }
+
+        // عند التحميل
+        renderQuestion();
+
+        // السماح بالتنقل بالكيبورد
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                nextQuestion();
+            }
+        });
+    </script>
 </body>
 </html>
