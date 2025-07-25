@@ -7,115 +7,191 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* تصميم إعلانات غير مزعجة */
-        .ad-container {
-            display: flex;
-            justify-content: center;
-            margin: 15px 0;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+        /* تصميم إضافي */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
         }
         
-        .ad-container:hover {
-            opacity: 1;
+        .lang-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
         }
         
-        .ad-unit {
+        .lang-btn:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .user-info-screen {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .screen-title {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .screen-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
+            color: white;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
         }
         
-        /* إعلان علوي */
-        .top-ad {
-            margin-top: 10px;
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
         }
         
-        /* إعلان سفلي */
-        .bottom-ad {
-            margin-bottom: 20px;
+        .start-btn {
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px auto 0;
+            justify-content: center;
         }
         
-        /* إعلان داخلي */
-        .inline-ad {
-            margin: 25px auto;
-            max-width: 500px;
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         }
         
-        /* تصميم إعدادات الإعلانات */
-        .settings-panel {
+        /* نافذة التحليل السريع */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            display: none;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         
-        .settings-content {
+        .modal-content {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 30px;
-            border-radius: 20px;
+            padding: 35px;
+            border-radius: 25px;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: modalAppear 0.5s ease;
+            direction: rtl;
         }
         
-        .settings-title {
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .close {
+            float: left;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+        
+        .close:hover {
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .modal-title-ar, .modal-title-en {
             color: #3498db;
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
         }
         
-        .password-form {
-            margin: 20px 0;
-        }
-        
-        .password-input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .analysis-content {
+            font-size: 19px;
+            line-height: 1.8;
+            margin: 25px 0;
+            color: #e0e0e0;
             background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 1rem;
-            font-family: 'Tajawal', sans-serif;
-            margin: 10px 0;
-            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            border-right: 4px solid #3498db;
         }
         
-        .ads-management {
-            display: none;
+        /* تصميم مشاركة السوشيال ميديا */
+        .social-share {
+            margin: 30px 0;
+        }
+        
+        .share-title {
+            color: #3498db;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
             margin: 20px 0;
         }
         
-        .ad-code-area {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            margin: 10px 0;
-            resize: vertical;
-        }
-        
-        .save-btn {
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
-            color: white;
+        .social-btn {
+            padding: 12px 20px;
             border: none;
             border-radius: 25px;
             cursor: pointer;
@@ -123,102 +199,87 @@
             font-weight: bold;
             font-size: 1rem;
             transition: all 0.3s ease;
-            margin: 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .close-settings {
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        .facebook-btn {
+            background: linear-gradient(45deg, #3b5998, #4267B2);
             color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            margin: 10px 5px;
         }
         
-        .save-btn:hover, .close-settings:hover {
+        .whatsapp-btn {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+        }
+        
+        .twitter-btn {
+            background: linear-gradient(45deg, #1DA1F2, #0d8bd9);
+            color: white;
+        }
+        
+        .tiktok-btn {
+            background: linear-gradient(45deg, #000000, #69C9D0);
+            color: white;
+        }
+        
+        .instagram-btn {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+        }
+        
+        .social-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .settings-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 15px;
-            background: rgba(52, 152, 219, 0.2);
+        .continue-btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
             color: white;
-            border: 1px solid rgba(52, 152, 219, 0.5);
-            border-radius: 20px;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
             font-family: 'Tajawal', sans-serif;
-            font-size: 14px;
+            font-weight: bold;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            z-index: 1000;
+            margin-top: 20px;
         }
         
-        .settings-btn:hover {
-            background: rgba(52, 152, 219, 0.4);
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* التصميم بالإنجليزي */
+        body.en {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        body.en .modal-content {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        body.en .form-group {
+            text-align: left;
+        }
+        
+        body.en .user-info-screen {
+            text-align: left;
         }
     </style>
 </head>
 <body>
-    <!-- زرار إعدادات الإعلانات -->
-    <button class="settings-btn" onclick="openSettingsPanel()">
-        ⚙️ إعدادات الإعلانات
-    </button>
-    
-    <!-- لوحة إعدادات الإعلانات -->
-    <div id="settingsPanel" class="settings-panel">
-        <div class="settings-content">
-            <h2 class="settings-title">إعدادات الإعلانات</h2>
-            
-            <!-- نموذج كلمة السر -->
-            <div id="passwordForm" class="password-form">
-                <p>أدخل كلمة السر للوصول لإعدادات الإعلانات</p>
-                <input type="password" id="adminPassword" class="password-input" placeholder="كلمة السر">
-                <br>
-                <button class="save-btn" onclick="checkPassword()">دخول</button>
-                <button class="close-settings" onclick="closeSettingsPanel()">إغلاق</button>
-            </div>
-            
-            <!-- إدارة الإعلانات (مخفيّة في البداية) -->
-            <div id="adsManagement" class="ads-management">
-                <h3>إدارة أكواد الإعلانات</h3>
-                
-                <div class="form-group">
-                    <label>إعلان علوي (728x90)</label>
-                    <textarea id="topAdCode" class="ad-code-area" placeholder="ضع كود الإعلان العلوي هنا"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>إعلان داخلي (300x250)</label>
-                    <textarea id="inlineAdCode" class="ad-code-area" placeholder="ضع كود الإعلان الداخلي هنا"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>إعلان سفلي (728x90)</label>
-                    <textarea id="bottomAdCode" class="ad-code-area" placeholder="ضع كود الإعلان السفلي هنا"></textarea>
-                </div>
-                
-                <button class="save-btn" onclick="saveAdCodes()">حفظ الإعدادات</button>
-                <button class="close-settings" onclick="closeSettingsPanel()">إغلاق</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- إعلان علوي صغير -->
-    <div class="ad-container top-ad">
-        <div class="ad-unit" id="topAdContainer">
-            <!-- الإعلان الحقيقي هيدخل هنا -->
-            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 5px;">
-                مساحة إعلانية (728x90) - سيتم استبدالها بإعلان حقيقي
-            </div>
-        </div>
+    <!-- زرار اختيار اللغة -->
+    <div class="language-selector">
+        <button class="lang-btn" onclick="toggleLanguage()">
+            <span class="lang-text-ar">🌐 عربي</span>
+            <span class="lang-text-en" style="display: none;">🌐 English</span>
+        </button>
     </div>
     
     <div class="container">
@@ -282,16 +343,6 @@
                 </div>
             </div>
             
-            <!-- إعلان داخلي -->
-            <div class="ad-container inline-ad">
-                <div class="ad-unit" id="inlineAdContainer">
-                    <!-- الإعلان الحقيقي هيدخل هنا -->
-                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 5px;">
-                        إعلان داخلي (300x250) - سيتم استبداله بإعلان حقيقي
-                    </div>
-                </div>
-            </div>
-            
             <div class="warning-ar">
                 ⚠️هذا التحليل عميق وصادق. تأكد من استعدادك النفسي قبل البدء.
             </div>
@@ -317,11 +368,24 @@
                 </div>
                 
                 <div class="social-share">
-                    <button class="share-btn" onclick="shareAnalysis()">
-                        <span class="btn-text-ar">مشاركة على السوشيال ميديا</span>
-                        <span class="btn-text-en" style="display: none;">Share on Social Media</span>
-                        <span class="share-icon">📱</span>
-                    </button>
+                    <div class="share-title">شارك تحليلك على السوشيال ميديا</div>
+                    <div class="social-buttons">
+                        <button class="social-btn facebook-btn" onclick="shareToFacebook()">
+                            <span>فيسبوك</span>
+                        </button>
+                        <button class="social-btn whatsapp-btn" onclick="shareToWhatsApp()">
+                            <span>واتساب</span>
+                        </button>
+                        <button class="social-btn twitter-btn" onclick="shareToTwitter()">
+                            <span>X (تويتر)</span>
+                        </button>
+                        <button class="social-btn tiktok-btn" onclick="shareToTikTok()">
+                            <span>تيك توك</span>
+                        </button>
+                        <button class="social-btn instagram-btn" onclick="shareToInstagram()">
+                            <span>إنستجرام</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <button class="continue-btn" onclick="showFullReport()">
@@ -336,104 +400,214 @@
         </div>
     </div>
     
-    <!-- إعلان سفلي -->
-    <div class="ad-container bottom-ad">
-        <div class="ad-unit" id="bottomAdContainer">
-            <!-- الإعلان الحقيقي هيدخل هنا -->
-            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 5px;">
-                مساحة إعلانية سفلية (728x90) - سيتم استبدالها بإعلان حقيقي
-            </div>
-        </div>
-    </div>
-    
     <script>
-        // كلمة السر للوصول لإعدادات الإعلانات
-        const ADMIN_PASSWORD = "Farida";
+        // متغيرات النظام
+        let currentUser = {
+            age: null,
+            gender: null,
+            language: 'ar' // ar or en
+        };
         
-        // دالة فتح لوحة الإعدادات
-        function openSettingsPanel() {
-            document.getElementById('settingsPanel').style.display = 'flex';
-        }
+        // تحليلات سريعة مبنية على المحتوى الأصلي
+        const quickAnalyses = {
+            vision: {
+                ar: [
+                    "لقد اكتشفت جانبًا مخفيًا من شخصيتك...",
+                    "رؤية داخلية قوية تشير إلى وعي عالٍ...",
+                    "البصيرة التي لديك تفوق التوقعات العادية..."
+                ],
+                en: [
+                    "You have discovered a hidden aspect of your personality...",
+                    "Strong inner vision indicates high awareness...",
+                    "Your insight exceeds normal expectations..."
+                ]
+            },
+            analysis: {
+                ar: [
+                    "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة...",
+                    "العمق العاطفي الذي تمتلكه مذهل...",
+                    "القدرة على فهم الذات تتطور بشكل متسارع..."
+                ],
+                en: [
+                    "Your psychological analysis indicates unexpected inner strength...",
+                    "The emotional depth you possess is amazing...",
+                    "Your ability to understand yourself is rapidly evolving..."
+                ]
+            },
+            healing: {
+                ar: [
+                    "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا...",
+                    "الشفاء النفسي يسير في المسار الصحيح...",
+                    "التحول الداخلي يحدث بشكل طبيعي ومريح..."
+                ],
+                en: [
+                    "The healing process has begun, and you will gradually feel the change...",
+                    "Psychological healing is on the right track...",
+                    "Inner transformation occurs naturally and comfortably..."
+                ]
+            },
+            revelation: {
+                ar: [
+                    "الحقيقة التي كنت تبحث عنها هي: أنت أقوى مما تتخيل...",
+                    "الكشف الصادق يُظهر قدرات لم تكتشفها بعد...",
+                    "الحقيقة الداخلية تحررك من القيود الوهمية..."
+                ],
+                en: [
+                    "The truth you were looking for is: You are stronger than you imagine...",
+                    "Honest revelation shows abilities you haven't discovered yet...",
+                    "Inner truth frees you from imaginary constraints..."
+                ]
+            }
+        };
         
-        // دالة إغلاق لوحة الإعدادات
-        function closeSettingsPanel() {
-            document.getElementById('settingsPanel').style.display = 'none';
-            document.getElementById('passwordForm').style.display = 'block';
-            document.getElementById('adsManagement').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-        }
-        
-        // دالة التحقق من كلمة السر
-        function checkPassword() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('passwordForm').style.display = 'none';
-                document.getElementById('adsManagement').style.display = 'block';
-                
-                // تحميل أكواد الإعلانات المحفوظة
-                loadAdCodes();
+        // دالة تبديل اللغة
+        function toggleLanguage() {
+            if (currentUser.language === 'ar') {
+                currentUser.language = 'en';
+                document.body.classList.add('en');
             } else {
-                alert('كلمة السر غير صحيحة!');
+                currentUser.language = 'ar';
+                document.body.classList.remove('en');
             }
         }
         
-        // دالة تحميل أكواد الإعلانات المحفوظة
-        function loadAdCodes() {
-            const topAdCode = localStorage.getItem('topAdCode') || '';
-            const inlineAdCode = localStorage.getItem('inlineAdCode') || '';
-            const bottomAdCode = localStorage.getItem('bottomAdCode') || '';
+        // دالة بدء التحليل
+        function startAnalysis() {
+            const age = document.getElementById('userAge').value;
+            const gender = document.getElementById('userGender').value;
             
-            document.getElementById('topAdCode').value = topAdCode;
-            document.getElementById('inlineAdCode').value = inlineAdCode;
-            document.getElementById('bottomAdCode').value = bottomAdCode;
-        }
-        
-        // دالة حفظ أكواد الإعلانات
-        function saveAdCodes() {
-            const topAdCode = document.getElementById('topAdCode').value;
-            const inlineAdCode = document.getElementById('inlineAdCode').value;
-            const bottomAdCode = document.getElementById('bottomAdCode').value;
-            
-            // حفظ الأكواد في localStorage
-            localStorage.setItem('topAdCode', topAdCode);
-            localStorage.setItem('inlineAdCode', inlineAdCode);
-            localStorage.setItem('bottomAdCode', bottomAdCode);
-            
-            // تحديث الإعلانات في الصفحة
-            updateAdsOnPage();
-            
-            alert('تم حفظ إعدادات الإعلانات بنجاح!');
-        }
-        
-        // دالة تحديث الإعلانات في الصفحة
-        function updateAdsOnPage() {
-            const topAdCode = localStorage.getItem('topAdCode') || '';
-            const inlineAdCode = localStorage.getItem('inlineAdCode') || '';
-            const bottomAdCode = localStorage.getItem('bottomAdCode') || '';
-            
-            const topAdContainer = document.getElementById('topAdContainer');
-            const inlineAdContainer = document.getElementById('inlineAdContainer');
-            const bottomAdContainer = document.getElementById('bottomAdContainer');
-            
-            if (topAdCode) {
-                topAdContainer.innerHTML = topAdCode;
+            if (!age || !gender) {
+                alert(currentUser.language === 'ar' ? 'من فضلك أدخل العمر والجنس' : 'Please enter age and gender');
+                return;
             }
             
-            if (inlineAdCode) {
-                inlineAdContainer.innerHTML = inlineAdCode;
+            if (age < 13) {
+                alert(currentUser.language === 'ar' ? 'عذراً، يجب أن يكون العمر 13 سنة فأكثر' : 'Sorry, age must be 13 or older');
+                return;
             }
             
-            if (bottomAdCode) {
-                bottomAdContainer.innerHTML = bottomAdCode;
-            }
+            currentUser.age = age;
+            currentUser.gender = gender;
+            
+            // إخفاء شاشة المعلومات وإظهار الشاشة الرئيسية
+            document.getElementById('userInfoScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
         }
         
-        // تحميل الإعلانات عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            updateAdsOnPage();
-        });
+        // دالة إظهار التحليل السريع
+        function showQuickAnalysis(type) {
+            const modal = document.getElementById('quickAnalysisModal');
+            const content = document.getElementById('quickAnalysisContent');
+            
+            // اختيار تحليل عشوائي
+            const analyses = quickAnalyses[type][currentUser.language];
+            const randomIndex = Math.floor(Math.random() * analyses.length);
+            const analysisText = analyses[randomIndex];
+            
+            // تحديث العنوان
+            const titles = {
+                vision: {ar: "الرؤية الداخلية", en: "Inner Vision"},
+                analysis: {ar: "التحليل العميق", en: "Deep Analysis"},
+                healing: {ar: "الشفاء النفسي", en: "Psychological Healing"},
+                revelation: {ar: "الكشف الصادق", en: "Honest Revelation"}
+            };
+            
+            if (currentUser.language === 'ar') {
+                document.getElementById('quickModalTitle').textContent = titles[type].ar;
+                document.getElementById('quickModalTitleEn').style.display = 'none';
+            } else {
+                document.getElementById('quickModalTitleEn').textContent = titles[type].en;
+                document.getElementById('quickModalTitle').style.display = 'none';
+            }
+            
+            // تحديث المحتوى
+            content.textContent = analysisText;
+            
+            // إظهار النافذة
+            modal.style.display = 'flex';
+        }
         
-        // ... (باقي الكود كما هو)
+        // دالة إغلاق التحليل السريع
+        function closeQuickAnalysis() {
+            document.getElementById('quickAnalysisModal').style.display = 'none';
+        }
+        
+        // دالة مشاركة على فيسبوك
+        function shareToFacebook() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(shareText)}`;
+            window.open(url, '_blank');
+        }
+        
+        // دالة مشاركة على واتساب
+        function shareToWhatsApp() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            window.open(url, '_blank');
+        }
+        
+        // دالة مشاركة على تويتر/X
+        function shareToTwitter() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+        
+        // دالة مشاركة على تيك توك
+        function shareToTikTok() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            // نسخ للحافظة لأن تيك توك ما عندهش مشاركة مباشرة
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert(currentUser.language === 'ar' ? 
+                    'تم نسخ النص للحافظة! يمكنك الآن لصقه في تيك توك' : 
+                    'Text copied to clipboard! You can now paste it in TikTok');
+            });
+        }
+        
+        // دالة مشاركة على إنستجرام
+        function shareToInstagram() {
+            const content = document.getElementById('quickAnalysisContent').textContent;
+            const shareText = currentUser.language === 'ar' ? 
+                `اكتشفت شيئًا جديدًا عن نفسي في غرفة الأسرار!\n${content}\n#غرفة_الأسرار #تحليل_نفسي` :
+                `I discovered something new about myself in Secrets Room!\n${content}\n#SecretsRoom #PsychologicalAnalysis`;
+            
+            // نسخ للحافظة لأن إنستجرام ما عندهش مشاركة مباشرة
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert(currentUser.language === 'ar' ? 
+                    'تم نسخ النص للحافظة! يمكنك الآن لصقه في إنستجرام' : 
+                    'Text copied to clipboard! You can now paste it in Instagram');
+            });
+        }
+        
+        // دالة عرض التقرير الكامل
+        function showFullReport() {
+            alert(currentUser.language === 'ar' ? 
+                'ميزة التقرير الكامل ستكون متاحة في الإصدار القادم!' : 
+                'Full report feature will be available in the next version!');
+        }
+        
+        // دالة بدء التحليل الكامل
+        function startFullAnalysis() {
+            alert(currentUser.language === 'ar' ? 
+                'ميزة التحليل الكامل ستكون متاحة في الإصدار القادم!' : 
+                'Full analysis feature will be available in the next version!');
+        }
     </script>
 </body>
 </html>
