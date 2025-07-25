@@ -5,132 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار متكامل - غرفة الأسرار</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* تصميم إضافي لصفحة الاختبار */
-        .quiz-header {
-            margin-bottom: 30px;
+        body {
+            font-family: 'Tajawal', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e6e6e6;
+            margin: 0;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
+            direction: rtl;
+            text-align: center;
+            min-height: 100vh;
         }
-
-        .quiz-main-title {
-            font-size: 2.5rem;
-            color: #3498db;
-            margin-bottom: 15px;
-        }
-
-        .quiz-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .quiz-container {
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
             background: rgba(255, 255, 255, 0.03);
             padding: 30px;
             border-radius: 25px;
-            margin: 30px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .quiz-intro {
+        
+        .quiz-selection {
             text-align: center;
+            margin: 30px 0;
         }
-
-        .intro-text {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            text-align: right;
-        }
-
-        .intro-text ul {
-            text-align: right;
-            margin: 20px 0;
-            padding-right: 20px;
-        }
-
-        .intro-text li {
-            margin: 10px 0;
+        
+        .selection-title {
+            font-size: 2.2rem;
             color: #3498db;
+            margin-bottom: 20px;
         }
-
-        .start-btn {
-            padding: 20px 40px;
-            background: linear-gradient(45deg, #3498db, #8e44ad);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: bold;
-            font-size: 1.5rem;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 0 auto;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-icon {
-            font-size: 1.8rem;
-        }
-
-        /* محتوى الاختبار */
-        .quiz-content {
-            margin-top: 30px;
-        }
-
-        .quiz-progress-container {
+        
+        .selection-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 30px;
+            line-height: 1.6;
         }
-
-        .question-counter {
-            font-size: 18px;
-            color: #8e44ad;
+        
+        .analysis-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .analysis-type {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .analysis-type:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-5px);
+            border-color: #3498db;
+        }
+        
+        .type-icon {
+            font-size: 3rem;
             margin-bottom: 15px;
         }
-
-        .progress-bar-container {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
+        
+        .type-title {
+            font-size: 1.5rem;
+            color: #3498db;
+            margin-bottom: 10px;
         }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #3498db, #8e44ad);
-            width: 0%;
-            transition: width 0.5s ease;
+        
+        .type-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
         }
-
+        
+        .type-questions {
+            font-size: 0.9rem;
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
         .question-container {
             background: rgba(255, 255, 255, 0.05);
             padding: 30px;
             border-radius: 20px;
             margin: 20px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
         }
-
+        
+        .question-number {
+            color: #8e44ad;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
         .question-text {
-            font-size: 22px;
-            margin-bottom: 30px;
+            font-size: 1.4rem;
+            margin: 20px 0;
             line-height: 1.6;
-            color: #e0e0e0;
         }
-
+        
         .options-container {
             display: grid;
-            gap: 20px;
+            gap: 15px;
+            margin: 30px 0;
         }
-
+        
         .option {
             background: rgba(255, 255, 255, 0.08);
             padding: 20px;
@@ -139,627 +124,936 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: right;
-            font-size: 18px;
+            font-size: 1.1rem;
         }
-
+        
         .option:hover {
             background: rgba(52, 152, 219, 0.2);
             transform: translateY(-3px);
             border-color: #3498db;
         }
-
-        .option.selected {
-            background: rgba(46, 204, 113, 0.2);
-            border-color: #2ecc71;
-            transform: scale(1.02);
+        
+        .quiz-progress {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 30px 0;
+            overflow: hidden;
         }
-
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
         .quiz-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: 20px;
         }
-
+        
         .nav-btn {
-            padding: 15px 30px;
+            padding: 12px 25px;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
         }
-
+        
         .prev-btn {
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
-
+        
         .next-btn {
             background: linear-gradient(45deg, #3498db, #8e44ad);
             color: white;
         }
-
+        
+        .start-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+        
         .nav-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        .back-to-home {
-            text-align: center;
-            margin: 30px 0;
-        }
-
+        
         .home-btn {
-            padding: 15px 30px;
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-family: 'Tajawal', sans-serif;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            margin-top: 20px;
         }
-
+        
         .home-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="quiz-header">
-            <h1 class="quiz-main-title">اختبار التحليل النفسي المتكامل</h1>
-            <div class="quiz-subtitle">بناءً على جميع النظريات النفسية الحديثة والكلاسيكية</div>
-        </div>
-        
-        <div class="quiz-container">
-            <div class="quiz-intro">
-                <div class="intro-text">
-                    <p>مرحبًا بك في أعمق اختبار نفسي متكامل. هذا الاختبار يحتوي على 30 سؤالًا مصممة بعناية لتحليل شخصيتك من جميع الزوايا النفسية.</p>
-                    <p>الاختبار مبني على نظريات:</p>
-                    <ul>
-                        <li>فرويد - التحليل النفسي الكلاسيكي</li>
-                        <li>يونغ - التحليل النفسي التحليلي</li>
-                        <li>أدلر - علم النفس الفردي</li>
-                        <li>MBTI - أنواع الشخصية الـ16</li>
-                        <li>Big Five - السمات الخمس الكبرى</li>
-                        <li>وكثير من النظريات الأخرى</li>
-                    </ul>
-                    <p>الاختبار зайِtakes حوالي 10-15 دقيقة. استعد نفسياً وابدأ رحلتك الداخلية.</p>
+        <!-- اختيار نوع التحليل -->
+        <div id="selectionScreen" class="quiz-selection">
+            <h1 class="selection-title">اختر نوع التحليل</h1>
+            <p class="selection-description">اختر ما يناسبك من أنواع التحليل لتبدأ رحلتك الداخلية</p>
+            
+            <div class="analysis-types">
+                <div class="analysis-type" onclick="startIndividualAnalysis('vision')">
+                    <div class="type-icon">👁️</div>
+                    <div class="type-title">الرؤية الداخلية</div>
+                    <div class="type-description">تحليل عميق لقدراتك البصرية والاستباقية</div>
+                    <div class="type-questions">10 أسئلة</div>
                 </div>
                 
-                <button class="start-btn" onclick="startQuiz()">
-                    <span class="btn-text">بدء الاختبار العميق</span>
-                    <span class="btn-icon">🔍</span>
-                </button>
+                <div class="analysis-type" onclick="startIndividualAnalysis('analysis')">
+                    <div class="type-icon">🧠</div>
+                    <div class="type-title">التحليل العميق</div>
+                    <div class="type-description">فهم تحليلي شامل لقدراتك العقلية</div>
+                    <div class="type-questions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startIndividualAnalysis('healing')">
+                    <div class="type-icon">💚</div>
+                    <div class="type-title">الشفاء النفسي</div>
+                    <div class="type-description">تحليل لمهاراتك في التعافي والتحول الداخلي</div>
+                    <div class="type-questions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startIndividualAnalysis('revelation')">
+                    <div class="type-icon">🔮</div>
+                    <div class="type-title">الكشف الصادق</div>
+                    <div class="type-description">اكتشاف الحقيقة الداخلية والقدرات المخفية</div>
+                    <div class="type-questions">10 أسئلة</div>
+                </div>
+                
+                <div class="analysis-type" onclick="startFullAnalysis()" style="grid-column: 1 / -1;">
+                    <div class="type-icon">📊</div>
+                    <div class="type-title">التحليل الشامل</div>
+                    <div class="type-description">تحليل متكامل بجميع النظريات النفسية الحديثة والكلاسيكية</div>
+                    <div class="type-questions">30 سؤال من جميع المجالات</div>
+                </div>
             </div>
             
-            <div class="quiz-content" id="quizContent" style="display: none;">
-                <div class="quiz-progress-container">
-                    <div class="question-counter" id="questionCounter">السؤال 1 من 30</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
-                
-                <div class="question-container" id="questionContainer">
-                    <!-- الأسئلة هتظهر هنا -->
-                </div>
-                
-                <div class="quiz-navigation">
-                    <button class="nav-btn prev-btn" id="prevBtn" onclick="previousQuestion()">السابق</button>
-                    <button class="nav-btn next-btn" id="nextBtn" onclick="nextQuestion()">التالي</button>
-                </div>
-            </div>
+            <button class="home-btn" onclick="window.location.href='index.html'">العودة للرئيسية</button>
         </div>
         
-        <div class="back-to-home">
-            <button class="home-btn" onclick="window.location.href='index.html'">العودة للرئيسية</button>
+        <!-- شاشة الأسئلة -->
+        <div id="quizScreen" style="display: none;">
+            <div class="quiz-header">
+                <h1 class="selection-title" id="quizTitle">اختبار التحليل النفسي</h1>
+                <p class="selection-description" id="quizDescription">أجب عن الأسئلة بصراحة لتحليل عميق لشخصيتك</p>
+            </div>
+            
+            <div class="quiz-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">السؤال 1 من 10</div>
+                <div class="question-text" id="questionText">
+                    <!-- السؤال هيدخل هنا ديناميكيًا -->
+                </div>
+                
+                <div class="options-container" id="optionsContainer">
+                    <!-- الخيارات هتظهر هنا ديناميكيًا -->
+                </div>
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="nav-btn prev-btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">السابق</button>
+                <button class="nav-btn next-btn" id="nextBtn" onclick="nextQuestion()">التالي</button>
+            </div>
+            
+            <button class="home-btn" onclick="showSelectionScreen()">العودة للاختيار</button>
         </div>
     </div>
     
     <script>
-        // بيانات الاختبار
-        const quizData = {
-            questions: [
-                // أسئلة فرويد - اللاوعي والرغبات المكبوتة
+        // متغيرات النظام
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let selectedAnalysisType = null;
+        let isFullAnalysis = false;
+        
+        // أسئلة التحليل الفردي (10 سؤال لكل نوع)
+        const individualQuestions = {
+            vision: [
                 {
-                    id: 1,
-                    category: "freud",
-                    question: "في أحلامك، ما هو الشيء الأكثر تكرارًا الذي تراه؟",
+                    question: "عندما تواجه موقفًا جديدًا، ما أول شيء تلاحظه؟",
                     options: [
-                        {text: "الماء أو البحار", points: {freud: 5, jung: 3, adler: 1}},
-                        {text: "الأشخاص المهمين في حياتك", points: {freud: 3, jung: 5, adler: 4}},
-                        {text: "الأماكن المظلمة أو المجهولة", points: {freud: 4, jung: 4, adler: 2}},
-                        {text: "الأشياء المفقودة", points: {freud: 5, jung: 2, adler: 3}}
+                        "التفاصيل الدقيقة والمخفية",
+                        "الأنماط العامة والعلاقات",
+                        "المشاعر والجو العام",
+                        "الفرص والإمكانيات"
                     ]
                 },
                 {
-                    id: 2,
-                    category: "freud",
-                    question: "عندما تشعر بالتوتر، ما هو أول شيء تفكر فيه؟",
+                    question: "كيف تصف قدرتك على توقع المستقبل؟",
                     options: [
-                        {text: "الطفولة أو الذكريات القديمة", points: {freud: 5, jung: 3, adler: 2}},
-                        {text: "المستقبل والتحديات القادمة", points: {freud: 1, jung: 4, adler: 5}},
-                        {text: "العلاقات مع الآخرين", points: {freud: 3, jung: 5, adler: 4}},
-                        {text: "النجاح أو الفشل", points: {freud: 2, jung: 2, adler: 5}}
-                    ]
-                },
-                
-                // أسئلة يونغ - اللاوعي الجمعي والأنماط الأصلية
-                {
-                    id: 3,
-                    category: "jung",
-                    question: "ما نوع الشخصيات التي تجذبك أكثر في الأفلام والكتب؟",
-                    options: [
-                        {text: "الأبطال الذين يخوضون مغامرات", points: {jung: 5, mbti: {ESTP: 3, ENFP: 2}, bigFive: {openness: 4}}},
-                        {text: "الشخصيات المعقدة ذات الأسرار", points: {jung: 5, mbti: {INTJ: 4, INTP: 3}, bigFive: {openness: 5}}},
-                        {text: "الشخصيات التي تساعد الآخرين", points: {jung: 4, mbti: {ENFJ: 5, ISFJ: 4}, bigFive: {agreeableness: 5}}},
-                        {text: "الشخصيات التي تسعى للسلطة", points: {jung: 3, mbti: {ENTJ: 5, ESTJ: 4}, bigFive: {conscientiousness: 4}}}
+                        "لدي قدرة استثنائية على التنبؤ",
+                        "أستطيع توقع بعض الأمور بشكل صحيح",
+                        "أعتمد على التحليل أكثر من الحدس",
+                        "أفضل التعامل مع الحاضر"
                     ]
                 },
                 {
-                    id: 4,
-                    category: "jung",
-                    question: "كيف تصف علاقتك مع الجانب المظلم من شخصيتك؟",
+                    question: "ما هو أكثر شيء تثق به في اتخاذ القرارات؟",
                     options: [
-                        {text: "أقبله وأفهمه", points: {jung: 5, freud: 3, bigFive: {neuroticism: 2}}},
-                        {text: "أحاول تجنبه", points: {jung: 2, freud: 4, bigFive: {neuroticism: 4}}},
-                        {text: "لا أفكر فيه كثيرًا", points: {jung: 1, freud: 2, bigFive: {neuroticism: 1}}},
-                        {text: "أحاول دمجه مع الجانب الإيجابي", points: {jung: 5, freud: 2, bigFive: {openness: 5}}}
-                    ]
-                },
-                
-                // أسئلة أدلر - Complex والتفوق
-                {
-                    id: 5,
-                    category: "adler",
-                    question: "ما هو أكبر تحدٍ تواجهه في حياتك الاجتماعية؟",
-                    options: [
-                        {text: "الشعور بأنني أقل من الآخرين", points: {adler: 5, bigFive: {neuroticism: 4}, freud: 3}},
-                        {text: "الشعور بأنني مختلف عن الآخرين", points: {adler: 4, jung: 4, mbti: {INTP: 3, INFP: 3}}},
-                        {text: "الخوف من الرفض أو النقد", points: {adler: 3, bigFive: {neuroticism: 5}, freud: 4}},
-                        {text: "الرغبة في أن أكون الأفضل دائماً", points: {adler: 4, bigFive: {conscientiousness: 5}, mbti: {ENTJ: 4}}}
+                        "حدسي الداخلي",
+                        "التحليل المنطقي",
+                        "نصائح الآخرين",
+                        "تجربتي السابقة"
                     ]
                 },
                 {
-                    id: 6,
-                    category: "adler",
-                    question: "كيف تتعامل مع المنافسة؟",
+                    question: "عندما تحل مشكلة معقدة، كيف تبدأ؟",
                     options: [
-                        {text: "أتنافس بقوة لأثبت نفسي", points: {adler: 5, bigFive: {conscientiousness: 4}, mbti: {ESTJ: 3}}},
-                        {text: "أفضل التعاون على المنافسة", points: {adler: 2, bigFive: {agreeableness: 5}, mbti: {ISFJ: 4}}},
-                        {text: "أتنافس لكن بعدل واحترام", points: {adler: 3, bigFive: {agreeableness: 4, conscientiousness: 3}, mbti: {ENFJ: 4}}},
-                        {text: "أتجنب المنافسة قدر الإمكان", points: {adler: 1, bigFive: {neuroticism: 3}, freud: 2}}
-                    ]
-                },
-                
-                // أسئلة MBTI
-                {
-                    id: 7,
-                    category: "mbti",
-                    question: "في المجموعات الاجتماعية، أنت عادةً:",
-                    options: [
-                        {text: "أتحدث أكثر مما أستمع", points: {mbti: {ESTP: 4, ENFP: 3, ENTJ: 3}, bigFive: {extraversion: 5}}},
-                        {text: "أستمع أكثر مما أتحدث", points: {mbti: {INTJ: 4, INTP: 5, INFJ: 4}, bigFive: {extraversion: 1}}},
-                        {text: "أتحدث عند الحاجة فقط", points: {mbti: {ISTJ: 3, ISFJ: 3}, bigFive: {extraversion: 2}}},
-                        {text: "أشارك بحماس وطاقة", points: {mbti: {ESFP: 5, ENFJ: 3}, bigFive: {extraversion: 4}}}
+                        "أرى الحل كاملاً من البداية",
+                        "أحلل العناصر واحدة تلو الأخرى",
+                        "أبحث عن أمثلة مشابهة",
+                        "أجرب حلول مختلفة"
                     ]
                 },
                 {
-                    id: 8,
-                    category: "mbti",
-                    question: "كيف تفضل تنظيم وقتك؟",
+                    question: "ما نوع الأحلام التي تراها عادة؟",
                     options: [
-                        {text: "بحسب الخطة والجدول المحدد", points: {mbti: {ISTJ: 5, ESTJ: 4, INTJ: 3}, bigFive: {conscientiousness: 5}}},
-                        {text: "بحسب المزاج والفرص المتاحة", points: {mbti: {ESFP: 4, ENFP: 5, ISFP: 3}, bigFive: {openness: 4}}},
-                        {text: "بحسب الأولويات المتغيرة", points: {mbti: {ENFJ: 3, INFP: 3}, bigFive: {openness: 3}}},
-                        {text: "بحسب الضغوط والمواعيد النهائية", points: {mbti: {ESTP: 3, ENTJ: 4}, bigFive: {conscientiousness: 2}}}
-                    ]
-                },
-                
-                // أسئلة Big Five
-                {
-                    id: 9,
-                    category: "bigFive",
-                    question: "ما مدى اهتمامك بالتجارب الجديدة والمغامرات؟",
-                    options: [
-                        {text: "أحب التجارب الجديدة جداً", points: {bigFive: {openness: 5}, mbti: {ENFP: 4, ENTP: 5}}},
-                        {text: "أحب بعض التجارب الجديدة", points: {bigFive: {openness: 3}, mbti: {INFP: 3, ESFP: 3}}},
-                        {text: "أفضل الأمور المألوفة", points: {bigFive: {openness: 2}, mbti: {ISTJ: 4, ISFJ: 3}}},
-                        {text: "أخشى التجارب الجديدة", points: {bigFive: {openness: 1, neuroticism: 4}, mbti: {INTJ: 2, INFJ: 2}}}
+                        "أحلام رمزية ومعقدة",
+                        "أحلام واضحة وواقعية",
+                        "أحلام عاطفية وحسية",
+                        "أحلام مغامرات وأفعال"
                     ]
                 },
                 {
-                    id: 10,
-                    category: "bigFive",
-                    question: "ما مدى اهتمامك بمشاعر الآخرين؟",
+                    question: "كيف تتعامل مع المعلومات التي لا يفهمها الآخرون؟",
                     options: [
-                        {text: "أهتم جداً ودائماً", points: {bigFive: {agreeableness: 5}, mbti: {INFP: 5, ENFJ: 5}}},
-                        {text: "أهتم لكن بحدود", points: {bigFive: {agreeableness: 3}, mbti: {ISFP: 3, ESFJ: 4}}},
-                        {text: "أهتم عند الحاجة فقط", points: {bigFive: {agreeableness: 2}, mbti: {ISTJ: 2, ESTJ: 1}}},
-                        {text: "أركز أكثر على نفسي", points: {bigFive: {agreeableness: 1}, mbti: {INTJ: 3, ENTJ: 2}}}
-                    ]
-                },
-                // أسئلة إضافية لتكمل 30 سؤال
-                {
-                    id: 11,
-                    category: "freud",
-                    question: "ما هو أول شيء تفكر فيه عند الاستيقاظ؟",
-                    options: [
-                        {text: "الخطة ليومي", points: {freud: 2, bigFive: {conscientiousness: 4}}},
-                        {text: "الأشخاص المهمين", points: {freud: 3, jung: 4}},
-                        {text: "القلق من المستقبل", points: {freud: 4, bigFive: {neuroticism: 5}}},
-                        {text: "أفكار إبداعية", points: {freud: 1, bigFive: {openness: 5}}}
+                        "أحاول تفسيرها للآخرين بطرق مبسطة",
+                        "أحتفظ بها لنفسي لأنهم لن يفهموا",
+                        "أبحث عن أشخاص يستطيعون فهمها",
+                        "لا أعطيها أهمية كبيرة"
                     ]
                 },
                 {
-                    id: 12,
-                    category: "jung",
-                    question: "أي من هذه البيئات تشعر فيها بالراحة أكثر؟",
+                    question: "ما مدى ثقتك في رؤيتك الداخلية؟",
                     options: [
-                        {text: "المكتبة الهادئة", points: {jung: 4, bigFive: {openness: 4}}},
-                        {text: "الحفلات الصاخبة", points: {jung: 2, bigFive: {extraversion: 5}}},
-                        {text: "الطبيعة البرية", points: {jung: 5, bigFive: {openness: 3}}},
-                        {text: "المنزل مع العائلة", points: {jung: 3, bigFive: {agreeableness: 4}}}
+                        "ثقة تامة ودائمة",
+                        "ثقة كبيرة لكن مع التحقق",
+                        "ثقة متقلبة حسب الموقف",
+                        "ثقة محدودة نسبيًا"
                     ]
                 },
                 {
-                    id: 13,
-                    category: "adler",
-                    question: "كيف تتعامل مع النقد البناء؟",
+                    question: "كيف تصف تفاعلك مع الأسرار والحقائق المخفية؟",
                     options: [
-                        {text: "أقبله وأستفيد منه", points: {adler: 4, bigFive: {openness: 4}}},
-                        {text: "أشعر بالألم لكن أتعلم", points: {adler: 3, bigFive: {neuroticism: 3}}},
-                        {text: "أرفضه واحياناً أصاب بالغضب", points: {adler: 2, bigFive: {neuroticism: 4}}},
-                        {text: "أتجاهله تماماً", points: {adler: 1, bigFive: {openness: 2}}}
+                        "أكتشفها بسهولة طبيعية",
+                        "أحتاج وقت وتركيز لاكتشافها",
+                        "أفضل عدم معرفتها أحيانًا",
+                        "أبحث عنها بنشاط"
                     ]
                 },
                 {
-                    id: 14,
-                    category: "mbti",
-                    question: "عند حل المشكلات، تفضل:",
+                    question: "ما هو دور الحدس في حياتك اليومية؟",
                     options: [
-                        {text: "التفكير المنطقي أولاً", points: {mbti: {INTJ: 5, ENTJ: 4}, bigFive: {openness: 3}}},
-                        {text: "الاعتماد على المشاعر", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {agreeableness: 5}}},
-                        {text: "طلب المساعدة من الآخرين", points: {mbti: {ENFJ: 4, ESFJ: 5}, bigFive: {extraversion: 4}}},
-                        {text: "التجربة والخطأ", points: {mbti: {ESTP: 4, ISFP: 3}, bigFive: {openness: 5}}}
+                        "دليل أساسي في جميع القرارات",
+                        "مصدر إضافي للمعلومات",
+                        "أداة مساعدة أحيانًا",
+                        "نادرًا ما أعتمد عليه"
                     ]
                 },
                 {
-                    id: 15,
-                    category: "bigFive",
-                    question: "كيف تتعامل مع الضغوط اليومية؟",
+                    question: "كيف تصف قدرتك على رؤية الحقيقة وراء الأشياء؟",
                     options: [
-                        {text: "أخطط مسبقاً للتعامل معها", points: {bigFive: {conscientiousness: 5, neuroticism: 1}}},
-                        {text: "أتعامل معها حسب الظروف", points: {bigFive: {openness: 4, neuroticism: 2}}},
-                        {text: "أشعر بالتوتر لكن أتحمل", points: {bigFive: {neuroticism: 4, conscientiousness: 3}}},
-                        {text: "أتأثر بشدة وأحتاج وقت للتعافي", points: {bigFive: {neuroticism: 5, openness: 2}}}
+                        "استثنائية ومتطورة",
+                        "جيدة وقابلة للتطوير",
+                        "متوسطة وتحتاج تحسين",
+                        "محدودة وتحتاج مساعدة"
+                    ]
+                }
+            ],
+            
+            analysis: [
+                {
+                    question: "عندما تواجه مشكلة معقدة، كيف تتعامل معها عادة؟",
+                    options: [
+                        "أحللها من جميع الزوايا بعمق",
+                        "أبحث عن حلول عملية سريعة", 
+                        "أطلب المساعدة من الآخرين",
+                        "أتجنب التفكير فيها مؤقتًا"
                     ]
                 },
                 {
-                    id: 16,
-                    category: "freud",
-                    question: "ما نوع الذكريات الطفولية التي تتذكرها أكثر؟",
+                    question: "ما هو أسلوب تفكيرك الأساسي؟",
                     options: [
-                        {text: "الألعاب والمرح", points: {freud: 2, bigFive: {openness: 4}}},
-                        {text: "العلاقات مع الوالدين", points: {freud: 5, adler: 4}},
-                        {text: "الإنجازات الصغيرة", points: {freud: 3, bigFive: {conscientiousness: 4}}},
-                        {text: "المواقف الصعبة", points: {freud: 4, bigFive: {neuroticism: 4}}}
+                        "تحليلي ومنطقي",
+                        "عاطفي وحسّاس",
+                        "عملي وواقعي",
+                        "حدسي وبصيري"
                     ]
                 },
                 {
-                    id: 17,
-                    category: "jung",
-                    question: "ما هو الجانب الأكثر أهمية في شخصيتك؟",
+                    question: "كيف تحل التناقضات في المعلومات؟",
                     options: [
-                        {text: "العقل والتفكير", points: {jung: 3, mbti: {INTJ: 5, INTP: 5}}},
-                        {text: "القلب والمشاعر", points: {jung: 4, mbti: {INFP: 5, ENFP: 4}}},
-                        {text: "القوة والإرادة", points: {jung: 2, mbti: {ENTJ: 5, ESTJ: 4}}},
-                        {text: "الحس والحدس", points: {jung: 5, mbti: {INFJ: 5, ENFJ: 3}}}
+                        "أحلل كل جزء بعناية",
+                        "أبحث عن مصدر موثوق",
+                        "أعتمد على حكمتي",
+                        "أتجاهل التناقضات البسيطة"
                     ]
                 },
                 {
-                    id: 18,
-                    category: "adler",
-                    question: "ما هو هدفك الرئيسي في الحياة؟",
+                    question: "ما نوع الأسئلة التي تثير فضولك أكثر؟",
                     options: [
-                        {text: "النجاح المهني", points: {adler: 4, bigFive: {conscientiousness: 5}}},
-                        {text: "السعادة الشخصية", points: {adler: 3, bigFive: {agreeableness: 4}}},
-                        {text: "خدمة الآخرين", points: {adler: 5, bigFive: {agreeableness: 5}}},
-                        {text: "اكتشاف الذات", points: {adler: 2, bigFive: {openness: 5}}}
+                        "الأسئلة الفلسفية والمعقدة",
+                        "الأسئلة العلمية والعملية",
+                        "الأسئلة الاجتماعية والعاطفية",
+                        "الأسئلة الإبداعية والمغامرة"
                     ]
                 },
                 {
-                    id: 19,
-                    category: "mbti",
-                    question: "في العمل، تفضل:",
+                    question: "كيف تقيم المعلومات الجديدة؟",
                     options: [
-                        {text: "العمل الفردي", points: {mbti: {INTJ: 5, INTP: 4}, bigFive: {extraversion: 1}}},
-                        {text: "العمل الجماعي", points: {mbti: {ENFJ: 5, ESFJ: 4}, bigFive: {extraversion: 5}}},
-                        {text: "قيادة الفريق", points: {mbti: {ENTJ: 5, ESTJ: 4}, bigFive: {extraversion: 4}}},
-                        {text: "العمل المتنوع", points: {mbti: {ENFP: 4, ESFP: 3}, bigFive: {openness: 5}}}
+                        "أحللها نقدياً أولاً",
+                        "أقبلها ثم أحللها",
+                        "أبحث عن رأي الآخرين أولاً",
+                        "أجربها عمليًا"
                     ]
                 },
                 {
-                    id: 20,
-                    category: "bigFive",
-                    question: "ما مدى ثقتك بنفسك؟",
+                    question: "ما هو مستوى تركيزك عند التحليل؟",
                     options: [
-                        {text: "ثقة عالية جداً", points: {bigFive: {neuroticism: 1, conscientiousness: 5}}},
-                        {text: "ثقة متوسطة", points: {bigFive: {neuroticism: 2, conscientiousness: 3}}},
-                        {text: "ثقة متقلبة", points: {bigFive: {neuroticism: 4, conscientiousness: 2}}},
-                        {text: "ثقة منخفضة", points: {bigFive: {neuroticism: 5, conscientiousness: 1}}}
+                        "عالي جداً ومستمر",
+                        "جيد مع بعض الانقطاعات",
+                        "متوسط ويعتمد على الموقف",
+                        "منخفض نسبيًا"
                     ]
                 },
                 {
-                    id: 21,
-                    category: "freud",
-                    question: "ما هو موقفك من العلاقات العاطفية؟",
+                    question: "كيف تتعامل مع المعلومات المعقدة؟",
                     options: [
-                        {text: "أساسية جداً في حياتي", points: {freud: 4, bigFive: {agreeableness: 5}}},
-                        {text: "مهمة لكن ليست أساسية", points: {freud: 3, bigFive: {agreeableness: 3}}},
-                        {text: "أفضل العيش بمفردي", points: {freud: 2, bigFive: {extraversion: 1}}},
-                        {text: "أخشى من الارتباط", points: {freud: 5, bigFive: {neuroticism: 5}}}
+                        "أقسمها إلى أجزاء صغيرة",
+                        "أحاول فهمها ككل",
+                        "أطلب توضيحات إضافية",
+                        "أبحث عن أمثلة توضيحية"
                     ]
                 },
                 {
-                    id: 22,
-                    category: "jung",
-                    question: "كيف تتعامل مع التغيير؟",
+                    question: "ما هو دور المنطق في تفكيرك؟",
                     options: [
-                        {text: "أتقبله بسهولة", points: {jung: 4, bigFive: {openness: 5}}},
-                        {text: "أحتاج وقت للتكيف", points: {jung: 3, bigFive: {openness: 3}}},
-                        {text: "أشعر بالقلق منه", points: {jung: 2, bigFive: {neuroticism: 4}}},
-                        {text: "أرفضه تماماً", points: {jung: 1, bigFive: {openness: 1}}}
+                        "أساسي ومسيطر",
+                        "مهم لكن ليس الوحيد",
+                        "مفيد في بعض المواقف",
+                        "ثانوي مقارنة بالحدس"
                     ]
                 },
                 {
-                    id: 23,
-                    category: "adler",
-                    question: "ما هو أكبر إنجاز حققته؟",
+                    question: "كيف تصف قدرتك على ربط الأفكار؟",
                     options: [
-                        {text: "تحقيق حلم طال انتظاره", points: {adler: 5, bigFive: {conscientiousness: 5}}},
-                        {text: "مساعدة شخص في حاجة", points: {adler: 4, bigFive: {agreeableness: 5}}},
-                        {text: "تعلم مهارة جديدة", points: {adler: 3, bigFive: {openness: 5}}},
-                        {text: "التغلب على صعوبة نفسية", points: {adler: 4, bigFive: {neuroticism: 2}}}
+                        "استثنائية وسريعة",
+                        "جيدة ومنظمة",
+                        "متوسطة وتحتاج وقت",
+                        "محدودة وتحتاج مساعدة"
                     ]
                 },
                 {
-                    id: 24,
-                    category: "mbti",
-                    question: "كيف تتخذ القرارات المهمة؟",
+                    question: "ما هو أسلوبك في حل المشكلات؟",
                     options: [
-                        {text: "بعد تفكير عميق وتحليل", points: {mbti: {INTJ: 5, INTP: 4}, bigFive: {openness: 4}}},
-                        {text: "بحسب مشاعري وحدسي", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {openness: 3}}},
-                        {text: "بعد استشارة الآخرين", points: {mbti: {ENFJ: 4, ESFJ: 5}, bigFive: {agreeableness: 5}}},
-                        {text: "بحسب الظروف والوقت", points: {mbti: {ESTP: 4, ESFP: 3}, bigFive: {openness: 2}}}
+                        "منهجي ومتدرّب",
+                        "إبداعي ومبتكر",
+                        "عملي وسريع",
+                        "شامل ومتعدد الجوانب"
+                    ]
+                }
+            ],
+            
+            healing: [
+                {
+                    question: "كيف تتعامل مع الصدمات النفسية؟",
+                    options: [
+                        "أتعامل معها بقوة ونضج",
+                        "أحتاج وقت للتعافي",
+                        "أجد صعوبة في التعافي",
+                        "أتأثر بشدة طويلة"
                     ]
                 },
                 {
-                    id: 25,
-                    category: "bigFive",
-                    question: "ما مدى اهتمامك بالتفاصيل؟",
+                    question: "ما هو أسلوبك في التعامل مع التوتر؟",
                     options: [
-                        {text: "أهتم جداً بالتفاصيل الدقيقة", points: {bigFive: {conscientiousness: 5, openness: 3}}},
-                        {text: "أهتم بالتفاصيل المهمة فقط", points: {bigFive: {conscientiousness: 4, openness: 2}}},
-                        {text: "أهتم بالصورة العامة أكثر", points: {bigFive: {conscientiousness: 2, openness: 4}}},
-                        {text: "أهمل التفاصيل غالباً", points: {bigFive: {conscientiousness: 1, openness: 3}}}
+                        "أحلله وأفهم أسبابه",
+                        "أمارس تقنيات الاسترخاء",
+                        "أتحدث مع شخص أثق به",
+                        "أبتعد عن مصدر التوتر"
                     ]
                 },
                 {
-                    id: 26,
-                    category: "freud",
-                    question: "ما هو أكبر خوف لديك؟",
+                    question: "كيف تصف قدرتك على الصفح؟",
                     options: [
-                        {text: "الرفض من الآخرين", points: {freud: 4, bigFive: {neuroticism: 5}}},
-                        {text: "الفشل في تحقيق الأهداف", points: {freud: 3, bigFive: {neuroticism: 4}}},
-                        {text: "الوحدة والعزلة", points: {freud: 5, bigFive: {extraversion: 2}}},
-                        {text: "عدم معرفة الذات", points: {freud: 2, bigFive: {openness: 4}}}
+                        "أستطيع أن أصفح بسهولة",
+                        "أحتاج وقت للصفح",
+                        "أجد صعوبة في الصفح",
+                        "لا أستطيع أن أصفح أحيانًا"
                     ]
                 },
                 {
-                    id: 27,
-                    category: "jung",
-                    question: "ما نوع الأحلام التي تراها؟",
+                    question: "ما هو دور التأمل في حياتك؟",
                     options: [
-                        {text: "أحلام واقعية وواضحة", points: {jung: 2, bigFive: {openness: 2}}},
-                        {text: "أحلام رمزية ومعقدة", points: {jung: 5, bigFive: {openness: 5}}},
-                        {text: "أحلام عاطفية وحسية", points: {jung: 4, bigFive: {agreeableness: 4}}},
-                        {text: "نادراً ما أتذكر أحلامي", points: {jung: 1, bigFive: {openness: 1}}}
+                        "أساسي و quotidاني",
+                        "مهم لكن غير منتظم",
+                        "مفيد أحيانًا",
+                        "نادرًا ما أمارسه"
                     ]
                 },
                 {
-                    id: 28,
-                    category: "adler",
-                    question: "كيف تتعامل مع الصعوبات؟",
+                    question: "كيف تتعامل مع النقد؟",
                     options: [
-                        {text: "أواجهها بجرأة", points: {adler: 5, bigFive: {neuroticism: 1}}},
-                        {text: "أبحث عن حلول إبداعية", points: {adler: 4, bigFive: {openness: 5}}},
-                        {text: "أطلب المساعدة من الآخرين", points: {adler: 3, bigFive: {agreeableness: 5}}},
-                        {text: "أتألم لكن أستمر", points: {adler: 4, bigFive: {neuroticism: 3}}}
+                        "أعتبره فرصة للنمو",
+                        "أتألم منه لكن أتعلم",
+                        "أحتاج وقت للتكيف",
+                        "أشعر بالقلق منه"
                     ]
                 },
                 {
-                    id: 29,
-                    category: "mbti",
-                    question: "ما هو نمط تفكيرك الأساسي؟",
+                    question: "ما مدى مرونتك النفسية؟",
                     options: [
-                        {text: "تحليلي ومنطقي", points: {mbti: {INTJ: 5, INTP: 5}, bigFive: {openness: 4}}},
-                        {text: "عاطفي وحسّاس", points: {mbti: {INFP: 5, ENFP: 4}, bigFive: {agreeableness: 5}}},
-                        {text: "عملي وواقعي", points: {mbti: {ISTJ: 5, ESTJ: 4}, bigFive: {conscientiousness: 5}}},
-                        {text: "حدسي وبصيري", points: {mbti: {INFJ: 5, ENFJ: 4}, bigFive: {openness: 4}}}
+                        "مرن جداً وأستطيع التكيف مع أي موقف",
+                        "مرن إلى حد معقول",
+                        "محدودة في بعض المجالات",
+                        "أجد صعوبة في التكيف"
                     ]
                 },
                 {
-                    id: 30,
-                    category: "bigFive",
-                    question: "ما مدى انضباطك الذاتي؟",
+                    question: "كيف تصف حالتك النفسية العامة؟",
                     options: [
-                        {text: "منضبط جداً في جميع الأمور", points: {bigFive: {conscientiousness: 5, neuroticism: 1}}},
-                        {text: "منضبط في الأمور المهمة", points: {bigFive: {conscientiousness: 4, neuroticism: 2}}},
-                        {text: "منضبط أحياناً", points: {bigFive: {conscientiousness: 3, neuroticism: 3}}},
-                        {text: "أعاني من عدم الانضباط", points: {bigFive: {conscientiousness: 1, neuroticism: 4}}}
+                        "مستقرة ومتحسّنة",
+                        "معتدلة ومع بعض التحديات",
+                        "غير مستقرة وتحتاج تحسين",
+                        "متوترة ومعقدة"
+                    ]
+                },
+                {
+                    question: "ما هو دور العلاقات الاجتماعية في شفائك؟",
+                    options: [
+                        "أساسي ومحفز",
+                        "مهم لكن ليس كافيًا",
+                        "مفيد في بعض المواقف",
+                        "ثانوي مقارنة بالعلاج الذاتي"
+                    ]
+                },
+                {
+                    question: "كيف تتعامل مع الخيبة؟",
+                    options: [
+                        "أتعلم منها واتطور",
+                        "أتألم لكن أتعافى",
+                        "أحتاج وقت طويل للتعافي",
+                        "أتأثر بشدة طويلة"
+                    ]
+                },
+                {
+                    question: "ما هو أسلوبك في التعامل مع المشاعر السلبية؟",
+                    options: [
+                        "أحللها وأفهمها",
+                        "أمارس تقنيات تنظيم العاطفة",
+                        "أتحدث عنها مع الآخرين",
+                        "أبتعد عنها مؤقتًا"
+                    ]
+                }
+            ],
+            
+            revelation: [
+                {
+                    question: "ما مدى استعدادك لمواجهة الحقيقة؟",
+                    options: [
+                        "مستعد تماماً مهما كانت الصعبة",
+                        "مستعد لكن بحذر",
+                        "أفضل تجنب بعض الحقائق",
+                        "أخشى مواجهة الحقيقة أحيانًا"
+                    ]
+                },
+                {
+                    question: "كيف تتعامل مع المفاجآت؟",
+                    options: [
+                        "أقبلها بصدر رحب",
+                        "أحتاج وقت للتكيف",
+                        "أشعر بالقلق منها",
+                        "أرفضها في البداية"
+                    ]
+                },
+                {
+                    question: "ما مدى صدقك مع نفسك؟",
+                    options: [
+                        "صادق تماماً مع نفسي",
+                        "صادق في معظم الأمور",
+                        "أجد صعوبة في الصدق مع نفسي",
+                        "أكذب على نفسي أحيانًا"
+                    ]
+                },
+                {
+                    question: "كيف تصف قدرتك على اكتشاف الحقائق الخفية؟",
+                    options: [
+                        "لدي قدرة استثنائية على الاكتشاف",
+                        "أكتشف بعض الحقائق أحيانًا",
+                        "نادرًا ما أكتشف الحقائق",
+                        "أعتمد على الآخرين لاكتشاف الحقائق"
+                    ]
+                },
+                {
+                    question: "ما مدى أهمية الحقيقة بالنسبة لك؟",
+                    options: [
+                        "هي أهم شيء في حياتي",
+                        "مهمة لكن ليست الأهم",
+                        "مهمة في بعض المجالات",
+                        "لا أعطيها أهمية كبيرة"
+                    ]
+                },
+                {
+                    question: "كيف تتعامل مع الأسرار الشخصية؟",
+                    options: [
+                        "أكشفها تدريجيًا لنفسي",
+                        "أحتفظ بها داخليًا",
+                        "أشاركها مع شخص أثق به",
+                        "أخشى من الكشف عنها"
+                    ]
+                },
+                {
+                    question: "ما هو دور الانعزال في اكتشافك الداخلي؟",
+                    options: [
+                        "أساسي لفهم الذات",
+                        "مهم في بعض الأوقات",
+                        "مفيد أحيانًا",
+                        "أفضل التفاعل الاجتماعي"
+                    ]
+                },
+                {
+                    question: "كيف تصف رحلتك في فهم الذات؟",
+                    options: [
+                        "متقدمة ومتطورة",
+                        "مستمرة ومفيدة",
+                        "متوسطة وتحتاج تطوير",
+                        "مبتدئة وتحتاج دعم"
+                    ]
+                },
+                {
+                    question: "ما هو دور الكتابة في كشفك الداخلي؟",
+                    options: [
+                        "أساسي ومحفز",
+                        "مهم لكن غير منتظم",
+                        "مفيد أحيانًا",
+                        "نادرًا ما أمارسه"
+                    ]
+                },
+                {
+                    question: "كيف تتعامل مع المعرفة المؤلمة عن نفسك؟",
+                    options: [
+                        "أقبلها وأتعلم منها",
+                        "أتألم لكن أتعامل معها",
+                        "أحتاج وقت للتعامل معها",
+                        "أخشى من معرفتها"
                     ]
                 }
             ]
         };
-
-        // متغيرات النظام
-        let currentQuestion = 0;
-        let userAnswers = [];
-        let userScores = {
-            freud: 0,
-            jung: 0,
-            adler: 0,
-            mbti: {INTJ: 0, INTP: 0, ENTJ: 0, ENTP: 0, INFJ: 0, INFP: 0, ENFJ: 0, ENFP: 0, ISTJ: 0, ISFJ: 0, ESTJ: 0, ESFJ: 0, ISTP: 0, ISFP: 0, ESTP: 0, ESFP: 0},
-            bigFive: {openness: 0, conscientiousness: 0, extraversion: 0, agreeableness: 0, neuroticism: 0}
-        };
-
-        // دالة بدء الاختبار
-        function startQuiz() {
-            document.querySelector('.quiz-intro').style.display = 'none';
-            document.getElementById('quizContent').style.display = 'block';
+        
+        // أسئلة التحليل الشامل (30 سؤال)
+        const fullAnalysisQuestions = [
+            // أسئلة الرؤية الداخلية (10 سؤال)
+            ...individualQuestions.vision.map(q => ({...q, category: 'vision'})),
+            
+            // أسئلة التحليل العميق (10 سؤال)
+            ...individualQuestions.analysis.map(q => ({...q, category: 'analysis'})),
+            
+            // أسئلة الشفاء النفسي (10 سؤال)
+            ...individualQuestions.healing.map(q => ({...q, category: 'healing'}))
+        ];
+        
+        // دالة إظهار شاشة الاختيار
+        function showSelectionScreen() {
+            document.getElementById('selectionScreen').style.display = 'block';
+            document.getElementById('quizScreen').style.display = 'none';
+            currentQuestion = 0;
+            userAnswers = [];
+            selectedAnalysisType = null;
+            isFullAnalysis = false;
+        }
+        
+        // دالة بدء التحليل الفردي
+        function startIndividualAnalysis(type) {
+            selectedAnalysisType = type;
+            isFullAnalysis = false;
+            showQuizScreen();
+        }
+        
+        // دالة بدء التحليل الشامل
+        function startFullAnalysis() {
+            selectedAnalysisType = 'full';
+            isFullAnalysis = true;
+            showQuizScreen();
+        }
+        
+        // دالة إظهار شاشة الأسئلة
+        function showQuizScreen() {
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            
+            // تحديث العنوان والوصف
+            const titles = {
+                vision: "اختبار الرؤية الداخلية",
+                analysis: "اختبار التحليل العميق",
+                healing: "اختبار الشفاء النفسي",
+                revelation: "اختبار الكشف الصادق",
+                full: "اختبار التحليل الشامل"
+            };
+            
+            const descriptions = {
+                vision: "اختبار مخصص لقدراتك البصرية والاستباقية",
+                analysis: "اختبار مخصص لقدراتك التحليلية والعقلية",
+                healing: "اختبار مخصص لقدراتك على التعافي والتحول",
+                revelation: "اختبار مخصص لاكتشاف الحقيقة الداخلية",
+                full: "اختبار شامل بجميع النظريات النفسية"
+            };
+            
+            document.getElementById('quizTitle').textContent = titles[selectedAnalysisType];
+            document.getElementById('quizDescription').textContent = descriptions[selectedAnalysisType];
+            
+            currentQuestion = 0;
+            userAnswers = [];
             showQuestion();
         }
-
+        
         // دالة عرض السؤال
         function showQuestion() {
-            const question = quizData.questions[currentQuestion];
+            // تحديد الأسئلة حسب النوع
+            let questions = [];
+            if (isFullAnalysis) {
+                questions = fullAnalysisQuestions;
+            } else {
+                questions = individualQuestions[selectedAnalysisType];
+            }
             
-            // تحديث عداد الأسئلة
-            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${quizData.questions.length}`;
+            const question = questions[currentQuestion];
+            
+            // تحديث رقم السؤال
+            document.getElementById('questionNumber').textContent = `السؤال ${currentQuestion + 1} من ${questions.length}`;
+            
+            // تحديث نص السؤال
+            document.getElementById('questionText').textContent = question.question;
             
             // تحديث شريط التقدم
-            const progress = ((currentQuestion + 1) / quizData.questions.length) * 100;
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
             
-            // عرض السؤال
-            const questionContainer = document.getElementById('questionContainer');
-            questionContainer.innerHTML = `
-                <div class="question-text">${question.question}</div>
-                <div class="options-container" id="optionsContainer">
-                    ${question.options.map((option, index) => `
-                        <div class="option" onclick="selectOption(${index})">
-                            ${option.text}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            // عرض الخيارات
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
             
             // تحديث أزرار التنقل
             document.getElementById('prevBtn').style.display = currentQuestion === 0 ? 'none' : 'block';
         }
-
+        
         // دالة اختيار الإجابة
         function selectOption(optionIndex) {
-            const question = quizData.questions[currentQuestion];
-            const selectedOption = question.options[optionIndex];
-            
             // حفظ الإجابة
-            userAnswers[currentQuestion] = {
-                questionId: question.id,
-                optionIndex: optionIndex,
-                points: selectedOption.points
-            };
+            userAnswers[currentQuestion] = optionIndex;
             
-            // تحديث النقاط
-            updateScores(selectedOption.points);
-            
-            // تمييز الخيار المختار
-            const options = document.querySelectorAll('.option');
-            options.forEach((option, index) => {
-                if (index === optionIndex) {
-                    option.classList.add('selected');
-                } else {
-                    option.classList.remove('selected');
-                }
-            });
-            
-            // الانتقال للسؤال التالي تلقائيًا بعد ثوانٍ
-            setTimeout(() => {
-                if (currentQuestion < quizData.questions.length - 1) {
-                    currentQuestion++;
-                    showQuestion();
-                } else {
-                    // نهاية الاختبار - الانتقال لصفحة النتائج
-                    showResults();
-                }
-            }, 1000);
-        }
-
-        // دالة تحديث النقاط
-        function updateScores(points) {
-            // تحديث نقاط فرويد
-            if (points.freud) userScores.freud += points.freud;
-            
-            // تحديث نقاط يونغ
-            if (points.jung) userScores.jung += points.jung;
-            
-            // تحديث نقاط أدلر
-            if (points.adler) userScores.adler += points.adler;
-            
-            // تحديث نقاط MBTI
-            if (points.mbti) {
-                for (let type in points.mbti) {
-                    userScores.mbti[type] += points.mbti[type];
-                }
+            // تحديد الأسئلة حسب النوع
+            let questions = [];
+            if (isFullAnalysis) {
+                questions = fullAnalysisQuestions;
+            } else {
+                questions = individualQuestions[selectedAnalysisType];
             }
             
-            // تحديث نقاط Big Five
-            if (points.bigFive) {
-                for (let trait in points.bigFive) {
-                    userScores.bigFive[trait] += points.bigFive[trait];
-                }
+            // الانتقال للسؤال التالي أو عرض النتائج
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResults();
             }
         }
-
+        
         // دالة السؤال السابق
         function previousQuestion() {
             if (currentQuestion > 0) {
-                // خصم النقاط السابقة
-                const previousAnswer = userAnswers[currentQuestion - 1];
-                if (previousAnswer) {
-                    const previousPoints = quizData.questions[currentQuestion - 1].options[previousAnswer.optionIndex].points;
-                    revertScores(previousPoints);
-                    userAnswers[currentQuestion - 1] = null;
-                }
-                
+                userAnswers[currentQuestion] = null;
                 currentQuestion--;
                 showQuestion();
             }
         }
-
-        // دالة إرجاع النقاط
-        function revertScores(points) {
-            if (points.freud) userScores.freud -= points.freud;
-            if (points.jung) userScores.jung -= points.jung;
-            if (points.adler) userScores.adler -= points.adler;
-            if (points.mbti) {
-                for (let type in points.mbti) {
-                    userScores.mbti[type] -= points.mbti[type];
-                }
+        
+        // دالة السؤال التالي
+        function nextQuestion() {
+            // تحديد الأسئلة حسب النوع
+            let questions = [];
+            if (isFullAnalysis) {
+                questions = fullAnalysisQuestions;
+            } else {
+                questions = individualQuestions[selectedAnalysisType];
             }
-            if (points.bigFive) {
-                for (let trait in points.bigFive) {
-                    userScores.bigFive[trait] -= points.bigFive[trait];
-                }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
             }
         }
-
+        
         // دالة عرض النتائج
         function showResults() {
-            // حفظ النتائج في localStorage
-            localStorage.setItem('quizResults', JSON.stringify(userScores));
+            // تحديد الأسئلة حسب النوع
+            let questions = [];
+            if (isFullAnalysis) {
+                questions = fullAnalysisQuestions;
+            } else {
+                questions = individualQuestions[selectedAnalysisType];
+            }
             
-            // الانتقال لصفحة النتائج
-            window.location.href = 'results.html';
+            // حساب النتائج
+            const totalScore = userAnswers.reduce((sum, answer) => sum + (answer + 1), 0);
+            const maxScore = questions.length * 4;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // تحديد نوع التحليل للعنوان
+            const analysisTitles = {
+                vision: "الرؤية الداخلية",
+                analysis: "التحليل العميق",
+                healing: "الشفاء النفسي",
+                revelation: "الكشف الصادق",
+                full: "التحليل الشامل"
+            };
+            
+            // عرض النتائج في نافذة جديدة
+            const resultWindow = window.open('', '_blank');
+            resultWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>نتائج التحليل - غرفة الأسرار</title>
+                    <style>
+                        body {
+                            font-family: 'Tajawal', 'Arial', sans-serif;
+                            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+                            color: #e6e6e6;
+                            margin: 0;
+                            padding: 20px;
+                            direction: rtl;
+                            text-align: right;
+                        }
+                        .container {
+                            max-width: 800px;
+                            margin: 0 auto;
+                            background: rgba(255, 255, 255, 0.03);
+                            padding: 30px;
+                            border-radius: 25px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                        .results-header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                        }
+                        .results-title {
+                            font-size: 2.5rem;
+                            color: #3498db;
+                            margin-bottom: 15px;
+                        }
+                        .analysis-type {
+                            font-size: 2rem;
+                            color: #f39c12;
+                            margin: 20px 0;
+                            text-align: center;
+                        }
+                        .score-percentage {
+                            font-size: 3rem;
+                            color: #2ecc71;
+                            text-align: center;
+                            margin: 20px 0;
+                            font-weight: bold;
+                        }
+                        .analysis-section {
+                            background: rgba(255, 255, 255, 0.05);
+                            padding: 25px;
+                            border-radius: 20px;
+                            margin: 20px 0;
+                            border-right: 4px solid #3498db;
+                        }
+                        .section-title {
+                            color: #3498db;
+                            font-size: 1.5rem;
+                            margin-bottom: 15px;
+                        }
+                        .analysis-text {
+                            font-size: 1.2rem;
+                            line-height: 1.8;
+                            margin: 15px 0;
+                        }
+                        .recommendations {
+                            background: rgba(46, 204, 113, 0.1);
+                            padding: 25px;
+                            border-radius: 20px;
+                            margin: 30px 0;
+                            border-right: 4px solid #2ecc71;
+                        }
+                        .home-btn {
+                            padding: 15px 30px;
+                            background: linear-gradient(45deg, #27ae60, #2ecc71);
+                            color: white;
+                            border: none;
+                            border-radius: 25px;
+                            cursor: pointer;
+                            font-family: 'Tajawal', sans-serif;
+                            font-weight: bold;
+                            font-size: 1.2rem;
+                            transition: all 0.3s ease;
+                            margin: 20px auto;
+                            display: block;
+                        }
+                        .home-btn:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="results-header">
+                            <h1 class="results-title">تقرير التحليل النفسي</h1>
+                            <p>بناءً على إجاباتك الحقيقية</p>
+                        </div>
+                        
+                        <div class="analysis-type">
+                            ${analysisTitles[selectedAnalysisType]}
+                        </div>
+                        
+                        <div class="score-percentage">
+                            ${percentage}%
+                        </div>
+                        
+                        <div class="analysis-section">
+                            <div class="section-title">تحليلك الشخصي</div>
+                            <div class="analysis-text">
+                                ${getAnalysisText(selectedAnalysisType, percentage)}
+                            </div>
+                        </div>
+                        
+                        <div class="recommendations">
+                            <div class="section-title">التوصيات للتطوير</div>
+                            <div class="analysis-text">
+                                ${getRecommendations(selectedAnalysisType, percentage)}
+                            </div>
+                        </div>
+                        
+                        <button class="home-btn" onclick="window.close()">إغلاق التقرير</button>
+                        
+                        <p style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.5);">
+                            © 2025 غرفة الأسرار - Secrets Room | جميع الحقوق محفوظة لـ Mohammed Tarek
+                        </p>
+                    </div>
+                </body>
+                </html>
+            `);
+            resultWindow.document.close();
         }
+        
+        // دالة الحصول على نص التحليل
+        function getAnalysisText(type, percentage) {
+            const analyses = {
+                vision: {
+                    high: "لديك رؤية استثنائية وعميقة تفوق التوقعات العادية. قدرتك على رؤية الحقائق الخفية تجعلك فريداً في فهم الذات والآخرين. هذه البصيرة الاستثنائية تفتح أمامك أبواباً لا نهائية للنمو والتطور.",
+                    medium: "لديك رؤية جيدة ومستوى مقبول من البصيرة الداخلية. قدرتك على فهم الأمور بشكل أعمق من المتوسط تجعلك قادراً على رؤية جوانب خفية من الواقع. مع التطور المستمر، يمكنك تحسين هذه القدرة.",
+                    low: "رغم أن رؤيتك الحالية محدودة، إلا أن لديك إمكانية للنمو والتطور في هذا المجال. البدء بممارسة التأمل والتفكير العميق سيساعدك على تطوير قدراتك البصرية."
+                },
+                analysis: {
+                    high: "تحليلك النفسي متطور وعميق بشكل استثنائي. قدرتك على فهم التعقيدات النفسية والاجتماعية تجعلك محللاً نفسيًا موهوبًا بطبيعتك. هذه القدرة تفتح لك فرصًا لا محدودة في فهم الذات والآخرين.",
+                    medium: "لديك قدرة تحليلية جيدة ومستوى مقبول من الفهم النفسي. قدرتك على تفكيك الأنماط السلوكية وفهم الدوافع الداخلية تجعلك قارئًا جيدًا للأنفس. مع التدريب، يمكنك تطوير هذه المهارة.",
+                    low: "رغم أن قدراتك التحليلية الحالية محدودة، إلا أن لديك إمكانية للنمو. البدء بقراءة الكتب النفسية وممارسة التحليل السلوكي البسيط سيساعدك على تطوير هذه القدرة."
+                },
+                healing: {
+                    high: "عملية الشفاء النفسي لديك تسير في المسار الصحيح والمثالي. مرونتك النفسية وقوتك الداخلية تجعلك قادراً على التعافي من أي صدمة أو تحدي. هذه القدرة على الشفاء تخلق قوة داخلية لا تُقهر.",
+                    medium: "لديك قدرة جيدة على الشفاء النفسي ومستوى مقبول من المرونة. قدرتك على التعافي من الصدمات والتحول الداخلي تشير إلى نضج نفسي متقدم. مع الوقت، ستتحسن هذه القدرة.",
+                    low: "رغم أن عملية الشفاء لديك تحتاج إلى تطوير، إلا أن لديك إمكانية للنمو. البدء بممارسات الشفاء النفسي البسيطة مثل التأمل والكتابة العلاجية سيساعدك على تحسين حالتك."
+                },
+                revelation: {
+                    high: "الكشف الصادق لديك استثنائي وعميق. جرأتك على مواجهة الحقيقة وصدقك مع نفسك تفتح أمامك أبوابًا جديدة للفهم والتطور. هذه القدرة على الكشف تخلق وعيًا جديدًا بالذات والعالم.",
+                    medium: "لديك قدرة جيدة على الكشف الصادق ومستوى مقبول من الصدق مع النفس. قدرتك على مواجهة الحقائق والكشف عن الجوانب الخفية تشير إلى نضج روحي متقدم. مع الوقت، ستتحسن هذه القدرة.",
+                    low: "رغم أن قدرة الكشف الصادق لديك تحتاج إلى تطوير، إلا أن لديك إمكانية للنمو. البدء بممارسة الصدق مع النفس والتأمل العميق سيساعدك على تحسين هذه القدرة."
+                },
+                full: {
+                    high: "تحليلك النفسي الشامل يشير إلى عمق نفسي استثنائي وقدرات تحليلية متطورة. الوعي الذاتي والبصيرة الداخلية تجعلك قادرًا على رؤية ما لا يراه الآخرون وفهم التعقيدات النفسية بطرق فريدة. هذا المستوى من الفهم النفسي يتطلب توازنًا عاليًا وقدرات تحليلية متطورة.",
+                    medium: "لديك فهم جيد للنفس ومستوى مقبول من الوعي الذاتي. قدراتك التحليلية والبصرية متوازنة بشكل جيد. مع التطور المستمر، يمكنك تحسين هذه القدرات وتطويرها أكثر.",
+                    low: "رغم أن فهمك الحالي للنفس محدود، إلا أن لديك إمكانية كبيرة للنمو والتطور. البدء بممارسات الوعي الذاتي والتأمل سيساعدك على تطوير قدراتك النفسية."
+                }
+            };
+            
+            if (percentage >= 70) return analyses[type].high;
+            else if (percentage >= 40) return analyses[type].medium;
+            else return analyses[type].low;
+        }
+        
+        // دالة الحصول على التوصيات
+        function getRecommendations(type, percentage) {
+            const recommendations = {
+                vision: [
+                    "مارس التأمل اليومي لتعزيز الرؤية الداخلية",
+                    "اكتب الملاحظات البصيرية في مذكرة شخصية",
+                    "شارك بصيرتك مع الآخرين بطريقة بناءة",
+                    "طور قدرات التنبؤ الاجتماعي"
+                ],
+                analysis: [
+                    "تعلم أدوات تحليل سلوكية إضافية",
+                    "مارس التحليل العاطفي المنتظم",
+                    "طور مهارات الاستماع النفسي",
+                    "ادرس أنماط الشخصية المختلفة"
+                ],
+                healing: [
+                    "تابع ممارسة تقنيات الشفاء النفسي",
+                    "ابني شبكة دعم اجتماعي قوية",
+                    "طور آليات تنظيم عاطفي متقدمة",
+                    "مارس التسامح مع الذات"
+                ],
+                revelation: [
+                    "وثق الاكتشافات الشخصية في يوميات",
+                    "شارك الحقيقة المكتشفة مع مختص نفسي",
+                    "طور خطة عمل بناءً على الكشف الجديد",
+                    "احتفل بالتحولات الإيجابية"
+                ],
+                full: [
+                    "تابع تطوير جميع جوانب شخصيتك",
+                    "مارس الوعي الذاتي يوميًا",
+                    "ابني علاقات إيجابية مع الآخرين",
+                    "استثمر في تعلمك الشخصي المستمر"
+                ]
+            };
+            
+            return `
+                <ul style="margin: 15px 0; padding-right: 20px;">
+                    ${recommendations[type].map(rec => `<li style="margin: 10px 0;">${rec}</li>`).join('')}
+                </ul>
+            `;
+        }
+        
+        // تهيئة النظام عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            showSelectionScreen();
+        });
     </script>
 </body>
 </html>
