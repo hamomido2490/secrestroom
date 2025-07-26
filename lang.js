@@ -28,6 +28,15 @@ const translations = {
     results: {
       summary_intro: "هذه نظرة سريعة على شخصيتك:",
       full_intro: "هذا التحليل التفصيلي المبني على نظريات علم النفس:",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "الرؤية الداخلية",
+        analysis: "التحليل العميق",
+        healing: "الشفاء النفسي",
+        discovery: "الكشف الصادق",
+        full: "التحليل الكامل"
+      },
+      // =============================
       traits: {
         freud: "التحليل الكلاسيكي (فرويد)",
         adler: "علم النفس الفردي (أدلر)",
@@ -75,6 +84,15 @@ const translations = {
     results: {
       summary_intro: "Here’s a quick glimpse into your personality:",
       full_intro: "A deep-dive analysis based on psychological theories:",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "Inner Vision",
+        analysis: "Deep Analysis",
+        healing: "Psychological Healing",
+        discovery: "Honest Discovery",
+        full: "Full Analysis"
+      },
+      // =============================
       traits: {
         freud: "Freudian Psychoanalysis",
         adler: "Adlerian Individual Psychology",
@@ -122,6 +140,15 @@ const translations = {
     results: {
       summary_intro: "Voici un aperçu rapide de votre personnalité :",
       full_intro: "Analyse approfondie basée sur des théories psychologiques :",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "Vision Intérieure",
+        analysis: "Analyse Approfondie",
+        healing: "Guérison Psychologique",
+        discovery: "Découverte Honnête",
+        full: "Analyse Complète"
+      },
+      // =============================
       traits: {
         freud: "Psychanalyse freudienne",
         adler: "Psychologie individuelle adlérienne",
@@ -169,6 +196,15 @@ const translations = {
     results: {
       summary_intro: "Una mirada rápida a tu personalidad:",
       full_intro: "Análisis profundo basado en teorías psicológicas:",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "Visión Interna",
+        analysis: "Análisis Profundo",
+        healing: "Sanación Psicológica",
+        discovery: "Descubrimiento Honesto",
+        full: "Análisis Completo"
+      },
+      // =============================
       traits: {
         freud: "Psicoanálisis freudiano",
         adler: "Psicología individual adleriana",
@@ -216,6 +252,15 @@ const translations = {
     results: {
       summary_intro: "Ein kurzer Einblick in deine Persönlichkeit:",
       full_intro: "Eine tiefgehende Analyse basierend auf psychologischen Theorien:",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "Innere Vision",
+        analysis: "Tiefe Analyse",
+        healing: "Psychologische Heilung",
+        discovery: "Ehrliche Entdeckung",
+        full: "Vollständige Analyse"
+      },
+      // =============================
       traits: {
         freud: "Freudianische Psychoanalyse",
         adler: "Adlerianische Individualpsychologie",
@@ -263,6 +308,15 @@ const translations = {
     results: {
       summary_intro: "这是对您性格的快速概览：",
       full_intro: "基于心理学理论的深度分析：",
+      // === إضافة ترجمة المجالات ===
+      domains: {
+        vision: "内在视野",
+        analysis: "深度分析",
+        healing: "心理治愈",
+        discovery: "诚实发现",
+        full: "全面分析"
+      },
+      // =============================
       traits: {
         freud: "弗洛伊ド精神分析",
         adler: "阿德勒个体心理学",
