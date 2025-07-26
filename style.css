@@ -10,7 +10,8 @@ body.light {
 }
 
 body.dark {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  /* تحسين التدرج للثيم الداكن */
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   color: #ecf0f1;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -85,6 +86,8 @@ select, input, button {
   border-radius: 8px;
   border: 1px solid #ddd;
   transition: all 0.3s ease;
+  /* تحسين أداء الخلفية */
+  will-change: background-color, border-color;
 }
 
 body.dark select, 
@@ -98,25 +101,32 @@ body.dark button {
 /* تحسين الأزرار */
 button {
   cursor: pointer;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  /* تحسين التدرج للأزرار */
+  background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   font-weight: 600;
   border: none;
-  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  /* تحسين أداء الخلفية */
+  will-change: transform, box-shadow;
 }
 
 body.dark button {
-  background: linear-gradient(45deg, #3498db, #2980b9);
-  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  /* تحسين التدرج للأزرار */
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
 body.dark button:hover {
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
 }
 
 /* تحسين الأقسام */
@@ -126,7 +136,8 @@ body.dark button:hover {
   padding: 25px;
   border-radius: 15px;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
@@ -145,7 +156,8 @@ body.dark #content > section {
   padding: 20px;
   border-radius: 12px;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   border-left: 4px solid #3498db;
 }
 
@@ -171,6 +183,8 @@ body.dark .question {
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  /* تحسين أداء الخلفية */
+  will-change: transform, background-color;
 }
 
 body.dark .options label {
@@ -192,7 +206,8 @@ body.dark .options label:hover {
 }
 
 .options input[type="radio"]:checked + label {
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  /* تحسين التدرج للأزرار */
+  background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   border-color: #3498db;
   font-weight: 600;
@@ -208,7 +223,8 @@ body.dark .options label:hover {
   margin: 15px 0;
   border-radius: 12px;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+  /* تحسين ظلال العناصر */
+  box-shadow: 0 4px 25px rgba(0,0,0,0.1);
   border-top: 3px solid #9b59b6;
 }
 
