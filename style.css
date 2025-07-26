@@ -33,12 +33,13 @@ select, input, button {
   font-size: 1rem;
 }
 
-content > section {
+/* التصحيح الأساسي: استخدام #content بدل content */
+#content > section {
   margin-top: 20px;
   display: none;
 }
 
-content > .active {
+#content > .active {
   display: block;
 }
 /* أسئلة */
@@ -60,8 +61,8 @@ body.dark .question {
   flex: 1;
 }
 /* النتائج */
-
-summary, #details {
+/* ملاحظة: عنصر <summary> مستخدم في HTML؟ إذا لأ، يمكن حذفه */
+#details { /* تعديل ليشمل فقط العناصر الموجودة */
   margin-top: 20px;
 }
 /* مشاركة وتحميل */
