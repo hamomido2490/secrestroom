@@ -10,10 +10,23 @@
 </head>
 <body>
   <header>
-    <div>
-      <h1 id="title"></h1>
-      <p id="welcome" style="font-style:italic;"></p>
+   <header>
+  <div class="site-title">غرفة الأسرار<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room</span></div>
+  <div>
+    <p id="welcome" style="font-style:italic; margin: 0;"></p>
+    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+      <button id="themeToggle" onclick="toggleTheme()" style="padding: 8px 12px; font-size: 1.2rem;">🌓</button>
+      <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;">
+        <option value="ar">🇪🇬 العربية</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="zh">🇨🇳 中文</option>
+      </select>
+      <button id="logoutBtn" onclick="logout()" style="display:none; padding: 8px 12px;">🔒</button>
     </div>
+  </div>
     <div>
       <button id="themeToggle" onclick="toggleTheme()">🌓</button>
       <select id="langSelect" onchange="changeLanguage(this.value)">
