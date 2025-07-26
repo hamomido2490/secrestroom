@@ -25,6 +25,23 @@ function initLanguage() {
 }
 
 // تطبيق اللغة على العناصر
+// تطبيق اللغة على العناصر
+function applyLanguage(lang) {
+  const t = translations[lang].ui;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+  // تحديث عنوان الموقع حسب اللغة
+  const siteTitle = document.querySelector('.site-title');
+  if (siteTitle) {
+    if (lang === "ar") {
+      siteTitle.innerHTML = 'غرفة الأسرار<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room</span>';
+    } else {
+      siteTitle.innerHTML = 'Secrets Room<br><span style="font-size: 1.2rem; font-weight: normal;">غرفة الأسرار</span>';
+    }
+  }
+
+
 function applyLanguage(lang) {
   const t = translations[lang].ui;
   document.documentElement.lang = lang;
@@ -46,6 +63,7 @@ function applyLanguage(lang) {
     document.getElementById("logoutBtn").style.display = "inline-block";
   }
 }
+  document.getElementById("title").innerText = t.title;
 
 // تغيير اللغة يدوياً
 function changeLanguage(lang) {
