@@ -147,6 +147,7 @@ function nextQuestion() {
   if (!sel) return alert("اختر إجابة");
   answers.push({
     category: questions[currentQuestion].category,
+    domain: questions[currentQuestion].domain, // حفظ المجال أيضًا
     value: Number(sel.value)
   });
   currentQuestion++;
@@ -157,57 +158,147 @@ function nextQuestion() {
 function showResults() {
   document.getElementById("quizSection").classList.remove("active");
   document.getElementById("resultSection").classList.add("active");
-  calculateSummary();
-  showDetails();
+  calculateSummary(); // حساب وعرض التحليل المختصر
+  showDetails();      // حساب وعرض التحليل التفصيلي
 }
 
-// حساب الملخص
+// حساب الملخص (التحليل المختصر)
 function calculateSummary() {
   const summaryDiv = document.getElementById("summary");
   if (!summaryDiv) return; // التحقق من وجود العنصر
 
-  const grouped = {};
-  answers.forEach(a => grouped[a.category] = (grouped[a.category] || 0) + a.value);
-  const sortedEntries = Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
-  const top = sortedEntries[0];
+  // 1. جمع النقاط حسب الفئة (category) - كما كان
+  const scoresByCategory = {};
+  answers.forEach(a => {
+    scoresByCategory[a.category] = (scoresByCategory[a.category] || 0) + a.value;
+  });
 
-  // معالجة حالة عدم وجود نتائج
-  if (!top) {
-    summaryDiv.innerHTML = `<h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2><p>لا توجد نتائج كافية</p>`;
-    return;
+  // 2. تحديد أعلى فئتين للحصول على النظرية الأساسية
+  const sortedCategories = Object.entries(scoresByCategory).sort((a, b) => b[1] - a[1]);
+  const topCategories = sortedCategories.slice(0, 2); // أعلى فئتين
+
+  // 3. جمع النقاط حسب المجال (domain) - جديد
+  const scoresByDomain = {};
+  answers.forEach((a, index) => {
+    // استخدام المجال المخزن في الإجابة أو من السؤال الأصلي كاحتياطي
+    const answerDomain = a.domain;
+    const questionDomain = questions[index]?.domain || "unknown";
+    const domain = answerDomain || questionDomain;
+    scoresByDomain[domain] = (scoresByDomain[domain] || 0) + a.value;
+  });
+
+  // 4. تحديد المجال الأقوى
+  const sortedDomains = Object.entries(scoresByDomain).sort((a, b) => b[1] - a[1]);
+  const topDomainKey = sortedDomains[0]?.[0] || "full"; // افتراضي "full" إذا ما لقاش
+  const topDomainName = translations[currentLang]?.results?.domains?.[topDomainKey] || topDomainKey;
+
+  // 5. بناء نص الملخص
+  let summaryText = `<h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2>`;
+  summaryText += `<p>${translations[currentLang]?.results?.summary_intro || "هذه نظرة سريعة على شخصيتك:"}</p>`;
+
+  // عرض المجال الأقوى
+  summaryText += `<p><strong>مجالك الأقوى: ${topDomainName}</strong></p>`;
+
+  // عرض أعلى الفئات (النظريات)
+  summaryText += `<p>نظرياتك المهيمنة:`;
+  topCategories.forEach(([catKey, score]) => {
+    const categoryName = translations[currentLang]?.results?.traits?.[catKey] || catKey;
+    summaryText += ` ${categoryName},`;
+  });
+  // إزالة الفاصلة الأخيرة
+  if (topCategories.length > 0) {
+    summaryText = summaryText.slice(0, -1);
   }
+  summaryText += `</p>`;
 
-  const traitKey = top[0];
-  const traitName = translations[currentLang]?.results?.traits[traitKey] || traitKey;
-  const summaryIntro = translations[currentLang]?.results?.summary_intro || "هذه نظرة سريعة على شخصيتك:";
-
-  summaryDiv.innerHTML = `
-    <h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2>
-    <p>${summaryIntro}</p>
-    <strong>${traitName}</strong>`;
+  summaryDiv.innerHTML = summaryText;
 }
 
-// عرض التفاصيل
+
+// عرض التفاصيل (التحليل التفصيلي)
 function showDetails() {
   const detailsDiv = document.getElementById("details");
   if (!detailsDiv) return; // التحقق من وجود العنصر
 
-  const grouped = answers.reduce((acc,a)=>{
-    acc[a.category] = (acc[a.category]||0) + a.value;
+  // 1. جمع النقاط حسب الفئة (category) - كما كان
+  const scoresByCategory = answers.reduce((acc, a, index) => {
+    // الحصول على الفئة من السؤال نفسه (أكثر دقة)
+    const questionCategory = questions[index]?.category || a.category;
+    acc[questionCategory] = (acc[questionCategory] || 0) + a.value;
     return acc;
   }, {});
 
+  // 2. جمع النقاط حسب المجال (domain) - جديد
+  const scoresByDomain = {};
+  answers.forEach((a, index) => {
+    const questionDomain = questions[index]?.domain || "unknown";
+    scoresByDomain[questionDomain] = (scoresByDomain[questionDomain] || 0) + a.value;
+  });
+
+  // 3. جمع النقاط حسب الفئة *ضمن* كل مجال - جديد
+  const domainCategoryScores = {}; // { domain1: { cat1: score, cat2: score }, ... }
+  answers.forEach((a, index) => {
+    const question = questions[index];
+    if (question) {
+      const domain = question.domain || "unknown";
+      const category = question.category || "unknown";
+      if (!domainCategoryScores[domain]) domainCategoryScores[domain] = {};
+      domainCategoryScores[domain][category] = (domainCategoryScores[domain][category] || 0) + a.value;
+    }
+  });
+
+  // 4. بناء نص التفاصيل
   const t = translations[currentLang]?.ui || {};
   const results = translations[currentLang]?.results || {};
+  const domains = translations[currentLang]?.results?.domains || {};
 
-  let html = `<h2>${t.result_full || "التحليل التفصيلي"}</h2><p>${results.full_intro || "هذا التحليل التفصيلي المبني على نظريات علم النفس:"}</p>`;
+  let html = `<h2>${t.result_full || "التحليل التفصيلي"}</h2>`;
+  html += `<p>${results.full_intro || "تحليل متكامل بجميع النظريات النفسية الحديثة والكلاسيكية:"}</p>`;
 
-  for (let [cat, score] of Object.entries(grouped)) {
-    const trait = results.traits?.[cat] || cat; // استخدام اسم الفئة إذا لم توجد الترجمة
-    html += `<div class="result-card"><h3>${trait}</h3><p>Score: ${score}</p></div>`; // إضافة الكلاس للتنسيق
-  }
+  // أ) عرض النتائج حسب المجالات (كما في الموقع)
+  html += `<h3>📊 ${domains.full || "التحليل الكامل"}</h3>`;
+  // يمكن عرض النقاط الإجمالية للمجالات هنا إذا حبيت
+  // مثلاً:
+  html += `<ul>`;
+  Object.entries(scoresByDomain).forEach(([domainKey, score]) => {
+    const domainName = domains[domainKey] || domainKey;
+    html += `<li>${domainName}: ${score} نقطة</li>`;
+  });
+  html += `</ul>`;
+
+  // ب) عرض تفاصيل كل مجال مع النظريات الخاصة بيه
+  Object.entries(domainCategoryScores).forEach(([domainKey, categoryScores]) => {
+    const domainName = domains[domainKey] || domainKey;
+    html += `<div class="result-card">`;
+    html += `<h3>🔍 ${domainName}</h3>`;
+    html += `<ul>`;
+    // ترتيب النظريات داخل المجال حسب النقاط
+    const sortedCategoryEntries = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
+    sortedCategoryEntries.forEach(([catKey, score]) => {
+      const categoryName = results.traits?.[catKey] || catKey;
+      html += `<li>${categoryName}: ${score} نقطة</li>`;
+    });
+    html += `</ul>`;
+    html += `</div>`;
+  });
+
+  // ج) عرض *جميع* النظريات مجمعة (اختياري، يمكن حذفه إذا كان التقسيم حسب المجال كافي)
+  /*
+  html += `<div class="result-card">`;
+  html += `<h3>📚 جميع النظريات</h3>`;
+  html += `<ul>`;
+  const sortedAllCategories = Object.entries(scoresByCategory).sort((a, b) => b[1] - a[1]);
+  sortedAllCategories.forEach(([catKey, score]) => {
+    const categoryName = results.traits?.[catKey] || catKey;
+    html += `<li>${categoryName}: ${score} نقطة</li>`;
+  });
+  html += `</ul>`;
+  html += `</div>`;
+  */
+
   detailsDiv.innerHTML = html;
 }
+
 
 // تحميل PDF
 function downloadPDF() {
@@ -240,10 +331,12 @@ function shareResult() {
     }).catch(error => {
         console.error('خطأ في المشاركة:', error);
         // _FALLBACK_ إلى WhatsApp إذا فشل Web Share
+        // إزالة المسافات الزائدة من الرابط
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
     });
   } else if (text) {
     //_FALLBACK_ إلى WhatsApp
+    // إزالة المسافات الزائدة من الرابط
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
   } else {
       alert("لا توجد نتائج للمشاركة");
