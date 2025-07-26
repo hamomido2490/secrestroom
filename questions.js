@@ -272,8 +272,7 @@ const questions = [
       ar: "هل تستخدم لغة الجسد بشكل واعٍ للتواصل مع الآخرين؟",
       en: "Do you use body language consciously to communicate with others?"
     }
-  }
-    // === مجال الكشف الصادق (Discovery) - 10 أسئلة ===
+  },
   {
     id: 31,
     category: "personality_tests", // MBTI / Big Five / DISC / Enneagram / HBDI
