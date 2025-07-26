@@ -264,7 +264,7 @@ const translations = {
       summary_intro: "这是对您性格的快速概览：",
       full_intro: "基于心理学理论的深度分析：",
       traits: {
-        freud: "弗洛伊德精神分析",
+        freud: "弗洛伊ド精神分析",
         adler: "阿德勒个体心理学",
         jung: "荣格分析心理学",
         object_relations: "客体关系",
