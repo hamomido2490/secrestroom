@@ -1,181 +1,174 @@
-// حالة التطبيق
-const appState = {
-    currentLanguage: 'ar',
-    currentSection: 'home',
-    currentQuestion: 0,
-    userAnswers: {},
-    userDemographics: {},
-    testStarted: false,
-    testCompleted: false,
-    results: {}
-};
+// إعداد
+let currentLang = localStorage.getItem("lang") || "";
+let deviceId = localStorage.getItem("deviceId") || "";
+let userSession = JSON.parse(localStorage.getItem("session")) || null;
+let currentQuestion = 0;
+let answers = [];
 
-// تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', function() {
-    initLanguage();
-    initNavigation();
-    initTest();
-    initResults();
-    initAdSettings();
-    loadTheories();
-});
+// توليد معرف جهاز وحفظ
+function initDevice() {
+  if (!deviceId) {
+    deviceId = "SR-" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("deviceId", deviceId);
+  }
+}
 
-// إدارة اللغة
+// اكتشاف لغة الجهاز أول مرة
 function initLanguage() {
-    // تحميل اللغة المحددة
-    const savedLang = localStorage.getItem('secretsRoomLang') || 'ar';
-    setLanguage(savedLang);
-    
-    // زر تبديل اللغة
-    document.getElementById('languageToggle').addEventListener('click', toggleLanguage);
+  if (!localStorage.getItem("lang")) {
+    let browserLang = navigator.language.slice(0, 2);
+    currentLang = translations[browserLang] ? browserLang : "en";
+    localStorage.setItem("lang", currentLang);
+  } else currentLang = localStorage.getItem("lang");
+  document.getElementById("langSelect").value = currentLang;
+  applyLanguage(currentLang);
 }
 
-function setLanguage(lang) {
-    appState.currentLanguage = lang;
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    // تحديث واجهة المستخدم حسب اللغة
-    updateLanguageUI();
-    localStorage.setItem('secretsRoomLang', lang);
+// تطبيق اللغة على العناصر
+function applyLanguage(lang) {
+  const t = translations[lang].ui;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+  // UI
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("ageLabel").innerText = t.age;
+
+سالم لتصنيع وتجارة الشنط الحريمي, [7/26/2025 2:15 AM]
+document.getElementById("genderLabel").innerText = t.gender;
+  document.getElementById("startBtn").innerText = t.start;
+  document.getElementById("nextBtn").innerText = t.next;
+  document.getElementById("downloadPdfBtn").innerText = t.download_pdf;
+  document.getElementById("shareBtn").innerText = t.share;
+  document.getElementById("logoutBtn").innerText = t.logout;
+
+  // رسالة ترحيب
+  if (userSession) {
+    document.getElementById("welcome").innerText = t.welcome;
+    document.getElementById("logoutBtn").style.display = "inline-block";
+  }
 }
 
-function toggleLanguage() {
-    const newLang = appState.currentLanguage === 'ar' ? 'en' : 'ar';
-    setLanguage(newLang);
+// تغيير اللغة يدوياً
+function changeLanguage(lang) {
+  localStorage.setItem("lang", lang);
+  currentLang = lang;
+  applyLanguage(lang);
 }
 
-function updateLanguageUI() {
-    // تحديث نص زر اللغة
-    document.getElementById('languageToggle').textContent = 
-        appState.currentLanguage === 'ar' ? 'English' : 'العربية';
-    
-    // تحديث النصوص الأخرى حسب اللغة
-    // (سيتم تنفيذ هذا عبر نظام الترجمة الكامل)
+// تبديل الثيم
+function applyTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("theme", theme);
+}
+function toggleTheme() {
+  let next = (localStorage.getItem("theme") === "dark") ? "light" : "dark";
+  applyTheme(next);
 }
 
-// إدارة التنقل بين الأقسام
-function initNavigation() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const sectionId = this.getAttribute('data-section');
-            showSection(sectionId);
-        });
-    });
-    
-    // زر القائمة المتنقلة
-    const mobileBtn = document.querySelector('.mobile-menu-btn');
-    const mainNav = document.querySelector('.main-nav');
-    
-    mobileBtn.addEventListener('click', function() {
-        mainNav.classList.toggle('active');
-    });
-}
-
-function showSection(sectionId) {
-    // إخفاء جميع الأقسام
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // إزالة التنشيط من جميع روابط التنقل
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    
-    // عرض القسم المطلوب
-    document.getElementById(sectionId).classList.add('active');
-    
-    // تنشيط رابط التنقل المقابل
-    document.querySelector(.nav-link[data-section="${sectionId}"]).classList.add('active');
-    
-    // إغلاق القائمة المتنقلة إذا كانت مفتوحة
-    document.querySelector('.main-nav').classList.remove('active');
-    
-    // تحديث حالة التطبيق
-    appState.currentSection = sectionId;
-}
-
-// إدارة الاختبار
-function initTest() {
-    // بدء الاختبار
-    document.getElementById('startTestBtn').addEventListener('click', startTest);
-    
-    // تقديم البيانات الديموغرافية
-    document.getElementById('submitDemographics').addEventListener('click', submitDemographics);
-    
-    // التنقل بين الأسئلة
-    document.getElementById('prevQuestion').addEventListener('click', prevQuestion);
-    document.getElementById('nextQuestion').addEventListener('click', nextQuestion);
-}
-
+// ابدأ الاختبار
 function startTest() {
-    appState.testStarted = true;
-    showSection('demographics');
+  const age = document.getElementById("ageInput").value;
+  const gender = document.getElementById("genderSelect").value;
+  if (!age) return alert("يرجى إدخال العمر");
+  userSession = { age, gender, deviceId, timestamp: Date.now() };
+  localStorage.setItem("session", JSON.stringify(userSession));
+  document.getElementById("welcomeSection").classList.remove("active");
+  document.getElementById("quizSection").classList.add("active");
+  renderQuestion();
 }
 
-function submitDemographics() {
-    // جمع البيانات الديموغرافية
-    appState.userDemographics = {
-        name: document.getElementById('userName').value,
-        age: document.getElementById('userAge').value,
-        gender: document.querySelector('input[name="gender"]:checked').value,
-        education: document.getElementById('userEducation').value
-    };
-    
-    // التحقق من صحة البيانات
-    if (!validateDemographics()) return;
-    
-    // بدء الاختبار الفعلي
-    showSection('test');
-    loadQuestion(0);
-}
-function validateDemographics() {
-    let isValid = true;
-    
-    // التحقق من العمر
-    const age = parseInt(appState.userDemographics.age);
-    if (isNaN(age)  age < 12  age > 100) {
-        document.querySelector('#userAge + .validation-message').style.display = 'block';
-        isValid = false;
-    } else {
-        document.querySelector('#userAge + .validation-message').style.display = 'none';
-    }
-    
-    // التحقق من الجنس
-    if (!appState.userDemographics.gender) {
-        alert(appState.currentLanguage === 'ar' ? 'الرجاء تحديد الجنس' : 'Please select your gender');
-        isValid = false;
-    }
-    
-    // التحقق من المستوى التعليمي
-    if (!appState.userDemographics.education) {
-        alert(appState.currentLanguage === 'ar' ? 'الرجاء تحديد المستوى التعليمي' : 'Please select your education level');
-        isValid = false;
-    }
-    
-    return isValid;
+// عرض السؤال الحالي
+function renderQuestion() {
+  if (currentQuestion >= questions.length) return showResults();
+  const q = questions[currentQuestion];
+  const container = document.getElementById("questionContainer");
+  container.innerHTML = 
+    <div class="question">${q.text[currentLang]}</div>
+    <div class="options">
+      ${Object.entries(translations[currentLang].options.likert)
+        .map(([val, txt]) =>
+          <label>
+             <input type="radio" name="opt" value="${val}">
+             ${txt}
+           </label>
+        ).join("")}
+    </div>;
 }
 
-function loadQuestion(questionIndex) {
-    const question = testQuestions[questionIndex];
-    
-    // تحديث شريط التقدم
-    updateProgressBar((questionIndex + 1) / testQuestions.length * 100);
-    document.querySelector('.progress-text').textContent = 
-        appState.currentLanguage === 'ar' ? 
-        السؤال ${questionIndex + 1} من ${testQuestions.length} :
-        Question ${questionIndex + 1} of ${testQuestions.length};
-    
-    // تحديث النظرية الحالية
-    const theory = psychologicalTheories[question.theory];
-    document.getElementById('currentTheory').textContent = 
-        appState.currentLanguage === 'ar' ? theory.name.ar : theory.name.en;
-    
-    // عرض السؤال
-    const questionContainer = document.querySelector('.question-container');
-    questionContainer.innerHTML = `
-        <h3 class
+// انتقل للسؤال التالي
+function nextQuestion() {
+  const sel = document.querySelector('input[name="opt"]:checked');
+  if (!sel) return alert("اختر إجابة");
+  answers.push({
+    category: questions[currentQuestion].category,
+    value: Number(sel.value)
+  });
+  currentQuestion++;
+  renderQuestion();
+}
+
+// عرض النتائج
+function showResults() {
+  document.getElementById("quizSection").classList.remove("active");
+  document.getElementById("resultSection").classList.add("active");
+  calculateSummary();
+  showDetails();
+}
+
+// حساب الملخص
+function calculateSummary() {
+  const summaryDiv = document.getElementById("summary");
+  const grouped = {};
+  answers.forEach(a => grouped[a.category] = (grouped[a.category] || 0) + a.value);
+  const top = Object.entries(grouped).sort((a,b)=>b[1]-a[1])[0];
+  const trait = translations[currentLang].results.traits[top[0]];
+  summaryDiv.innerHTML = 
+    <h2>${translations[currentLang].ui.result_summary}</h2>
+    <p>${translations[currentLang].results.summary_intro}</p>
+    <strong>${trait}</strong>;
+}
+
+// عرض التفاصيل
+function showDetails() {
+  const detailsDiv = document.getElementById("details");
+  let html = <h2>${translations[currentLang].ui.resultfull}</h2><p>${translations[currentLang].results.fullintro}</p>;
+  for (let [cat, score] of Object.entries(
+       answers.reduce((acc,a)=>{ acc[a.category]=(acc[a.category]||0)+a.value; return acc;},{})
+     )) {
+    const trait = translations[currentLang].results.traits[cat];
+    html += <h3>${trait}</h3><p>Score: ${score}</p>;
+  }
+  detailsDiv.innerHTML = html;
+}
+
+// تحميل PDF
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.text(document.getElementById("summary").innerText, 10, 10);
+  doc.text(document.getElementById("details").innerText, 10, 30);
+  doc.save("SecretsRoom_Report.pdf");
+}
+
+// مشاركة النتيجة
+function shareResult() {
+  const text = document.getElementById("summary").innerText
+             + "\n\n" + document.getElementById("details").innerText;
+  window.open(https://wa.me/?text=${encodeURIComponent(text)});
+}
+
+سالم لتصنيع وتجارة الشنط الحريمي, [7/26/2025 2:15 AM]
+// تسجيل الخروج (حذف الجلسة)
+function logout() {
+  localStorage.removeItem("session");
+  userSession = null;
+  location.reload();
+}
+
+// عند التحميل
+window.onload = () => {
+  initDevice();
+  initLanguage();
+  applyTheme(localStorage.getItem("theme") || "light");
+};
