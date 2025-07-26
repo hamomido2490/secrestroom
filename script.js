@@ -33,9 +33,7 @@ function applyLanguage(lang) {
   // UI
   document.getElementById("title").innerText = t.title;
   document.getElementById("ageLabel").innerText = t.age;
-
-سالم لتصنيع وتجارة الشنط الحريمي, [7/26/2025 2:15 AM]
-document.getElementById("genderLabel").innerText = t.gender;
+  document.getElementById("genderLabel").innerText = t.gender;
   document.getElementById("startBtn").innerText = t.start;
   document.getElementById("nextBtn").innerText = t.next;
   document.getElementById("downloadPdfBtn").innerText = t.download_pdf;
@@ -83,17 +81,17 @@ function renderQuestion() {
   if (currentQuestion >= questions.length) return showResults();
   const q = questions[currentQuestion];
   const container = document.getElementById("questionContainer");
-  container.innerHTML = 
+  container.innerHTML = `
     <div class="question">${q.text[currentLang]}</div>
     <div class="options">
       ${Object.entries(translations[currentLang].options.likert)
         .map(([val, txt]) =>
-          <label>
+          `<label>
              <input type="radio" name="opt" value="${val}">
              ${txt}
-           </label>
+           </label>`
         ).join("")}
-    </div>;
+    </div>`;
 }
 
 // انتقل للسؤال التالي
@@ -121,29 +119,50 @@ function calculateSummary() {
   const summaryDiv = document.getElementById("summary");
   const grouped = {};
   answers.forEach(a => grouped[a.category] = (grouped[a.category] || 0) + a.value);
-  const top = Object.entries(grouped).sort((a,b)=>b[1]-a[1])[0];
+  const sortedEntries = Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
+  const top = sortedEntries[0];
+  
+  // معالجة حالة عدم وجود نتائج
+  if (!top) {
+    summaryDiv.innerHTML = `<h2>${translations[currentLang].ui.result_summary}</h2><p>لا توجد نتائج كافية</p>`;
+    return;
+  }
+  
   const trait = translations[currentLang].results.traits[top[0]];
-  summaryDiv.innerHTML = 
+  summaryDiv.innerHTML = `
     <h2>${translations[currentLang].ui.result_summary}</h2>
     <p>${translations[currentLang].results.summary_intro}</p>
-    <strong>${trait}</strong>;
+    <strong>${trait}</strong>`;
 }
 
 // عرض التفاصيل
 function showDetails() {
   const detailsDiv = document.getElementById("details");
-  let html = <h2>${translations[currentLang].ui.resultfull}</h2><p>${translations[currentLang].results.fullintro}</p>;
-  for (let [cat, score] of Object.entries(
-       answers.reduce((acc,a)=>{ acc[a.category]=(acc[a.category]||0)+a.value; return acc;},{})
-     )) {
-    const trait = translations[currentLang].results.traits[cat];
-    html += <h3>${trait}</h3><p>Score: ${score}</p>;
+  const grouped = answers.reduce((acc,a)=>{ 
+    acc[a.category] = (acc[a.category]||0) + a.value; 
+    return acc;
+  }, {});
+  
+  const t = translations[currentLang].ui;
+  const results = translations[currentLang].results;
+  
+  let html = `<h2>${t.result_full}</h2><p>${results.full_intro}</p>`;
+  
+  for (let [cat, score] of Object.entries(grouped)) {
+    const trait = results.traits[cat];
+    html += `<h3>${trait}</h3><p>Score: ${score}</p>`;
   }
   detailsDiv.innerHTML = html;
 }
 
 // تحميل PDF
 function downloadPDF() {
+  // التحقق من وجود مكتبة jsPDF
+  if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+    alert('خطأ في تحميل مكتبة PDF');
+    return;
+  }
+  
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.text(document.getElementById("summary").innerText, 10, 10);
@@ -155,13 +174,23 @@ function downloadPDF() {
 function shareResult() {
   const text = document.getElementById("summary").innerText
              + "\n\n" + document.getElementById("details").innerText;
-  window.open(https://wa.me/?text=${encodeURIComponent(text)});
+  
+  // استخدام Web Share API إذا كان مدعوماً
+  if (navigator.share) {
+    navigator.share({ 
+      title: translations[currentLang].ui.title,
+      text: text 
+    }).catch(console.error);
+  } else {
+    //_FALLBACK_ إلى WhatsApp
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+  }
 }
 
-سالم لتصنيع وتجارة الشنط الحريمي, [7/26/2025 2:15 AM]
 // تسجيل الخروج (حذف الجلسة)
 function logout() {
   localStorage.removeItem("session");
+  localStorage.removeItem("savedAnswers"); // حذف الإجابات المحفوظة
   userSession = null;
   location.reload();
 }
