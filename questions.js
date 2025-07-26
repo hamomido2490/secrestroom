@@ -33,7 +33,7 @@ const questions = [
     category: "jung",
     domain: "vision",
     text: {
-      ar: "هل تجد نفسك تتأثر بحواسك و]intuition] في اتخاذ القرارات؟",
+      ar: "هل تجد نفسك تتأثر بحواسك وبحدسك في اتخاذ القرارات؟",
       en: "Do you find yourself influenced by your senses and intuition in decision-making?"
     }
   },
