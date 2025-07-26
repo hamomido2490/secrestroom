@@ -25,8 +25,13 @@ function initLanguage() {
 }
 
 // تطبيق اللغة على العناصر
-// تطبيق اللغة على العناصر
 function applyLanguage(lang) {
+  // التحقق من وجود الترجمة للغة المطلوبة
+  if (!translations[lang]) {
+      console.error(`الترجمة للغة ${lang} غير متوفرة.`);
+      return; // أو استخدام لغة افتراضية
+  }
+
   const t = translations[lang].ui;
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
@@ -41,29 +46,51 @@ function applyLanguage(lang) {
     }
   }
 
+  // UI - تحديث عناصر واجهة المستخدم الأخرى
+  // تأكد من وجود العناصر قبل محاولة تحديثها
+  const titleElement = document.getElementById("title");
+  if (titleElement) titleElement.innerText = t.title || "";
 
-function applyLanguage(lang) {
-  const t = translations[lang].ui;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  const ageLabelElement = document.getElementById("ageLabel");
+  if (ageLabelElement) ageLabelElement.innerText = t.age || "";
 
-  // UI
-  document.getElementById("title").innerText = t.title;
-  document.getElementById("ageLabel").innerText = t.age;
-  document.getElementById("genderLabel").innerText = t.gender;
-  document.getElementById("startBtn").innerText = t.start;
-  document.getElementById("nextBtn").innerText = t.next;
-  document.getElementById("downloadPdfBtn").innerText = t.download_pdf;
-  document.getElementById("shareBtn").innerText = t.share;
-  document.getElementById("logoutBtn").innerText = t.logout;
+  const genderLabelElement = document.getElementById("genderLabel");
+  if (genderLabelElement) genderLabelElement.innerText = t.gender || "";
+
+  const startBtnElement = document.getElementById("startBtn");
+  if (startBtnElement) startBtnElement.innerText = t.start || "";
+
+  const nextBtnElement = document.getElementById("nextBtn");
+  if (nextBtnElement) nextBtnElement.innerText = t.next || "";
+
+  const downloadPdfBtnElement = document.getElementById("downloadPdfBtn");
+  if (downloadPdfBtnElement) downloadPdfBtnElement.innerText = t.download_pdf || "";
+
+  const shareBtnElement = document.getElementById("shareBtn");
+  if (shareBtnElement) shareBtnElement.innerText = t.share || "";
+
+  const logoutBtnElement = document.getElementById("logoutBtn");
+  if (logoutBtnElement) logoutBtnElement.innerText = t.logout || "";
 
   // رسالة ترحيب
-  if (userSession) {
-    document.getElementById("welcome").innerText = t.welcome;
-    document.getElementById("logoutBtn").style.display = "inline-block";
+  const welcomeElement = document.getElementById("welcome");
+  if (welcomeElement) {
+      if (userSession) {
+        welcomeElement.innerText = t.welcome || "";
+        welcomeElement.style.fontStyle = "italic"; // تطبيق النمط إذا لزم
+        // التأكد من وجود زر تسجيل الخروج قبل إظهاره
+        if (logoutBtnElement) {
+            logoutBtnElement.style.display = "inline-block";
+        }
+      } else {
+        welcomeElement.innerText = "";
+        welcomeElement.style.fontStyle = ""; // إزالة النمط إذا لم يكن هناك جلسة
+        if (logoutBtnElement) {
+            logoutBtnElement.style.display = "none";
+        }
+      }
   }
 }
-  document.getElementById("title").innerText = t.title;
 
 // تغيير اللغة يدوياً
 function changeLanguage(lang) {
@@ -99,10 +126,12 @@ function renderQuestion() {
   if (currentQuestion >= questions.length) return showResults();
   const q = questions[currentQuestion];
   const container = document.getElementById("questionContainer");
+  // التحقق من وجود العناصر المطلوبة في الترجمة
+  const likertOptions = translations[currentLang]?.options?.likert || {};
   container.innerHTML = `
-    <div class="question">${q.text[currentLang]}</div>
+    <div class="question">${q.text[currentLang] || "السؤال غير متوفر"}</div>
     <div class="options">
-      ${Object.entries(translations[currentLang].options.likert)
+      ${Object.entries(likertOptions)
         .map(([val, txt]) =>
           `<label>
              <input type="radio" name="opt" value="${val}">
@@ -135,40 +164,47 @@ function showResults() {
 // حساب الملخص
 function calculateSummary() {
   const summaryDiv = document.getElementById("summary");
+  if (!summaryDiv) return; // التحقق من وجود العنصر
+
   const grouped = {};
   answers.forEach(a => grouped[a.category] = (grouped[a.category] || 0) + a.value);
   const sortedEntries = Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
   const top = sortedEntries[0];
-  
+
   // معالجة حالة عدم وجود نتائج
   if (!top) {
-    summaryDiv.innerHTML = `<h2>${translations[currentLang].ui.result_summary}</h2><p>لا توجد نتائج كافية</p>`;
+    summaryDiv.innerHTML = `<h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2><p>لا توجد نتائج كافية</p>`;
     return;
   }
-  
-  const trait = translations[currentLang].results.traits[top[0]];
+
+  const traitKey = top[0];
+  const traitName = translations[currentLang]?.results?.traits[traitKey] || traitKey;
+  const summaryIntro = translations[currentLang]?.results?.summary_intro || "هذه نظرة سريعة على شخصيتك:";
+
   summaryDiv.innerHTML = `
-    <h2>${translations[currentLang].ui.result_summary}</h2>
-    <p>${translations[currentLang].results.summary_intro}</p>
-    <strong>${trait}</strong>`;
+    <h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2>
+    <p>${summaryIntro}</p>
+    <strong>${traitName}</strong>`;
 }
 
 // عرض التفاصيل
 function showDetails() {
   const detailsDiv = document.getElementById("details");
-  const grouped = answers.reduce((acc,a)=>{ 
-    acc[a.category] = (acc[a.category]||0) + a.value; 
+  if (!detailsDiv) return; // التحقق من وجود العنصر
+
+  const grouped = answers.reduce((acc,a)=>{
+    acc[a.category] = (acc[a.category]||0) + a.value;
     return acc;
   }, {});
-  
-  const t = translations[currentLang].ui;
-  const results = translations[currentLang].results;
-  
-  let html = `<h2>${t.result_full}</h2><p>${results.full_intro}</p>`;
-  
+
+  const t = translations[currentLang]?.ui || {};
+  const results = translations[currentLang]?.results || {};
+
+  let html = `<h2>${t.result_full || "التحليل التفصيلي"}</h2><p>${results.full_intro || "هذا التحليل التفصيلي المبني على نظريات علم النفس:"}</p>`;
+
   for (let [cat, score] of Object.entries(grouped)) {
-    const trait = results.traits[cat];
-    html += `<h3>${trait}</h3><p>Score: ${score}</p>`;
+    const trait = results.traits?.[cat] || cat; // استخدام اسم الفئة إذا لم توجد الترجمة
+    html += `<div class="result-card"><h3>${trait}</h3><p>Score: ${score}</p></div>`; // إضافة الكلاس للتنسيق
   }
   detailsDiv.innerHTML = html;
 }
@@ -180,28 +216,37 @@ function downloadPDF() {
     alert('خطأ في تحميل مكتبة PDF');
     return;
   }
-  
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  doc.text(document.getElementById("summary").innerText, 10, 10);
-  doc.text(document.getElementById("details").innerText, 10, 30);
+  const summaryText = document.getElementById("summary")?.innerText || "";
+  const detailsText = document.getElementById("details")?.innerText || "";
+  doc.text(summaryText, 10, 10);
+  doc.text(detailsText, 10, 30);
   doc.save("SecretsRoom_Report.pdf");
 }
 
 // مشاركة النتيجة
 function shareResult() {
-  const text = document.getElementById("summary").innerText
-             + "\n\n" + document.getElementById("details").innerText;
-  
+  const summaryText = document.getElementById("summary")?.innerText || "";
+  const detailsText = document.getElementById("details")?.innerText || "";
+  const text = summaryText + "\n\n" + detailsText;
+
   // استخدام Web Share API إذا كان مدعوماً
-  if (navigator.share) {
-    navigator.share({ 
-      title: translations[currentLang].ui.title,
-      text: text 
-    }).catch(console.error);
-  } else {
+  if (navigator.share && text) { // التحقق من وجود نص للمشاركة
+    navigator.share({
+      title: translations[currentLang]?.ui?.title || "Secrets Room",
+      text: text
+    }).catch(error => {
+        console.error('خطأ في المشاركة:', error);
+        // _FALLBACK_ إلى WhatsApp إذا فشل Web Share
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    });
+  } else if (text) {
     //_FALLBACK_ إلى WhatsApp
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+  } else {
+      alert("لا توجد نتائج للمشاركة");
   }
 }
 
