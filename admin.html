@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إعدادات الإعلانات</title>
+  <style>
+    body { font-family:'Segoe UI',sans-serif; padding:20px; }
+    #panel { display:none; margin-top:20px; }
+  </style>
+</head>
+<body>
+  <h2>إعدادات الإعلانات</h2>
+  <input type="password" id="pass" placeholder="كلمة المرور">
+  <button onclick="check()">دخول</button>
+  <div id="panel">
+    <p>هنا يمكنك إدارة الإعلانات الربحية.</p>
+    <!-- روابط الإعلانات أو أكواد AdSense -->
+  </div>
+  <script>
+    function check(){
+      if(document.getElementById("pass").value==="Farida")
+        document.getElementById("panel").style.display="block";
+      else alert("كلمة المرور خاطئة");
+    }
+  </script>
+</body>
+</html>
