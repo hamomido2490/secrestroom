@@ -273,7 +273,95 @@ const questions = [
       en: "Do you use body language consciously to communicate with others?"
     }
   }
-  // === مجال الكشف الصادق (Discovery) - 10 أسئلة ===
-  // سيتم إضافتها لاحقًا أو إعادة تصنيف أسئلة موجودة لملء هذا المجال.
-  // حاليًا، الأسئلة 1-30 موزعة على المجالات الثلاثة الأولى.
+    // === مجال الكشف الصادق (Discovery) - 10 أسئلة ===
+  {
+    id: 31,
+    category: "personality_tests", // MBTI / Big Five / DISC / Enneagram / HBDI
+    domain: "discovery",
+    text: {
+      ar: "هل تجد صعوبة في تصنيف نفسك في نوع شخصية واحد؟",
+      en: "Do you find it difficult to classify yourself in one personality type?"
+    }
+  },
+  {
+    id: 32,
+    category: "projective", // MMPI / Rorschach / TAT
+    domain: "discovery",
+    text: {
+      ar: "هل تميل إلى رؤية أنماط أو معاني في الأشياء العشوائية؟",
+      en: "Do you tend to see patterns or meanings in random things?"
+    }
+  },
+  {
+    id: 33,
+    category: "body_language", // لغة الجسد / NLP / جرافولوجي
+    domain: "discovery",
+    text: {
+      ar: "هل تنتبه لغة جسد الآخرين وتفسرها بسهولة؟",
+      en: "Do you pay attention to others' body language and interpret it easily?"
+    }
+  },
+  {
+    id: 34,
+    category: "aba", // ABA (تحليل السلوك التطبيقي)
+    domain: "discovery",
+    text: {
+      ar: "هل تلاحظ تحسنًا في سلوكك عند استخدام نظام مكافآت؟",
+      en: "Do you notice improvement in your behavior when using a reward system?"
+    }
+  },
+  {
+    id: 35,
+    category: "adler", // علم النفس الفردي (أدلر)
+    domain: "discovery",
+    text: {
+      ar: "هل تشعر أن أهدافك الحقيقية تختلف عما تراه الآخرون؟",
+      en: "Do you feel your true goals are different from what others see?"
+    }
+  },
+  {
+    id: 36,
+    category: "freud", // التحليل الكلاسيكي (فرويد)
+    domain: "discovery",
+    text: {
+      ar: "هل تشعر أن لديك ذكريات طفولية مخفية تؤثر عليك؟",
+      en: "Do you feel you have hidden childhood memories that affect you?"
+    }
+  },
+  {
+    id: 37,
+    category: "jung", // التحليل التحليلي (يونغ)
+    domain: "discovery",
+    text: {
+      ar: "هل تؤمن بوجود حدس قوي يرشدك في القرارات؟",
+      en: "Do you believe in a strong intuition that guides you in decisions?"
+    }
+  },
+  {
+    id: 38,
+    category: "traits_theory", // نظرية السمات
+    domain: "discovery",
+    text: {
+      ar: "هل تكتشف صفات جديدة في نفسك بمرور الوقت؟",
+      en: "Do you discover new traits in yourself over time?"
+    }
+  },
+  {
+    id: 39,
+    category: "existential", // التحليل الوجودي
+    domain: "discovery",
+    text: {
+      ar: "هل تشعر أن لديك هدفًا وجوديًا مميزًا في الحياة؟",
+      en: "Do you feel you have a unique existential purpose in life?"
+    }
+  },
+  {
+    id: 40,
+    category: "cultural", // التحليل الثقافي
+    domain: "discovery",
+    text: {
+      ar: "هل تكتشف جوانب جديدة من ثقافتك بمرور الوقت؟",
+      en: "Do you discover new aspects of your culture over time?"
+    }
+  }
 ];
