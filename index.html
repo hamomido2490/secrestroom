@@ -5,25 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- تحسين SEO -->
   <meta name="description" content="اختبارات شخصية نفسية مجانية بناءً على نظريات علم النفس لتحليل شخصيتك بدقة">
-  <meta name="keywords" content="اختبار شخصية, تحليل نفسي, MBTI, Big Five, علم نفس, أرق">
+  <meta name="keywords" content="اختبار شخصية, تحليل نفسي, MBTI, Big Five, علم نفس, أرق, فرويد, يونغ, ماسلو">
   <meta name="author" content="Mohammed Tarek">
+  <!-- Open Graph Tags لتحسين المشاركة -->
+  <meta property="og:title" content="غرفة الأسرار - اكتشف شخصيتك">
+  <meta property="og:description" content="اختبار شخصية مجاني يعتمد على نظريات علم النفس لتحليل شخصيتك بدقة">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-site-url.com">
+  <meta property="og:image" content="https://your-site-url.com/og-image.png">
   <title id="title">غرفة الأسرار</title>
   <!-- إضافة Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
+  <!-- إضافة خط Noto Sans Arabic -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <!-- مكتبة jsPDF مع دعم الخط العربي -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- مكتبة Chart.js لرسوم بيانية -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="light">
   <!-- هيدر -->
   <header>
     <div class="site-title">غرفة الأسرار<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room</span></div>
     <div>
       <p id="welcome" style="font-style:italic; margin: 0;"></p>
       <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-        <button id="themeToggle" onclick="toggleTheme()" aria-label="تبديل الثيم" style="padding: 8px 12px; font-size: 1.2rem;">🌓</button>
+        <!-- [تحسين] زر تبديل الثيم -->
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="تبديل الثيم بين الفاتح والداكن">🌓</button>
         <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;" aria-label="اختيار اللغة">
           <option value="ar">🇪🇬 العربية</option>
           <option value="en">🇺🇸 English</option>
@@ -39,33 +48,35 @@
 
   <div id="content">
     <!-- 1. شاشة البداية -->
-    <section id="welcomeSection" class="active">
+    <section id="welcomeSection" class="active" aria-labelledby="welcomeTitle">
+      <h2 id="welcomeTitle" style="text-align: center; margin-bottom: 20px;">ابدأ اختبار الشخصية</h2>
       <label id="ageLabel" for="ageInput"></label>
-      <input type="number" id="ageInput" min="10" max="100" aria-label="أدخل عمرك">
+      <input type="number" id="ageInput" min="10" max="100" aria-label="أدخل عمرك" placeholder="العمر (10-100)" required>
       <label id="genderLabel" for="genderSelect"></label>
-      <select id="genderSelect" aria-label="اختيار الجنس">
+      <select id="genderSelect" aria-label="اختيار الجنس" required>
         <option value="male">ذكر ♂️</option>
         <option value="female">أنثى ♀️</option>
         <option value="other">لا أريد التحديد ⚧️</option>
       </select>
-      <button id="startBtn" onclick="startTest()" aria-label="بدء اختبار الشخصية"></button>
+      <button id="startBtn" onclick="startTest()" aria-label="بدء اختبار الشخصية">بدء الاختبار</button>
     </section>
 
     <!-- 2. الأسئلة -->
-    <section id="quizSection">
+    <section id="quizSection" aria-labelledby="quizTitle">
+      <h2 id="quizTitle" style="text-align: center; margin-bottom: 20px; display: none;">اختبار الشخصية</h2>
       <div class="progress-container">
         <div class="progress-bar">
           <div id="progressFill" style="transition: width 0.3s ease-in-out;"></div>
         </div>
-        <span id="progressText"></span>
+        <span id="progressText" aria-live="polite"></span>
       </div>
-      <div id="questionContainer"></div>
+      <div id="questionContainer" role="region" aria-live="assertive"></div>
       <div id="answerOptions"></div>
       <!-- رسالة تحذير لزر التالي -->
-      <p id="nextBtnHint" style="display:none; color:red;"></p>
-      <button id="nextBtn" onclick="nextQuestion()" disabled aria-label="السؤال التالي"></button>
-      <!-- إعلان صغير بجانب الأسئلة -->
-      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+      <p id="nextBtnHint" style="display:none; color:red;" role="alert"></p>
+      <button id="nextBtn" onclick="nextQuestion()" disabled aria-label="الانتقال إلى السؤال التالي">التالي</button>
+      <!-- [تحسين] إعلان صغير بجانب الأسئلة -->
+      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="YOUR_AD_CLIENT_ID"
@@ -77,41 +88,42 @@
     </section>
 
     <!-- 3. النتائج -->
-    <section id="resultSection">
-      <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;">
-        <button id="btnPersonalityType" onclick="displayResultContent('personalityType')" aria-label="عرض تصنيف الشخصية">تصنيف الشخصية</button>
-        <button id="btnSummary" onclick="displayResultContent('summary')" aria-label="عرض التحليل المختصر">التحليل المختصر</button>
-        <button id="btnTheories" onclick="displayResultContent('theories')" aria-label="عرض التحليل حسب النظريات">التحليل حسب النظريات</button>
-        <button id="btnDetailedAnalysis" onclick="displayResultContent('detailedAnalysis')" aria-label="عرض التحليل التفصيلي">التحليل التفصيلي</button>
-        <button id="btnRecommendations" onclick="displayResultContent('recommendations')" aria-label="عرض التوصيات">التوصيات</button>
+    <section id="resultSection" aria-labelledby="resultTitle">
+      <h2 id="resultTitle" style="text-align: center; margin-bottom: 20px;">نتائج اختبار الشخصية</h2>
+      <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;" role="tablist">
+        <button id="btnPersonalityType" onclick="displayResultContent('personalityType')" aria-label="عرض تصنيف الشخصية" role="tab" aria-selected="true">تصنيف الشخصية</button>
+        <button id="btnSummary" onclick="displayResultContent('summary')" aria-label="عرض التحليل المختصر" role="tab" aria-selected="false">التحليل المختصر</button>
+        <button id="btnTheories" onclick="displayResultContent('theories')" aria-label="عرض التحليل حسب النظريات" role="tab" aria-selected="false">التحليل حسب النظريات</button>
+        <button id="btnDetailedAnalysis" onclick="displayResultContent('detailedAnalysis')" aria-label="عرض التحليل التفصيلي" role="tab" aria-selected="false">التحليل التفصيلي</button>
+        <button id="btnRecommendations" onclick="displayResultContent('recommendations')" aria-label="عرض التوصيات" role="tab" aria-selected="false">التوصيات</button>
       </div>
 
       <!-- قسم تصنيف الشخصية -->
-      <div id="personalityTypeSection" class="result-section-content" style="display:none;">
+      <div id="personalityTypeSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnPersonalityType">
         <div id="personalityTypeContent"></div>
-        <canvas id="resultChart" style="max-width: 400px; margin: 20px auto;"></canvas>
+        <canvas id="resultChart" style="max-width: 400px; margin: 20px auto;" aria-label="رسم بياني لنتائج المجالات"></canvas>
       </div>
-      <div id="summarySection" class="result-section-content" style="display:none;">
+      <div id="summarySection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnSummary">
         <div id="summaryContent"></div>
       </div>
-      <div id="theoriesSection" class="result-section-content" style="display:none;">
+      <div id="theoriesSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnTheories">
         <div id="theoriesContent"></div>
       </div>
-      <div id="detailedAnalysisSection" class="result-section-content" style="display:none;">
+      <div id="detailedAnalysisSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnDetailedAnalysis">
         <h3>التحليل التفصيلي لجميع النظريات</h3>
         <div id="detailedAnalysisContent"></div>
       </div>
-      <div id="recommendationsSection" class="result-section-content" style="display:none;">
+      <div id="recommendationsSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnRecommendations">
         <h3>التوصيات والنصائح</h3>
         <div id="recommendationsContent"></div>
       </div>
 
       <div class="actions">
         <button id="downloadPdfBtn" onclick="downloadPDF()" aria-label="تحميل التقرير كملف PDF">تحميل التقرير PDF</button>
-        <button id="shareBtn" onclick="shareResult()" aria-label="مشاركة النتائج">مشاركة</button>
+        <button id="shareBtn" onclick="shareResult()" aria-label="مشاركة نتائج اختبار الشخصية">مشاركة</button>
       </div>
-      <!-- إعلان أسفل النتائج -->
-      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+      <!-- [تحسين] إعلان أسفل النتائج -->
+      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="YOUR_AD_CLIENT_ID"
@@ -122,8 +134,8 @@
       </div>
     </section>
 
-    <!-- 4. إعلان ربحي رئيسي -->
-    <section id="adSection" class="ad-placeholder">
+    <!-- [تحسين] إعلان ربحي رئيسي -->
+    <section id="adSection" class="ad-placeholder" aria-hidden="true">
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="YOUR_AD_CLIENT_ID"
@@ -134,24 +146,25 @@
     </section>
   </div>
 
-  <!-- مودال لعرض النظريات -->
-  <div id="theoryModal" class="modal" style="display:none;">
+  <!-- مودال لعرض تفاصيل النظريات -->
+  <div id="theoryModal" class="modal" style="display:none;" role="dialog" aria-labelledby="theoryModalTitle">
     <div class="modal-content">
-      <span class="close" onclick="closeTheoryModal()" aria-label="إغلاق النافذة">&times;</span>
+      <span class="close" onclick="closeTheoryModal()" aria-label="إغلاق نافذة النظرية">&times;</span>
+      <h3 id="theoryModalTitle">تفاصيل النظرية</h3>
       <div id="theoryModalContent"></div>
     </div>
   </div>
 
   <!-- ملفات JavaScript -->
   <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script>
-  <script src="questions.js"></script>
-  <script src="analysis_data.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="questions.js"></script>
+  <script type="module" src="analysis_data.js"></script>
+  <script type="module" src="script.js"></script>
 
   <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
     <p>&copy; 2025 Mohammed Tarek</p>
-    <!-- إعلان في الفوتر -->
-    <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+    <!-- [تحسين] إعلان في الفوتر -->
+    <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="YOUR_AD_CLIENT_ID"
