@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="title">غرفة الأسرار</title>
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- إصلاح المسافة في رابط jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
@@ -42,16 +43,7 @@
       <button id="startBtn" onclick="startTest()"></button>
     </section>
 
-    <!-- 2. الأسئلة -->
-    <section id="quizSection">
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div id="progressFill"></div>
-        </div>
-        <span id="progressText"></span>
-      </div>
-      <div id="questionContainer"></div>
-      <div id="answerOptions">    <!-- 2. الأسئلة - محدث -->
+    <!-- 2. الأسئلة - مُصلح -->
     <section id="quizSection">
       <div class="progress-container">
         <div class="progress-bar">
@@ -63,54 +55,51 @@
       <div id="answerOptions"></div> <!-- عنصر جديد لخيارات الإجابة -->
       <button id="nextBtn" onclick="nextQuestion()" disabled></button>
     </section>
-</div>
-      <button id="nextBtn" onclick="nextQuestion()" disabled></button>
-    </section>
 
     <!-- 3. النتائج -->
-  <section id="resultSection">
-    <!-- واجهة التحكم في عرض النتائج -->
-    <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;">
-      <button id="btnPersonalityType" onclick="showPersonalityType()">تصنيف الشخصية</button>
-      <button id="btnSummary" onclick="showSummaryAnalysis()">التحليل المختصر</button>
-      <button id="btnTheories" onclick="showTheoriesAnalysis()">التحليل حسب النظريات</button>
-      <button id="btnDetailedAnalysis" onclick="showDetailedAnalysis()">التحليل التفصيلي</button>
-      <button id="btnRecommendations" onclick="showRecommendations()">التوصيات</button>
-    </div>
+    <section id="resultSection">
+      <!-- واجهة التحكم في عرض النتائج -->
+      <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;">
+        <button id="btnPersonalityType" onclick="showPersonalityType()">تصنيف الشخصية</button>
+        <button id="btnSummary" onclick="showSummaryAnalysis()">التحليل المختصر</button>
+        <button id="btnTheories" onclick="showTheoriesAnalysis()">التحليل حسب النظريات</button>
+        <button id="btnDetailedAnalysis" onclick="showDetailedAnalysis()">التحليل التفصيلي</button>
+        <button id="btnRecommendations" onclick="showRecommendations()">التوصيات</button>
+      </div>
 
-    <!-- قسم تصنيف الشخصية (الألوان) - هيبقى مخفي الأول -->
-    <div id="personalityTypeSection" class="result-section" style="display:none;">
-      <div id="personalityTypeContent"></div>
-    </div>
+      <!-- قسم تصنيف الشخصية (الألوان) - هيبقى مخفي الأول -->
+      <div id="personalityTypeSection" class="result-section" style="display:none;">
+        <div id="personalityTypeContent"></div>
+      </div>
 
-    <!-- قسم التحليل المختصر - هيبقى مخفي الأول -->
-    <div id="summarySection" class="result-section" style="display:none;">
-      <div id="summaryContent"></div>
-    </div>
+      <!-- قسم التحليل المختصر - هيبقى مخفي الأول -->
+      <div id="summarySection" class="result-section" style="display:none;">
+        <div id="summaryContent"></div>
+      </div>
 
-    <!-- قسم التحليل حسب النظريات - هيبقى مخفي الأول -->
-    <div id="theoriesSection" class="result-section" style="display:none;">
-      <div id="theoriesContent"></div>
-    </div>
+      <!-- قسم التحليل حسب النظريات - هيبقى مخفي الأول -->
+      <div id="theoriesSection" class="result-section" style="display:none;">
+        <div id="theoriesContent"></div>
+      </div>
 
-    <!-- قسم التحليل التفصيلي - جديد -->
-    <div id="detailedAnalysisSection" class="result-section" style="display:none;">
-      <h3>التحليل التفصيلي لجميع النظريات</h3>
-      <div id="detailedAnalysisContent"></div>
-    </div>
+      <!-- قسم التحليل التفصيلي - جديد -->
+      <div id="detailedAnalysisSection" class="result-section" style="display:none;">
+        <h3>التحليل التفصيلي لجميع النظريات</h3>
+        <div id="detailedAnalysisContent"></div>
+      </div>
 
-    <!-- قسم التوصيات - جديد -->
-    <div id="recommendationsSection" class="result-section" style="display:none;">
-      <h3>التوصيات والنصائح</h3>
-      <div id="recommendationsContent"></div>
-    </div>
+      <!-- قسم التوصيات - جديد -->
+      <div id="recommendationsSection" class="result-section" style="display:none;">
+        <h3>التوصيات والنصائح</h3>
+        <div id="recommendationsContent"></div>
+      </div>
 
-    <!-- أزرار التحميل والمشاركة -->
-    <div class="actions">
-      <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
-      <button id="shareBtn" onclick="shareResult()">مشاركة</button>
-    </div>
-  </section>
+      <!-- أزرار التحميل والمشاركة -->
+      <div class="actions">
+        <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
+        <button id="shareBtn" onclick="shareResult()">مشاركة</button>
+      </div>
+    </section>
 
     <!-- 4. إعلان ربحي -->
     <section id="adSection">
@@ -128,13 +117,12 @@
   </div>
 
   <script src="lang.js"></script>
-<script src="questions.js"></script>
-<script src="analysis_data.js"></script>
-<script src="script.js"></script>
+  <script src="questions.js"></script>
+  <script src="analysis_data.js"></script>
+  <script src="script.js"></script>
 
   <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
     <p>&copy; 2025 Mohammed Tarek</p>
   </footer>
-
 </body>
 </html>
