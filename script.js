@@ -130,6 +130,7 @@ function startTest() {
   renderQuestion();
 }
 
+// === دوال جديدة لعرض الأسئلة مع دعم المقياس ===
 // عرض السؤال الحالي - محدث لدعم المقياس
 function renderQuestion() {
   if (currentQuestion >= questions.length) return showResults();
@@ -176,11 +177,7 @@ function renderQuestion() {
 
 // دالة لتحديد الإجابة وتمكين زر التالي
 function selectAnswer(value) {
-  // يمكنك تخزين الإجابة في متغير مؤقت أو مباشرة في مصفوفة answers
-  // مثال بسيط:
-  // tempAnswer = value;
-  // أو مباشرة:
-  // answers.push({ questionId: questions[currentQuestion].id, value: value });
+  userAnswers[currentQuestion] = value; // تخزين الإجابة في المتغير الجديد
 
   // تحديث واجهة المستخدم لإظهار الاختيار
   if (questions[currentQuestion].scale === "1-5") {
@@ -189,7 +186,11 @@ function selectAnswer(value) {
     });
   } else {
     // تحديث خيارات النصوص (إذا لزم)
-    // ... (منطق مشابه)
+    const likertOptions = translations[currentLang]?.options?.likert || {};
+    const optionValues = Object.keys(likertOptions);
+    document.querySelectorAll('.answer-option').forEach((opt, index) => {
+       opt.classList.toggle('selected', Number(optionValues[index]) === value);
+    });
   }
 
   document.getElementById('nextBtn').disabled = false;
@@ -202,19 +203,35 @@ function updateProgress() {
   document.getElementById('progressText').textContent =
     `${currentQuestion + 1} من ${questions.length}`;
 }
+// === نهاية الدوال الجديدة ===
+
+// انتقل للسؤال التالي - محدث لاستخدام userAnswers
+function nextQuestion() {
+  if (!userAnswers.hasOwnProperty(currentQuestion)) return alert("اختر إجابة"); // التحقق من وجود إجابة
+
+  answers.push({
+    questionId: questions[currentQuestion].id,
+    category: questions[currentQuestion].category,
+    domain: questions[currentQuestion].domain,
+    value: userAnswers[currentQuestion] // استخدام القيمة من userAnswers
+  });
+
+  currentQuestion++;
+  renderQuestion();
+}
 
 // عرض النتائج
 function showResults() {
   document.getElementById("quizSection").classList.remove("active");
   document.getElementById("resultSection").classList.add("active");
-  
+
   // حساب المتوسطات
   calculateAverages();
-  calculateDetailedResults();
-  
+  // calculateDetailedResults(); // تم إزالته لأن الدالة غير موجودة
+
   // تحديث نصوص الأزرار
   updateResultButtonTitles();
-  
+
   // عرض أول قسم
   showPersonalityType();
 }
@@ -466,9 +483,9 @@ function displayTheoriesAnalysis() {
 function displayDetailedAnalysis() {
   const contentDiv = document.getElementById("detailedAnalysisContent");
   if (!contentDiv) return;
-  
+
   let html = '<h3>التحليل التفصيلي لجميع النظريات</h3>';
-  
+
   // عرض تحليل كل نظرية
   Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([category, avg]) => {
     html += `<div class="theory-card">
@@ -477,24 +494,24 @@ function displayDetailedAnalysis() {
       <p><strong>التحليل:</strong> ${getTheoryInterpretation(category, avg)}</p>
     </div>`;
   });
-  
+
   contentDiv.innerHTML = html;
 }
 
 function displayRecommendations() {
   const contentDiv = document.getElementById("recommendationsContent");
   if (!contentDiv) return;
-  
+
   let html = '<h3>التوصيات والنصائح</h3>';
-  
+
   // الحصول على أعلى مجالين
   const sortedDomains = Object.entries(domainAverages).sort((a, b) => b[1] - a[1]);
   const topDomain = sortedDomains[0]?.[0];
-  
+
   // الحصول على أعلى نظريتين
   const sortedTheories = Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]);
   const topTheories = sortedTheories.slice(0, 2).map(([cat]) => cat);
-  
+
   html += `<div class="result-card">
     <h4>للوصول إلى إمكاناتك الكاملة:</h4>
     <ul>
@@ -503,7 +520,7 @@ function displayRecommendations() {
       <li>ابقَ متصلاً بجذورك وقيمك الأساسية</li>
     </ul>
   </div>`;
-  
+
   html += `<div class="result-card">
     <h4>للمزيد من النمو:</h4>
     <ul>
@@ -512,7 +529,7 @@ function displayRecommendations() {
       <li>تواصل مع أشخاص يشاركونك نفس الاهتمامات</li>
     </ul>
   </div>`;
-  
+
   contentDiv.innerHTML = html;
 }
 
