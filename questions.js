@@ -5,6 +5,7 @@ const questions = [
     id: 2,
     category: "freud",
     domain: "vision",
+    scale: "1-5", // إضافة المقياس
     text: {
       ar: "هل تجد نفسك تحلم بأشياء غريبة تعكس مشاعرك المكبوتة؟",
       en: "Do you often dream of strange things that reflect your repressed emotions?"
@@ -14,6 +15,7 @@ const questions = [
     id: 3,
     category: "jung",
     domain: "vision",
+    scale: "1-5",
     text: {
       ar: "هل تشعر أن لديك جانبًا مظلمًا أو غير مكشوف من شخصيتك؟",
       en: "Do you feel you have a dark or undiscovered side to your personality?"
@@ -23,6 +25,7 @@ const questions = [
     id: 5,
     category: "object_relations",
     domain: "vision",
+    scale: "1-5",
     text: {
       ar: "هل تعتقد أن تجاربك الطفولية تؤثر على علاقاتك الحالية؟",
       en: "Do you think your childhood experiences affect your current relationships?"
@@ -32,6 +35,7 @@ const questions = [
     id: 7,
     category: "existential",
     domain: "vision",
+    scale: "1-5",
     text: {
       ar: "هل تتساءل كثيرًا عن معنى الحياة والموت؟",
       en: "Do you often wonder about the meaning of life and death?"
@@ -41,6 +45,7 @@ const questions = [
     id: 8,
     category: "traits_theory",
     domain: "vision",
+    scale: "1-5",
     text: {
       ar: "هل تصف نفسك بأنك منضبط ومسؤول في معظم المواقف؟",
       en: "Do you describe yourself as disciplined and responsible in most situations?"
@@ -50,6 +55,7 @@ const questions = [
     id: 10,
     category: "cbt",
     domain: "vision",
+    scale: "1-5",
     text: {
       ar: "هل تلاحظ أن أفكارك السلبية تؤثر على مشاعرك وسلوكك؟",
       en: "Do you notice that your negative thoughts affect your feelings and behavior?"
@@ -61,6 +67,7 @@ const questions = [
     id: 11,
     category: "adler",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تسعى دائمًا لإثبات نفسك وإظهار قدراتك للآخرين؟",
       en: "Do you constantly strive to prove yourself and showcase your abilities?"
@@ -70,6 +77,7 @@ const questions = [
     id: 12,
     category: "adler",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تشعر بالغيرة من نجاح الآخرين وتعمل على تحفيز نفسك لتحقق إنجازات؟",
       en: "Do you feel envious of others' success and motivate yourself to achieve accomplishments?"
@@ -79,6 +87,7 @@ const questions = [
     id: 13,
     category: "object_relations",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تجد صعوبة في الوثوق بالآخرين بعد خيبات سابقة؟",
       en: "Do you find it difficult to trust others after past disappointments?"
@@ -88,6 +97,7 @@ const questions = [
     id: 16,
     category: "traits_theory",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تميل إلى الانفتاح على تجارب جديدة وأفكار مختلفة؟",
       en: "Do you tend to be open to new experiences and different ideas?"
@@ -97,6 +107,7 @@ const questions = [
     id: 18,
     category: "cbt",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تحاول تغيير أنماط تفكيرك عندما تكون تحت الضغط؟",
       en: "Do you try to change your thinking patterns when under pressure?"
@@ -106,6 +117,7 @@ const questions = [
     id: 20,
     category: "body_language",
     domain: "analysis",
+    scale: "1-5",
     text: {
       ar: "هل تنتبه لغة جسد الآخرين وتفسرها بسهولة؟",
       en: "Do you pay attention to others' body language and interpret it easily?"
@@ -117,6 +129,7 @@ const questions = [
     id: 21,
     category: "freud",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تشعر أن طفولتك تؤثر على شخصيتك اليوم بشكل كبير؟",
       en: "Do you feel that your childhood greatly influences your personality today?"
@@ -126,6 +139,7 @@ const questions = [
     id: 22,
     category: "jung",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تشعر أن لديك عدة 'أنا' داخلية تتنافس على السيطرة؟",
       en: "Do you feel you have several inner 'selves' competing for control?"
@@ -135,6 +149,7 @@ const questions = [
     id: 23,
     category: "object_relations",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تجد صعوبة في تتسامح مع الآخرين والتسامح مع نفسك؟",
       en: "Do you find it difficult to forgive others and forgive yourself?"
@@ -144,6 +159,7 @@ const questions = [
     id: 25,
     category: "existential",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تشعر بالوحدة الوجودية رغم وجود أشخاص من حولك؟",
       en: "Do you feel existential loneliness despite having people around you?"
@@ -153,6 +169,7 @@ const questions = [
     id: 26,
     category: "traits_theory",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تميل إلى القلق والتوتر في المواقف الجديدة؟",
       en: "Do you tend to worry and feel anxious in new situations?"
@@ -162,6 +179,7 @@ const questions = [
     id: 28,
     category: "cbt",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تستخدم تقنيات الاسترخاء لتهدئة قلقك؟",
       en: "Do you use relaxation techniques to calm your anxiety?"
@@ -171,6 +189,7 @@ const questions = [
     id: 30,
     category: "body_language",
     domain: "healing",
+    scale: "1-5",
     text: {
       ar: "هل تستخدم لغة الجسد بشكل واعٍ للتواصل مع الآخرين؟",
       en: "Do you use body language consciously to communicate with others?"
@@ -182,6 +201,7 @@ const questions = [
     id: 31,
     category: "personality_tests",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تجد صعوبة في تصنيف نفسك في نوع شخصية واحد؟",
       en: "Do you find it difficult to classify yourself in one personality type?"
@@ -191,6 +211,7 @@ const questions = [
     id: 32,
     category: "projective",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تميل إلى رؤية أنماط أو معاني في الأشياء العشوائية؟",
       en: "Do you tend to see patterns or meanings in random things?"
@@ -200,6 +221,7 @@ const questions = [
     id: 34,
     category: "aba",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تلاحظ تحسنًا في سلوكك عند استخدام نظام مكافآت؟",
       en: "Do you notice improvement in your behavior when using a reward system?"
@@ -207,8 +229,9 @@ const questions = [
   },
   {
     id: 35,
-    category: "adler", // نقل من Analysis لزيادة توازن التوزيع
+    category: "adler",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تشعر أن أهدافك الحقيقية تختلف عما تراه الآخرون؟",
       en: "Do you feel your true goals are different from what others see?"
@@ -216,8 +239,9 @@ const questions = [
   },
   {
     id: 37,
-    category: "jung", // نقل من Discovery لزيادة توازن التوزيع
+    category: "jung",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تؤمن بوجود حدس قوي يرشدك في القرارات؟",
       en: "Do you believe in a strong intuition that guides you in decisions?"
@@ -225,8 +249,9 @@ const questions = [
   },
   {
     id: 39,
-    category: "existential", // نقل من Discovery لزيادة توازن التوزيع
+    category: "existential",
     domain: "discovery",
+    scale: "1-5",
     text: {
       ar: "هل تشعر أن لديك هدفًا وجوديًا مميزًا في الحياة؟",
       en: "Do you feel you have a unique existential purpose in life?"
