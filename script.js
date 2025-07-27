@@ -264,9 +264,9 @@ function showTheoriesAnalysis() {
 function showFullDetails() {
   hideAllResultSections();
   document.getElementById("fullDetailsSection").style.display = "block";
-  // عرض التحليل الكامل القديم
-  calculateSummary(); // دالة أصلية
-  showDetails();      // دالة أصلية
+  // استدعاء دالتَي التحليل الكامل
+  calculateSummary(); // دالة محدثة
+  showDetails();      // دالة محدثة
 }
 
 
@@ -467,62 +467,41 @@ function displayTheoriesAnalysis() {
 }
 
 
-// حساب الملخص (التحليل المختصر) - النسخة القديمة للتوافق
+// حساب الملخص (التحليل المختصر) - النسخة المحدثة للتوافق
 function calculateSummary() {
     const summaryDiv = document.getElementById("summaryOld"); // استخدم ID الجديد
-    if (!summaryDiv) return; // التحقق من وجود العنصر
-
-    // 1. جمع النقاط حسب الفئة (category) - حساب متوسط الدرجات
-    const categoryScores = {}; // { categoryName: { total: 0, count: 0 } }
-    answers.forEach(a => {
-        const cat = a.category;
-        if (!categoryScores[cat]) categoryScores[cat] = { total: 0, count: 0 };
-        categoryScores[cat].total += a.value;
-        categoryScores[cat].count += 1;
-    });
-
-    // حساب المتوسط لكل فئة
-    const categoryAveragesLocal = {};
-    for (const [cat, data] of Object.entries(categoryScores)) {
-        categoryAveragesLocal[cat] = data.total / data.count;
+    if (!summaryDiv) {
+        console.warn("عنصر summaryOld غير موجود في الصفحة.");
+        return;
     }
 
-    // 2. تحديد أعلى فئتين (نظريتين) بناءً على المتوسط
-    const sortedCategories = Object.entries(categoryAveragesLocal).sort((a, b) => b[1] - a[1]);
+    // تأكد إن categoryAverages و domainAverages اتحسبت
+    if (!categoryAverages || !domainAverages || Object.keys(categoryAverages).length === 0 || Object.keys(domainAverages).length === 0) {
+        console.warn("المتوسطات مش اتحسبت بعد. محتاج نحسبها الأول.");
+        calculateAverages(); // احسبها لو لسه فاضية
+    }
+
+    // 1. تحديد أعلى فئتين (نظريتين) بناءً على المتوسط
+    const sortedCategories = Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]);
     const topCategories = sortedCategories.slice(0, 2); // أعلى فئتين
 
-    // 3. جمع النقاط حسب المجال (domain) - حساب متوسط الدرجات
-    const domainScores = {}; // { domainName: { total: 0, count: 0 } }
-    answers.forEach(a => {
-        const dom = a.domain;
-        if (!domainScores[dom]) domainScores[dom] = { total: 0, count: 0 };
-        domainScores[dom].total += a.value;
-        domainScores[dom].count += 1;
-    });
-
-    // حساب المتوسط لكل مجال
-    const domainAveragesLocal = {};
-    for (const [dom, data] of Object.entries(domainScores)) {
-        domainAveragesLocal[dom] = data.total / data.count;
-    }
-
-    // 4. تحديد المجال الأقوى
-    const sortedDomains = Object.entries(domainAveragesLocal).sort((a, b) => b[1] - a[1]);
+    // 2. تحديد المجال الأقوى
+    const sortedDomains = Object.entries(domainAverages).sort((a, b) => b[1] - a[1]);
     const topDomainKey = sortedDomains[0]?.[0] || "full"; // افتراضي "full" إذا ما لقاش
     const topDomainName = translations[currentLang]?.results?.domains?.[topDomainKey] || topDomainKey;
 
-    // 5. بناء نص الملخص
+    // 3. بناء نص الملخص
     let summaryText = `<h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2>`;
     summaryText += `<p>${translations[currentLang]?.results?.summary_intro || "هذه نظرة سريعة على شخصيتك:"}</p>`;
 
     // عرض المجال الأقوى
     summaryText += `<p><strong>مجالك الأقوى: ${topDomainName}</strong></p>`;
 
-    // عرض أعلى الفئات (النظريات)
+    // عرض أعلى الفئات (النظريات) مع المتوسط
     summaryText += `<p><strong>نظرياتك المهيمنة:</strong></p><ul>`;
     topCategories.forEach(([catKey, avgScore]) => {
         const categoryName = translations[currentLang]?.results?.traits?.[catKey] || catKey;
-        summaryText += `<li>${categoryName} (متوسط: ${avgScore.toFixed(1)})</li>`;
+        summaryText += `<li>${categoryName} (متوسط: ${avgScore.toFixed(2)})</li>`; // غيرنا لـ toFixed(2)
     });
     summaryText += `</ul>`;
 
@@ -530,42 +509,21 @@ function calculateSummary() {
 }
 
 
-// عرض التفاصيل (التحليل التفصيلي) - النسخة القديمة للتوافق
+// عرض التفاصيل (التحليل التفصيلي) - النسخة المحدثة للتوافق
 function showDetails() {
     const detailsDiv = document.getElementById("detailsOld"); // استخدم ID الجديد
-    if (!detailsDiv) return; // التحقق من وجود العنصر
-
-    // 1. جمع النقاط حسب الفئة (category) - حساب متوسط الدرجات
-    const categoryScores = {}; // { categoryName: { total: 0, count: 0 } }
-    answers.forEach(a => {
-        const cat = a.category;
-        if (!categoryScores[cat]) categoryScores[cat] = { total: 0, count: 0 };
-        categoryScores[cat].total += a.value;
-        categoryScores[cat].count += 1;
-    });
-
-    // حساب المتوسط لكل فئة
-    const categoryAveragesLocal = {};
-    for (const [cat, data] of Object.entries(categoryScores)) {
-        categoryAveragesLocal[cat] = data.total / data.count;
+    if (!detailsDiv) {
+        console.warn("عنصر detailsOld غير موجود في الصفحة.");
+        return;
     }
 
-    // 2. جمع النقاط حسب المجال (domain) - حساب متوسط الدرجات
-    const domainScores = {}; // { domainName: { total: 0, count: 0 } }
-    answers.forEach(a => {
-        const dom = a.domain;
-        if (!domainScores[dom]) domainScores[dom] = { total: 0, count: 0 };
-        domainScores[dom].total += a.value;
-        domainScores[dom].count += 1;
-    });
-
-    // حساب المتوسط لكل مجال
-    const domainAveragesLocal = {};
-    for (const [dom, data] of Object.entries(domainScores)) {
-        domainAveragesLocal[dom] = data.total / data.count;
+    // تأكد إن categoryAverages و domainAverages اتحسبت
+    if (!categoryAverages || !domainAverages || Object.keys(categoryAverages).length === 0 || Object.keys(domainAverages).length === 0) {
+        console.warn("المتوسطات مش اتحسبت بعد. محتاج نحسبها الأول.");
+        calculateAverages(); // احسبها لو لسه فاضية
     }
 
-    // 3. بناء نص التفاصيل
+    // بناء نص التفاصيل
     const t = translations[currentLang]?.ui || {};
     const results = translations[currentLang]?.results || {};
     const domains = translations[currentLang]?.results?.domains || {};
@@ -573,55 +531,94 @@ function showDetails() {
     let html = `<h2>${t.result_full || "التحليل التفصيلي"}</h2>`;
     html += `<p>${results.full_intro || "تحليل متكامل بجميع النظريات النفسية الحديثة والكلاسيكية:"}</p>`;
 
-    // أ) عرض النتائج حسب المجالات (كما في الموقع)
+    // أ) عرض متوسط الدرجات حسب المجالات
     html += `<h3>📊 ${domains.full || "التحليل الكامل"}</h3>`;
     html += `<ul>`;
-    Object.entries(domainAveragesLocal).forEach(([domainKey, avgScore]) => {
+    Object.entries(domainAverages).forEach(([domainKey, avgScore]) => {
         const domainName = domains[domainKey] || domainKey;
         html += `<li><strong>${domainName}:</strong> ${avgScore.toFixed(2)} / 5</li>`;
     });
     html += `</ul>`;
 
-    // ب) عرض تحليل مفصل لكل مجال مع النظريات الخاصة بيه
-    Object.entries(domainAveragesLocal).forEach(([domainKey, avgScore]) => {
-        const domainName = domains[domainKey] || domainKey;
-        // جمع النظريات لهذا المجال فقط
-        const theoriesInDomain = {};
-        Object.entries(categoryAveragesLocal).forEach(([catKey, catAvg]) => {
-             // تأكد من أن النظرية تابعة لهذا المجال
-             const questionForCat = questions.find(q => q.category === catKey);
-             if (questionForCat && questionForCat.domain === domainKey) {
-                 theoriesInDomain[catKey] = catAvg;
-             }
-        });
-
-        if (Object.keys(theoriesInDomain).length > 0) {
-            html += `<div class="result-card">`;
-            html += `<h3>🔍 ${domainName}</h3>`;
-            html += `<ul>`;
-            // ترتيب النظريات داخل المجال حسب النقاط
-            const sortedCategoryEntries = Object.entries(theoriesInDomain).sort((a, b) => b[1] - a[1]);
-            sortedCategoryEntries.forEach(([catKey, score]) => {
-                const categoryName = results.traits?.[catKey] || catKey;
-                html += `<li>${categoryName}: ${score.toFixed(2)} / 5</li>`;
-            });
-            html += `</ul>`;
-            html += `</div>`;
+    // ب) عرض تفاصيل كل مجال مع متوسط درجات النظريات فيه
+    html += `<h3>🔍 التحليل حسب المجالات</h3>`;
+    // نجمع النظريات حسب المجال الأول علشان نعرضها بشكل منظم
+    const theoriesByDomain = {}; // { domainKey: [ {catKey, avgScore}, ... ] }
+    Object.entries(categoryAverages).forEach(([catKey, avgScore]) => {
+        // نحتاج نربط كل category بـ domain. نقدر نستخدم الأسئلة علشان نلاقي العلاقة.
+        const questionForCat = questions.find(q => q.category === catKey);
+        const domainKey = questionForCat ? questionForCat.domain : 'غير محدد';
+        if (!theoriesByDomain[domainKey]) {
+            theoriesByDomain[domainKey] = [];
         }
+        theoriesByDomain[domainKey].push({ catKey, avgScore });
     });
 
+    Object.entries(theoriesByDomain).forEach(([domainKey, theories]) => {
+        const domainName = domains[domainKey] || domainKey;
+        // حساب متوسط درجات النظريات في المجال ده
+        const totalScore = theories.reduce((sum, t) => sum + t.avgScore, 0);
+        const avgDomainScore = totalScore / theories.length;
 
-    // ج) عرض *جميع* النظريات مجمعة (اختياري)
-    html += `<div class="result-card">`;
-    html += `<h3>📚 جميع النظريات</h3>`;
-    html += `<ul>`;
-    const sortedAllCategories = Object.entries(categoryAveragesLocal).sort((a, b) => b[1] - a[1]);
-    sortedAllCategories.forEach(([catKey, avgScore]) => {
-        const categoryName = results.traits?.[catKey] || catKey;
-        html += `<li>${categoryName}: ${avgScore.toFixed(2)} / 5</li>`;
+        html += `<div class="result-card">`;
+        html += `<h4>${domainName} (متوسط: ${avgDomainScore.toFixed(2)})</h4>`;
+        html += `<p>النظريات المتعلقة بهذا المجال:</p>`;
+        html += `<ul>`;
+        // ترتيب النظريات داخل المجال حسب المتوسط
+        theories.sort((a, b) => b.avgScore - a.avgScore).forEach(theory => {
+            const categoryName = results.traits?.[theory.catKey] || theory.catKey;
+            html += `<li>${categoryName}: ${theory.avgScore.toFixed(2)}/5</li>`;
+        });
+        html += `</ul>`;
+        html += `</div>`;
     });
-    html += `</ul>`;
-    html += `</div>`;
+
+    // ج) عرض تحليل مفصل لكل نظرية (category) باستخدام analysis_data.js
+    html += `<h3>🧠 التحليل حسب النظريات</h3>`;
+    // التأكد من وجود ملف analysis_data.js وتحميله
+    if (typeof analysisData !== 'undefined' && analysisData[currentLang]) {
+        // ترتيب النظريات حسب المتوسط من الأعلى لأسفل
+        Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([categoryKey, avgScore]) => {
+            const theoryData = analysisData[currentLang][categoryKey];
+            if (theoryData) {
+                html += `<div class="result-card">`;
+                html += `<h4>${theoryData.name} (متوسط: ${avgScore.toFixed(2)})</h4>`;
+                // عرض جزء من الوصف
+                html += `<p><strong>الوصف:</strong> ${theoryData.description.substring(0, 150)}...</p>`;
+                // عرض تفسير مبسط حسب الدرجة
+                let interpretation = "";
+                if (avgScore >= 3.5) {
+                    interpretation = theoryData.high_score_interpretation.substring(0, 100) + "...";
+                } else if (avgScore <= 2.5) {
+                    interpretation = theoryData.low_score_interpretation.substring(0, 100) + "...";
+                } else {
+                    interpretation = `درجتك المتوسطة (${avgScore.toFixed(2)}) تشير إلى توازن.`;
+                }
+                html += `<p><strong>تحليلك:</strong> ${interpretation}</p>`;
+                html += `</div>`;
+            } else {
+                // إذا ما لقاش بيانات التحليل، نعرض اسم النظرية وبس
+                const categoryName = results.traits?.[categoryKey] || categoryKey;
+                html += `<div class="result-card">`;
+                html += `<h4>${categoryName} (متوسط: ${avgScore.toFixed(2)})</h4>`;
+                html += `<p>تحليل مفصل لهذه النظرية غير متوفر حاليًا.</p>`;
+                html += `</div>`;
+            }
+        });
+    } else {
+        // إذا ملف analysis_data.js مش متاح، نعرض رسالة
+        html += `<p>⚠️ بيانات التحليل التفصيلي غير متوفرة حاليًا.</p>`;
+        // عرض قائمة بجميع النظريات ومتوسطاتها كحل بديل
+        html += `<div class="result-card">`;
+        html += `<h4>جميع النظريات</h4>`;
+        html += `<ul>`;
+        Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([catKey, avgScore]) => {
+            const categoryName = results.traits?.[catKey] || catKey;
+            html += `<li>${categoryName}: ${avgScore.toFixed(2)}/5</li>`;
+        });
+        html += `</ul>`;
+        html += `</div>`;
+    }
 
     detailsDiv.innerHTML = html;
 }
