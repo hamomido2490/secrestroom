@@ -1,11 +1,11 @@
-// questions.js - ملف الأسئلة المختصر والمُحسَّن مع المجالات (domains) والفئات (categories)
+// questions.js - ملف الأسئلة المعدل والمتوافق مع analysis_data.js
 const questions = [
   // === مجال الرؤية الداخلية (Vision) - 6 أسئلة ===
   {
     id: 2,
-    category: "freud",
+    category: "freud", // متوافق
     domain: "vision",
-    scale: "1-5", // إضافة المقياس
+    scale: "1-5",
     text: {
       ar: "هل تجد نفسك تحلم بأشياء غريبة تعكس مشاعرك المكبوتة؟",
       en: "Do you often dream of strange things that reflect your repressed emotions?"
@@ -13,7 +13,7 @@ const questions = [
   },
   {
     id: 3,
-    category: "jung",
+    category: "jung", // متوافق
     domain: "vision",
     scale: "1-5",
     text: {
@@ -23,7 +23,7 @@ const questions = [
   },
   {
     id: 5,
-    category: "object_relations",
+    category: "family_systems", // تعديل: object_relations -> family_systems (الأقرب منطقياً)
     domain: "vision",
     scale: "1-5",
     text: {
@@ -33,7 +33,7 @@ const questions = [
   },
   {
     id: 7,
-    category: "existential",
+    category: "enneagram", // تعديل: existential -> enneagram (يركز على الدوافع العميقة والمعنى)
     domain: "vision",
     scale: "1-5",
     text: {
@@ -43,7 +43,7 @@ const questions = [
   },
   {
     id: 8,
-    category: "traits_theory",
+    category: "big_five", // تعديل: traits_theory -> big_five (أحد أشهر نظريات السمات)
     domain: "vision",
     scale: "1-5",
     text: {
@@ -53,7 +53,7 @@ const questions = [
   },
   {
     id: 10,
-    category: "cbt",
+    category: "rebt", // تعديل: cbt -> rebt (نظرية Ellis هي أساس العلاج المعرفي السلوكي)
     domain: "vision",
     scale: "1-5",
     text: {
@@ -65,7 +65,7 @@ const questions = [
   // === مجال التحليل العميق (Analysis) - 6 أسئلة ===
   {
     id: 11,
-    category: "adler",
+    category: "adler", // متوافق
     domain: "analysis",
     scale: "1-5",
     text: {
@@ -75,7 +75,7 @@ const questions = [
   },
   {
     id: 12,
-    category: "adler",
+    category: "adler", // متوافق
     domain: "analysis",
     scale: "1-5",
     text: {
@@ -85,7 +85,7 @@ const questions = [
   },
   {
     id: 13,
-    category: "object_relations",
+    category: "erikson", // تعديل: object_relations -> erikson (يركز على أزمات الثقة)
     domain: "analysis",
     scale: "1-5",
     text: {
@@ -95,7 +95,7 @@ const questions = [
   },
   {
     id: 16,
-    category: "traits_theory",
+    category: "big_five", // تعديل: traits_theory -> big_five (الانفتاح على التجارب سمة أساسية فيه)
     domain: "analysis",
     scale: "1-5",
     text: {
@@ -105,7 +105,7 @@ const questions = [
   },
   {
     id: 18,
-    category: "cbt",
+    category: "rebt", // تعديل: cbt -> rebt (تغيير أنماط التفكير هو جوهر النظرية)
     domain: "analysis",
     scale: "1-5",
     text: {
@@ -115,11 +115,11 @@ const questions = [
   },
   {
     id: 20,
-    category: "body_language",
+    category: "theory_of_mind", // تعديل: body_language -> theory_of_mind (فهم الآخرين)
     domain: "analysis",
     scale: "1-5",
     text: {
-      ar: "هل تنتبه لغة جسد الآخرين وتفسرها بسهولة؟",
+      ar: "هل تنتبه للغة جسد الآخرين وتفسرها بسهولة؟",
       en: "Do you pay attention to others' body language and interpret it easily?"
     }
   },
@@ -127,7 +127,7 @@ const questions = [
   // === مجال الشفاء النفسي (Healing) - 7 أسئلة ===
   {
     id: 21,
-    category: "freud",
+    category: "freud", // متوافق
     domain: "healing",
     scale: "1-5",
     text: {
@@ -137,7 +137,7 @@ const questions = [
   },
   {
     id: 22,
-    category: "jung",
+    category: "multiple_selves", // تعديل: jung -> multiple_selves (أكثر تخصصًا في هذه الفكرة)
     domain: "healing",
     scale: "1-5",
     text: {
@@ -147,17 +147,17 @@ const questions = [
   },
   {
     id: 23,
-    category: "object_relations",
+    category: "rogers", // تعديل: object_relations -> rogers (يركز على التقبل غير المشروط)
     domain: "healing",
     scale: "1-5",
     text: {
-      ar: "هل تجد صعوبة في تتسامح مع الآخرين والتسامح مع نفسك؟",
+      ar: "هل تجد صعوبة في التسامح مع الآخرين والتسامح مع نفسك؟",
       en: "Do you find it difficult to forgive others and forgive yourself?"
     }
   },
   {
     id: 25,
-    category: "existential",
+    category: "maslow", // تعديل: existential -> maslow (الشعور بالانتماء من الاحتياجات العليا)
     domain: "healing",
     scale: "1-5",
     text: {
@@ -167,7 +167,7 @@ const questions = [
   },
   {
     id: 26,
-    category: "traits_theory",
+    category: "eysenck_pen", // تعديل: traits_theory -> eysenck_pen (العصابية سمة أساسية فيه)
     domain: "healing",
     scale: "1-5",
     text: {
@@ -177,7 +177,7 @@ const questions = [
   },
   {
     id: 28,
-    category: "cbt",
+    category: "rebt", // تعديل: cbt -> rebt (تقنيات الاسترخاء جزء من إدارة المشاعر)
     domain: "healing",
     scale: "1-5",
     text: {
@@ -187,7 +187,7 @@ const questions = [
   },
   {
     id: 30,
-    category: "body_language",
+    category: "theory_of_mind", // تعديل: body_language -> theory_of_mind (استخدام الإشارات للتواصل)
     domain: "healing",
     scale: "1-5",
     text: {
@@ -199,7 +199,7 @@ const questions = [
   // === مجال الاكتشاف (Discovery) - 6 أسئلة ===
   {
     id: 31,
-    category: "personality_tests",
+    category: "mbti", // تعديل: personality_tests -> mbti (أشهر اختبار لتصنيف الشخصية)
     domain: "discovery",
     scale: "1-5",
     text: {
@@ -209,7 +209,7 @@ const questions = [
   },
   {
     id: 32,
-    category: "projective",
+    category: "jung", // تعديل: projective -> jung (التركيز على الرموز والأنماط)
     domain: "discovery",
     scale: "1-5",
     text: {
@@ -219,7 +219,7 @@ const questions = [
   },
   {
     id: 34,
-    category: "aba",
+    category: "skinner", // تعديل: aba -> skinner (الاشتراط الإجرائي هو أساس تحليل السلوك التطبيقي)
     domain: "discovery",
     scale: "1-5",
     text: {
@@ -229,7 +229,7 @@ const questions = [
   },
   {
     id: 35,
-    category: "adler",
+    category: "adler", // متوافق
     domain: "discovery",
     scale: "1-5",
     text: {
@@ -239,7 +239,7 @@ const questions = [
   },
   {
     id: 37,
-    category: "jung",
+    category: "jung", // متوافق
     domain: "discovery",
     scale: "1-5",
     text: {
@@ -249,7 +249,7 @@ const questions = [
   },
   {
     id: 39,
-    category: "existential",
+    category: "maslow", // تعديل: existential -> maslow (تحقيق الذات والهدف)
     domain: "discovery",
     scale: "1-5",
     text: {
