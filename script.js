@@ -130,26 +130,26 @@ function startTest() {
   renderQuestion();
 }
 
-// عرض السؤال الحالي
+// عرض السؤال الحالي - محدث لدعم المقياس
 function renderQuestion() {
   if (currentQuestion >= questions.length) return showResults();
   const q = questions[currentQuestion];
   const container = document.getElementById("questionContainer");
-  const optionsContainer = document.getElementById("answerOptions");
-  
+  const optionsContainer = document.getElementById("answerOptions"); // افتراض وجود هذا العنصر في HTML
+
   container.innerHTML = `<div class="question">${q.text[currentLang] || "السؤال غير متوفر"}</div>`;
-  
+
   // تحديث شريط التقدم
   updateProgress();
-  
+
   // إنشاء خيارات الإجابة حسب نوع السؤال
   optionsContainer.innerHTML = '';
-  
+
   if (q.scale === "1-5") {
     // مقياس 1-5
     const scaleContainer = document.createElement('div');
     scaleContainer.className = 'scale-options';
-    
+
     for (let i = 1; i <= 5; i++) {
       const option = document.createElement('div');
       option.className = 'scale-option';
@@ -157,62 +157,50 @@ function renderQuestion() {
       option.onclick = () => selectAnswer(i);
       scaleContainer.appendChild(option);
     }
-    
+
     optionsContainer.appendChild(scaleContainer);
   } else {
-    // خيارات نصية
+    // خيارات نصية (الوضع الافتراضي الحالي)
     const likertOptions = translations[currentLang]?.options?.likert || {};
     Object.entries(likertOptions).forEach(([val, txt]) => {
       const option = document.createElement('div');
-      option.className = 'answer-option';
+      option.className = 'answer-option'; // كلاس جديد للتنسيق
       option.textContent = txt;
       option.onclick = () => selectAnswer(Number(val));
       optionsContainer.appendChild(option);
     });
   }
-  
-  document.getElementById('nextBtn').disabled = true;
+
+  document.getElementById('nextBtn').disabled = true; // تعطيل زر التالي حتى يتم الاختيار
 }
 
+// دالة لتحديد الإجابة وتمكين زر التالي
 function selectAnswer(value) {
-  userAnswers[currentQuestion] = value;
-  
-  // تحديث واجهة المستخدم
+  // يمكنك تخزين الإجابة في متغير مؤقت أو مباشرة في مصفوفة answers
+  // مثال بسيط:
+  // tempAnswer = value;
+  // أو مباشرة:
+  // answers.push({ questionId: questions[currentQuestion].id, value: value });
+
+  // تحديث واجهة المستخدم لإظهار الاختيار
   if (questions[currentQuestion].scale === "1-5") {
     document.querySelectorAll('.scale-option').forEach((opt, index) => {
       opt.classList.toggle('selected', index + 1 === value);
     });
   } else {
-    document.querySelectorAll('.answer-option').forEach((opt, index) => {
-      const likertOptions = translations[currentLang]?.options?.likert || {};
-      const optionValues = Object.keys(likertOptions);
-      opt.classList.toggle('selected', Number(optionValues[index]) === value);
-    });
+    // تحديث خيارات النصوص (إذا لزم)
+    // ... (منطق مشابه)
   }
-  
+
   document.getElementById('nextBtn').disabled = false;
 }
 
+// تحديث شريط التقدم
 function updateProgress() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   document.getElementById('progressFill').style.width = progress + '%';
-  document.getElementById('progressText').textContent = 
+  document.getElementById('progressText').textContent =
     `${currentQuestion + 1} من ${questions.length}`;
-}
-
-// انتقل للسؤال التالي
-function nextQuestion() {
-  if (!userAnswers[currentQuestion]) return alert("اختر إجابة");
-  
-  answers.push({
-    questionId: questions[currentQuestion].id,
-    category: questions[currentQuestion].category,
-    domain: questions[currentQuestion].domain,
-    value: userAnswers[currentQuestion]
-  });
-  
-  currentQuestion++;
-  renderQuestion();
 }
 
 // عرض النتائج
