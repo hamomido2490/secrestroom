@@ -51,7 +51,19 @@
         <span id="progressText"></span>
       </div>
       <div id="questionContainer"></div>
-      <div id="answerOptions"></div>
+      <div id="answerOptions">    <!-- 2. الأسئلة - محدث -->
+    <section id="quizSection">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progressFill"></div>
+        </div>
+        <span id="progressText"></span>
+      </div>
+      <div id="questionContainer"></div>
+      <div id="answerOptions"></div> <!-- عنصر جديد لخيارات الإجابة -->
+      <button id="nextBtn" onclick="nextQuestion()" disabled></button>
+    </section>
+</div>
       <button id="nextBtn" onclick="nextQuestion()" disabled></button>
     </section>
 
