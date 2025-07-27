@@ -393,167 +393,268 @@ function getColorCode(colorName) {
 }
 
 // دالة لعرض التحليل المختصر
+// دالة لعرض التحليل المختصر - محدثة لتكون أكثر إثارة وشمولية
 function displaySummaryAnalysis() {
     const contentDiv = document.getElementById("summaryContent");
     if (!contentDiv) {
         console.warn("عنصر summaryContent غير موجود في الصفحة.");
         return;
     }
-    // 1. تحديد أعلى مجال وأعلى نظريتين (زي في calculateSummary القديم)
+
+    // تأكد من حساب المتوسطات
+    if (!categoryAverages || Object.keys(categoryAverages).length === 0) {
+        calculateAverages();
+    }
+
+    // 1. تحديد أعلى مجال وأعلى نظريتين
     const sortedDomains = Object.entries(domainAverages).sort((a, b) => b[1] - a[1]);
     const topDomainKey = sortedDomains[0]?.[0] || "full";
+    const topDomainAvg = sortedDomains[0]?.[1] || 0;
     const topDomainName = translations[currentLang]?.results?.domains?.[topDomainKey] || topDomainKey;
+
     const sortedCategories = Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]);
-    const topCategories = sortedCategories.slice(0, 2); // أعلى فئتين
-    // 2. بناء نص التحليل المختصر (نص مكتوب بدون أرقام)
-    let summaryText = `<h2>${translations[currentLang]?.ui?.result_summary || "التحليل المختصر"}</h2>`;
-    // التحقق من وجود ملف analysis_data.js لكتابة تحليل جذاب
-    if (typeof analysisData !== 'undefined' && analysisData[currentLang]) {
-        const results = translations[currentLang]?.results || {};
-        // بناء جملة جذابة للملخص
-        let writtenSummary = "";
-        // جملة 1: المجال الأقوى
-        writtenSummary += `🌟 مجالك الأقوى هو <strong>${topDomainName}</strong>. `;
-        // جملة 2: النظرية المهيمنة الأولى (مع تفسير مبسط)
-        if (topCategories.length > 0) {
-            const topCatKey = topCategories[0][0];
-            const avgScore = categoryAverages[topCatKey];
-            const theoryData = analysisData[currentLang][topCatKey];
-            const categoryName = results.traits?.[topCatKey] || topCatKey;
-            writtenSummary += `تتأثر بشدة بنظريات <strong>${categoryName}</strong>. `;
-            if (theoryData) {
-                if (avgScore >= 3.5) { // عتبة متوسطة-عالية
-                    writtenSummary += `هذا يشير إلى <strong>${theoryData.high_score_traits ? theoryData.high_score_traits[0] : 'سمات قوية'}</strong>. `;
-                } else if (avgScore <= 2.5) { // عتبة متوسطة-منخفضة
-                    writtenSummary += `هذا قد يعني أن <strong>${theoryData.low_score_traits ? theoryData.low_score_traits[0] : 'سمات أخرى تهيمن'}</strong>. `;
-                } else { // متوسط
-                     writtenSummary += `أنت تتوازن بين جوانب متعددة من هذه النظرية. `;
-                }
-            }
-        }
-        // جملة 3: النظرية المهيمنة الثانية
-        if (topCategories.length > 1) {
-            const secondCatKey = topCategories[1][0];
-            const secondCatName = results.traits?.[secondCatKey] || secondCatKey;
-            writtenSummary += `كما تلعب <strong>${secondCatName}</strong> دورًا مهمًا في تشكيل طريقة تفكيرك. `;
-        }
-        // جملة 4: نصيحة عامة
-        writtenSummary += "🔍 استمر في استكشاف هذه الجوانب لفهم نفسك بشكل أعمق.";
-        summaryText += `<p>${writtenSummary}</p>`;
+    const topCategories = sortedCategories.slice(0, 3); // أعلى 3 نظريات للتنوع
+
+    // 2. بناء نص التحليل المختصر (نص جذاب وشامل)
+    let summaryHtml = `<h2>${translations[currentLang]?.ui?.result_summary || "تحليلك النفسي المختصر"}</h2>`;
+    summaryHtml += `<div class="result-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">`;
+
+    // جملة رئيسية جذابة تعتمد على أعلى مجال
+    let mainInsight = "";
+    if (topDomainAvg >= 4) {
+        mainInsight = `🌟 <strong> 당신 قوة ${topDomainName}!</strong> هذا المجال يهيمن على شخصيتك ويوجه قراراتك.`;
+    } else if (topDomainAvg >= 3) {
+        mainInsight = `🧭 <strong>${topDomainName}</strong> هو بوصلة داخلية قوية توجه خطواتك.`;
+    } else if (topDomainAvg >= 2) {
+        mainInsight = `⚖️ <strong>${topDomainName}</strong> يلعب دورًا متوازنًا في حياتك.`;
     } else {
-        // إذا ملف analysis_data.js مش متاح، نستخدم نص بسيط
-        summaryText += `<p>تحليلك يشير إلى أن <strong>${topDomainName}</strong> هو مجالك الأقوى.</p>`;
-        summaryText += `<p>النظريات التي تؤثر عليك بشدة تشمل: `;
-        topCategories.forEach(([catKey], index) => {
-            const categoryName = translations[currentLang]?.results?.traits?.[catKey] || catKey;
-            summaryText += `${index > 0 ? ' و ' : ''}<strong>${categoryName}</strong>`;
-        });
-        summaryText += `.</p>`;
+        mainInsight = `🌱 <strong>${topDomainName}</strong> هو مجال يحمل إمكانيات نمو كبيرة لك.`;
     }
-    contentDiv.innerHTML = summaryText;
+    summaryHtml += `<p style="font-size: 1.2em; margin-bottom: 15px;">${mainInsight}</p>`;
+
+    // تحليل سريع للنظريات الرئيسية
+    summaryHtml += `<p style="font-style: italic; margin-bottom: 10px;">"القوى التي تشكلك:"</p><ul style="text-align: right; display: inline-block;">`;
+    topCategories.forEach(([catKey, avgScore], index) => {
+        const categoryName = translations[currentLang]?.results?.traits?.[catKey] || catKey;
+        let scoreInterpretation = "";
+        if (avgScore >= 4) scoreInterpretation = "مؤثر بقوة";
+        else if (avgScore >= 3) scoreInterpretation = "مؤثر";
+        else if (avgScore >= 2) scoreInterpretation = "متوسط التأثير";
+        else scoreInterpretation = "تأثير محدود";
+        summaryHtml += `<li><strong>${categoryName}</strong>: ${scoreInterpretation} (${avgScore.toFixed(1)})</li>`;
+    });
+    summaryHtml += `</ul>`;
+
+    // نصيحة تحفيزية عامة
+    summaryHtml += `<p style="margin-top: 15px; font-weight: bold;">🔍 اكتشف المزيد عن هذه الجوانب لتصل إلى أعماق نفسك!</p>`;
+    summaryHtml += `</div>`; // نهاية result-card الرئيسية
+
+    // 3. (اختياري) إضافة بطاقات صغيرة للنظريات العليا مع تفاصيل قصيرة من analysis_data.js
+    summaryHtml += `<h3 style="margin-top: 25px;">نظرة سريعة على قواك الأساسية:</h3>`;
+    topCategories.slice(0, 2).forEach(([catKey, avgScore]) => {
+        const theoryData = typeof analysisData !== 'undefined' && analysisData[currentLang] ? analysisData[currentLang][catKey] : null;
+        if (theoryData) {
+            summaryHtml += `<div class="result-card" style="border-left: 4px solid #e74c3c;">`;
+            summaryHtml += `<h4>${theoryData.name}</h4>`;
+            // عرض سمة قوية واحدة أو تفسير مبسط
+            let keyTraitOrInterpretation = "";
+            if (avgScore >= 4 && theoryData.high_score_traits && theoryData.high_score_traits.length > 0) {
+                keyTraitOrInterpretation = `<strong>سمة بارزة:</strong> ${theoryData.high_score_traits[0]}.`;
+            } else if (avgScore <= 2 && theoryData.low_score_traits && theoryData.low_score_traits.length > 0) {
+                keyTraitOrInterpretation = `<strong>مجال للنمو:</strong> ${theoryData.low_score_traits[0]}.`;
+            } else {
+                // استخدام جزء من التفسير العام
+                const fullInterpretation = avgScore >= 3.5 ? theoryData.high_score_interpretation : theoryData.low_score_interpretation;
+                keyTraitOrInterpretation = fullInterpretation ? fullInterpretation.substring(0, 80) + "..." : "تحليل متاح.";
+            }
+            summaryHtml += `<p>${keyTraitOrInterpretation}</p>`;
+            summaryHtml += `</div>`;
+        }
+    });
+
+    contentDiv.innerHTML = summaryHtml;
 }
 
-// دالة لعرض التحليل حسب كل نظرية
+
+// دالة لعرض التحليل حسب كل نظرية - محدثة قليلاً
 function displayTheoriesAnalysis() {
     const contentDiv = document.getElementById("theoriesContent");
     if (!contentDiv) {
         console.warn("عنصر theoriesContent غير موجود في الصفحة.");
         return;
     }
-     const t = translations[currentLang]?.ui || {};
-     const results = translations[currentLang]?.results || {};
-     let html = `<h2>${t.theories_analysis || "التحليل حسب النظريات"}</h2>`;
-     html += `<p>هنا تحليل مفصل لكل نظرية نفسية بناءً على إجاباتك:</p>`;
-     // التحقق من وجود ملف analysis_data.js
-     if (typeof analysisData !== 'undefined' && analysisData[currentLang]) {
-         // عرض تحليل لكل نظرية تم التسجيل فيها، مرتبة من الأعلى للأدنى
-         Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([categoryKey, avgScore]) => {
-             const theoryData = analysisData[currentLang][categoryKey];
-             if (theoryData) {
-                 html += `<div class="result-card">`;
-                 html += `<h3>${theoryData.name} (متوسط: ${avgScore.toFixed(2)})</h3>`;
-                 html += `<p><strong>الوصف:</strong> ${theoryData.description.substring(0, 150)}...</p>`; // مختصر من الوصف
-                 // عرض التفسير المخصص
-                 const interpretation = avgScore >= 3.5 ? theoryData.high_score_interpretation.substring(0, 100) + "..." :
-                                      avgScore <= 2.5 ? theoryData.low_score_interpretation.substring(0, 100) + "..." :
-                                      `درجتك المتوسطة (${avgScore.toFixed(2)}) تشير إلى توازن.`;
-                 html += `<p><strong>تحليلك:</strong> ${interpretation}</p>`;
-                 html += `</div>`;
-             } else {
-                 // إذا ما لقاش بيانات التحليل
-                 const categoryName = results.traits?.[categoryKey] || categoryKey;
-                 html += `<div class="result-card">`;
-                 html += `<h3>${categoryName} (متوسط: ${avgScore.toFixed(2)})</h3>`;
-                 html += `<p>تحليل مفصل لهذه النظرية غير متوفر حاليًا.</p>`;
-                 html += `</div>`;
-             }
-         });
-     } else {
-         // إذا ملف analysis_data.js مش متاح، نعرض رسالة بديلة
-         html += `<p>بيانات التحليل التفصيلي غير متوفرة حاليًا.</p>`;
-         // عرض قائمة بجميع النظريات ومتوسطاتها كحل بديل
-         html += `<div class="result-card">`;
-         html += `<h3>جميع النظريات</h3>`;
-         html += `<ul>`;
-         Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([catKey, avgScore]) => {
-             const categoryName = results.traits?.[catKey] || catKey;
-             html += `<li>${categoryName}: ${avgScore.toFixed(2)}/5</li>`;
-         });
-         html += `</ul>`;
-         html += `</div>`;
-     }
-     contentDiv.innerHTML = html;
+
+    // تأكد من حساب المتوسطات
+    if (!categoryAverages || Object.keys(categoryAverages).length === 0) {
+        calculateAverages();
+    }
+
+    const t = translations[currentLang]?.ui || {};
+    const results = translations[currentLang]?.results || {};
+    let html = `<h2>${t.theories_analysis || "التحليل حسب النظريات"}</h2>`;
+    html += `<p>هنا تحليل مفصل لكل نظرية نفسية بناءً على إجاباتك:</p>`;
+
+    // التحقق من وجود ملف analysis_data.js
+    if (typeof analysisData !== 'undefined' && analysisData[currentLang]) {
+        // عرض تحليل لكل نظرية تم التسجيل فيها، مرتبة من الأعلى للأدنى
+        Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([categoryKey, avgScore]) => {
+            const theoryData = analysisData[currentLang][categoryKey];
+            html += `<div class="result-card">`;
+            if (theoryData) {
+                html += `<h3>${theoryData.name} <span style="font-size: 0.9em; color: #7f8c8d;">(متوسط: ${avgScore.toFixed(2)})</span></h3>`;
+                html += `<p><strong>الوصف:</strong> ${theoryData.description}</p>`; // عرض الوصف كاملاً أو جزء أطول
+                // عرض التفسير المخصص
+                let interpretation = "";
+                if (avgScore >= 3.5) {
+                    interpretation = theoryData.high_score_interpretation;
+                } else if (avgScore <= 2.5) {
+                    interpretation = theoryData.low_score_interpretation;
+                } else {
+                    interpretation = `درجتك المتوسطة (${avgScore.toFixed(2)}) تشير إلى توازن نسبي. ${theoryData.high_score_interpretation ? theoryData.high_score_interpretation.substring(0, 50) + '...' : ''} ${theoryData.low_score_interpretation ? theoryData.low_score_interpretation.substring(0, 50) + '...' : ''}`;
+                }
+                html += `<p><strong>تحليلك:</strong> ${interpretation}</p>`;
+
+                // (اختياري) عرض نقاط القوة/الضعف أو نصائح التطوير
+                if (theoryData.strengths && theoryData.strengths.length > 0) {
+                     html += `<p><strong>نقاط القوة:</strong> ${theoryData.strengths.slice(0, 3).join(', ')}.</p>`;
+                }
+                if (theoryData.development_tips && theoryData.development_tips.length > 0) {
+                     html += `<p><strong>نصائح للتطوير:</strong> ${theoryData.development_tips[0]} <a href="#" onclick="alert('${theoryData.development_tips.join('\\n')}'); return false;">[+] المزيد</a></p>`;
+                }
+
+            } else {
+                // إذا ما لقاش بيانات التحليل
+                const categoryName = results.traits?.[categoryKey] || categoryKey;
+                html += `<h3>${categoryName} <span style="font-size: 0.9em; color: #7f8c8d;">(متوسط: ${avgScore.toFixed(2)})</span></h3>`;
+                html += `<p>تحليل مفصل لهذه النظرية غير متوفر حاليًا. (المفتاح: ${categoryKey})</p>`; // إضافة المفتاح للمساعدة في التتبع
+            }
+            html += `</div>`;
+        });
+    } else {
+        // إذا ملف analysis_data.js مش متاح
+        html += `<div class="result-card"><p>⚠️ بيانات التحليل التفصيلي غير متوفرة حاليًا. (analysis_data.js لم يُحمّل)</p></div>`;
+        // عرض قائمة بجميع النظريات ومتوسطاتها كحل بديل
+        html += `<div class="result-card">`;
+        html += `<h3>جميع النظريات (النتائج الأولية)</h3>`;
+        html += `<ul>`;
+        Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([catKey, avgScore]) => {
+            const categoryName = results.traits?.[catKey] || catKey;
+            html += `<li><strong>${categoryName}:</strong> ${avgScore.toFixed(2)}/5</li>`;
+        });
+        html += `</ul>`;
+        html += `</div>`;
+    }
+    contentDiv.innerHTML = html;
 }
 
 function displayDetailedAnalysis() {
   const contentDiv = document.getElementById("detailedAnalysisContent");
   if (!contentDiv) return;
 
+  // تأكد من حساب المتوسطات
+  if (!categoryAverages || Object.keys(categoryAverages).length === 0 || !domainAverages || Object.keys(domainAverages).length === 0) {
+        calculateAverages();
+  }
+
   let html = '<h3>التحليل التفصيلي لجميع النظريات</h3>';
 
-  // عرض تحليل كل نظرية
+  // عرض متوسط الدرجات حسب المجالات
+  html += `<h4>📊 المتوسطات حسب المجالات</h4>`;
+  html += `<ul>`;
+  Object.entries(domainAverages).sort((a,b) => b[1] - a[1]).forEach(([domain, avg]) => {
+    html += `<li><strong>${getDomainName(domain)}:</strong> ${avg.toFixed(2)}/5 - ${getDomainInterpretation(avg)}</li>`;
+  });
+  html += `</ul>`;
+
+  // عرض تحليل كل نظرية مع بيانات موسعة
+  html += `<h4>🧠 التحليل حسب النظريات</h4>`;
   Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]).forEach(([category, avg]) => {
-    html += `<div class="theory-card">
-      <h4>${getTheoryName(category)}</h4>
-      <p><strong>المتوسط:</strong> ${avg.toFixed(2)}/5</p>
-      <p><strong>التحليل:</strong> ${getTheoryInterpretation(category, avg)}</p>
-    </div>`;
+    const theoryData = typeof analysisData !== 'undefined' && analysisData[currentLang] ? analysisData[currentLang][category] : null;
+    html += `<div class="theory-card">`;
+    html += `<h4>${getTheoryName(category)} (متوسط: ${avg.toFixed(2)})</h4>`;
+    if(theoryData) {
+        html += `<p><strong>الوصف:</strong> ${theoryData.description.substring(0, 200)}...</p>`;
+        html += `<p><strong>التحليل:</strong> ${getTheoryInterpretation(category, avg)}</p>`;
+        // إضافة نقاط القوة والضعف
+        if (theoryData.strengths && theoryData.strengths.length > 0) {
+            html += `<p><strong>نقاط القوة:</strong> ${theoryData.strengths.join(', ')}.</p>`;
+        }
+        if (theoryData.weaknesses && theoryData.weaknesses.length > 0) {
+            html += `<p><strong>التحديات:</strong> ${theoryData.weaknesses.join(', ')}.</p>`;
+        }
+    } else {
+        html += `<p><strong>التحليل:</strong> ${getTheoryInterpretation(category, avg)}</p>`;
+        html += `<p style="color: #e74c3c;">(بيانات تفصيلية لهذه النظرية غير متوفرة حالياً)</p>`;
+    }
+    html += `</div>`;
   });
 
   contentDiv.innerHTML = html;
 }
 
+// دالة مساعدة جديدة لفهم المجالات
+function getDomainInterpretation(avg) {
+  if (avg >= 4) return "مؤثر بقوة";
+  if (avg >= 3) return "مؤثر";
+  if (avg >= 2) return "متوسط التأثير";
+  return "تأثير محدود";
+}
+
+
 function displayRecommendations() {
   const contentDiv = document.getElementById("recommendationsContent");
   if (!contentDiv) return;
+
+  // تأكد من حساب المتوسطات
+  if (!categoryAverages || Object.keys(categoryAverages).length === 0 || !domainAverages || Object.keys(domainAverages).length === 0) {
+        calculateAverages();
+  }
 
   let html = '<h3>التوصيات والنصائح</h3>';
 
   // الحصول على أعلى مجالين
   const sortedDomains = Object.entries(domainAverages).sort((a, b) => b[1] - a[1]);
   const topDomain = sortedDomains[0]?.[0];
+  const topDomainAvg = sortedDomains[0]?.[1] || 0;
+  const secondDomain = sortedDomains[1]?.[0];
 
   // الحصول على أعلى نظريتين
   const sortedTheories = Object.entries(categoryAverages).sort((a, b) => b[1] - a[1]);
   const topTheories = sortedTheories.slice(0, 2).map(([cat]) => cat);
 
-  html += `<div class="result-card">
-    <h4>للوصول إلى إمكاناتك الكاملة:</h4>
-    <ul>
-      <li>ركز على تطوير مهارات ${getDomainName(topDomain)}</li>
-      <li>استخدم نقاط قوة ${getTheoryName(topTheories[0])} و${getTheoryName(topTheories[1])}</li>
-      <li>ابقَ متصلاً بجذورك وقيمك الأساسية</li>
-    </ul>
-  </div>`;
+  // التوصيات بناءً على أعلى المجالات والنظريات
+  const topTheoryData1 = typeof analysisData !== 'undefined' && analysisData[currentLang] ? analysisData[currentLang][topTheories[0]] : null;
+  const topTheoryData2 = typeof analysisData !== 'undefined' && analysisData[currentLang] ? analysisData[currentLang][topTheories[1]] : null;
 
-  html += `<div class="result-card">
-    <h4>للمزيد من النمو:</h4>
-    <ul>
-      <li>اقرأ عن نظريات ${getTheoryName(topTheories[0])}</li>
-      <li>مارس التأمل لتعزيز ${getDomainName(topDomain)}</li>
-      <li>تواصل مع أشخاص يشاركونك نفس الاهتمامات</li>
-    </ul>
-  </div>`;
+  html += `<div class="result-card" style="background-color: #e8f4f8; border-left: 4px solid #3498db;">`;
+  html += `<h4>🚀 لتطوير إمكاناتك الكاملة:</h4>`;
+  html += `<ul>`;
+  html += `<li><strong>ركّز على:</strong> تعزيز مهارات <em>${getDomainName(topDomain)}</em> (${topDomainAvg.toFixed(1)}/5).</li>`;
+  html += `<li><strong>استفد من نقاط القوة:</strong> استخدم خصائص <em>${getTheoryName(topTheories[0])}</em> و <em>${getTheoryName(topTheories[1])}</em> في مسيرة حياتك.</li>`;
+  html += `<li><strong>ابقَ متصلاً:</strong> بجذورك وقيمك الأساسية للاستقرار والنمو.</li>`;
+  html += `</ul>`;
+  html += `</div>`;
+
+  html += `<div class="result-card" style="background-color: #f9f3e9; border-left: 4px solid #e67e22;">`;
+  html += `<h4>🌱 للمزيد من النمو:</h4>`;
+  html += `<ul>`;
+  if(topTheoryData1 && topTheoryData1.development_tips && topTheoryData1.development_tips.length > 0) {
+      html += `<li><strong>لنظرية ${getTheoryName(topTheories[0])}:</strong> ${topTheoryData1.development_tips[0]}</li>`;
+  }
+  html += `<li><strong>مارس:</strong> التأمل أو التأمل العميق لتعزيز <em>${getDomainName(topDomain)}</em>.</li>`;
+  html += `<li><strong>تواصل:</strong> مع أشخاص يشاركونك اهتماماتك في <em>${getDomainName(secondDomain || 'التطور')}</em>.</li>`;
+  html += `</ul>`;
+  html += `</div>`;
+
+  // (اختياري) نصائح عامة
+  html += `<div class="result-card" style="background-color: #f0f0f0; border-left: 4px solid #95a5a6;">`;
+  html += `<h4>💡 نصائح عامة:</h4>`;
+  html += `<ul>`;
+  html += `<li>اقرأ عن النظريات التي حصلت على أعلى درجات فيها لفهم نفسك أكثر.</li>`;
+  html += `<li>استخدم هذه النتائج كنقطة بداية للتطوير الشخصي.</li>`;
+  html += `<li>تذكر أن الشخصية متعددة الأبعاد والنمو مستمر.</li>`;
+  html += `</ul>`;
+  html += `</div>`;
 
   contentDiv.innerHTML = html;
 }
