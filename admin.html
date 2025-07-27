@@ -2,27 +2,139 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>إعدادات الإعلانات</title>
-  <style>
-    body { font-family:'Segoe UI',sans-serif; padding:20px; }
-    #panel { display:none; margin-top:20px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- تحسين SEO مع خصوصية -->
+  <meta name="description" content="لوحة إدارة الإعلانات لتطبيق غرفة الأسرار">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="author" content="Mohammed Tarek">
+  <title>إعدادات الإعلانات - غرفة الأسرار</title>
+  <!-- إضافة Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <!-- إضافة خط Noto Sans Arabic -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h2>إعدادات الإعلانات</h2>
-  <input type="password" id="pass" placeholder="كلمة المرور">
-  <button onclick="check()">دخول</button>
-  <div id="panel">
-    <p>هنا يمكنك إدارة الإعلانات الربحية.</p>
-    <!-- روابط الإعلانات أو أكواد AdSense -->
-  </div>
+<body class="light">
+  <header>
+    <div class="site-title">إعدادات الإعلانات<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room Admin</span></div>
+    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="تبديل الثيم بين الفاتح والداكن">🌓</button>
+      <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;" aria-label="اختيار اللغة">
+        <option value="ar">🇪🇬 العربية</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="zh">🇨🇳 中文</option>
+      </select>
+      <button id="logoutBtn" onclick="logout()" style="display:none; padding: 8px 12px;" aria-label="تسجيل الخروج">🔒</button>
+    </div>
+  </header>
+
+  <main>
+    <h2 id="adminTitle">إعدادات الإعلانات</h2>
+    <section id="loginSection" aria-labelledby="adminTitle">
+      <label for="pass" class="visually-hidden">كلمة المرور</label>
+      <input type="password" id="pass" placeholder="أدخل كلمة المرور" aria-label="أدخل كلمة المرور للوحة الإدارة" required>
+      <button onclick="checkPassword()" aria-label="تسجيل الدخول إلى لوحة الإدارة">دخول</button>
+    </section>
+
+    <section id="panel" style="display:none; margin-top:20px;" aria-labelledby="panelTitle">
+      <h3 id="panelTitle">إدارة الإعلانات الربحية</h3>
+      <p>قم بتحديث أكواد الإعلانات أو روابطها أدناه.</p>
+      <form id="adSettingsForm" onsubmit="saveAdSettings(event)">
+        <label for="adClient">معرف عميل AdSense (data-ad-client):</label>
+        <input type="text" id="adClient" placeholder="ca-pub-XXXXXXXXXXXXXXXX" aria-label="أدخل معرف عميل AdSense">
+        <label for="adSlotQuiz">معرف الإعلان للأسئلة (data-ad-slot):</label>
+        <input type="text" id="adSlotQuiz" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم الأسئلة">
+        <label for="adSlotResults">معرف الإعلان للنتائج (data-ad-slot):</label>
+        <input type="text" id="adSlotResults" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم النتائج">
+        <label for="adSlotFooter">معرف الإعلان للفوتر (data-ad-slot):</label>
+        <input type="text" id="adSlotFooter" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان للفوتر">
+        <button type="submit" aria-label="حفظ إعدادات الإعلانات">حفظ الإعدادات</button>
+      </form>
+    </section>
+  </main>
+
+  <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
+    <p>&copy; 2025 Mohammed Tarek</p>
+  </footer>
+
   <script>
-    function check(){
-      // ملاحظة: هذا ليس آمناً للاستخدام الحقيقي. يجب استخدام خادم للتحقق.
-      if(document.getElementById("pass").value==="Farida")
-        document.getElementById("panel").style.display="block";
-      else alert("كلمة المرور خاطئة");
+    // تحميل الإعدادات من localStorage
+    function loadAdSettings() {
+      const adSettings = JSON.parse(localStorage.getItem('adSettings')) || {};
+      document.getElementById('adClient').value = adSettings.adClient || '';
+      document.getElementById('adSlotQuiz').value = adSettings.adSlotQuiz || '';
+      document.getElementById('adSlotResults').value = adSettings.adSlotResults || '';
+      document.getElementById('adSlotFooter').value = adSettings.adSlotFooter || '';
     }
+
+    // التحقق من كلمة المرور
+    function checkPassword() {
+      const password = document.getElementById('pass').value;
+      // [تحسين] تنظيف الإدخال لمنع XSS
+      const sanitizedPassword = password.replace(/[<>&"]/g, '');
+      // ملاحظة: استخدام كلمة مرور ثابتة غير آمن. يُفضل استخدام مصادقة خادم.
+      if (sanitizedPassword === 'Farida') {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('panel').style.display = 'block';
+        loadAdSettings();
+      } else {
+        alert('كلمة المرور خاطئة');
+      }
+    }
+
+    // حفظ إعدادات الإعلانات
+    function saveAdSettings(event) {
+      event.preventDefault();
+      const adSettings = {
+        adClient: document.getElementById('adClient').value.trim(),
+        adSlotQuiz: document.getElementById('adSlotQuiz').value.trim(),
+        adSlotResults: document.getElementById('adSlotResults').value.trim(),
+        adSlotFooter: document.getElementById('adSlotFooter').value.trim()
+      };
+      localStorage.setItem('adSettings', JSON.stringify(adSettings));
+      alert('تم حفظ إعدادات الإعلانات بنجاح!');
+    }
+
+    // تحميل الثيم
+    function applyTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem('theme', theme);
+    }
+
+    // تبديل الثيم
+    function toggleTheme() {
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+    }
+
+    // تحميل اللغة
+    function changeLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      // إعادة تحميل الصفحة لتحديث اللغة (يمكن تحسين هذا باستخدام ملفات locales)
+      location.reload();
+    }
+
+    // تسجيل الخروج
+    function logout() {
+      localStorage.removeItem('adminSession');
+      location.reload();
+    }
+
+    // تهيئة الصفحة
+    window.onload = () => {
+      applyTheme(localStorage.getItem('theme') || 'light');
+      const adminSession = localStorage.getItem('adminSession');
+      if (adminSession) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('panel').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        loadAdSettings();
+      }
+    };
   </script>
 </body>
 </html>
