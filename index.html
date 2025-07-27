@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="title">غرفة الأسرار</title>
     <link rel="stylesheet" href="style.css">
-  <!-- jsPDF CDN --> <!-- أو امسح السطر ده كله لو مش عايزه -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- مسحت المسافة من هنا -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <!-- هيدر واحد فقط -->
@@ -45,8 +44,15 @@
 
     <!-- 2. الأسئلة -->
     <section id="quizSection">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progressFill"></div>
+        </div>
+        <span id="progressText"></span>
+      </div>
       <div id="questionContainer"></div>
-      <button id="nextBtn" onclick="nextQuestion()"></button>
+      <div id="answerOptions"></div>
+      <button id="nextBtn" onclick="nextQuestion()" disabled></button>
     </section>
 
     <!-- 3. النتائج -->
@@ -56,6 +62,8 @@
       <button id="btnPersonalityType" onclick="showPersonalityType()">تصنيف الشخصية</button>
       <button id="btnSummary" onclick="showSummaryAnalysis()">التحليل المختصر</button>
       <button id="btnTheories" onclick="showTheoriesAnalysis()">التحليل حسب النظريات</button>
+      <button id="btnDetailedAnalysis" onclick="showDetailedAnalysis()">التحليل التفصيلي</button>
+      <button id="btnRecommendations" onclick="showRecommendations()">التوصيات</button>
     </div>
 
     <!-- قسم تصنيف الشخصية (الألوان) - هيبقى مخفي الأول -->
@@ -73,6 +81,18 @@
       <div id="theoriesContent"></div>
     </div>
 
+    <!-- قسم التحليل التفصيلي - جديد -->
+    <div id="detailedAnalysisSection" class="result-section" style="display:none;">
+      <h3>التحليل التفصيلي لجميع النظريات</h3>
+      <div id="detailedAnalysisContent"></div>
+    </div>
+
+    <!-- قسم التوصيات - جديد -->
+    <div id="recommendationsSection" class="result-section" style="display:none;">
+      <h3>التوصيات والنصائح</h3>
+      <div id="recommendationsContent"></div>
+    </div>
+
     <!-- أزرار التحميل والمشاركة -->
     <div class="actions">
       <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
@@ -87,12 +107,18 @@
     </section>
   </div>
 
+  <!-- مودال لعرض نظريات محددة -->
+  <div id="theoryModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeTheoryModal()">&times;</span>
+      <div id="theoryModalContent"></div>
+    </div>
+  </div>
 
   <script src="lang.js"></script>
 <script src="questions.js"></script>
 <script src="analysis_data.js"></script>
 <script src="script.js"></script>
-
 
   <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
     <p>&copy; 2025 Mohammed Tarek</p>
