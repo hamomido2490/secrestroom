@@ -1,4 +1,4 @@
-// script.js - النسخة المحسنة مع تحسينات للنتائج، الـPDF، الأرق، والإعلانات
+// script.js - النسخة المحسنة مع دعم متعدد اللغات، الإعلانات، والأمان
 
 // --- إعداد المتغيرات العامة ---
 let translations = {};
@@ -12,6 +12,11 @@ let categoryAverages = {};
 let domainAverages = {};
 let analysisData = null; // لتحميل بيانات analysis_data.js
 
+// --- دوال الأمان والتنظيف ---
+function sanitizeInput(input) {
+  return input.replace(/[<>&"]/g, "");
+}
+
 // --- دوال التهيئة واللغة ---
 async function loadLanguage(lang) {
   if (translations[lang]) {
@@ -23,21 +28,23 @@ async function loadLanguage(lang) {
     translations[lang] = langData;
     applyLanguage(lang);
   } catch (error) {
-    console.error(`فشل تحميل ملف اللغة '${lang}'.`, error);
-    if (lang !== 'en') {
-      await loadLanguage('en');
-      alert(translations['en']?.ui?.language_error || "Failed to load language, defaulting to English.");
+    console.error(`فشل تحميل ملف اللغة '${lang}':`, error);
+    if (lang !== "en") {
+      await loadLanguage("en");
+      alert(translations["en"]?.ui?.language_error || "Failed to load language, defaulting to English.");
     }
   }
 }
 
-// [تحسين] تحميل بيانات analysis_data.js
+// [تحسين] تحميل بيانات analysis_data.js مع التخزين المؤقت
 async function loadAnalysisData() {
+  if (analysisData) return; // التخزين المؤقت
   try {
-    const { default: data } = await import('./analysis_data.js');
+    const { default: data } = await import("./analysis_data.js");
     analysisData = data;
   } catch (error) {
-    console.error('فشل تحميل analysis_data.js:', error);
+    console.error("فشل تحميل analysis_data.js:", error);
+    alert(translations[currentLang]?.ui?.data_error || "Error loading psychological theories data.");
   }
 }
 
@@ -56,21 +63,25 @@ function initLanguage() {
 function applyLanguage(lang) {
   if (!translations[lang]) return;
   const t = translations[lang].ui;
+  const r = translations[lang].results || {};
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   document.title = t.title || "Secrets Room";
 
-  const siteTitle = document.querySelector('.site-title');
+  const siteTitle = document.querySelector(".site-title");
   if (siteTitle) {
-    siteTitle.innerHTML = `${t.title}  
-<span style="font-size: 1.2rem; font-weight: normal;">${lang === 'ar' ? 'Secrets Room' : 'غرفة الأسرار'}</span>`;
+    siteTitle.innerHTML = `${t.title}<br><span style="font-size: 1.2rem; font-weight: normal;">${
+      lang === "ar" ? "Secrets Room" : "غرفة الأسرار"
+    }</span>`;
   }
 
-  document.getElementById("ageLabel").innerText = t.age || "Age";
-  document.getElementById("genderLabel").innerText = t.gender || "Gender";
-  document.getElementById("startBtn").innerText = t.start || "Start";
-  document.getElementById("nextBtn").innerText = t.next || "Next";
-  
+  document.getElementById("ageLabel").textContent = t.age || "Age";
+  document.getElementById("genderLabel").textContent = t.gender || "Gender";
+  document.getElementById("startBtn").textContent = t.start || "Start";
+  document.getElementById("nextBtn").textContent = t.next || "Next";
+  document.getElementById("nextBtnHint").textContent = t.select_answer || "Please select an answer";
+  document.getElementById("quizTitle").textContent = t.quiz_title || "Personality Quiz";
+
   // تحديث نصوص genderSelect
   const genderSelect = document.getElementById("genderSelect");
   genderSelect.innerHTML = `
@@ -83,21 +94,34 @@ function applyLanguage(lang) {
   const logoutBtnElement = document.getElementById("logoutBtn");
   if (welcomeElement) {
     if (userSession) {
-      welcomeElement.innerText = t.welcome || "Welcome back!";
+      welcomeElement.textContent = t.welcome || "Welcome back!";
       if (logoutBtnElement) logoutBtnElement.style.display = "inline-block";
     } else {
-      welcomeElement.innerText = "";
+      welcomeElement.textContent = "";
       if (logoutBtnElement) logoutBtnElement.style.display = "none";
     }
   }
+
   updateResultButtonTitles();
+}
+
+// [تحسين] تحديث عناوين أزرار النتائج
+function updateResultButtonTitles() {
+  const t = translations[currentLang]?.ui || {};
+  document.getElementById("btnPersonalityType").textContent = t.personality_type || "Personality Type";
+  document.getElementById("btnSummary").textContent = t.result_summary || "Summary Analysis";
+  document.getElementById("btnTheories").textContent = t.theories || "Theories Analysis";
+  document.getElementById("btnDetailedAnalysis").textContent = t.result_full || "Detailed Analysis";
+  document.getElementById("btnRecommendations").textContent = t.recommendations || "Recommendations";
+  document.getElementById("downloadPdfBtn").textContent = t.download_pdf || "Download PDF";
+  document.getElementById("shareBtn").textContent = t.share || "Share";
 }
 
 // [تحسين] إضافة زر تبديل الثيم
 function initThemeToggle() {
-  const themeToggle = document.querySelector('.theme-toggle');
+  const themeToggle = document.querySelector(".theme-toggle");
   if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener("click", toggleTheme);
   }
 }
 
@@ -120,52 +144,107 @@ async function changeLanguage(lang) {
   } else if (document.getElementById("resultSection").classList.contains("active")) {
     const activeResultSection = document.querySelector('.result-section-content[style*="block"]');
     if (activeResultSection) {
-      const sectionName = activeResultSection.id.replace('Section', '');
+      const sectionName = activeResultSection.id.replace("Section", "");
       displayResultContent(sectionName);
     }
   }
 }
 
+// --- دوال إدارة الإعلانات ---
+function applyAdSettings() {
+  const adSettings = JSON.parse(localStorage.getItem("adSettings")) || {};
+  document.querySelectorAll('ins.adsbygoogle').forEach((ins) => {
+    if (adSettings.adClient) ins.setAttribute("data-ad-client", adSettings.adClient);
+    if (adSettings.adSlotQuiz && ins.closest("#quizSection"))
+      ins.setAttribute("data-ad-slot", adSettings.adSlotQuiz);
+    if (adSettings.adSlotResults && ins.closest("#resultSection"))
+      ins.setAttribute("data-ad-slot", adSettings.adSlotResults);
+    if (adSettings.adSlotFooter && ins.closest("footer"))
+      ins.setAttribute("data-ad-slot", adSettings.adSlotFooter);
+  });
+  try {
+    if (window.adsbygoogle) window.adsbygoogle.push({});
+  } catch (error) {
+    console.warn("فشل تحميل الإعلانات:", error);
+    alert(translations[currentLang]?.errors?.ad_load_error || "Failed to load ad, please try again later");
+  }
+}
+
 // --- دوال منطق الاختبار ---
 function startTest() {
-  const age = document.getElementById("ageInput").value;
-  if (!age) return alert(translations[currentLang]?.ui?.age_error || "Please enter your age");
-  const gender = document.getElementById("genderSelect").value;
+  const ageInput = document.getElementById("ageInput").value;
+  const age = sanitizeInput(ageInput);
+  if (!age || isNaN(age) || age < 10 || age > 100) {
+    return alert(translations[currentLang]?.ui?.age_error || "Please enter a valid age (10-100)");
+  }
+  const gender = sanitizeInput(document.getElementById("genderSelect").value);
   userSession = { age, gender, deviceId, timestamp: Date.now() };
   localStorage.setItem("session", JSON.stringify(userSession));
   document.getElementById("welcomeSection").classList.remove("active");
   document.getElementById("quizSection").classList.add("active");
+  document.getElementById("quizTitle").style.display = "block";
   renderQuestion();
 }
 
 function renderQuestion() {
   if (currentQuestion >= questions.length) return showResults();
   const q = questions[currentQuestion];
-  document.getElementById("questionContainer").innerHTML = `<div class="question">${q.text[currentLang] || q.text['en']}</div>`;
+  const questionText = q.text[currentLang] || q.text["en"] || "Question not available";
+  document.getElementById("questionContainer").innerHTML = `<div class="question" role="heading" aria-level="3">${questionText}</div>`;
   updateProgress();
   const optionsContainer = document.getElementById("answerOptions");
-  optionsContainer.innerHTML = '';
+  optionsContainer.innerHTML = "";
 
   if (q.scale === "1-5") {
-    const scaleContainer = document.createElement('div');
-    scaleContainer.className = 'scale-options';
+    const scaleContainer = document.createElement("div");
+    scaleContainer.className = "scale-options";
+    scaleContainer.setAttribute("role", "radiogroup");
+    scaleContainer.setAttribute("aria-labelledby", "questionContainer");
     for (let i = 1; i <= 5; i++) {
-      const option = document.createElement('div');
-      option.className = 'scale-option';
+      const option = document.createElement("div");
+      option.className = "scale-option";
       option.textContent = i;
+      option.setAttribute("role", "radio");
+      option.setAttribute("aria-checked", "false");
+      option.setAttribute("tabindex", i === 1 ? "0" : "-1");
       option.onclick = () => selectAnswer(i);
       scaleContainer.appendChild(option);
     }
     optionsContainer.appendChild(scaleContainer);
+  } else if (q.scale === "yes-no") {
+    const yesNoContainer = document.createElement("div");
+    yesNoContainer.className = "yes-no-options";
+    yesNoContainer.setAttribute("role", "radiogroup");
+    yesNoContainer.setAttribute("aria-labelledby", "questionContainer");
+    const yesNoOptions = translations[currentLang]?.options?.yes_no || { yes: "Yes", no: "No" };
+    ["yes", "no"].forEach((val) => {
+      const option = document.createElement("div");
+      option.className = "answer-option";
+      option.textContent = yesNoOptions[val];
+      option.setAttribute("role", "radio");
+      option.setAttribute("aria-checked", "false");
+      option.setAttribute("tabindex", val === "yes" ? "0" : "-1");
+      option.onclick = () => selectAnswer(val === "yes" ? 5 : 1); // نعم=5، لا=1
+      yesNoContainer.appendChild(option);
+    });
+    optionsContainer.appendChild(yesNoContainer);
   } else {
     const likertOptions = translations[currentLang]?.options?.likert || {};
-    Object.entries(likertOptions).forEach(([val, txt]) => {
-      const option = document.createElement('div');
-      option.className = 'answer-option';
+    const likertContainer = document.createElement("div");
+    likertContainer.className = "likert-options";
+    likertContainer.setAttribute("role", "radiogroup");
+    likertContainer.setAttribute("aria-labelledby", "questionContainer");
+    Object.entries(likertOptions).forEach(([val, txt], index) => {
+      const option = document.createElement("div");
+      option.className = "answer-option";
       option.textContent = txt;
+      option.setAttribute("role", "radio");
+      option.setAttribute("aria-checked", "false");
+      option.setAttribute("tabindex", index === 0 ? "0" : "-1");
       option.onclick = () => selectAnswer(Number(val));
-      optionsContainer.appendChild(option);
+      likertContainer.appendChild(option);
     });
+    optionsContainer.appendChild(likertContainer);
   }
   document.getElementById("nextBtn").disabled = true;
   const hint = document.getElementById("nextBtnHint");
@@ -174,15 +253,29 @@ function renderQuestion() {
 
 function selectAnswer(value) {
   userAnswers[currentQuestion] = value;
-  if (questions[currentQuestion].scale === "1-5") {
-    document.querySelectorAll('.scale-option').forEach((opt, index) => {
-      opt.classList.toggle('selected', index + 1 === value);
+  const q = questions[currentQuestion];
+  if (q.scale === "1-5") {
+    document.querySelectorAll(".scale-option").forEach((opt, index) => {
+      const isSelected = index + 1 === value;
+      opt.classList.toggle("selected", isSelected);
+      opt.setAttribute("aria-checked", isSelected ? "true" : "false");
+      opt.setAttribute("tabindex", isSelected ? "0" : "-1");
+    });
+  } else if (q.scale === "yes-no") {
+    document.querySelectorAll(".answer-option").forEach((opt, index) => {
+      const isSelected = (index === 0 && value === 5) || (index === 1 && value === 1);
+      opt.classList.toggle("selected", isSelected);
+      opt.setAttribute("aria-checked", isSelected ? "true" : "false");
+      opt.setAttribute("tabindex", isSelected ? "0" : "-1");
     });
   } else {
     const likertOptions = translations[currentLang]?.options?.likert || {};
     const optionValues = Object.keys(likertOptions);
-    document.querySelectorAll('.answer-option').forEach((opt, index) => {
-      opt.classList.toggle('selected', Number(optionValues[index]) === value);
+    document.querySelectorAll(".answer-option").forEach((opt, index) => {
+      const isSelected = Number(optionValues[index]) === value;
+      opt.classList.toggle("selected", isSelected);
+      opt.setAttribute("aria-checked", isSelected ? "true" : "false");
+      opt.setAttribute("tabindex", isSelected ? "0" : "-1");
     });
   }
   document.getElementById("nextBtn").disabled = false;
@@ -192,8 +285,10 @@ function selectAnswer(value) {
 
 function updateProgress() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
-  document.getElementById("progressFill").style.width = progress + '%';
-  document.getElementById("progressText").textContent = `${currentQuestion + 1} / ${questions.length}`;
+  document.getElementById("progressFill").style.width = progress + "%";
+  document.getElementById("progressText").textContent = `${
+    currentQuestion + 1
+  } / ${questions.length}`;
 }
 
 function nextQuestion() {
@@ -205,12 +300,13 @@ function nextQuestion() {
     }
     return;
   }
+  const q = questions[currentQuestion];
   answers.push({
-    questionId: questions[currentQuestion].id,
-    category: questions[currentQuestion].category,
-    domain: questions[currentQuestion].domain,
+    questionId: q.id,
+    category: q.category,
+    domain: q.domain,
     value: userAnswers[currentQuestion],
-    weight: questions[currentQuestion].weight || 1
+    weight: q.weight || 1,
   });
   currentQuestion++;
   if (currentQuestion < questions.length) renderQuestion();
@@ -223,21 +319,14 @@ function showResults() {
   document.getElementById("resultSection").classList.add("active");
   calculateAverages();
   updateResultButtonTitles();
-  displayResultContent('personalityType');
-  // [تحسين] تحميل الإعلانات بأمان
-  try {
-    if (window.adsbygoogle) {
-      window.adsbygoogle.push({});
-    }
-  } catch (error) {
-    console.warn('فشل تحميل الإعلانات:', error);
-  }
+  displayResultContent("personalityType");
+  applyAdSettings(); // [تحسين] تحميل إعدادات الإعلانات
 }
 
 function calculateAverages() {
   const categoryScores = {};
   const domainScores = {};
-  answers.forEach(a => {
+  answers.forEach((a) => {
     if (!categoryScores[a.category]) categoryScores[a.category] = { total: 0, count: 0 };
     if (!domainScores[a.domain]) domainScores[a.domain] = { total: 0, count: 0 };
     categoryScores[a.category].total += a.value * a.weight;
@@ -255,98 +344,108 @@ function calculateAverages() {
   }
 }
 
-function updateResultButtonTitles() {
-  const t = translations[currentLang]?.ui || {};
-  document.getElementById("btnPersonalityType").innerText = t.personality_type || "Personality Type";
-  document.getElementById("btnSummary").innerText = t.summary_analysis || "Summary Analysis";
-  document.getElementById("btnTheories").innerText = t.theories_analysis || "Theories Analysis";
-  document.getElementById("btnDetailedAnalysis").innerText = t.detailed_analysis || "Detailed Analysis";
-  document.getElementById("btnRecommendations").innerText = t.recommendations || "Recommendations";
-  document.getElementById("downloadPdfBtn").innerText = t.download_pdf || "Download PDF";
-  document.getElementById("shareBtn").innerText = t.share || "Share";
-}
-
 function displayResultContent(sectionName) {
-  document.querySelectorAll('.result-section-content').forEach(s => s.style.display = 'none');
+  document.querySelectorAll(".result-section-content").forEach((s) => (s.style.display = "none"));
   const sectionElement = document.getElementById(`${sectionName}Section`);
-  if (sectionElement) sectionElement.style.display = 'block';
-  
+  if (sectionElement) {
+    sectionElement.style.display = "block";
+    sectionElement.setAttribute("aria-hidden", "false");
+  }
+  document.querySelectorAll(".result-section-content").forEach((s) => {
+    if (s !== sectionElement) s.setAttribute("aria-hidden", "true");
+  });
+
   switch (sectionName) {
-    case 'personalityType': displayPersonalityType(); break;
-    case 'summary': displaySummaryAnalysis(); break;
-    case 'theories': displayTheoriesAnalysis(); break;
-    case 'detailedAnalysis': displayDetailedAnalysis(); break;
-    case 'recommendations': displayRecommendations(); break;
+    case "personalityType":
+      displayPersonalityType();
+      break;
+    case "summary":
+      displaySummaryAnalysis();
+      break;
+    case "theories":
+      displayTheoriesAnalysis();
+      break;
+    case "detailedAnalysis":
+      displayDetailedAnalysis();
+      break;
+    case "recommendations":
+      displayRecommendations();
+      break;
   }
 }
 
-// --- دوال توليد محتوى النتائج ---
 function displayPersonalityType() {
   const contentDiv = document.getElementById("personalityTypeContent");
+  const t = translations[currentLang]?.results || {};
   const sortedDomains = Object.entries(domainAverages).sort((a, b) => b[1] - a[1]);
   const topDomainKey = sortedDomains[0]?.[0] || "vision";
   let personalityColor, colorDescription, themes;
 
   if (topDomainKey === "vision" || topDomainKey === "discovery") {
-    personalityColor = translations[currentLang]?.ui?.red_personality || "Red Personality";
-    colorDescription = translations[currentLang]?.ui?.red_description || "You are enthusiastic, energetic, and driven to lead and explore. You love challenges and innovation.";
-    themes = translations[currentLang]?.ui?.red_themes || ["Energy", "Passion", "Leadership", "Innovation", "Boldness"];
+    personalityColor = t.red_personality || "Red Personality";
+    colorDescription = t.red_description || "You are enthusiastic, energetic, and driven to lead and explore.";
+    themes = t.red_themes || ["Energy", "Passion", "Leadership", "Innovation", "Boldness"];
   } else if (topDomainKey === "analysis" || topDomainKey === "healing") {
-    personalityColor = translations[currentLang]?.ui?.blue_personality || "Blue Personality";
-    colorDescription = translations[currentLang]?.ui?.blue_description || "You are calm, analytical, and prefer deep thinking and understanding. You value order and helping others.";
-    themes = translations[currentLang]?.ui?.blue_themes || ["Calmness", "Deep Thinking", "Analysis", "Helping", "Organization"];
+    personalityColor = t.blue_personality || "Blue Personality";
+    colorDescription = t.blue_description || "You are calm, analytical, and prefer deep thinking and understanding.";
+    themes = t.blue_themes || ["Calmness", "Deep Thinking", "Analysis", "Helping", "Organization"];
   } else {
-    personalityColor = translations[currentLang]?.ui?.purple_personality || "Purple Personality";
-    colorDescription = translations[currentLang]?.ui?.purple_description || "You are complex and versatile, blending various traits. You thrive on diversity and continuous growth.";
-    themes = translations[currentLang]?.ui?.purple_themes || ["Diversity", "Growth", "Creativity", "Flexibility", "Depth"];
+    personalityColor = t.purple_personality || "Purple Personality";
+    colorDescription = t.purple_description || "You are complex and versatile, blending various traits.";
+    themes = t.purple_themes || ["Diversity", "Growth", "Creativity", "Flexibility", "Depth"];
   }
 
-  let html = `<h2>${personalityColor}</h2><p>${colorDescription}</p><h3>${translations[currentLang]?.ui?.themes || "Your Core Themes"}:</h3><ul>`;
-  themes.forEach(theme => html += `<li>${theme}</li>`);
+  let html = `<h2>${personalityColor}</h2><p>${colorDescription}</p><h3>${
+    t.themes || "Your Core Themes"
+  }:</h3><ul>`;
+  themes.forEach((theme) => (html += `<li>${theme}</li>`));
   html += `</ul>`;
   contentDiv.innerHTML = html;
   contentDiv.style.backgroundColor = getColorCode(personalityColor);
-  contentDiv.setAttribute('data-score', domainAverages[topDomainKey] > 3.5 ? 'high' : 'low'); // [تحسين] إضافة data-score
+  contentDiv.setAttribute("data-score", domainAverages[topDomainKey] > 3.5 ? "high" : "low");
 
-  // [تحسين] رسم بياني راداري بـChart.js
-  const ctx = document.getElementById('resultChart').getContext('2d');
+  // [تحسين] رسم بياني راداري مع تدمير الرسم القديم
+  const ctx = document.getElementById("resultChart").getContext("2d");
   if (window.myChart) window.myChart.destroy();
   window.myChart = new Chart(ctx, {
-    type: 'radar',
+    type: "radar",
     data: {
-      labels: Object.keys(domainAverages),
-      datasets: [{
-        label: translations[currentLang]?.ui?.domain_scores || 'Domain Scores',
-        data: Object.values(domainAverages),
-        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-        borderColor: '#3498db',
-        borderWidth: 2
-      }]
+      labels: Object.keys(domainAverages).map((key) => t.domains[key] || key),
+      datasets: [
+        {
+          label: t.domain_scores || "Domain Scores",
+          data: Object.values(domainAverages),
+          backgroundColor: "rgba(52, 152, 219, 0.2)",
+          borderColor: "#3498db",
+          borderWidth: 2,
+        },
+      ],
     },
     options: {
       scales: {
-        r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 5 }
+        r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 5 },
       },
-      plugins: { legend: { display: true, position: 'top' } }
-    }
+      plugins: { legend: { display: true, position: "top" } },
+    },
   });
 }
 
 function getColorCode(colorName) {
+  const t = translations[currentLang]?.results || {};
   const colors = {
-    [translations[currentLang]?.ui?.red_personality || "Red Personality"]: "#e74c3c",
-    [translations[currentLang]?.ui?.blue_personality || "Blue Personality"]: "#3498db",
-    [translations[currentLang]?.ui?.green_personality || "Green Personality"]: "#2ecc71",
-    [translations[currentLang]?.ui?.purple_personality || "Purple Personality"]: "#9b59b6"
+    [t.red_personality || "Red Personality"]: "#e74c3c",
+    [t.blue_personality || "Blue Personality"]: "#3498db",
+    [t.green_personality || "Green Personality"]: "#2ecc71",
+    [t.purple_personality || "Purple Personality"]: "#9b59b6",
   };
   return colors[colorName] || "#95a5a6";
 }
 
-// [تحسين] دالة محسّنة لتحليل النظريات
 function displayTheoriesAnalysis() {
   const contentDiv = document.getElementById("theoriesContent");
-  let html = `<h2>${translations[currentLang]?.ui?.theories_analysis || "Theories Analysis"}</h2>`;
-  html += `<p>${translations[currentLang]?.ui?.theories_intro || "Your results mapped to psychological theories:"}</p>`;
+  const t = translations[currentLang]?.results || {};
+  let html = `<h2>${t.theories_intro || "Theories Analysis"}</h2>`;
+  html += `<p>${t.theories_intro || "Your results mapped to psychological theories:"}</p>`;
 
   if (!analysisData) {
     html += `<p>${translations[currentLang]?.ui?.data_error || "Error loading psychological theories data."}</p>`;
@@ -354,49 +453,92 @@ function displayTheoriesAnalysis() {
     return;
   }
 
-  // ربط النتائج بالنظريات من analysis_data.js
   for (const category in analysisData) {
     for (const theoryKey in analysisData[category]) {
       const theory = analysisData[category][theoryKey];
       const score = categoryAverages[category] || 0;
       const interpretation = score > 3.5 ? theory.high_score_interpretation : theory.low_score_interpretation;
       html += `
-        <div class="theory-card" data-theory="${theoryKey}">
-          <h4>${theory.name}</h4>
-          <p><strong>${translations[currentLang]?.ui?.score || "Score"}:</strong> ${score.toFixed(2)}/5</p>
-          <p><strong>${translations[currentLang]?.ui?.interpretation || "Interpretation"}:</strong> ${interpretation}</p>
-          <p><strong>${translations[currentLang]?.ui?.description || "Description"}:</strong> ${theory.description}</p>
-          <p><strong>${translations[currentLang]?.ui?.key_concepts || "Key Concepts"}:</strong> ${theory.key_concepts.join(", ")}</p>
+        <div class="theory-card" data-theory="${theoryKey}" role="button" tabindex="0" aria-label="${
+        t.traits[theoryKey] || theoryKey
+      }">
+          <h4>${t.traits[theoryKey] || theory.name}</h4>
+          <p><strong>${t.score || "Score"}:</strong> ${score.toFixed(2)}/5</p>
+          <p><strong>${t.interpretation || "Interpretation"}:</strong> ${interpretation}</p>
+          <p><strong>${t.description || "Description"}:</strong> ${theory.description}</p>
+          <p><strong>${t.key_concepts || "Key Concepts"}:</strong> ${theory.key_concepts.join(", ")}</p>
         </div>`;
     }
   }
   contentDiv.innerHTML = html;
+
+  // [تحسين] إضافة تفاعلية للمودال
+  document.querySelectorAll(".theory-card").forEach((card) => {
+    card.addEventListener("click", () => showTheoryModal(card.dataset.theory));
+    card.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" || e.key === " ") showTheoryModal(card.dataset.theory);
+    });
+  });
+}
+
+function showTheoryModal(theoryKey) {
+  const modal = document.getElementById("theoryModal");
+  const modalContent = document.getElementById("theoryModalContent");
+  const t = translations[currentLang]?.results || {};
+  let found = false;
+
+  for (const category in analysisData) {
+    if (analysisData[category][theoryKey]) {
+      const theory = analysisData[category][theoryKey];
+      const score = categoryAverages[category] || 0;
+      const interpretation = score > 3.5 ? theory.high_score_interpretation : theory.low_score_interpretation;
+      modalContent.innerHTML = `
+        <h4>${t.traits[theoryKey] || theory.name}</h4>
+        <p><strong>${t.score || "Score"}:</strong> ${score.toFixed(2)}/5</p>
+        <p><strong>${t.interpretation || "Interpretation"}:</strong> ${interpretation}</p>
+        <p><strong>${t.description || "Description"}:</strong> ${theory.description}</p>
+        <p><strong>${t.key_concepts || "Key Concepts"}:</strong> ${theory.key_concepts.join(", ")}</p>
+      `;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    modalContent.innerHTML = `<p>${translations[currentLang]?.ui?.data_error || "Theory data not found."}</p>`;
+  }
+  modal.style.display = "block";
 }
 
 function displaySummaryAnalysis() {
   const contentDiv = document.getElementById("summaryContent");
-  let html = `<h2>${translations[currentLang]?.ui?.summary_analysis || "Summary Analysis"}</h2>`;
-  html += `<p>${translations[currentLang]?.ui?.summary_intro || "Here is a brief overview of your personality based on your answers:"}</p>`;
+  const t = translations[currentLang]?.results || {};
+  let html = `<h2>${t.summary_intro || "Summary Analysis"}</h2>`;
+  html += `<p>${t.summary_intro || "Here is a brief overview of your personality based on your answers:"}</p>`;
   for (const [domain, score] of Object.entries(domainAverages)) {
-    html += `<p>${domain}: ${score.toFixed(2)}/5</p>`;
+    html += `<p>${t.domains[domain] || domain}: ${score.toFixed(2)}/5</p>`;
   }
   contentDiv.innerHTML = html;
 }
 
 function displayDetailedAnalysis() {
   const contentDiv = document.getElementById("detailedAnalysisContent");
-  let html = `<h2>${translations[currentLang]?.ui?.detailed_analysis || "Detailed Analysis"}</h2>`;
-  html += `<p>${translations[currentLang]?.ui?.detailed_intro || "Detailed breakdown of your results:"}</p>`;
+  const t = translations[currentLang]?.results || {};
+  let html = `<h2>${t.full_intro || "Detailed Analysis"}</h2>`;
+  html += `<p>${t.full_intro || "Detailed breakdown of your results:"}</p>`;
   for (const [category, score] of Object.entries(categoryAverages)) {
-    html += `<div class="result-card" data-score="${score > 3.5 ? 'high' : 'low'}"><p>${category}: ${score.toFixed(2)}/5</p></div>`;
+    html += `<div class="result-card" data-score="${score > 3.5 ? "high" : "low"}"><p>${
+      t.traits[category] || category
+    }: ${score.toFixed(2)}/5</p></div>`;
   }
   contentDiv.innerHTML = html;
 }
 
 function displayRecommendations() {
   const contentDiv = document.getElementById("recommendationsContent");
+  const t = translations[currentLang]?.results || {};
   let recommendations = [];
-  
+
   if (!analysisData) {
     recommendations.push(translations[currentLang]?.ui?.data_error || "Error loading recommendations data.");
   } else {
@@ -412,57 +554,84 @@ function displayRecommendations() {
   }
 
   if (recommendations.length === 0) {
-    recommendations.push(translations[currentLang]?.ui?.general_recommendation || "Continue exploring your strengths and stay open to personal growth.");
+    recommendations.push(
+      translations[currentLang]?.ui?.general_recommendation ||
+        "Continue exploring your strengths and stay open to personal growth."
+    );
   }
-  let html = `<ul>${recommendations.map(r => `<li>${r}</li>`).join('')}</ul>`;
+  let html = `<ul>${recommendations.map((r) => `<li>${r}</li>`).join("")}</ul>`;
   contentDiv.innerHTML = html;
 }
 
 // --- دوال الإجراءات الإضافية ---
 function downloadPDF() {
-  if (typeof window.jspdf === 'undefined') return alert(translations[currentLang]?.ui?.pdf_error || 'PDF library not loaded.');
+  if (typeof window.jspdf === "undefined") {
+    return alert(translations[currentLang]?.ui?.pdf_error || "PDF library not loaded.");
+  }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  doc.setFont("Amiri", "normal"); // دعم الخط العربي
   doc.setFontSize(12);
 
-  // [تحسين] تحسين تنسيق PDF
-  doc.addFileToVFS('Amiri-Regular.ttf', 'data:font/ttf;base64,...'); // تأكدي من إضافة الخط
-  doc.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
-  doc.setFont('Amiri');
+  // [تحسين] دعم الخطوط لجميع اللغات
+  if (currentLang === "ar") {
+    doc.addFileToVFS(
+      "Amiri-Regular.ttf",
+      "data:font/ttf;base64,..." // استبدلي بـ Base64 لخط Amiri
+    );
+    doc.addFont("Amiri-Regular.ttf", "Amiri", "normal");
+    doc.setFont("Amiri");
+  } else if (currentLang === "zh") {
+    doc.addFileToVFS(
+      "NotoSansSC-Regular.ttf",
+      "data:font/ttf;base64,..." // استبدلي بـ Base64 لخط Noto Sans SC
+    );
+    doc.addFont("NotoSansSC-Regular.ttf", "NotoSansSC", "normal");
+    doc.setFont("NotoSansSC");
+  } else {
+    doc.setFont("helvetica", "normal");
+  }
 
-  const personalityContent = document.getElementById("personalityTypeContent").innerText;
-  const summaryContent = document.getElementById("summaryContent").innerText;
-  const theoriesContent = document.getElementById("theoriesContent").innerText;
-  const recommendationsContent = document.getElementById("recommendationsContent").innerText;
-
+  const t = translations[currentLang]?.results || {};
   let y = 10;
-  doc.text(translations[currentLang]?.ui?.report_title || "Personality Report", 10, y);
+  doc.text(t.report_title || "Personality Report", 10, y);
   y += 10;
-  doc.text(personalityContent, 10, y, { align: 'right', maxWidth: 180 });
+  doc.text(document.getElementById("personalityTypeContent").innerText, 10, y, {
+    align: currentLang === "ar" ? "right" : "left",
+    maxWidth: 180,
+  });
   y += 40;
-  doc.text(translations[currentLang]?.ui?.summary_analysis || "Summary Analysis", 10, y);
+  doc.text(t.summary_intro || "Summary Analysis", 10, y);
   y += 10;
-  doc.text(summaryContent, 10, y, { align: 'right', maxWidth: 180 });
+  doc.text(document.getElementById("summaryContent").innerText, 10, y, {
+    align: currentLang === "ar" ? "right" : "left",
+    maxWidth: 180,
+  });
   y += 40;
-  doc.text(translations[currentLang]?.ui?.theories_analysis || "Theories Analysis", 10, y);
+  doc.text(t.theories_intro || "Theories Analysis", 10, y);
   y += 10;
-  doc.text(theoriesContent, 10, y, { align: 'right', maxWidth: 180 });
+  doc.text(document.getElementById("theoriesContent").innerText, 10, y, {
+    align: currentLang === "ar" ? "right" : "left",
+    maxWidth: 180,
+  });
   y += 40;
-  doc.text(translations[currentLang]?.ui?.recommendations || "Recommendations", 10, y);
+  doc.text(t.recommendations_intro || "Recommendations", 10, y);
   y += 10;
-  doc.text(recommendationsContent, 10, y, { align: 'right', maxWidth: 180 });
+  doc.text(document.getElementById("recommendationsContent").innerText, 10, y, {
+    align: currentLang === "ar" ? "right" : "left",
+    maxWidth: 180,
+  });
 
   doc.save(`SecretsRoom_Report_${userSession.deviceId}.pdf`);
 }
 
 function shareResult() {
-  const textToShare = translations[currentLang]?.ui?.share_text || "I discovered my personality secrets at Secrets Room!";
+  const t = translations[currentLang]?.ui || {};
+  const textToShare = t.share_text || "I discovered my personality secrets at Secrets Room!";
   if (navigator.share) {
-    navigator.share({ 
-      title: translations[currentLang]?.ui?.share_title || 'My Personality Analysis', 
-      text: textToShare, 
-      url: window.location.href 
+    navigator.share({
+      title: t.share_title || "My Personality Analysis",
+      text: textToShare,
+      url: window.location.href,
     }).catch(console.error);
   } else {
     alert(textToShare);
@@ -470,7 +639,8 @@ function shareResult() {
 }
 
 function logout() {
-  localStorage.clear();
+  localStorage.removeItem("session");
+  localStorage.removeItem("adminSession");
   location.reload();
 }
 
@@ -479,7 +649,8 @@ window.onload = async () => {
   initDevice();
   initLanguage();
   await loadLanguage(currentLang);
-  await loadAnalysisData(); // [تحسين] تحميل بيانات النظريات
+  await loadAnalysisData();
   applyTheme(localStorage.getItem("theme") || "light");
-  initThemeToggle(); // [تحسين] تهيئة زر تبديل الثيم
+  initThemeToggle();
+  applyAdSettings(); // [تحسين] تحميل إعدادات الإعلانات عند بدء التشغيل
 };
