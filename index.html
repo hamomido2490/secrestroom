@@ -50,14 +50,42 @@
     </section>
 
     <!-- 3. النتائج -->
-    <section id="resultSection">
-      <div id="summary"></div>
-      <div id="details"></div>
-      <div class="actions">
-        <button id="downloadPdfBtn" onclick="downloadPDF()"></button>
-        <button id="shareBtn" onclick="shareResult()"></button>
-      </div>
-    </section>
+  <section id="resultSection">
+    <!-- واجهة التحكم في عرض النتائج -->
+    <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;">
+      <button id="btnPersonalityType" onclick="showPersonalityType()">تصنيف الشخصية</button>
+      <button id="btnSummary" onclick="showSummaryAnalysis()">التحليل المختصر</button>
+      <button id="btnTheories" onclick="showTheoriesAnalysis()">التحليل حسب النظريات</button>
+      <button id="btnFullDetails" onclick="showFullDetails()">التحليل الكامل</button> <!-- ده التحليل القديم -->
+    </div>
+
+    <!-- قسم تصنيف الشخصية (الألوان) - هيبقى مخفي الأول -->
+    <div id="personalityTypeSection" class="result-section" style="display:none;">
+      <div id="personalityTypeContent"></div>
+    </div>
+
+    <!-- قسم التحليل المختصر - هيبقى مخفي الأول -->
+    <div id="summarySection" class="result-section" style="display:none;">
+      <div id="summaryContent"></div>
+    </div>
+
+    <!-- قسم التحليل حسب النظريات - هيبقى مخفي الأول -->
+    <div id="theoriesSection" class="result-section" style="display:none;">
+      <div id="theoriesContent"></div>
+    </div>
+
+    <!-- قسم التحليل الكامل (القديم) - هيبقى مخفي الأول -->
+    <div id="fullDetailsSection" class="result-section" style="display:none;">
+       <div id="summary"></div> <!-- ممكن نسيبهم أو ننقلهم -->
+       <div id="details"></div>
+    </div>
+
+    <!-- أزرار التحميل والمشاركة -->
+    <div class="actions">
+      <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
+      <button id="shareBtn" onclick="shareResult()">مشاركة</button>
+    </div>
+  </section>
 
     <!-- 4. إعلان ربحي -->
     <section id="adSection">
