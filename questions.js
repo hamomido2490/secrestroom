@@ -1,12 +1,12 @@
 // questions.js - ملف الأسئلة المحسن مع دعم الأرق، الوزن، وتنويع المقاييس
 export const questions = [
-  // === مجال الرؤية الداخلية (Vision) - 8 أسئلة ===
+  // === مجال الرؤية الداخلية (Vision) - 10 أسئلة ===
   {
     id: 2,
     category: "freud",
     domain: "vision",
-    scale: "likert", // تغيير إلى Likert ليناسب طبيعة السؤال
-    weight: 1.2, // أهمية أعلى لأسئلة فرويد
+    scale: "likert",
+    weight: 1.2,
     text: {
       ar: "هل تحلم غالبًا بأحلام تعكس مشاعرك الداخلية المكبوتة؟",
       en: "Do you often have dreams that reflect your repressed inner emotions?"
@@ -68,7 +68,7 @@ export const questions = [
     }
   },
   {
-    id: 41, // سؤال جديد
+    id: 41,
     category: "jung",
     domain: "vision",
     scale: "1-5",
@@ -79,7 +79,7 @@ export const questions = [
     }
   },
   {
-    id: 42, // سؤال جديد
+    id: 42,
     category: "freud",
     domain: "vision",
     scale: "likert",
@@ -89,8 +89,30 @@ export const questions = [
       en: "Do you notice that your unconscious desires influence your decisions?"
     }
   },
+  {
+    id: 49, // سؤال جديد
+    category: "kohlberg",
+    domain: "vision",
+    scale: "yes-no",
+    weight: 1.1,
+    text: {
+      ar: "هل تأخذ قراراتك بناءً على مبادئ أخلاقية ثابتة؟",
+      en: "Do you make decisions based on fixed moral principles?"
+    }
+  },
+  {
+    id: 50, // سؤال جديد
+    category: "vygotsky",
+    domain: "vision",
+    scale: "1-5",
+    weight: 1.0,
+    text: {
+      ar: "هل تعتقد أن التفاعل الاجتماعي يساعدك في فهم نفسك؟",
+      en: "Do you believe social interactions help you understand yourself?"
+    }
+  },
 
-  // === مجال التحليل العميق (Analysis) - 8 أسئلة ===
+  // === مجال التحليل العميق (Analysis) - 10 أسئلة ===
   {
     id: 11,
     category: "adler",
@@ -158,7 +180,7 @@ export const questions = [
     }
   },
   {
-    id: 43, // سؤال جديد
+    id: 43,
     category: "big_five",
     domain: "analysis",
     scale: "likert",
@@ -169,7 +191,7 @@ export const questions = [
     }
   },
   {
-    id: 44, // سؤال جديد
+    id: 44,
     category: "adler",
     domain: "analysis",
     scale: "1-5",
@@ -179,8 +201,30 @@ export const questions = [
       en: "Do you feel the need for validation from others to feel confident?"
     }
   },
+  {
+    id: 51, // سؤال جديد
+    category: "piaget",
+    domain: "analysis",
+    scale: "yes-no",
+    weight: 1.0,
+    text: {
+      ar: "هل تحب استكشاف كيفية عمل الأشياء من خلال التجربة؟",
+      en: "Do you enjoy exploring how things work through experimentation?"
+    }
+  },
+  {
+    id: 52, // سؤال جديد
+    category: "disc",
+    domain: "analysis",
+    scale: "likert",
+    weight: 1.1,
+    text: {
+      ar: "هل تفضل العمل بطريقة منهجية ومنظمة؟",
+      en: "Do you prefer to work in a systematic and organized manner?"
+    }
+  },
 
-  // === مجال الشفاء النفسي (Healing) - 9 أسئلة ===
+  // === مجال الشفاء النفسي (Healing) - 10 أسئلة ===
   {
     id: 21,
     category: "freud",
@@ -259,18 +303,18 @@ export const questions = [
     }
   },
   {
-    id: 45, // سؤال جديد للأرق
+    id: 45,
     category: "sleep",
     domain: "healing",
     scale: "1-5",
-    weight: 1.5, // أهمية عالية للأرق
+    weight: 1.5,
     text: {
       ar: "كم ساعة تنام يوميًا في المتوسط؟",
       en: "How many hours do you sleep daily on average?"
     }
   },
   {
-    id: 46, // سؤال جديد للأرق
+    id: 46,
     category: "sleep",
     domain: "healing",
     scale: "likert",
@@ -280,8 +324,19 @@ export const questions = [
       en: "Do you think a lot about problems or work before sleeping?"
     }
   },
+  {
+    id: 53, // سؤال جديد
+    category: "colors",
+    domain: "healing",
+    scale: "yes-no",
+    weight: 1.0,
+    text: {
+      ar: "هل تشعر أن الألوان تؤثر على مزاجك بشكل واضح؟",
+      en: "Do you feel that colors noticeably affect your mood?"
+    }
+  },
 
-  // === مجال الاكتشاف (Discovery) - 8 أسئلة ===
+  // === مجال الاكتشاف (Discovery) - 10 أسئلة ===
   {
     id: 31,
     category: "mbti",
@@ -349,7 +404,7 @@ export const questions = [
     }
   },
   {
-    id: 47, // سؤال جديد
+    id: 47,
     category: "mbti",
     domain: "discovery",
     scale: "likert",
@@ -360,7 +415,7 @@ export const questions = [
     }
   },
   {
-    id: 48, // سؤال جديد
+    id: 48,
     category: "skinner",
     domain: "discovery",
     scale: "1-5",
@@ -368,6 +423,28 @@ export const questions = [
     text: {
       ar: "هل تجد أن التكرار يساعدك في تعلم مهارات جديدة؟",
       en: "Do you find that repetition helps you learn new skills?"
+    }
+  },
+  {
+    id: 54, // سؤال جديد
+    category: "bandura",
+    domain: "discovery",
+    scale: "likert",
+    weight: 1.0,
+    text: {
+      ar: "هل تتعلم من خلال مراقبة تصرفات الآخرين؟",
+      en: "Do you learn by observing others' behaviors?"
+    }
+  },
+  {
+    id: 55, // سؤال جديد
+    category: "keirsey",
+    domain: "discovery",
+    scale: "yes-no",
+    weight: 1.1,
+    text: {
+      ar: "هل تفضل العمل ضمن فريق أم بمفردك؟",
+      en: "Do you prefer working in a team or alone?"
     }
   }
 ];
