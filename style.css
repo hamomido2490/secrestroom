@@ -4,13 +4,15 @@
 body.light {
   background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
   color: #2c3e50;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl; /* دعم اللغة العربية */
 }
 
 body.dark {
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   color: #ecf0f1;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl; /* دعم اللغة العربية */
 }
 
 /* تخطيط عام */
@@ -63,6 +65,34 @@ body.dark .site-title {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* [تحسين] زر تبديل الثيم */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background: #3498db;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+body.dark .theme-toggle {
+  background: #4aa0d5;
+  box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
 }
 
 /* تحسين العناصر */
@@ -242,6 +272,47 @@ body.dark .theory-card h4 {
   color: #ff6b6b;
 }
 
+/* [تحسين] تنسيقات مخصصة لنظريات محددة */
+.theory-card[data-theory="freud"] {
+  border-left-color: #2c3e50; /* لون داكن للتحليل النفسي */
+}
+.theory-card[data-theory="maslow"] {
+  border-left-color: #e67e22; /* لون دافئ للإنسانية */
+}
+.theory-card[data-theory="skinner"] {
+  border-left-color: #27ae60; /* لون أخضر للسلوكية */
+}
+.theory-card[data-theory="big_five"] {
+  border-left-color: #3498db; /* لون أزرق لسمات الشخصية */
+}
+.theory-card[data-theory="disc"] {
+  border-left-color: #e74c3c; /* لون أحمر لـ DISC */
+}
+.theory-card[data-theory="enneagram"] {
+  border-left-color: #9b59b6; /* لون بنفسجي للإنياغرام */
+}
+.theory-card[data-theory="kohlberg"] {
+  border-left-color: #f1c40f; /* لون أصفر للتطور الأخلاقي */
+}
+
+/* [تحسين] تنسيقات ديناميكية للنتائج */
+.result-card[data-score="high"] {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border-top-color: #27ae60;
+}
+.result-card[data-score="low"] {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border-top-color: #c0392b;
+}
+body.dark .result-card[data-score="high"] {
+  border-top-color: #2ecc71;
+}
+body.dark .result-card[data-score="low"] {
+  border-top-color: #e74c3c;
+}
+
 /* أزرار الإجراءات (تحميل ومشاركة) */
 .actions {
   margin-top: 30px;
@@ -405,6 +476,12 @@ body.dark .close:hover {
   .actions button {
     width: 100%;
     max-width: 300px;
+  }
+  
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+    padding: 8px;
   }
 }
 
