@@ -1,4 +1,4 @@
-// locales/en.js
+// locales/en.js//
 const en = {
   ui: {
     title: "Secrets Room",
