@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>غرفة الأسرار</title>
+  <!-- تحسين SEO -->
+  <meta name="description" content="اختبارات شخصية نفسية مجانية بناءً على نظريات علم النفس لتحليل شخصيتك بدقة">
+  <meta name="keywords" content="اختبار شخصية, تحليل نفسي, MBTI, Big Five, علم نفس, أرق">
+  <meta name="author" content="Mohammed Tarek">
+  <title id="title">غرفة الأسرار</title>
+  <!-- إضافة Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="style.css">
+  <!-- مكتبة jsPDF مع دعم الخط العربي -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- مكتبة Chart.js لرسوم بيانية -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <!-- هيدر واحد فقط -->
+  <!-- هيدر -->
   <header>
-    <!-- [تحسين بسيط] إضافة   
- لضمان تنسيق سليم للعنوان -->
-    <div class="site-title">غرفة الأسرار  
-<span style="font-size: 1.2rem; font-weight: normal;">Secrets Room</span></div>
+    <div class="site-title">غرفة الأسرار<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room</span></div>
     <div>
       <p id="welcome" style="font-style:italic; margin: 0;"></p>
       <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-        <button id="themeToggle" onclick="toggleTheme( )" style="padding: 8px 12px; font-size: 1.2rem;">🌓</button>
-        <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;">
+        <button id="themeToggle" onclick="toggleTheme()" aria-label="تبديل الثيم" style="padding: 8px 12px; font-size: 1.2rem;">🌓</button>
+        <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;" aria-label="اختيار اللغة">
           <option value="ar">🇪🇬 العربية</option>
           <option value="en">🇺🇸 English</option>
           <option value="fr">🇫🇷 Français</option>
@@ -26,7 +32,7 @@
           <option value="de">🇩🇪 Deutsch</option>
           <option value="zh">🇨🇳 中文</option>
         </select>
-        <button id="logoutBtn" onclick="logout()" style="display:none; padding: 8px 12px;">🔒</button>
+        <button id="logoutBtn" onclick="logout()" style="display:none; padding: 8px 12px;" aria-label="تسجيل الخروج">🔒</button>
       </div>
     </div>
   </header>
@@ -35,41 +41,55 @@
     <!-- 1. شاشة البداية -->
     <section id="welcomeSection" class="active">
       <label id="ageLabel" for="ageInput"></label>
-      <input type="number" id="ageInput" min="10" max="100">
+      <input type="number" id="ageInput" min="10" max="100" aria-label="أدخل عمرك">
       <label id="genderLabel" for="genderSelect"></label>
-      <select id="genderSelect">
-        <option value="male"> ذكر♂️</option>
-        <option value="female">انثي♀️</option>
-        <option value="other">لا اريد التحديد⚧️</option>
+      <select id="genderSelect" aria-label="اختيار الجنس">
+        <option value="male">ذكر ♂️</option>
+        <option value="female">أنثى ♀️</option>
+        <option value="other">لا أريد التحديد ⚧️</option>
       </select>
-      <button id="startBtn" onclick="startTest()"></button>
+      <button id="startBtn" onclick="startTest()" aria-label="بدء اختبار الشخصية"></button>
     </section>
 
     <!-- 2. الأسئلة -->
     <section id="quizSection">
       <div class="progress-container">
         <div class="progress-bar">
-          <div id="progressFill"></div>
+          <div id="progressFill" style="transition: width 0.3s ease-in-out;"></div>
         </div>
         <span id="progressText"></span>
       </div>
       <div id="questionContainer"></div>
       <div id="answerOptions"></div>
-      <button id="nextBtn" onclick="nextQuestion()" disabled></button>
+      <!-- رسالة تحذير لزر التالي -->
+      <p id="nextBtnHint" style="display:none; color:red;"></p>
+      <button id="nextBtn" onclick="nextQuestion()" disabled aria-label="السؤال التالي"></button>
+      <!-- إعلان صغير بجانب الأسئلة -->
+      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="YOUR_AD_CLIENT_ID"
+             data-ad-slot="YOUR_AD_SLOT"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
     </section>
 
     <!-- 3. النتائج -->
     <section id="resultSection">
       <div id="resultNavigation" class="actions" style="text-align: center; margin-bottom: 20px;">
-        <button id="btnPersonalityType" onclick="displayResultContent('personalityType')">تصنيف الشخصية</button>
-        <button id="btnSummary" onclick="displayResultContent('summary')">التحليل المختصر</button>
-        <button id="btnTheories" onclick="displayResultContent('theories')">التحليل حسب النظريات</button>
-        <button id="btnDetailedAnalysis" onclick="displayResultContent('detailedAnalysis')">التحليل التفصيلي</button>
-        <button id="btnRecommendations" onclick="displayResultContent('recommendations')">التوصيات</button>
+        <button id="btnPersonalityType" onclick="displayResultContent('personalityType')" aria-label="عرض تصنيف الشخصية">تصنيف الشخصية</button>
+        <button id="btnSummary" onclick="displayResultContent('summary')" aria-label="عرض التحليل المختصر">التحليل المختصر</button>
+        <button id="btnTheories" onclick="displayResultContent('theories')" aria-label="عرض التحليل حسب النظريات">التحليل حسب النظريات</button>
+        <button id="btnDetailedAnalysis" onclick="displayResultContent('detailedAnalysis')" aria-label="عرض التحليل التفصيلي">التحليل التفصيلي</button>
+        <button id="btnRecommendations" onclick="displayResultContent('recommendations')" aria-label="عرض التوصيات">التوصيات</button>
       </div>
 
+      <!-- قسم تصنيف الشخصية -->
       <div id="personalityTypeSection" class="result-section-content" style="display:none;">
         <div id="personalityTypeContent"></div>
+        <canvas id="resultChart" style="max-width: 400px; margin: 20px auto;"></canvas>
       </div>
       <div id="summarySection" class="result-section-content" style="display:none;">
         <div id="summaryContent"></div>
@@ -78,38 +98,68 @@
         <div id="theoriesContent"></div>
       </div>
       <div id="detailedAnalysisSection" class="result-section-content" style="display:none;">
+        <h3>التحليل التفصيلي لجميع النظريات</h3>
         <div id="detailedAnalysisContent"></div>
       </div>
       <div id="recommendationsSection" class="result-section-content" style="display:none;">
+        <h3>التوصيات والنصائح</h3>
         <div id="recommendationsContent"></div>
       </div>
 
       <div class="actions">
-        <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
-        <button id="shareBtn" onclick="shareResult()">مشاركة</button>
+        <button id="downloadPdfBtn" onclick="downloadPDF()" aria-label="تحميل التقرير كملف PDF">تحميل التقرير PDF</button>
+        <button id="shareBtn" onclick="shareResult()" aria-label="مشاركة النتائج">مشاركة</button>
+      </div>
+      <!-- إعلان أسفل النتائج -->
+      <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="YOUR_AD_CLIENT_ID"
+             data-ad-slot="YOUR_AD_SLOT"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
     </section>
 
-    <!-- 4. إعلان ربحي -->
-    <section id="adSection">
-      <p style="text-align:center;">[ إعلان ]</p>
+    <!-- 4. إعلان ربحي رئيسي -->
+    <section id="adSection" class="ad-placeholder">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="YOUR_AD_CLIENT_ID"
+           data-ad-slot="YOUR_AD_SLOT"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </section>
   </div>
 
+  <!-- مودال لعرض النظريات -->
   <div id="theoryModal" class="modal" style="display:none;">
     <div class="modal-content">
-      <span class="close" onclick="closeTheoryModal()">&times;</span>
+      <span class="close" onclick="closeTheoryModal()" aria-label="إغلاق النافذة">&times;</span>
       <div id="theoryModalContent"></div>
     </div>
   </div>
 
-  <!-- تم حذف lang.js من هنا، وهذا صحيح -->
+  <!-- ملفات JavaScript -->
+  <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script>
   <script src="questions.js"></script>
   <script src="analysis_data.js"></script>
-  <script src="script.js" type="module"></script> <!-- [تحسين] إضافة type="module" لدعم import -->
+  <script src="script.js"></script>
 
   <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
     <p>&copy; 2025 Mohammed Tarek</p>
+    <!-- إعلان في الفوتر -->
+    <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="YOUR_AD_CLIENT_ID"
+           data-ad-slot="YOUR_AD_SLOT"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </footer>
 </body>
 </html>
