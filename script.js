@@ -1,4 +1,4 @@
-// script.js - النسخة المحسنة مع تحسينات للنتايج، الـPDF، الأرق، والإعلانات
+// script.js - النسخة المحسنة مع تحسينات للنتائج، الـPDF، الأرق، والإعلانات
 
 // --- إعداد المتغيرات العامة ---
 let translations = {};
@@ -10,6 +10,7 @@ let answers = [];
 let userAnswers = {};
 let categoryAverages = {};
 let domainAverages = {};
+let analysisData = null; // لتحميل بيانات analysis_data.js
 
 // --- دوال التهيئة واللغة ---
 async function loadLanguage(lang) {
@@ -27,6 +28,16 @@ async function loadLanguage(lang) {
       await loadLanguage('en');
       alert(translations['en']?.ui?.language_error || "Failed to load language, defaulting to English.");
     }
+  }
+}
+
+// [تحسين] تحميل بيانات analysis_data.js
+async function loadAnalysisData() {
+  try {
+    const { default: data } = await import('./analysis_data.js');
+    analysisData = data;
+  } catch (error) {
+    console.error('فشل تحميل analysis_data.js:', error);
   }
 }
 
@@ -82,6 +93,24 @@ function applyLanguage(lang) {
   updateResultButtonTitles();
 }
 
+// [تحسين] إضافة زر تبديل الثيم
+function initThemeToggle() {
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
+}
+
+function applyTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("theme", theme);
+}
+
+function toggleTheme() {
+  const next = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+  applyTheme(next);
+}
+
 async function changeLanguage(lang) {
   localStorage.setItem("lang", lang);
   currentLang = lang;
@@ -95,17 +124,6 @@ async function changeLanguage(lang) {
       displayResultContent(sectionName);
     }
   }
-}
-
-// --- دوال الثيم والمظهر ---
-function applyTheme(theme) {
-  document.body.className = theme;
-  localStorage.setItem("theme", theme);
-}
-
-function toggleTheme() {
-  const next = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-  applyTheme(next);
 }
 
 // --- دوال منطق الاختبار ---
@@ -192,7 +210,7 @@ function nextQuestion() {
     category: questions[currentQuestion].category,
     domain: questions[currentQuestion].domain,
     value: userAnswers[currentQuestion],
-    weight: questions[currentQuestion].weight || 1 // دعم الوزن
+    weight: questions[currentQuestion].weight || 1
   });
   currentQuestion++;
   if (currentQuestion < questions.length) renderQuestion();
@@ -206,9 +224,13 @@ function showResults() {
   calculateAverages();
   updateResultButtonTitles();
   displayResultContent('personalityType');
-  // تحميل الإعلانات بعد عرض النتايج
-  if (window.adsbygoogle) {
-    window.adsbygoogle.push({});
+  // [تحسين] تحميل الإعلانات بأمان
+  try {
+    if (window.adsbygoogle) {
+      window.adsbygoogle.push({});
+    }
+  } catch (error) {
+    console.warn('فشل تحميل الإعلانات:', error);
   }
 }
 
@@ -284,23 +306,28 @@ function displayPersonalityType() {
   html += `</ul>`;
   contentDiv.innerHTML = html;
   contentDiv.style.backgroundColor = getColorCode(personalityColor);
+  contentDiv.setAttribute('data-score', domainAverages[topDomainKey] > 3.5 ? 'high' : 'low'); // [تحسين] إضافة data-score
 
-  // رسم بياني بـChart.js
+  // [تحسين] رسم بياني راداري بـChart.js
   const ctx = document.getElementById('resultChart').getContext('2d');
-  if (window.myChart) window.myChart.destroy(); // تدمير الرسم البياني القديم
+  if (window.myChart) window.myChart.destroy();
   window.myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'radar',
     data: {
       labels: Object.keys(domainAverages),
       datasets: [{
         label: translations[currentLang]?.ui?.domain_scores || 'Domain Scores',
         data: Object.values(domainAverages),
-        backgroundColor: ['#e74c3c', '#3498db', '#2ecc71', '#9b59b6']
+        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+        borderColor: '#3498db',
+        borderWidth: 2
       }]
     },
     options: {
-      scales: { y: { beginAtZero: true, max: 5 } },
-      plugins: { legend: { display: false } }
+      scales: {
+        r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 5 }
+      },
+      plugins: { legend: { display: true, position: 'top' } }
     }
   });
 }
@@ -315,6 +342,37 @@ function getColorCode(colorName) {
   return colors[colorName] || "#95a5a6";
 }
 
+// [تحسين] دالة محسّنة لتحليل النظريات
+function displayTheoriesAnalysis() {
+  const contentDiv = document.getElementById("theoriesContent");
+  let html = `<h2>${translations[currentLang]?.ui?.theories_analysis || "Theories Analysis"}</h2>`;
+  html += `<p>${translations[currentLang]?.ui?.theories_intro || "Your results mapped to psychological theories:"}</p>`;
+
+  if (!analysisData) {
+    html += `<p>${translations[currentLang]?.ui?.data_error || "Error loading psychological theories data."}</p>`;
+    contentDiv.innerHTML = html;
+    return;
+  }
+
+  // ربط النتائج بالنظريات من analysis_data.js
+  for (const category in analysisData) {
+    for (const theoryKey in analysisData[category]) {
+      const theory = analysisData[category][theoryKey];
+      const score = categoryAverages[category] || 0;
+      const interpretation = score > 3.5 ? theory.high_score_interpretation : theory.low_score_interpretation;
+      html += `
+        <div class="theory-card" data-theory="${theoryKey}">
+          <h4>${theory.name}</h4>
+          <p><strong>${translations[currentLang]?.ui?.score || "Score"}:</strong> ${score.toFixed(2)}/5</p>
+          <p><strong>${translations[currentLang]?.ui?.interpretation || "Interpretation"}:</strong> ${interpretation}</p>
+          <p><strong>${translations[currentLang]?.ui?.description || "Description"}:</strong> ${theory.description}</p>
+          <p><strong>${translations[currentLang]?.ui?.key_concepts || "Key Concepts"}:</strong> ${theory.key_concepts.join(", ")}</p>
+        </div>`;
+    }
+  }
+  contentDiv.innerHTML = html;
+}
+
 function displaySummaryAnalysis() {
   const contentDiv = document.getElementById("summaryContent");
   let html = `<h2>${translations[currentLang]?.ui?.summary_analysis || "Summary Analysis"}</h2>`;
@@ -325,24 +383,12 @@ function displaySummaryAnalysis() {
   contentDiv.innerHTML = html;
 }
 
-function displayTheoriesAnalysis() {
-  const contentDiv = document.getElementById("theoriesContent");
-  let html = `<h2>${translations[currentLang]?.ui?.theories_analysis || "Theories Analysis"}</h2>`;
-  html += `<p>${translations[currentLang]?.ui?.theories_intro || "Your results mapped to psychological theories:"}</p>`;
-  // مثال: ربط بـMBTI
-  const extroversion = domainAverages["vision"] || 0;
-  const introversion = domainAverages["analysis"] || 0;
-  const mbti = extroversion > introversion ? "Extrovert" : "Introvert";
-  html += `<p>MBTI: ${mbti}</p>`;
-  contentDiv.innerHTML = html;
-}
-
 function displayDetailedAnalysis() {
   const contentDiv = document.getElementById("detailedAnalysisContent");
   let html = `<h2>${translations[currentLang]?.ui?.detailed_analysis || "Detailed Analysis"}</h2>`;
   html += `<p>${translations[currentLang]?.ui?.detailed_intro || "Detailed breakdown of your results:"}</p>`;
   for (const [category, score] of Object.entries(categoryAverages)) {
-    html += `<p>${category}: ${score.toFixed(2)}/5</p>`;
+    html += `<div class="result-card" data-score="${score > 3.5 ? 'high' : 'low'}"><p>${category}: ${score.toFixed(2)}/5</p></div>`;
   }
   contentDiv.innerHTML = html;
 }
@@ -350,15 +396,21 @@ function displayDetailedAnalysis() {
 function displayRecommendations() {
   const contentDiv = document.getElementById("recommendationsContent");
   let recommendations = [];
-  if (domainAverages["vision"] > 3.5) {
-    recommendations.push(translations[currentLang]?.ui?.vision_recommendation || "Try leading a new project or engaging in creative challenges to leverage your energy.");
+  
+  if (!analysisData) {
+    recommendations.push(translations[currentLang]?.ui?.data_error || "Error loading recommendations data.");
+  } else {
+    for (const category in analysisData) {
+      for (const theoryKey in analysisData[category]) {
+        const theory = analysisData[category][theoryKey];
+        const score = categoryAverages[category] || 0;
+        if (score > 3.5) {
+          recommendations.push(...theory.development_tips);
+        }
+      }
+    }
   }
-  if (domainAverages["healing"] > 3.5) {
-    recommendations.push(translations[currentLang]?.ui?.healing_recommendation || "Practice meditation or yoga to enhance your inner calm.");
-  }
-  if (categoryAverages["sleep"] < 2.5) {
-    recommendations.push(translations[currentLang]?.ui?.sleep_recommendation || "You may be experiencing insomnia. Try 4-7-8 breathing exercises or chamomile tea before bed.");
-  }
+
   if (recommendations.length === 0) {
     recommendations.push(translations[currentLang]?.ui?.general_recommendation || "Continue exploring your strengths and stay open to personal growth.");
   }
@@ -374,17 +426,32 @@ function downloadPDF() {
   doc.setFont("Amiri", "normal"); // دعم الخط العربي
   doc.setFontSize(12);
 
-  // جمع محتوى النتايج
+  // [تحسين] تحسين تنسيق PDF
+  doc.addFileToVFS('Amiri-Regular.ttf', 'data:font/ttf;base64,...'); // تأكدي من إضافة الخط
+  doc.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
+  doc.setFont('Amiri');
+
   const personalityContent = document.getElementById("personalityTypeContent").innerText;
   const summaryContent = document.getElementById("summaryContent").innerText;
+  const theoriesContent = document.getElementById("theoriesContent").innerText;
   const recommendationsContent = document.getElementById("recommendationsContent").innerText;
 
-  doc.text(translations[currentLang]?.ui?.report_title || "Personality Report", 10, 10);
-  doc.text(personalityContent, 10, 20);
-  doc.text(translations[currentLang]?.ui?.summary_analysis || "Summary Analysis", 10, 50);
-  doc.text(summaryContent, 10, 60);
-  doc.text(translations[currentLang]?.ui?.recommendations || "Recommendations", 10, 90);
-  doc.text(recommendationsContent, 10, 100);
+  let y = 10;
+  doc.text(translations[currentLang]?.ui?.report_title || "Personality Report", 10, y);
+  y += 10;
+  doc.text(personalityContent, 10, y, { align: 'right', maxWidth: 180 });
+  y += 40;
+  doc.text(translations[currentLang]?.ui?.summary_analysis || "Summary Analysis", 10, y);
+  y += 10;
+  doc.text(summaryContent, 10, y, { align: 'right', maxWidth: 180 });
+  y += 40;
+  doc.text(translations[currentLang]?.ui?.theories_analysis || "Theories Analysis", 10, y);
+  y += 10;
+  doc.text(theoriesContent, 10, y, { align: 'right', maxWidth: 180 });
+  y += 40;
+  doc.text(translations[currentLang]?.ui?.recommendations || "Recommendations", 10, y);
+  y += 10;
+  doc.text(recommendationsContent, 10, y, { align: 'right', maxWidth: 180 });
 
   doc.save(`SecretsRoom_Report_${userSession.deviceId}.pdf`);
 }
@@ -412,5 +479,7 @@ window.onload = async () => {
   initDevice();
   initLanguage();
   await loadLanguage(currentLang);
+  await loadAnalysisData(); // [تحسين] تحميل بيانات النظريات
   applyTheme(localStorage.getItem("theme") || "light");
+  initThemeToggle(); // [تحسين] تهيئة زر تبديل الثيم
 };
