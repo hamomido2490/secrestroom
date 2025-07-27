@@ -303,3 +303,40 @@ body.dark .result-card {
     margin: 20px auto;
   }
 }
+
+/* تنسيق أزرار التنقل في النتائج */
+#resultNavigation button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#resultNavigation button:hover {
+    background-color: #e0e0e0;
+}
+
+/* تنسيق أقسام النتائج */
+.result-section {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff; /* أو اللون المناسب للثيم */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.dark .result-section {
+    background-color: #2c2c3a; /* أو اللون المناسب للثيم الداكن */
+}
+
+/* تنسيق خاص لقسم تصنيف الشخصية */
+#personalityTypeContent {
+    text-align: center;
+    color: #fff; /* نص أبيض علشان يظهر على الخلفية الملونة */
+    padding: 20px;
+    border-radius: 10px;
+}
