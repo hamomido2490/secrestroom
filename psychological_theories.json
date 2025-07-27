@@ -1,0 +1,217 @@
+{
+  "theories": [
+    {
+      "id": 1,
+      "name_ar": "نظرية الألوان الشخصية",
+      "name_en": "Color Personality Theory",
+      "description_ar": "نظرية تربط بين أنماط الشخصية وأربعة ألوان أساسية: الأحمر، الأزرق، الأصفر، الأخضر.",
+      "description_en": "A theory that links personality types to four main colors: Red, Blue, Yellow, and Green.",
+      "patterns": [
+        {
+          "code": "red",
+          "traits_ar": [
+            "قيادي",
+            "حازم"
+          ],
+          "traits_en": [
+            "Leader",
+            "Assertive"
+          ]
+        },
+        {
+          "code": "blue",
+          "traits_ar": [
+            "تحليلي",
+            "دقيق"
+          ],
+          "traits_en": [
+            "Analytical",
+            "Detail-oriented"
+          ]
+        },
+        {
+          "code": "yellow",
+          "traits_ar": [
+            "اجتماعي",
+            "متفائل"
+          ],
+          "traits_en": [
+            "Social",
+            "Optimistic"
+          ]
+        },
+        {
+          "code": "green",
+          "traits_ar": [
+            "ودود",
+            "متعاون"
+          ],
+          "traits_en": [
+            "Friendly",
+            "Cooperative"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "text_ar": "هل تحب أن تكون في موقع القيادة؟",
+          "text_en": "Do you like to be in a leadership position?",
+          "answers": [
+            {
+              "text_ar": "نعم",
+              "text_en": "Yes",
+              "value": 2,
+              "pattern": "red"
+            },
+            {
+              "text_ar": "أحيانًا",
+              "text_en": "Sometimes",
+              "value": 1,
+              "pattern": "yellow"
+            },
+            {
+              "text_ar": "لا",
+              "text_en": "No",
+              "value": 0,
+              "pattern": "green"
+            }
+          ]
+        },
+        {
+          "text_ar": "هل تفضل التنظيم والدقة؟",
+          "text_en": "Do you prefer organization and precision?",
+          "answers": [
+            {
+              "text_ar": "نعم",
+              "text_en": "Yes",
+              "value": 2,
+              "pattern": "blue"
+            },
+            {
+              "text_ar": "أحيانًا",
+              "text_en": "Sometimes",
+              "value": 1,
+              "pattern": "green"
+            },
+            {
+              "text_ar": "لا",
+              "text_en": "No",
+              "value": 0,
+              "pattern": "yellow"
+            }
+          ]
+        }
+      ],
+      "analysis_logic": "اجمع النقاط لكل لون. اللون الأعلى هو نمطك الأساسي.",
+      "results": {
+        "red": {
+          "short_ar": "شخصيتك قيادية",
+          "short_en": "You are a leader"
+        },
+        "blue": {
+          "short_ar": "شخصيتك تحليلية",
+          "short_en": "You are analytical"
+        },
+        "yellow": {
+          "short_ar": "شخصيتك اجتماعية",
+          "short_en": "You are social"
+        },
+        "green": {
+          "short_ar": "شخصيتك متعاونة",
+          "short_en": "You are cooperative"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name_ar": "مؤشر أنماط مايرز بريجز (MBTI)",
+      "name_en": "Myers-Briggs Type Indicator (MBTI)",
+      "description_ar": "يُقسِّم الناس إلى 16 نمطًا مختلفًا اعتمادًا على أربعة أزواج من الصفات النفسية.",
+      "description_en": "Classifies people into 16 personality types based on four dichotomies.",
+      "patterns": [
+        {
+          "code": "INTJ",
+          "traits_ar": [
+            "مفكر",
+            "مخطط"
+          ],
+          "traits_en": [
+            "Strategic",
+            "Planner"
+          ]
+        },
+        {
+          "code": "ENFP",
+          "traits_ar": [
+            "متحمس",
+            "مبدع"
+          ],
+          "traits_en": [
+            "Energetic",
+            "Creative"
+          ]
+        },
+        {
+          "code": "ISTP",
+          "traits_ar": [
+            "عملي",
+            "تحليلي"
+          ],
+          "traits_en": [
+            "Practical",
+            "Analytical"
+          ]
+        }
+      ],
+      "questions": [
+        {
+          "text_ar": "هل تفضل التفكير المنطقي على العاطفة؟",
+          "text_en": "Do you prefer logical thinking over emotion?",
+          "answers": [
+            {
+              "text_ar": "نعم",
+              "text_en": "Yes",
+              "value": "T"
+            },
+            {
+              "text_ar": "لا",
+              "text_en": "No",
+              "value": "F"
+            }
+          ]
+        },
+        {
+          "text_ar": "هل تفضل التفاعل مع الناس أم الانعزال؟",
+          "text_en": "Do you prefer interacting with people or solitude?",
+          "answers": [
+            {
+              "text_ar": "التفاعل",
+              "text_en": "Interaction",
+              "value": "E"
+            },
+            {
+              "text_ar": "الانعزال",
+              "text_en": "Solitude",
+              "value": "I"
+            }
+          ]
+        }
+      ],
+      "analysis_logic": "يتم تجميع الإجابات لتشكيل نمط مكون من 4 حروف (مثل: INTJ).",
+      "results": {
+        "INTJ": {
+          "short_ar": "شخصية استراتيجية",
+          "short_en": "Strategic personality"
+        },
+        "ENFP": {
+          "short_ar": "شخصية مبدعة واجتماعية",
+          "short_en": "Creative and social"
+        },
+        "ISTP": {
+          "short_ar": "شخصية تحليلية وعملية",
+          "short_en": "Analytical and practical"
+        }
+      }
+    }
+  ]
+}
