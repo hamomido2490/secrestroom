@@ -349,23 +349,102 @@ function showDetails() {
 }
 
 
-// تحميل PDF
+// تحميل PDF - محدث لتحميل التحليل + رابط الموقع في الأول
 function downloadPDF() {
   // التحقق من وجود مكتبة jsPDF
   if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
-    alert('خطأ في تحميل مكتبة PDF');
+    alert(translations[currentLang]?.ui?.pdf_error || 'خطأ في تحميل مكتبة PDF. يرجى المحاولة لاحقًا.');
+    console.error('مكتبة jsPDF غير متوفرة.');
     return;
   }
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  const summaryText = document.getElementById("summary")?.innerText || "";
-  const detailsText = document.getElementById("details")?.innerText || "";
-  doc.text(summaryText, 10, 10);
-  doc.text(detailsText, 10, 30);
-  doc.save("SecretsRoom_Report.pdf");
-}
 
+  // جلب العناصر
+  const summaryElement = document.getElementById("summary");
+  const detailsElement = document.getElementById("details");
+
+  // التأكد من وجود العناصر
+  if (!summaryElement || !detailsElement) {
+    console.error("عناصر Summary أو Details غير موجودة.");
+    alert("حدث خطأ أثناء إعداد التقرير. يرجى المحاولة لاحقًا.");
+    return;
+  }
+
+  // جلب النصوص بشكل مباشر باستخدام innerText علشان يتجاهل الـ HTML tags
+  const summaryText = summaryElement.innerText || summaryElement.textContent || '';
+  const detailsText = detailsElement.innerText || detailsElement.textContent || '';
+
+  // التأكد من وجود نص للتحميل
+  if (!summaryText.trim() && !detailsText.trim()) {
+    alert(translations[currentLang]?.ui?.no_content_to_download || "لا يوجد محتوى لتحميله.");
+    return;
+  }
+
+  // تحديد رابط الموقع
+  const websiteUrl = "https://secertsroom.netlify.app/"; // <- رابط موقعك
+
+  // إضافة النصوص للـ PDF
+  try {
+    let yPosition = 20; // بداية الكتابة من هنا عمودياً
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+    const margin = 10;
+    const maxWidth = pageWidth - 2 * margin; // عرض أقصى للنص
+
+    // --- إضافة رابط الموقع في أول الصفحة ---
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 255); // لون أزرق للرابط
+    doc.setFont(undefined, 'bold');
+    // الحصول على ترجمة "Powered by" أو نص مشابه
+    const poweredByText = translations[currentLang]?.ui?.powered_by || "Powered by:";
+    doc.text(poweredByText, margin, yPosition);
+    yPosition += 7;
+    doc.text(websiteUrl, margin, yPosition);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(0, 0, 0); // رجوع للون الأسود
+    yPosition += 15; // مسافة أكبر بعد الرابط
+
+    // --- إضافة التحليل المختصر ---
+    if (summaryText.trim()) {
+        // التأكد من الحاجة لصفحة جديدة
+        if (yPosition > pageHeight - 20) {
+            doc.addPage();
+            yPosition = margin;
+        }
+
+        // استخدام splitTextToSize علشان النص ينضبط في الصفحة
+        const splitSummary = doc.splitTextToSize(summaryText, maxWidth);
+        doc.text(splitSummary, margin, yPosition);
+        // حساب الـ Y position الجديد بعد كتابة النص المختصر
+        // افترضنا ارتفاع كل سطر حوالي 7 نقاط
+        yPosition += splitSummary.length * 7 + 10; // +10 مسافة بعد التحليل المختصر
+    }
+
+    // --- إضافة التحليل التفصيلي ---
+    if (detailsText.trim()) {
+        // التأكد من الحاجة لصفحة جديدة
+        if (yPosition > pageHeight - 20) {
+            doc.addPage();
+            yPosition = margin;
+        }
+
+        // استخدام splitTextToSize علشان النص التفصيلي كمان
+        const splitDetails = doc.splitTextToSize(detailsText, maxWidth);
+        doc.text(splitDetails, margin, yPosition);
+        // ممكن نحسب الـ Y position هنا كمان لو حابب نضيف حاجات تانية بعدها
+    }
+
+    // حفظ الملف
+    doc.save("SecretsRoom_Report.pdf");
+    console.log("تم إنشاء ملف PDF بنجاح.");
+
+  } catch (error) {
+    console.error("حدث خطأ أثناء إنشاء ملف PDF:", error);
+    alert("حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة لاحقًا.");
+  }
+}
 // مشاركة النتيجة
 function shareResult() {
   const summaryText = document.getElementById("summary")?.innerText || "";
