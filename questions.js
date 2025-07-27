@@ -1,15 +1,6 @@
-// questions.js - ملف الأسئلة مع المجالات (domains)
+// questions.js - ملف الأسئلة المختصر والمُحسَّن مع المجالات (domains) والفئات (categories)
 const questions = [
-  // === مجال الرؤية الداخلية (Vision) - 10 أسئلة ===
-  {
-    id: 1,
-    category: "freud",
-    domain: "vision",
-    text: {
-      ar: "عندما تواجه موقفًا صعبًا، هل تشعر بأن دوافعك الداخلية تفوق سيطرتك؟",
-      en: "When facing a difficult situation, do you feel your inner drives overpower your control?"
-    }
-  },
+  // === مجال الرؤية الداخلية (Vision) - 6 أسئلة ===
   {
     id: 2,
     category: "freud",
@@ -29,30 +20,12 @@ const questions = [
     }
   },
   {
-    id: 4,
-    category: "jung",
-    domain: "vision",
-    text: {
-      ar: "هل تجد نفسك تتأثر بحواسك وبحدسك في اتخاذ القرارات؟",
-      en: "Do you find yourself influenced by your senses and intuition in decision-making?"
-    }
-  },
-  {
     id: 5,
     category: "object_relations",
     domain: "vision",
     text: {
       ar: "هل تعتقد أن تجاربك الطفولية تؤثر على علاقاتك الحالية؟",
       en: "Do you think your childhood experiences affect your current relationships?"
-    }
-  },
-  {
-    id: 6,
-    category: "cultural",
-    domain: "vision",
-    text: {
-      ar: "هل تشعر أن قيم ثقافتك تؤثر على طريقة تفكيرك وسلوكك؟",
-      en: "Do you feel that your cultural values influence your thinking and behavior?"
     }
   },
   {
@@ -74,15 +47,6 @@ const questions = [
     }
   },
   {
-    id: 9,
-    category: "transactional",
-    domain: "vision",
-    text: {
-      ar: "هل تجد نفسك تتعامل مع الآخرين بطريقة والدة أحيانًا؟",
-      en: "Do you find yourself dealing with others in a parental way sometimes?"
-    }
-  },
-  {
     id: 10,
     category: "cbt",
     domain: "vision",
@@ -91,7 +55,8 @@ const questions = [
       en: "Do you notice that your negative thoughts affect your feelings and behavior?"
     }
   },
-  // === مجال التحليل العميق (Analysis) - 10 أسئلة ===
+
+  // === مجال التحليل العميق (Analysis) - 6 أسئلة ===
   {
     id: 11,
     category: "adler",
@@ -120,39 +85,12 @@ const questions = [
     }
   },
   {
-    id: 14,
-    category: "cultural",
-    domain: "analysis",
-    text: {
-      ar: "هل تختلف في سلوكك بين البيئات الثقافية المختلفة؟",
-      en: "Do you behave differently in different cultural environments?"
-    }
-  },
-  {
-    id: 15,
-    category: "existential",
-    domain: "analysis",
-    text: {
-      ar: "هل تشعر بالمسؤولية الكاملة عن اختياراتك وحياتك؟",
-      en: "Do you feel completely responsible for your choices and life?"
-    }
-  },
-  {
     id: 16,
     category: "traits_theory",
     domain: "analysis",
     text: {
       ar: "هل تميل إلى الانفتاح على تجارب جديدة وأفكار مختلفة؟",
       en: "Do you tend to be open to new experiences and different ideas?"
-    }
-  },
-  {
-    id: 17,
-    category: "transactional",
-    domain: "analysis",
-    text: {
-      ar: "هل تميل إلى انتقاد نفسك أو الآخرين بطريقة حادة؟",
-      en: "Do you tend to criticize yourself or others in a sharp way?"
     }
   },
   {
@@ -165,15 +103,6 @@ const questions = [
     }
   },
   {
-    id: 19,
-    category: "personality_tests",
-    domain: "analysis",
-    text: {
-      ar: "هل تشعر أنك تمتلك خصائص من عدة أنواع شخصية مختلفة؟",
-      en: "Do you feel you possess traits from several different personality types?"
-    }
-  },
-  {
     id: 20,
     category: "body_language",
     domain: "analysis",
@@ -182,7 +111,8 @@ const questions = [
       en: "Do you pay attention to others' body language and interpret it easily?"
     }
   },
-  // === مجال الشفاء النفسي (Healing) - 10 أسئلة ===
+
+  // === مجال الشفاء النفسي (Healing) - 7 أسئلة ===
   {
     id: 21,
     category: "freud",
@@ -206,17 +136,8 @@ const questions = [
     category: "object_relations",
     domain: "healing",
     text: {
-      ar: "هل تجد صعوبة في تتسامح مع الآخرين والتسامح مع نفسك؟", // تم تصحيح "ت原谅" إلى "تتسامح"
+      ar: "هل تجد صعوبة في تتسامح مع الآخرين والتسامح مع نفسك؟",
       en: "Do you find it difficult to forgive others and forgive yourself?"
-    }
-  },
-  {
-    id: 24,
-    category: "cultural",
-    domain: "healing",
-    text: {
-      ar: "هل تشعر أن تقاليدك الثقافية تساعدك على التعافي من الصدمات؟",
-      en: "Do you feel your cultural traditions help you recover from trauma?"
     }
   },
   {
@@ -238,30 +159,12 @@ const questions = [
     }
   },
   {
-    id: 27,
-    category: "transactional",
-    domain: "healing",
-    text: {
-      ar: "هل تجد صعوبة في التعبير عن مشاعرك الحقيقية؟",
-      en: "Do you find it difficult to express your true feelings?"
-    }
-  },
-  {
     id: 28,
     category: "cbt",
     domain: "healing",
     text: {
       ar: "هل تستخدم تقنيات الاسترخاء لتهدئة قلقك؟",
       en: "Do you use relaxation techniques to calm your anxiety?"
-    }
-  },
-  {
-    id: 29,
-    category: "personality_tests",
-    domain: "healing",
-    text: {
-      ar: "هل تجد صعوبة في تصنيف نفسك في نوع شخصية واحد؟",
-      en: "Do you find it difficult to classify yourself in one personality type?"
     }
   },
   {
@@ -273,9 +176,11 @@ const questions = [
       en: "Do you use body language consciously to communicate with others?"
     }
   },
+
+  // === مجال الاكتشاف (Discovery) - 6 أسئلة ===
   {
     id: 31,
-    category: "personality_tests", // MBTI / Big Five / DISC / Enneagram / HBDI
+    category: "personality_tests",
     domain: "discovery",
     text: {
       ar: "هل تجد صعوبة في تصنيف نفسك في نوع شخصية واحد؟",
@@ -284,7 +189,7 @@ const questions = [
   },
   {
     id: 32,
-    category: "projective", // MMPI / Rorschach / TAT
+    category: "projective",
     domain: "discovery",
     text: {
       ar: "هل تميل إلى رؤية أنماط أو معاني في الأشياء العشوائية؟",
@@ -292,17 +197,8 @@ const questions = [
     }
   },
   {
-    id: 33,
-    category: "body_language", // لغة الجسد / NLP / جرافولوجي
-    domain: "discovery",
-    text: {
-      ar: "هل تنتبه لغة جسد الآخرين وتفسرها بسهولة؟",
-      en: "Do you pay attention to others' body language and interpret it easily?"
-    }
-  },
-  {
     id: 34,
-    category: "aba", // ABA (تحليل السلوك التطبيقي)
+    category: "aba",
     domain: "discovery",
     text: {
       ar: "هل تلاحظ تحسنًا في سلوكك عند استخدام نظام مكافآت؟",
@@ -311,7 +207,7 @@ const questions = [
   },
   {
     id: 35,
-    category: "adler", // علم النفس الفردي (أدلر)
+    category: "adler", // نقل من Analysis لزيادة توازن التوزيع
     domain: "discovery",
     text: {
       ar: "هل تشعر أن أهدافك الحقيقية تختلف عما تراه الآخرون؟",
@@ -319,17 +215,8 @@ const questions = [
     }
   },
   {
-    id: 36,
-    category: "freud", // التحليل الكلاسيكي (فرويد)
-    domain: "discovery",
-    text: {
-      ar: "هل تشعر أن لديك ذكريات طفولية مخفية تؤثر عليك؟",
-      en: "Do you feel you have hidden childhood memories that affect you?"
-    }
-  },
-  {
     id: 37,
-    category: "jung", // التحليل التحليلي (يونغ)
+    category: "jung", // نقل من Discovery لزيادة توازن التوزيع
     domain: "discovery",
     text: {
       ar: "هل تؤمن بوجود حدس قوي يرشدك في القرارات؟",
@@ -337,30 +224,12 @@ const questions = [
     }
   },
   {
-    id: 38,
-    category: "traits_theory", // نظرية السمات
-    domain: "discovery",
-    text: {
-      ar: "هل تكتشف صفات جديدة في نفسك بمرور الوقت؟",
-      en: "Do you discover new traits in yourself over time?"
-    }
-  },
-  {
     id: 39,
-    category: "existential", // التحليل الوجودي
+    category: "existential", // نقل من Discovery لزيادة توازن التوزيع
     domain: "discovery",
     text: {
       ar: "هل تشعر أن لديك هدفًا وجوديًا مميزًا في الحياة؟",
       en: "Do you feel you have a unique existential purpose in life?"
-    }
-  },
-  {
-    id: 40,
-    category: "cultural", // التحليل الثقافي
-    domain: "discovery",
-    text: {
-      ar: "هل تكتشف جوانب جديدة من ثقافتك بمرور الوقت؟",
-      en: "Do you discover new aspects of your culture over time?"
     }
   }
 ];
