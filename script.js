@@ -177,10 +177,12 @@ function renderQuestion() {
 
 // دالة لتحديد الإجابة وتمكين زر التالي
 function selectAnswer(value) {
-  userAnswers[currentQuestion] = value; // تخزين الإجابة في المتغير الجديد
+  // 1. تخزين الإجابة للمستخدم للسؤال الحالي
+  userAnswers[currentQuestion] = value;
 
-  // تحديث واجهة المستخدم لإظهار الاختيار
+  // 2. تحديث واجهة المستخدم لإظهار الاختيار
   if (questions[currentQuestion].scale === "1-5") {
+    // تحديث أزرار المقياس 1-5
     document.querySelectorAll('.scale-option').forEach((opt, index) => {
       opt.classList.toggle('selected', index + 1 === value);
     });
@@ -192,6 +194,10 @@ function selectAnswer(value) {
        opt.classList.toggle('selected', Number(optionValues[index]) === value);
     });
   }
+
+  // 3. تمكين زر "التالي"
+  document.getElementById('nextBtn').disabled = false;
+}
 
   document.getElementById('nextBtn').disabled = false;
 }
@@ -206,20 +212,39 @@ function updateProgress() {
 // === نهاية الدوال الجديدة ===
 
 // انتقل للسؤال التالي - محدث لاستخدام userAnswers
+// انتقل للسؤال التالي - محدث لاستخدام userAnswers وتخزينها بشكل صحيح
 function nextQuestion() {
-  if (!userAnswers.hasOwnProperty(currentQuestion)) return alert("اختر إجابة"); // التحقق من وجود إجابة
+  // 1. التحقق من أن المستخدم اختار إجابة
+  if (!userAnswers.hasOwnProperty(currentQuestion)) {
+    // عرض رسالة للمستخدم إذا لم يتم الاختيار
+    const t = translations[currentLang]?.ui || {};
+    alert(t.please_select_answer || "يرجى اختيار إجابة قبل المتابعة.");
+    // أو يمكنك إظهار رسالة خطأ على الشاشة بدل alert
+    return; // إيقاف التنفيذ حتى يختار المستخدم
+  }
 
+  // 2. الحصول على السؤال الحالي والقيمة المختارة
+  const currentQ = questions[currentQuestion];
+  const selectedValue = userAnswers[currentQuestion]; // القيمة من 1 إلى 5
+
+  // 3. تخزين الإجابة في مصفوفة answers
   answers.push({
-    questionId: questions[currentQuestion].id,
-    category: questions[currentQuestion].category,
-    domain: questions[currentQuestion].domain,
-    value: userAnswers[currentQuestion] // استخدام القيمة من userAnswers
+    questionId: currentQ.id,
+    category: currentQ.category,
+    domain: currentQ.domain,
+    value: selectedValue // تخزين القيمة الرقمية
   });
 
+  // 4. التقدم إلى السؤال التالي
   currentQuestion++;
-  renderQuestion();
-}
 
+  // 5. عرض السؤال التالي أو النتائج
+  if (currentQuestion < questions.length) {
+    renderQuestion(); // عرض السؤال التالي
+  } else {
+    showResults(); // إذا انتهت الأسئلة، عرض النتائج
+  }
+}
 // عرض النتائج
 function showResults() {
   document.getElementById("quizSection").classList.remove("active");
