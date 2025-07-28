@@ -11,13 +11,14 @@
   <meta property="og:title" content="غرفة الأسرار - اكتشف شخصيتك">
   <meta property="og:description" content="اختبار شخصية مجاني يعتمد على نظريات علم النفس لتحليل شخصيتك بدقة">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://your-site-url.com">
-  <meta property="og:image" content="https://your-site-url.com/og-image.png">
+  <meta property="og:url" content="https://secretsroom.com">
+  <meta property="og:image" content="https://secretsroom.com/images/og-image.png">
   <title id="title">غرفة الأسرار</title>
   <!-- إضافة Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <!-- إضافة خط Noto Sans Arabic -->
+  <!-- إضافة خطوط لدعم العربية والصينية -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <!-- مكتبة jsPDF مع دعم الخط العربي -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -31,7 +32,7 @@
     <div>
       <p id="welcome" style="font-style:italic; margin: 0;"></p>
       <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-        <!-- [تحسين] زر تبديل الثيم -->
+        <!-- زر تبديل الثيم -->
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="تبديل الثيم بين الفاتح والداكن">🌓</button>
         <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;" aria-label="اختيار اللغة">
           <option value="ar">🇪🇬 العربية</option>
@@ -75,14 +76,16 @@
       <!-- رسالة تحذير لزر التالي -->
       <p id="nextBtnHint" style="display:none; color:red;" role="alert"></p>
       <button id="nextBtn" onclick="nextQuestion()" disabled aria-label="الانتقال إلى السؤال التالي">التالي</button>
-      <!-- [تحسين] إعلان صغير بجانب الأسئلة -->
+      <!-- إعلان بجانب الأسئلة -->
       <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
         <ins class="adsbygoogle"
              style="display:block"
-             data-ad-client="YOUR_AD_CLIENT_ID"
-             data-ad-slot="YOUR_AD_SLOT"
+             data-ad-client="ca-pub-1234567890123456"
+             data-ad-slot="1234567890"
              data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+             data-full-width-responsive="true">
+          <span>جاري تحميل الإعلان...</span>
+        </ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
     </section>
@@ -122,26 +125,30 @@
         <button id="downloadPdfBtn" onclick="downloadPDF()" aria-label="تحميل التقرير كملف PDF">تحميل التقرير PDF</button>
         <button id="shareBtn" onclick="shareResult()" aria-label="مشاركة نتائج اختبار الشخصية">مشاركة</button>
       </div>
-      <!-- [تحسين] إعلان أسفل النتائج -->
+      <!-- إعلان أسفل النتائج -->
       <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
         <ins class="adsbygoogle"
              style="display:block"
-             data-ad-client="YOUR_AD_CLIENT_ID"
-             data-ad-slot="YOUR_AD_SLOT"
+             data-ad-client="ca-pub-1234567890123456"
+             data-ad-slot="1234567890"
              data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+             data-full-width-responsive="true">
+          <span>جاري تحميل الإعلان...</span>
+        </ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
     </section>
 
-    <!-- [تحسين] إعلان ربحي رئيسي -->
+    <!-- إعلان ربحي رئيسي -->
     <section id="adSection" class="ad-placeholder" aria-hidden="true">
       <ins class="adsbygoogle"
            style="display:block"
-           data-ad-client="YOUR_AD_CLIENT_ID"
-           data-ad-slot="YOUR_AD_SLOT"
+           data-ad-client="ca-pub-1234567890123456"
+           data-ad-slot="1234567890"
            data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+           data-full-width-responsive="true">
+        <span>جاري تحميل الإعلان...</span>
+      </ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </section>
   </div>
@@ -161,16 +168,25 @@
   <script type="module" src="analysis_data.js"></script>
   <script type="module" src="script.js"></script>
 
+  <!-- دالة إغلاق المودال (مؤقتة حتى تُضاف إلى script.js) -->
+  <script>
+    function closeTheoryModal() {
+      document.getElementById("theoryModal").style.display = "none";
+    }
+  </script>
+
   <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
     <p>&copy; 2025 Mohammed Tarek</p>
-    <!-- [تحسين] إعلان في الفوتر -->
+    <!-- إعلان في الفوتر -->
     <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
       <ins class="adsbygoogle"
            style="display:block"
-           data-ad-client="YOUR_AD_CLIENT_ID"
-           data-ad-slot="YOUR_AD_SLOT"
+           data-ad-client="ca-pub-1234567890123456"
+           data-ad-slot="1234567890"
            data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+           data-full-width-responsive="true">
+        <span>جاري تحميل الإعلان...</span>
+      </ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </footer>
