@@ -364,12 +364,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyAdSettings();
 
     // تحميل analysis_data.js
-    try {
-        const { analysis_data } = await import("./analysis_data.js");
-        analysisData = analysis_data;
-    } catch (e) {
-        console.error("فشل تحميل analysis_data.js", e);
-    }
+try {
+    const { analysis_data } = await import("./analysis_data.js");
+    analysisData = analysis_data;
+} catch (e) {
+    console.error("فشل تحميل analysis_data.js", e);
+    alert("خطأ: ملف التحليلات غير متوفر.");
+}
 
     // إخفاء شاشة التحميل
     setTimeout(() => {
