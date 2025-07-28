@@ -1,21 +1,17 @@
-/* style.css - النسخة المُحسَّنة والمُنقَّحة */
+/* style.css - النسخة المُحسَّنة للاستجابة والاحترافية */
 
-/* الثيمات - مستوحاة من علم النفس */
-body.light {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-  color: #2c3e50;
-  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  direction: rtl; /* دعم اللغة العربية */
+/* إعدادات أساسية مرنة */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth; /* تحسين التمرير */
 }
 
-body.dark {
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-  color: #ecf0f1;
-  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  direction: rtl; /* دعم اللغة العربية */
+@media (max-width: 576px) {
+  html {
+    font-size: 14px; /* تصغير الخط للشاشات الصغيرة */
+  }
 }
 
-/* تخطيط عام */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -24,144 +20,181 @@ body.dark {
 
 body {
   line-height: 1.6;
-  padding: 20px;
+  padding: 1.25rem;
   min-height: 100vh;
+  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl;
+  transition: background 0.5s ease; /* تأثير انتقال سلس بين الثيمات */
 }
 
-/* هيدر مميز باسم الموقع */
+body.light {
+  background: linear-gradient(135deg, #e9f1fa 0%, #d4e4f5 100%); /* تدرج ألوان أكثر نعومة */
+  color: #2c3e50;
+}
+
+body.dark {
+  background: linear-gradient(135deg, #0a0a23 0%, #2a2a5e 50%, #1e1e3a 100%); /* تدرج داكن أكثر عمقًا */
+  color: #e6ecef;
+}
+
+/* تحسين الهيدر */
 header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 15px 20px;
-  margin-bottom: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
 }
 
 body.dark header {
-  background: rgba(30, 30, 46, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(25, 25, 40, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0.3rem 1rem rgba(255, 255, 255, 0.1);
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  header {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  body.dark header {
+    background: rgba(25, 25, 40, 0.95);
+  }
 }
 
 .site-title {
   font-size: 2.2rem;
   font-weight: 800;
-  background: linear-gradient(45deg, #3498db, #9b59b6, #e74c3c);
+  background: linear-gradient(45deg, #1e90ff, #8e44ad, #e84393); /* تدرج ألوان أكثر جاذبية */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-align: center;
   margin: 0 auto;
-  padding: 10px 0;
+  padding: 0.625rem 0;
+  letter-spacing: 0.05rem; /* إضافة تباعد طفيف للأناقة */
 }
 
 body.dark .site-title {
-  background: linear-gradient(45deg, #4aa0d5, #b388eb, #ff6b6b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background: linear-gradient(45deg, #4ab0e5, #b388eb, #ff6b81);
 }
 
-/* [تحسين] زر تبديل الثيم */
+/* زر تبديل الثيم */
 .theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px;
-  background: #3498db;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.625rem;
+  background: linear-gradient(135deg, #1e90ff, #3498db); /* تدرج ألوان أكثر احترافية */
   color: white;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 1001;
   font-size: 1rem;
   font-weight: 600;
-  border: none;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  z-index: 1001;
+  aria-label: تبديل الثيم; /* تحسين إمكانية الوصول */
 }
 
 body.dark .theme-toggle {
-  background: #4aa0d5;
-  box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, #4ab0e5, #2980b9);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0.2rem 0.8rem rgba(255, 255, 255, 0.1);
 }
 
 .theme-toggle:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 0.3rem 1rem rgba(30, 144, 255, 0.4);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid #1e90ff;
+  outline-offset: 2px;
 }
 
 /* تحسين العناصر */
 h1, h2, h3 {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   font-weight: 700;
   color: #2c3e50;
+  letter-spacing: 0.02rem;
 }
 
 body.dark h1, body.dark h2, body.dark h3 {
-  color: #ecf0f1;
+  color: #e6ecef;
 }
 
 select, input, button {
-  margin: 5px;
-  padding: 12px 15px;
+  margin: 0.3125rem;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d9e6;
   transition: all 0.3s ease;
-  will-change: background-color, border-color;
+  background-color: #ffffff;
+  color: #2c3e50;
 }
 
-body.dark select, 
-body.dark input, 
-body.dark button {
-  background: #2c2c3a;
-  border: 1px solid #444;
-  color: #ecf0f1;
+body.dark select, body.dark input, body.dark button {
+  background: #2a2a3c;
+  border: 1px solid #4a4a5e;
+  color: #e6ecef;
 }
 
 button {
   cursor: pointer;
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, #1e90ff, #3498db);
   color: white;
   font-weight: 600;
   border: none;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-  will-change: transform, box-shadow;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 1rem rgba(30, 144, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 body.dark button {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  background: linear-gradient(135deg, #4ab0e5, #2980b9);
+  box-shadow: 0 0.25rem 1rem rgba(30, 144, 255, 0.2);
 }
 
 button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.375rem 1.25rem rgba(30, 144, 255, 0.4);
 }
 
 body.dark button:hover {
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 0.375rem 1.25rem rgba(30, 144, 255, 0.3);
+}
+
+button:focus {
+  outline: 2px solid #1e90ff;
+  outline-offset: 2px;
 }
 
 /* تحسين الأقسام */
 #content > section {
-  margin-top: 20px;
+  margin-top: 1.25rem;
   display: none;
-  padding: 25px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
 }
 
 body.dark #content > section {
-  background: rgba(30, 30, 46, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(25, 25, 40, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0.5rem 2rem rgba(255, 255, 255, 0.1);
 }
 
 #content > .active {
@@ -170,26 +203,27 @@ body.dark #content > section {
 
 /* قسم الأسئلة */
 .question {
-  margin-bottom: 20px;
-  padding: 20px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  border-left: 4px solid #3498db;
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1);
+  border-left: 0.25rem solid #1e90ff;
+  transition: all 0.3s ease;
 }
 
 body.dark .question {
-  background: linear-gradient(135deg, #2c2c3a 0%, #1e1e2e 100%);
-  border-left: 4px solid #4aa0d5;
+  background: linear-gradient(135deg, #2a2a3c 0%, #1e1e2e 100%);
+  border-left: 0.25rem solid #4ab0e5;
 }
 
-/* [تحسين] دمج تنسيقات خيارات الإجابة (النصية والمقياس) */
+/* خيارات الإجابة والمقياس */
 .answer-option, .scale-option {
   display: block;
-  padding: 15px;
-  margin: 8px 0;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 0.875rem;
+  margin: 0.5rem 0;
+  border: 2px solid #d1d9e6;
+  border-radius: 0.5rem;
   background-color: white;
   cursor: pointer;
   text-align: center;
@@ -201,108 +235,109 @@ body.dark .question {
 .scale-options {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
 }
 
 .scale-option {
   flex: 1;
-  padding: 12px; /* تخصيص padding للمقياس */
+  padding: 0.75rem;
 }
 
 body.dark .answer-option, body.dark .scale-option {
-  background-color: #2c2c3a;
-  border-color: #444;
-  color: #ecf0f1;
+  background-color: #2a2a3c;
+  border-color: #4a4a5e;
+  color: #e6ecef;
 }
 
 .answer-option:hover, .scale-option:hover {
-  background-color: #f0f8ff;
-  border-color: #3498db;
-  transform: translateY(-2px);
+  background-color: #e6f0fa;
+  border-color: #1e90ff;
+  transform: translateY(-0.125rem);
 }
 
 body.dark .answer-option:hover, body.dark .scale-option:hover {
   background-color: #3a3a4a;
-  border-color: #4aa0d5;
+  border-color: #4ab0e5;
 }
 
 .answer-option.selected, .scale-option.selected {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, #1e90ff, #3498db);
   color: white;
-  border-color: #2980b9;
+  border-color: #3498db;
   font-weight: 600;
 }
 
 /* قسم النتائج */
 .result-card, .theory-card {
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+  padding: 1.25rem;
+  margin: 1rem 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
 }
 
 .result-card {
-  border-top: 3px solid #9b59b6;
+  border-top: 0.2rem solid #8e44ad; /* لون بنفسجي أكثر أناقة */
 }
 
 .theory-card {
-  border-left: 4px solid #e74c3c;
+  border-left: 0.25rem solid #e84393; /* لون وردي دافئ */
 }
 
 body.dark .result-card, body.dark .theory-card {
-  background: linear-gradient(135deg, #2c2c3a 0%, #1e1e2e 100%);
+  background: linear-gradient(135deg, #2a2a3c 0%, #1e1e2e 100%);
 }
 
 body.dark .result-card {
-  border-top: 3px solid #b388eb;
+  border-top: 0.2rem solid #b388eb;
 }
 
 body.dark .theory-card {
-  border-left: 4px solid #ff6b6b;
+  border-left: 0.25rem solid #ff6b81;
 }
 
 .theory-card h4 {
-  color: #e74c3c;
-  margin-bottom: 15px;
+  color: #e84393;
+  margin-bottom: 0.9375rem;
 }
 
 body.dark .theory-card h4 {
-  color: #ff6b6b;
+  color: #ff6b81;
 }
 
-/* [تحسين] تنسيقات مخصصة لنظريات محددة */
+/* تنسيقات مخصصة لنظريات محددة */
 .theory-card[data-theory="freud"] {
-  border-left-color: #2c3e50; /* لون داكن للتحليل النفسي */
+  border-left-color: #2c3e50;
 }
 .theory-card[data-theory="maslow"] {
-  border-left-color: #e67e22; /* لون دافئ للإنسانية */
+  border-left-color: #e67e22;
 }
 .theory-card[data-theory="skinner"] {
-  border-left-color: #27ae60; /* لون أخضر للسلوكية */
+  border-left-color: #27ae60;
 }
 .theory-card[data-theory="big_five"] {
-  border-left-color: #3498db; /* لون أزرق لسمات الشخصية */
+  border-left-color: #1e90ff;
 }
 .theory-card[data-theory="disc"] {
-  border-left-color: #e74c3c; /* لون أحمر لـ DISC */
+  border-left-color: #e84393;
 }
 .theory-card[data-theory="enneagram"] {
-  border-left-color: #9b59b6; /* لون بنفسجي للإنياغرام */
+  border-left-color: #8e44ad;
 }
 .theory-card[data-theory="kohlberg"] {
-  border-left-color: #f1c40f; /* لون أصفر للتطور الأخلاقي */
+  border-left-color: #f1c40f;
 }
 
-/* [تحسين] تنسيقات ديناميكية للنتائج */
+/* تنسيقات ديناميكية للنتائج */
 .result-card[data-score="high"] {
   background: linear-gradient(135deg, #2ecc71, #27ae60);
   color: white;
   border-top-color: #27ae60;
 }
 .result-card[data-score="low"] {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  background: linear-gradient(135deg, #e84393, #c0392b);
   color: white;
   border-top-color: #c0392b;
 }
@@ -310,41 +345,41 @@ body.dark .result-card[data-score="high"] {
   border-top-color: #2ecc71;
 }
 body.dark .result-card[data-score="low"] {
-  border-top-color: #e74c3c;
+  border-top-color: #e84393;
 }
 
-/* أزرار الإجراءات (تحميل ومشاركة) */
+/* أزرار الإجراءات */
 .actions {
-  margin-top: 30px;
+  margin-top: 1.875rem;
   display: flex;
-  gap: 15px;
+  gap: 0.9375rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .actions button {
-  min-width: 180px;
-  padding: 12px 20px;
+  min-width: 11.25rem;
+  padding: 0.75rem 1.25rem;
 }
 
 /* أزرار التنقل في النتائج */
 #resultNavigation button {
-  margin: 5px;
-  padding: 12px 20px;
+  margin: 0.3125rem;
+  padding: 0.75rem 1.25rem;
   font-size: 0.95rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   border: none;
   background: linear-gradient(135deg, #95a5a6, #7f8c8d);
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.1);
 }
 
 #resultNavigation button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.2);
 }
 
 #resultNavigation button:active {
@@ -352,51 +387,57 @@ body.dark .result-card[data-score="low"] {
 }
 
 #resultNavigation button.active {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  background: linear-gradient(135deg, #1e90ff, #3498db);
+  box-shadow: 0 0.25rem 0.9375rem rgba(30, 144, 255, 0.3);
 }
 
 /* تنسيق خاص لقسم تصنيف الشخصية */
 #personalityTypeContent {
-    text-align: center;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  padding: 1.25rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(135deg, #1e90ff, #3498db);
+  box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.15);
 }
 
-/* [تحسين] دمج تنسيقات شريط التقدم في مكان واحد */
+body.dark #personalityTypeContent {
+  background: linear-gradient(135deg, #4ab0e5, #2980b9);
+}
+
+/* شريط التقدم */
 .progress-container {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   text-align: center;
 }
 
 .progress-bar {
   width: 100%;
-  height: 12px;
+  height: 0.75rem;
   background-color: #e0e0e0;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 }
 
 #progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #3498db, #9b59b6);
+  background: linear-gradient(90deg, #1e90ff, #8e44ad);
   width: 0%;
-  transition: width 0.3s ease;
+  transition: width 0.5s ease;
 }
 
 #progressText {
   font-size: 0.9rem;
-  color: #666;
+  color: #5c6b80;
 }
 
 body.dark .progress-bar {
-  background-color: #444;
+  background-color: #4a4a5e;
 }
 
 body.dark #progressText {
-  color: #aaa;
+  color: #b0b8c4;
 }
 
 /* تنسيق المودال */
@@ -407,7 +448,7 @@ body.dark #progressText {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -416,86 +457,154 @@ body.dark #progressText {
 .modal-content {
   background-color: white;
   margin: auto;
-  padding: 20px;
-  border-radius: 15px;
+  padding: 1.5rem;
+  border-radius: 1rem;
   width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
+  max-width: 37.5rem;
+  max-height: 85vh;
   overflow-y: auto;
-  position: relative;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
 }
 
 body.dark .modal-content {
-  background-color: #2c2c3a;
+  background-color: #2a2a3c;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 28px;
+  top: 0.625rem;
+  right: 0.9375rem;
+  font-size: 1.75rem;
   font-weight: bold;
   cursor: pointer;
   color: #aaa;
+  transition: color 0.3s ease;
 }
 
 .close:hover {
-  color: #000;
+  color: #2c3e50;
 }
 
 body.dark .close:hover {
-  color: #fff;
+  color: #e6ecef;
 }
 
-/* استجابة للأجهزة المختلفة (Media Queries) */
+/* Media Queries للأجهزة الصغيرة */
+@media (max-width: 576px) {
+  body {
+    padding: 0.625rem;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.625rem;
+    text-align: center;
+  }
+
+  .site-title {
+    font-size: 1.5rem;
+    order: 1;
+  }
+
+  .theme-toggle {
+    position: relative; /* إزالة التثبيت على الشاشات الصغيرة */
+    order: 2;
+    margin-top: 0.5rem;
+    padding: 0.375rem;
+    font-size: 0.9rem;
+    box-shadow: none; /* تحسين الأداء */
+  }
+
+  #content > section {
+    padding: 0.9375rem;
+    margin: 0.625rem 0;
+  }
+
+  .question {
+    padding: 0.9375rem;
+  }
+
+  .answer-option, .scale-option {
+    padding: 0.625rem;
+    font-size: 0.9rem;
+    box-shadow: none;
+  }
+
+  .scale-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .actions button {
+    min-width: 100%;
+    padding: 0.625rem;
+    font-size: 0.9rem;
+    box-shadow: none;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 0.9375rem;
+  }
+}
+
+/* Media Queries للأجهزة المتوسطة */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
-    gap: 15px;
+    gap: 0.9375rem;
     text-align: center;
   }
-  
+
   .site-title {
     font-size: 1.8rem;
   }
-  
+
   select, input, button {
     width: 100%;
-    margin: 5px 0;
+    margin: 0.3125rem 0;
   }
-  
+
   #content > section {
-    padding: 15px;
+    padding: 0.9375rem;
   }
-  
+
   .actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .actions button {
     width: 100%;
-    max-width: 300px;
+    max-width: 18.75rem;
   }
-  
+
   .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px;
+    top: 0.5rem;
+    right: 0.5rem;
   }
 }
 
+/* Media Queries للأجهزة الكبيرة */
 @media (min-width: 1200px) {
   body {
-    padding: 30px 50px;
+    padding: 1.875rem 3.125rem;
   }
-  
+
   .site-title {
     font-size: 2.5rem;
   }
-  
+
   #content > section {
-    max-width: 800px;
-    margin: 20px auto;
+    max-width: 50rem;
+    margin: 1.25rem auto;
+  }
+
+  .modal-content {
+    max-width: 50rem;
   }
 }
