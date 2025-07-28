@@ -10,8 +10,9 @@
   <title>إعدادات الإعلانات - غرفة الأسرار</title>
   <!-- إضافة Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <!-- إضافة خط Noto Sans Arabic -->
+  <!-- إضافة خطوط لدعم العربية والصينية -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="light">
@@ -35,8 +36,9 @@
     <h2 id="adminTitle">إعدادات الإعلانات</h2>
     <section id="loginSection" aria-labelledby="adminTitle">
       <label for="pass" class="visually-hidden">كلمة المرور</label>
-      <input type="password" id="pass" placeholder="أدخل كلمة المرور" aria-label="أدخل كلمة المرور للوحة الإدارة" required>
-      <button onclick="checkPassword()" aria-label="تسجيل الدخول إلى لوحة الإدارة">دخول</button>
+      <input type="password" id="pass" placeholder="أدخل كلمة المرور" aria-label="أدخل كلمة المرور للوحة الإدارة" aria-describedby="passDesc" required>
+      <p id="passDesc" class="visually-hidden">أدخل كلمة المرور للوصول إلى إعدادات الإعلانات</p>
+      <button id="loginBtn" onclick="checkPassword()" aria-label="تسجيل الدخول إلى لوحة الإدارة">دخول</button>
     </section>
 
     <section id="panel" style="display:none; margin-top:20px;" aria-labelledby="panelTitle">
@@ -44,13 +46,13 @@
       <p>قم بتحديث أكواد الإعلانات أو روابطها أدناه.</p>
       <form id="adSettingsForm" onsubmit="saveAdSettings(event)">
         <label for="adClient">معرف عميل AdSense (data-ad-client):</label>
-        <input type="text" id="adClient" placeholder="ca-pub-XXXXXXXXXXXXXXXX" aria-label="أدخل معرف عميل AdSense">
+        <input type="text" id="adClient" placeholder="ca-pub-XXXXXXXXXXXXXXXX" aria-label="أدخل معرف عميل AdSense" required>
         <label for="adSlotQuiz">معرف الإعلان للأسئلة (data-ad-slot):</label>
-        <input type="text" id="adSlotQuiz" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم الأسئلة">
+        <input type="text" id="adSlotQuiz" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم الأسئلة" required>
         <label for="adSlotResults">معرف الإعلان للنتائج (data-ad-slot):</label>
-        <input type="text" id="adSlotResults" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم النتائج">
+        <input type="text" id="adSlotResults" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم النتائج" required>
         <label for="adSlotFooter">معرف الإعلان للفوتر (data-ad-slot):</label>
-        <input type="text" id="adSlotFooter" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان للفوتر">
+        <input type="text" id="adSlotFooter" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان للفوتر" required>
         <button type="submit" aria-label="حفظ إعدادات الإعلانات">حفظ الإعدادات</button>
       </form>
     </section>
@@ -60,28 +62,70 @@
     <p>&copy; 2025 Mohammed Tarek</p>
   </footer>
 
-  <script>
+  <script type="module">
+    // تحميل ملفات locales
+    let translations = {};
+    async function loadLanguage(lang) {
+      try {
+        const { default: langData } = await import(`./locales/${lang}.js`);
+        translations[lang] = langData;
+        applyLanguage(lang);
+      } catch (error) {
+        console.error(`فشل تحميل ملف اللغة '${lang}':`, error);
+        alert(translations['en']?.ui?.language_error || 'Failed to load language, defaulting to English.');
+      }
+    }
+
+    // تطبيق اللغة
+    function applyLanguage(lang) {
+      if (!translations[lang]) return;
+      const t = translations[lang].admin || {};
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.title = t.admin_title || 'إعدادات الإعلانات - غرفة الأسرار';
+      document.querySelector('.site-title').innerHTML = `${t.admin_title || 'إعدادات الإعلانات'}<br><span style="font-size: 1.2rem; font-weight: normal;">${
+        lang === 'ar' ? 'Secrets Room Admin' : 'غرفة الأسرار - الإدارة'
+      }</span>`;
+      document.getElementById('adminTitle').textContent = t.admin_title || 'إعدادات الإعلانات';
+      document.getElementById('panelTitle').textContent = t.panel_title || 'إدارة الإعلانات الربحية';
+      document.querySelector('label[for="pass"]').textContent = t.password_label || 'كلمة المرور';
+      document.getElementById('pass').placeholder = t.password_placeholder || 'أدخل كلمة المرور';
+      document.querySelector('#loginSection button').textContent = t.login || 'دخول';
+      document.querySelector('label[for="adClient"]').textContent = t.ad_client_label || 'معرف عميل AdSense (data-ad-client):';
+      document.querySelector('label[for="adSlotQuiz"]').textContent = t.ad_slot_quiz_label || 'معرف الإعلان للأسئلة (data-ad-slot):';
+      document.querySelector('label[for="adSlotResults"]').textContent = t.ad_slot_results_label || 'معرف الإعلان للنتائج (data-ad-slot):';
+      document.querySelector('label[for="adSlotFooter"]').textContent = t.ad_slot_footer_label || 'معرف الإعلان للفوتر (data-ad-slot):';
+      document.querySelector('#adSettingsForm button').textContent = t.save_settings || 'حفظ الإعدادات';
+    }
+
     // تحميل الإعدادات من localStorage
     function loadAdSettings() {
-      const adSettings = JSON.parse(localStorage.getItem('adSettings')) || {};
-      document.getElementById('adClient').value = adSettings.adClient || '';
-      document.getElementById('adSlotQuiz').value = adSettings.adSlotQuiz || '';
-      document.getElementById('adSlotResults').value = adSettings.adSlotResults || '';
-      document.getElementById('adSlotFooter').value = adSettings.adSlotFooter || '';
+      try {
+        const adSettings = JSON.parse(localStorage.getItem('adSettings')) || {};
+        document.getElementById('adClient').value = adSettings.adClient || '';
+        document.getElementById('adSlotQuiz').value = adSettings.adSlotQuiz || '';
+        document.getElementById('adSlotResults').value = adSettings.adSlotResults || '';
+        document.getElementById('adSlotFooter').value = adSettings.adSlotFooter || '';
+      } catch (e) {
+        console.error('خطأ في تحميل إعدادات الإعلانات:', e);
+        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.storage_error || 'خطأ في تحميل الإعدادات');
+      }
     }
 
     // التحقق من كلمة المرور
     function checkPassword() {
       const password = document.getElementById('pass').value;
-      // [تحسين] تنظيف الإدخال لمنع XSS
+      // تنظيف الإدخال لمنع XSS
       const sanitizedPassword = password.replace(/[<>&"]/g, '');
       // ملاحظة: استخدام كلمة مرور ثابتة غير آمن. يُفضل استخدام مصادقة خادم.
       if (sanitizedPassword === 'Farida') {
+        localStorage.setItem('adminSession', 'true');
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('panel').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
         loadAdSettings();
       } else {
-        alert('كلمة المرور خاطئة');
+        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.invalid_password || 'كلمة المرور خاطئة');
       }
     }
 
@@ -94,8 +138,19 @@
         adSlotResults: document.getElementById('adSlotResults').value.trim(),
         adSlotFooter: document.getElementById('adSlotFooter').value.trim()
       };
-      localStorage.setItem('adSettings', JSON.stringify(adSettings));
-      alert('تم حفظ إعدادات الإعلانات بنجاح!');
+      // التحقق من صحة معرف عميل AdSense
+      if (!adSettings.adClient.startsWith('ca-pub-')) {
+        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.invalid_ad_client || 'معرف عميل AdSense يجب أن يبدأ بـ ca-pub-');
+        return;
+      }
+      try {
+        localStorage.setItem('adSettings', JSON.stringify(adSettings));
+        // إرسال إشعار لتحديث الإعلانات في index.html
+        window.dispatchEvent(new CustomEvent('adSettingsUpdated', { detail: adSettings }));
+        alert(translations[localStorage.getItem('lang') || 'ar']?.ui?.settings_saved || 'تم حفظ إعدادات الإعلانات بنجاح!');
+      } catch (e) {
+        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.storage_error || 'خطأ في حفظ الإعدادات: التخزين المحلي غير متاح');
+      }
     }
 
     // تحميل الثيم
@@ -112,22 +167,23 @@
     }
 
     // تحميل اللغة
-    function changeLanguage(lang) {
+    async function changeLanguage(lang) {
       localStorage.setItem('lang', lang);
-      // إعادة تحميل الصفحة لتحديث اللغة (يمكن تحسين هذا باستخدام ملفات locales)
-      location.reload();
+      await loadLanguage(lang);
     }
 
     // تسجيل الخروج
     function logout() {
       localStorage.removeItem('adminSession');
+      localStorage.removeItem('session'); // توافق مع script.js
       location.reload();
     }
 
     // تهيئة الصفحة
-    window.onload = () => {
+    window.onload = async () => {
       applyTheme(localStorage.getItem('theme') || 'light');
       const adminSession = localStorage.getItem('adminSession');
+      await loadLanguage(localStorage.getItem('lang') || 'ar');
       if (adminSession) {
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('panel').style.display = 'block';
