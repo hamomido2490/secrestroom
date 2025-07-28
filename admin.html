@@ -1,196 +1,68 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- تحسين SEO مع خصوصية -->
-  <meta name="description" content="لوحة إدارة الإعلانات لتطبيق غرفة الأسرار">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="author" content="Mohammed Tarek">
-  <title>إعدادات الإعلانات - غرفة الأسرار</title>
-  <!-- إضافة Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <!-- إضافة خطوط لدعم العربية والصينية -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>لوحة التحكم - غرفة الأسرار</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .stat-card { background: var(--card-bg-light); padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .settings-form { margin-top: 30px; }
+    </style>
 </head>
 <body class="light">
-  <header>
-    <div class="site-title">إعدادات الإعلانات<br><span style="font-size: 1.2rem; font-weight: normal;">Secrets Room Admin</span></div>
-    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="تبديل الثيم بين الفاتح والداكن">🌓</button>
-      <select id="langSelect" onchange="changeLanguage(this.value)" style="margin: 0;" aria-label="اختيار اللغة">
-        <option value="ar">🇪🇬 العربية</option>
-        <option value="en">🇺🇸 English</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="es">🇪🇸 Español</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="zh">🇨🇳 中文</option>
-      </select>
-      <button id="logoutBtn" onclick="logout()" style="display:none; padding: 8px 12px;" aria-label="تسجيل الخروج">🔒</button>
+    <div class="admin-container">
+        <h1>لوحة التحكم</h1>
+        <div id="loginSection" style="text-align: center;">
+            <input type="password" id="adminPass" placeholder="كلمة المرور">
+            <button onclick="login()">دخول</button>
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <div class="stat-card"><strong>عدد الزوار:</strong> <span id="visitorStat">0</span></div>
+            <div class="stat-card"><strong>عدد الاختبارات:</strong> <span id="testStat">0</span></div>
+            <div class="stat-card"><strong>آخر زيارة:</strong> <span id="lastVisitStat">-</span></div>
+
+            <div class="settings-form">
+                <h3>إعدادات الإعلانات</h3>
+                <input type="text" id="adClient" placeholder="ca-pub-..."><br><br>
+                <input type="text" id="adSlotQuiz" placeholder="Quiz Ad Slot"><br><br>
+                <input type="text" id="adSlotResults" placeholder="Results Ad Slot"><br><br>
+                <button onclick="saveAdSettings()">حفظ الإعدادات</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main>
-    <h2 id="adminTitle">إعدادات الإعلانات</h2>
-    <section id="loginSection" aria-labelledby="adminTitle">
-      <label for="pass" class="visually-hidden">كلمة المرور</label>
-      <input type="password" id="pass" placeholder="أدخل كلمة المرور" aria-label="أدخل كلمة المرور للوحة الإدارة" aria-describedby="passDesc" required>
-      <p id="passDesc" class="visually-hidden">أدخل كلمة المرور للوصول إلى إعدادات الإعلانات</p>
-      <button id="loginBtn" onclick="checkPassword()" aria-label="تسجيل الدخول إلى لوحة الإدارة">دخول</button>
-    </section>
+    <script>
+        const ADMIN_PASS = "secret123"; // غيرها
 
-    <section id="panel" style="display:none; margin-top:20px;" aria-labelledby="panelTitle">
-      <h3 id="panelTitle">إدارة الإعلانات الربحية</h3>
-      <p>قم بتحديث أكواد الإعلانات أو روابطها أدناه.</p>
-      <form id="adSettingsForm" onsubmit="saveAdSettings(event)">
-        <label for="adClient">معرف عميل AdSense (data-ad-client):</label>
-        <input type="text" id="adClient" placeholder="ca-pub-XXXXXXXXXXXXXXXX" aria-label="أدخل معرف عميل AdSense" required>
-        <label for="adSlotQuiz">معرف الإعلان للأسئلة (data-ad-slot):</label>
-        <input type="text" id="adSlotQuiz" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم الأسئلة" required>
-        <label for="adSlotResults">معرف الإعلان للنتائج (data-ad-slot):</label>
-        <input type="text" id="adSlotResults" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان لقسم النتائج" required>
-        <label for="adSlotFooter">معرف الإعلان للفوتر (data-ad-slot):</label>
-        <input type="text" id="adSlotFooter" placeholder="XXXXXXXXXX" aria-label="أدخل معرف الإعلان للفوتر" required>
-        <button type="submit" aria-label="حفظ إعدادات الإعلانات">حفظ الإعدادات</button>
-      </form>
-    </section>
-  </main>
+        function login() {
+            const pass = document.getElementById("adminPass").value;
+            if (pass === ADMIN_PASS) {
+                document.getElementById("loginSection").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+                loadStats();
+            } else {
+                alert("كلمة مرور خاطئة");
+            }
+        }
 
-  <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
-    <p>&copy; 2025 Mohammed Tarek</p>
-  </footer>
+        function loadStats() {
+            const userData = JSON.parse(localStorage.getItem('psychApp_v4')) || {};
+            document.getElementById("visitorStat").textContent = userData.visitorCount || 0;
+            document.getElementById("testStat").textContent = userData.testCount || 0;
+            document.getElementById("lastVisitStat").textContent = userData.lastVisit ? new Date(userData.lastVisit).toLocaleString('ar-EG') : "-";
+        }
 
-  <script type="module">
-    // تحميل ملفات locales
-    let translations = {};
-    async function loadLanguage(lang) {
-      try {
-        const { default: langData } = await import(`./locales/${lang}.js`);
-        translations[lang] = langData;
-        applyLanguage(lang);
-      } catch (error) {
-        console.error(`فشل تحميل ملف اللغة '${lang}':`, error);
-        alert(translations['en']?.ui?.language_error || 'Failed to load language, defaulting to English.');
-      }
-    }
-
-    // تطبيق اللغة
-    function applyLanguage(lang) {
-      if (!translations[lang]) return;
-      const t = translations[lang].admin || {};
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.title = t.admin_title || 'إعدادات الإعلانات - غرفة الأسرار';
-      document.querySelector('.site-title').innerHTML = `${t.admin_title || 'إعدادات الإعلانات'}<br><span style="font-size: 1.2rem; font-weight: normal;">${
-        lang === 'ar' ? 'Secrets Room Admin' : 'غرفة الأسرار - الإدارة'
-      }</span>`;
-      document.getElementById('adminTitle').textContent = t.admin_title || 'إعدادات الإعلانات';
-      document.getElementById('panelTitle').textContent = t.panel_title || 'إدارة الإعلانات الربحية';
-      document.querySelector('label[for="pass"]').textContent = t.password_label || 'كلمة المرور';
-      document.getElementById('pass').placeholder = t.password_placeholder || 'أدخل كلمة المرور';
-      document.querySelector('#loginSection button').textContent = t.login || 'دخول';
-      document.querySelector('label[for="adClient"]').textContent = t.ad_client_label || 'معرف عميل AdSense (data-ad-client):';
-      document.querySelector('label[for="adSlotQuiz"]').textContent = t.ad_slot_quiz_label || 'معرف الإعلان للأسئلة (data-ad-slot):';
-      document.querySelector('label[for="adSlotResults"]').textContent = t.ad_slot_results_label || 'معرف الإعلان للنتائج (data-ad-slot):';
-      document.querySelector('label[for="adSlotFooter"]').textContent = t.ad_slot_footer_label || 'معرف الإعلان للفوتر (data-ad-slot):';
-      document.querySelector('#adSettingsForm button').textContent = t.save_settings || 'حفظ الإعدادات';
-    }
-
-    // تحميل الإعدادات من localStorage
-    function loadAdSettings() {
-      try {
-        const adSettings = JSON.parse(localStorage.getItem('adSettings')) || {};
-        document.getElementById('adClient').value = adSettings.adClient || '';
-        document.getElementById('adSlotQuiz').value = adSettings.adSlotQuiz || '';
-        document.getElementById('adSlotResults').value = adSettings.adSlotResults || '';
-        document.getElementById('adSlotFooter').value = adSettings.adSlotFooter || '';
-      } catch (e) {
-        console.error('خطأ في تحميل إعدادات الإعلانات:', e);
-        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.storage_error || 'خطأ في تحميل الإعدادات');
-      }
-    }
-
-    // التحقق من كلمة المرور
-    function checkPassword() {
-      const password = document.getElementById('pass').value;
-      // تنظيف الإدخال لمنع XSS
-      const sanitizedPassword = password.replace(/[<>&"]/g, '');
-      // ملاحظة: استخدام كلمة مرور ثابتة غير آمن. يُفضل استخدام مصادقة خادم.
-      if (sanitizedPassword === 'Farida') {
-        localStorage.setItem('adminSession', 'true');
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('panel').style.display = 'block';
-        document.getElementById('logoutBtn').style.display = 'inline-block';
-        loadAdSettings();
-      } else {
-        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.invalid_password || 'كلمة المرور خاطئة');
-      }
-    }
-
-    // حفظ إعدادات الإعلانات
-    function saveAdSettings(event) {
-      event.preventDefault();
-      const adSettings = {
-        adClient: document.getElementById('adClient').value.trim(),
-        adSlotQuiz: document.getElementById('adSlotQuiz').value.trim(),
-        adSlotResults: document.getElementById('adSlotResults').value.trim(),
-        adSlotFooter: document.getElementById('adSlotFooter').value.trim()
-      };
-      // التحقق من صحة معرف عميل AdSense
-      if (!adSettings.adClient.startsWith('ca-pub-')) {
-        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.invalid_ad_client || 'معرف عميل AdSense يجب أن يبدأ بـ ca-pub-');
-        return;
-      }
-      try {
-        localStorage.setItem('adSettings', JSON.stringify(adSettings));
-        // إرسال إشعار لتحديث الإعلانات في index.html
-        window.dispatchEvent(new CustomEvent('adSettingsUpdated', { detail: adSettings }));
-        alert(translations[localStorage.getItem('lang') || 'ar']?.ui?.settings_saved || 'تم حفظ إعدادات الإعلانات بنجاح!');
-      } catch (e) {
-        alert(translations[localStorage.getItem('lang') || 'ar']?.errors?.storage_error || 'خطأ في حفظ الإعدادات: التخزين المحلي غير متاح');
-      }
-    }
-
-    // تحميل الثيم
-    function applyTheme(theme) {
-      document.body.className = theme;
-      localStorage.setItem('theme', theme);
-    }
-
-    // تبديل الثيم
-    function toggleTheme() {
-      const currentTheme = localStorage.getItem('theme') || 'light';
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      applyTheme(nextTheme);
-    }
-
-    // تحميل اللغة
-    async function changeLanguage(lang) {
-      localStorage.setItem('lang', lang);
-      await loadLanguage(lang);
-    }
-
-    // تسجيل الخروج
-    function logout() {
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('session'); // توافق مع script.js
-      location.reload();
-    }
-
-    // تهيئة الصفحة
-    window.onload = async () => {
-      applyTheme(localStorage.getItem('theme') || 'light');
-      const adminSession = localStorage.getItem('adminSession');
-      await loadLanguage(localStorage.getItem('lang') || 'ar');
-      if (adminSession) {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('panel').style.display = 'block';
-        document.getElementById('logoutBtn').style.display = 'inline-block';
-        loadAdSettings();
-      }
-    };
-  </script>
+        function saveAdSettings() {
+            const settings = {
+                adClient: document.getElementById("adClient").value,
+                adSlotQuiz: document.getElementById("adSlotQuiz").value,
+                adSlotResults: document.getElementById("adSlotResults").value
+            };
+            localStorage.setItem("adSettings", JSON.stringify(settings));
+            alert("تم الحفظ! أعد تحميل الموقع.");
+        }
+    </script>
 </body>
 </html>
