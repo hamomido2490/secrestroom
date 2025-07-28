@@ -1,429 +1,672 @@
-// 🌟 script.js - النسخة النهائية | "غرفة الأسرار" | v3.0
-document.addEventListener('DOMContentLoaded', async () => {
-    // --- 1. التهيئة الأساسية ---
-    let translations = {};
-    let currentLang = localStorage.getItem("lang") || "ar";
-    let deviceId = localStorage.getItem("deviceId") || "";
-    let userSession = JSON.parse(localStorage.getItem("session")) || null;
-    let currentQuestion = 0;
-    let answers = [];
-    let userAnswers = {};
-    let categoryAverages = {};
-    let domainAverages = {};
-    let analysisData = null;
-    let myChart = null;
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Noto+Sans+Arabic:wght@400;500;700&display=swap');
 
-    const userDataKey = 'psychApp_v3';
-    let userData = JSON.parse(localStorage.getItem(userDataKey)) || {
-        visitorCount: 0,
-        testCount: 0,
-        lastVisit: null
-    };
+/* الإعدادات الأساسية */
+:root {
+    --primary-blue: #1e90ff;
+    --primary-purple: #8e44ad;
+    --primary-pink: #e84393;
+    --primary-green: #27ae60;
+    --primary-orange: #e67e22;
+    --accent-blue: #3498db;
+    --accent-purple: #8e44ad;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --text-dark: #2c3e50;
+    --text-light: #e6ecef;
+    --text-muted: #a0a0a0;
+    --bg-light: #e9f1fa;
+    --bg-dark: #0a0a23;
+    --card-bg-light: rgba(255, 255, 255, 0.95);
+    --card-bg-dark: rgba(25, 25, 40, 0.95);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --border-light: rgba(255, 255, 255, 0.6);
+    --border-dark: rgba(255, 255, 255, 0.15);
+    --shadow-light: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+    --shadow-dark: 0 0.5rem 2rem rgba(255, 255, 255, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 1rem;
+    --font-arabic: 'Tajawal', 'Noto Sans Arabic', sans-serif;
+}
 
-    // --- 2. دوال الأمان ---
-    function sanitizeInput(input) {
-        return input ? String(input).replace(/[<>&"]/g, "") : "";
+/* دعم الثيمات */
+body.light {
+    --bg: linear-gradient(135deg, var(--bg-light) 0%, #d4e4f5 100%);
+    --text: var(--text-dark);
+    --card-bg-active: rgba(255, 255, 255, 0.98);
+}
+body.dark {
+    --bg: linear-gradient(135deg, var(--bg-dark) 0%, #2a2a5e 50%, #1e1e3a 100%);
+    --text: var(--text-light);
+    --card-bg-active: rgba(25, 25, 40, 0.98);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+@media (max-width: 576px) {
+    html {
+        font-size: 14px;
     }
+}
 
-    function logEvent(action, details = {}) {
-        console.log(`[SecretsRoom] ${action}`, { ...details, time: new Date().toISOString() });
+body {
+    line-height: 1.6;
+    padding: 1.25rem;
+    min-height: 100vh;
+    font-family: var(--font-arabic);
+    direction: rtl;
+    color: var(--text);
+    background: var(--bg);
+    transition: background 0.5s ease, color 0.5s ease;
+    position: relative;
+}
+
+/* شاشة التحميل */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    pointer-events: none;
+}
+
+.loading-screen.active {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* الهيدر */
+header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius);
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-light);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+}
+
+body.dark header {
+    background: var(--card-bg-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-dark);
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+    header {
+        background: var(--card-bg-light);
     }
-
-    // --- 3. تهيئة الجهاز والجلسة ---
-    function initDevice() {
-        if (!deviceId) {
-            deviceId = "SR-" + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem("deviceId", deviceId);
-        }
-        userData.visitorCount++;
-        userData.lastVisit = new Date().toISOString();
-        localStorage.setItem(userDataKey, JSON.stringify(userData));
+    body.dark header {
+        background: var(--card-bg-dark);
     }
+}
 
-    // --- 4. إدارة اللغة ---
-    async function loadLanguage(lang) {
-        if (translations[lang]) return applyLanguage(lang);
+/* عنوان الموقع */
+.site-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, var(--primary-blue), var(--primary-purple), var(--primary-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.625rem 0;
+    letter-spacing: 0.05rem;
+    text-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3);
+}
 
-        try {
-            const { default: langData } = await import(`./locales/${lang}.js`);
-            translations[lang] = langData;
-            applyLanguage(lang);
-        } catch (error) {
-            console.error(`فشل تحميل اللغة: ${lang}`, error);
-            if (lang !== "en") await loadLanguage("en");
-            showNotification(translations["en"]?.ui?.language_error || "فشل تحميل اللغة", "error");
-        }
+body.dark .site-title {
+    background: linear-gradient(45deg, #66b2ff, #d1a3ff, #ff8fab);
+    text-shadow: 0 0 0.2rem rgba(255, 255, 255, 0.5);
+}
+
+.site-title span {
+    font-size: 1.2rem;
+    font-weight: 400;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* زر تبديل الثيم */
+.theme-toggle {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.625rem;
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    z-index: 1001;
+}
+
+body.dark .theme-toggle {
+    background: linear-gradient(135deg, #4ab0e5, #2980b9);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0.2rem 0.8rem rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0.3rem 1rem rgba(30, 144, 255, 0.4);
+}
+
+.theme-toggle:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* تحسين العناصر */
+h1, h2, h3 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 0.02rem;
+    transition: color 0.3s ease;
+}
+
+body.dark h1, body.dark h2, body.dark h3 {
+    color: var(--text-light);
+}
+
+select, input, button {
+    margin: 0.3125rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d9e6;
+    transition: var(--transition);
+    background-color: #fff;
+    color: var(--text-dark);
+}
+
+body.dark select, body.dark input, body.dark button {
+    background: #2a2a3c;
+    border: 1px solid #4a4a5e;
+    color: var(--text-light);
+}
+
+button {
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 1rem rgba(30, 144, 255, 0.3);
+    transition: var(--transition);
+}
+
+body.dark button {
+    background: linear-gradient(135deg, #4ab0e5, #2980b9);
+    box-shadow: 0 0.25rem 1rem rgba(30, 144, 255, 0.2);
+}
+
+button:hover {
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.375rem 1.25rem rgba(30, 144, 255, 0.4);
+}
+
+body.dark button:hover {
+    box-shadow: 0 0.375rem 1.25rem rgba(30, 144, 255, 0.3);
+}
+
+button:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* تحسين الأقسام */
+#content > section {
+    margin-top: 1.25rem;
+    display: none;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--card-bg-light);
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+}
+
+body.dark #content > section {
+    background: var(--card-bg-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-dark);
+}
+
+#content > .active {
+    display: block;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-
-    function applyLanguage(lang) {
-        const t = translations[lang]?.ui || {};
-        const r = translations[lang]?.results || {};
-        document.documentElement.lang = lang;
-        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-        document.title = t.title || "غرفة الأسرار";
-
-        // تحديث النصوص
-        updateElement("ageLabel", t.age || "العمر");
-        updateElement("genderLabel", t.gender || "الجنس");
-        updateElement("startBtn", t.start || "ابدأ");
-        updateElement("nextBtn", t.next || "التالي");
-        updateElement("quizTitle", t.quiz_title || "اختبار الشخصية");
-        updateElement("visitorCount", userData.visitorCount);
-        updateElement("testCount", userData.testCount);
-
-        // تحديث أزرار النتائج
-        updateResultButtonTitles();
-
-        // تحديث قائمة الجنس
-        const genderSelect = document.getElementById("genderSelect");
-        if (genderSelect && t.male) {
-            genderSelect.innerHTML = `
-                <option value="male">${t.male}</option>
-                <option value="female">${t.female}</option>
-                <option value="other">${t.other}</option>
-            `;
-        }
-
-        logEvent("Language applied", { lang });
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    function updateElement(id, text) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = text;
+/* قسم الأسئلة */
+.question {
+    margin-bottom: 1.25rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1);
+    border-left: 0.25rem solid var(--primary-blue);
+    transition: var(--transition);
+}
+
+body.dark .question {
+    background: linear-gradient(135deg, #2a2a3c 0%, #1e1e2e 100%);
+    border-left: 0.25rem solid #4ab0e5;
+}
+
+/* خيارات الإجابة */
+.answer-option, .scale-option {
+    display: block;
+    padding: 0.875rem;
+    margin: 0.5rem 0;
+    border: 2px solid #d1d9e6;
+    border-radius: 0.5rem;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.scale-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+}
+
+.scale-option {
+    flex: 1;
+    padding: 0.75rem;
+}
+
+body.dark .answer-option, body.dark .scale-option {
+    background-color: #2a2a3c;
+    border-color: #4a4a5e;
+    color: var(--text-light);
+}
+
+.answer-option:hover, .scale-option:hover {
+    background-color: #e6f0fa;
+    border-color: var(--primary-blue);
+    transform: translateY(-0.125rem);
+}
+
+body.dark .answer-option:hover, body.dark .scale-option:hover {
+    background-color: #3a3a4a;
+    border-color: #4ab0e5;
+}
+
+.answer-option.selected, .scale-option.selected {
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+    color: white;
+    border-color: var(--accent-blue);
+    font-weight: 600;
+    box-shadow: 0 0.2rem 0.8rem rgba(30, 144, 255, 0.3);
+}
+
+/* قسم النتائج */
+.result-card, .theory-card {
+    padding: 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0.75rem;
+    background: var(--card-bg-light);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+}
+
+.result-card {
+    border-top: 0.2rem solid var(--primary-purple);
+}
+
+.theory-card {
+    border-left: 0.25rem solid var(--primary-pink);
+}
+
+body.dark .result-card, body.dark .theory-card {
+    background: var(--card-bg-dark);
+}
+
+body.dark .result-card {
+    border-top: 0.2rem solid #b388eb;
+}
+
+body.dark .theory-card {
+    border-left: 0.25rem solid #ff6b81;
+}
+
+.theory-card h4 {
+    color: var(--primary-pink);
+    margin-bottom: 0.9375rem;
+}
+
+body.dark .theory-card h4 {
+    color: #ff6b81;
+}
+
+/* تنسيقات مخصصة لنظريات محددة */
+.theory-card[data-theory="freud"] { border-left-color: #2c3e50; }
+.theory-card[data-theory="maslow"] { border-left-color: var(--primary-orange); }
+.theory-card[data-theory="skinner"] { border-left-color: var(--primary-green); }
+.theory-card[data-theory="big_five"] { border-left-color: var(--primary-blue); }
+.theory-card[data-theory="disc"] { border-left-color: var(--primary-pink); }
+.theory-card[data-theory="enneagram"] { border-left-color: var(--primary-purple); }
+.theory-card[data-theory="kohlberg"] { border-left-color: #f1c40f; }
+
+/* ألوان ديناميكية للنتائج */
+.result-card[data-score="high"] {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border-top-color: #27ae60;
+}
+
+.result-card[data-score="low"] {
+    background: linear-gradient(135deg, #e84393, #c0392b);
+    color: white;
+    border-top-color: #c0392b;
+}
+
+body.dark .result-card[data-score="high"] { border-top-color: #2ecc71; }
+body.dark .result-card[data-score="low"] { border-top-color: #e84393; }
+
+/* أزرار الإجراءات */
+.actions {
+    margin-top: 1.875rem;
+    display: flex;
+    gap: 0.9375rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.actions button {
+    min-width: 11.25rem;
+    padding: 0.75rem 1.25rem;
+}
+
+/* أزرار التنقل */
+#resultNavigation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#resultNavigation button {
+    margin: 0.3125rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+#resultNavigation button:hover {
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.2);
+}
+
+#resultNavigation button.active {
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+    box-shadow: 0 0.25rem 0.9375rem rgba(30, 144, 255, 0.3);
+}
+
+/* قسم الشخصية */
+#personalityTypeContent {
+    text-align: center;
+    color: #fff;
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+    box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+body.dark #personalityTypeContent {
+    background: linear-gradient(135deg, #4ab0e5, #2980b9);
+}
+
+/* شريط التقدم */
+.progress-container {
+    margin-bottom: 1.25rem;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 0.75rem;
+    background-color: #e0e0e0;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    margin-bottom: 0.625rem;
+}
+
+#progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#progressText {
+    font-size: 0.9rem;
+    color: #5c6b80;
+}
+
+body.dark .progress-bar {
+    background-color: #4a4a5e;
+}
+
+body.dark #progressText {
+    color: #b0b8c4;
+}
+
+/* المودال */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 37.5rem;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+}
+
+body.dark .modal-content {
+    background-color: #2a2a3c;
+    border: 1px solid var(--border-dark);
+}
+
+.close {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.9375rem;
+    font-size: 1.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--text-dark);
+}
+
+body.dark .close:hover {
+    color: var(--text-light);
+}
+
+/* الإعلانات */
+.ad-placeholder {
+    margin: 1.25rem auto;
+    max-width: 18.75rem;
+    text-align: center;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+body.dark .ad-placeholder {
+    background: rgba(25, 25, 40, 0.8);
+}
+
+/* الفوتر */
+footer {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #5c6b80;
+}
+
+body.dark footer {
+    border-top: 1px solid #4a4a5e;
+    color: #b0b8c4;
+}
+
+/* تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
+}
 
-    function updateResultButtonTitles() {
-        const t = translations[currentLang]?.ui || {};
-        updateElement("btnPersonalityType", t.personality_type || "نوع الشخصية");
-        updateElement("btnSummary", t.result_summary || "الملخص");
-        updateElement("btnTheories", t.theories || "النظريات");
-        updateElement("btnDetailedAnalysis", t.result_full || "تحليل مفصل");
-        updateElement("btnRecommendations", t.recommendations || "توصيات");
-        updateElement("downloadPdfBtn", t.download_pdf || "PDF");
-        updateElement("shareBtn", t.share || "شارك");
+/* طباعة */
+@media print {
+    .loading-screen,
+    .theme-toggle,
+    .modal,
+    .ad-placeholder,
+    header {
+        display: none !important;
     }
-
-    // --- 5. إدارة الثيم (فاتح / داكن) ---
-    function initThemeToggle() {
-        const toggle = document.querySelector(".theme-toggle");
-        if (toggle) {
-            toggle.addEventListener("click", () => {
-                const theme = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-                applyTheme(theme);
-            });
-        }
+    body,
+    .question,
+    .result-card,
+    .theory-card {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
     }
-
-    function applyTheme(theme) {
-        document.body.className = theme;
-        localStorage.setItem("theme", theme);
-        const icon = document.querySelector(".theme-toggle i");
-        if (icon) icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+    a {
+        color: #0066cc;
+        text-decoration: underline;
     }
+}
 
-    // --- 6. إدارة الإعلانات ---
-    function applyAdSettings() {
-        const adSettings = JSON.parse(localStorage.getItem("adSettings")) || {};
-        document.querySelectorAll('ins.adsbygoogle').forEach(ins => {
-            if (adSettings.adClient) ins.setAttribute("data-ad-client", adSettings.adClient);
-            if (ins.closest("#quizSection") && adSettings.adSlotQuiz)
-                ins.setAttribute("data-ad-slot", adSettings.adSlotQuiz);
-            if (ins.closest("#resultSection") && adSettings.adSlotResults)
-                ins.setAttribute("data-ad-slot", adSettings.adSlotResults);
-            if (ins.closest("footer") && adSettings.adSlotFooter)
-                ins.setAttribute("data-ad-slot", adSettings.adSlotFooter);
-        });
-        try { window.adsbygoogle?.push({}); } catch (e) { console.warn("إعلانات فشلت", e); }
-    }
+/* استجابة مثالية */
+@media (max-width: 576px) {
+    body { padding: 0.625rem; }
+    header { flex-direction: column; gap: 1rem; text-align: center; }
+    .site-title { font-size: 1.5rem; order: 1; }
+    .theme-toggle { position: relative; order: 2; margin-top: 0.5rem; padding: 0.375rem; font-size: 0.9rem; }
+    #content > section { padding: 0.9375rem; }
+    .answer-option, .scale-option { font-size: 0.9rem; }
+    .actions button { min-width: 100%; }
+    .modal-content { width: 95%; }
+}
 
-    // --- 7. منطق الاختبار ---
-    function startTest() {
-        const age = sanitizeInput(document.getElementById("ageInput").value);
-        if (!age || isNaN(age) || age < 10 || age > 100) {
-            return showNotification(translations[currentLang]?.ui?.age_error || "أدخل عمرًا صحيحًا (10-100)", "error");
-        }
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 0.9375rem; }
+    .site-title { font-size: 1.8rem; }
+    select, input, button { width: 100%; margin: 0.3125rem 0; }
+    .actions { flex-direction: column; align-items: center; }
+    .actions button { width: 100%; max-width: 18.75rem; }
+}
 
-        const gender = sanitizeInput(document.getElementById("genderSelect").value);
-        userSession = { age, gender, deviceId, timestamp: Date.now() };
-        localStorage.setItem("session", JSON.stringify(userSession));
-
-        document.getElementById("welcomeSection").classList.remove("active");
-        document.getElementById("quizSection").classList.add("active");
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        if (currentQuestion >= questions.length) return showResults();
-        const q = questions[currentQuestion];
-        const questionText = q.text[currentLang] || q.text["en"] || "سؤال غير متوفر";
-
-        document.getElementById("questionContainer").innerHTML = `<div class="question">${questionText}</div>`;
-        updateProgress();
-
-        const optionsContainer = document.getElementById("answerOptions");
-        optionsContainer.innerHTML = "";
-
-        const createOption = (text, value) => {
-            const opt = document.createElement("div");
-            opt.className = "answer-option";
-            opt.textContent = text;
-            opt.onclick = () => selectAnswer(value);
-            opt.setAttribute("role", "button");
-            optionsContainer.appendChild(opt);
-        };
-
-        if (q.scale === "1-5") {
-            for (let i = 1; i <= 5; i++) createOption(i, i);
-        } else if (q.scale === "yes-no") {
-            const opts = translations[currentLang]?.options?.yes_no || { yes: "نعم", no: "لا" };
-            createOption(opts.yes, 5);
-            createOption(opts.no, 1);
-        } else {
-            const likert = translations[currentLang]?.options?.likert || {};
-            Object.entries(likert).forEach(([v, txt]) => createOption(txt, Number(v)));
-        }
-
-        document.getElementById("nextBtn").disabled = true;
-    }
-
-    function selectAnswer(value) {
-        userAnswers[currentQuestion] = value;
-        document.querySelectorAll(".answer-option").forEach((el, i) => {
-            const isSelected = (el.textContent.includes("5") && value === 5) ||
-                               (el.textContent.includes("1") && value === 1) ||
-                               (el.textContent === value.toString());
-            el.classList.toggle("selected", isSelected);
-        });
-        document.getElementById("nextBtn").disabled = false;
-    }
-
-    function updateProgress() {
-        const progress = ((currentQuestion + 1) / questions.length) * 100;
-        document.getElementById("progressFill").style.width = `${progress}%`;
-        document.getElementById("progressText").textContent = `${currentQuestion + 1} / ${questions.length}`;
-    }
-
-    function nextQuestion() {
-        if (userAnswers[currentQuestion] === undefined) {
-            return showNotification(translations[currentLang]?.ui?.select_answer || "اختر إجابة", "info");
-        }
-
-        const q = questions[currentQuestion];
-        answers.push({
-            questionId: q.id,
-            category: q.category,
-            domain: q.domain,
-            value: userAnswers[currentQuestion],
-            weight: q.weight || 1
-        });
-
-        currentQuestion++;
-        if (currentQuestion < questions.length) renderQuestion();
-        else showResults();
-    }
-
-    // --- 8. عرض النتائج ---
-    function showResults() {
-        document.getElementById("quizSection").classList.remove("active");
-        document.getElementById("resultSection").classList.add("active");
-        calculateAverages();
-        displayResultContent("personalityType");
-        applyAdSettings();
-        userData.testCount++;
-        localStorage.setItem(userDataKey, JSON.stringify(userData));
-        updateElement("testCount", userData.testCount);
-    }
-
-    function calculateAverages() {
-        const categoryScores = {};
-        const domainScores = {};
-        answers.forEach(a => {
-            if (!categoryScores[a.category]) categoryScores[a.category] = { total: 0, count: 0 };
-            if (!domainScores[a.domain]) domainScores[a.domain] = { total: 0, count: 0 };
-            categoryScores[a.category].total += a.value * a.weight;
-            categoryScores[a.category].count += a.weight;
-            domainScores[a.domain].total += a.value * a.weight;
-            domainScores[a.domain].count += a.weight;
-        });
-
-        categoryAverages = {};
-        for (const [cat, data] of Object.entries(categoryScores)) {
-            categoryAverages[cat] = data.total / data.count;
-        }
-
-        domainAverages = {};
-        for (const [dom, data] of Object.entries(domainScores)) {
-            domainAverages[dom] = data.total / data.count;
-        }
-    }
-
-    function displayResultContent(section) {
-        document.querySelectorAll(".result-section-content").forEach(el => el.style.display = "none");
-        document.getElementById(`${section}Section`).style.display = "block";
-
-        switch (section) {
-            case "personalityType": displayPersonalityType(); break;
-            case "summary": displaySummary(); break;
-            case "theories": displayTheories(); break;
-            case "detailedAnalysis": displayDetailed(); break;
-            case "recommendations": displayRecommendations(); break;
-        }
-    }
-
-    function displayPersonalityType() {
-        const scores = domainAverages;
-        const topDomainKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-        const t = translations[currentLang]?.results || {};
-        const color = topDomainKey === "vision" ? "#e74c3c" : topDomainKey === "analysis" ? "#3498db" : "#9b59b6";
-        const personality = t[`${topDomainKey}_personality`] || "شخصيتك";
-        const desc = t[`${topDomainKey}_description`] || "وصف شخصيتك";
-        const themes = t[`${topDomainKey}_themes`] || ["الطاقة", "الشغف", "القيادة"];
-
-        document.getElementById("personalityTypeContent").innerHTML = `
-            <h2 style="color:${color}">${personality}</h2>
-            <p>${desc}</p>
-            <h3>${t.themes || "مواضيعك الأساسية"}:</h3>
-            <ul>${themes.map(t => `<li>${t}</li>`).join("")}</ul>
-        `;
-
-        const ctx = document.getElementById("resultChart").getContext("2d");
-        if (myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
-            type: "radar",
-            data: {
-                labels: Object.keys(domainAverages).map(k => t.domains[k] || k),
-                datasets: [{
-                    label: t.domain_scores || "النتائج",
-                    data: Object.values(domainAverages),
-                    backgroundColor: "rgba(52,152,219,0.2)",
-                    borderColor: "#3498db",
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                scales: { r: { suggestedMin: 1, suggestedMax: 5 } },
-                plugins: { legend: { display: true } }
-            }
-        });
-    }
-
-    function displaySummary() {
-        const t = translations[currentLang]?.results || {};
-        let html = `<h2>${t.summary_intro || "ملخص النتائج"}</h2>`;
-        for (const [k, v] of Object.entries(domainAverages)) {
-            html += `<p>${t.domains[k] || k}: ${v.toFixed(2)}/5</p>`;
-        }
-        document.getElementById("summaryContent").innerHTML = html;
-    }
-
-    function displayTheories() {
-        const t = translations[currentLang]?.results || {};
-        let html = `<h2>${t.theories_intro || "تحليل النظريات"}</h2>`;
-        html += Object.keys(domainAverages).map(cat => {
-            const theory = analysisData?.[cat]?.MBTI;
-            if (!theory) return "";
-            const score = domainAverages[cat];
-            const interp = score > 3.5 ? theory.high_score_interpretation : theory.low_score_interpretation;
-            return `<div class="theory-card"><h4>${theory.name}</h4><p>${interp}</p></div>`;
-        }).join("");
-        document.getElementById("theoriesContent").innerHTML = html;
-    }
-
-    function displayDetailed() {
-        const t = translations[currentLang]?.results || {};
-        let html = `<h2>${t.full_intro || "تحليل مفصل"}</h2>`;
-        for (const [k, v] of Object.entries(categoryAverages)) {
-            html += `<div class="result-card" style="border-left: 4px solid ${v > 3.5 ? "#2ecc71" : "#e74c3c"}"><p>${t.traits[k] || k}: ${v.toFixed(2)}/5</p></div>`;
-        }
-        document.getElementById("detailedAnalysisContent").innerHTML = html;
-    }
-
-    function displayRecommendations() {
-        const t = translations[currentLang]?.results || {};
-        const tips = Object.keys(domainAverages).flatMap(cat => {
-            const theory = analysisData?.[cat]?.MBTI;
-            return theory ? theory.development_tips || [] : [];
-        });
-        const list = tips.length ? tips : [t.general_recommendation || "واصل التطور"];
-        document.getElementById("recommendationsContent").innerHTML = `<ul>${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
-    }
-
-    // --- 9. PDF ومشاركة ---
-    async function downloadPDF() {
-        try {
-            await loadJS('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-            const { jsPDF } = jspdf;
-            const doc = new jsPDF({ format: 'a4' });
-            doc.setFontSize(16);
-            doc.text("تقرير شخصيتك", 105, 20, { align: 'center' });
-
-            doc.setFontSize(12);
-            doc.text(`النتيجة: ${document.getElementById("personalityTypeContent").innerText}`, 20, 40);
-            doc.text(`الملخص: ${document.getElementById("summaryContent").innerText}`, 20, 70);
-            doc.text(`التوصيات: ${document.getElementById("recommendationsContent").innerText}`, 20, 100);
-
-            doc.save(`تقرير_الشخصية_${new Date().toLocaleDateString()}.pdf`);
-            showNotification("تم الحفظ بنجاح", "success");
-        } catch (e) {
-            showNotification("فشل الحفظ", "error");
-        }
-    }
-
-    function shareResult() {
-        const text = "اكتشفت شخصيتي! جرب أنت كمان!";
-        if (navigator.share) {
-            navigator.share({ title: "تحليل شخصيتي", text, url: location.href });
-        } else {
-            navigator.clipboard.writeText(location.href).then(() => showNotification("تم النسخ", "info"));
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem("session");
-        location.reload();
-    }
-
-    // --- 10. أدوات ---
-    async function loadJS(src) {
-        return new Promise((res, rej) => {
-            if (document.querySelector(`script[src="${src}"]`)) return res();
-            const s = document.createElement('script');
-            s.src = src; s.onload = res; s.onerror = rej;
-            document.head.appendChild(s);
-        });
-    }
-
-    function showNotification(msg, type = 'info') {
-        const notif = document.createElement('div');
-        notif.className = `notification notification-${type}`;
-        notif.innerHTML = `<i class="fas fa-${type === 'error' ? 'times' : type === 'success' ? 'check' : 'info'}-circle"></i> ${msg}`;
-        document.body.appendChild(notif);
-        setTimeout(() => notif.remove(), 3000);
-    }
-
-    // --- 11. بدء التشغيل ---
-    initDevice();
-    await loadLanguage(currentLang);
-    applyTheme(localStorage.getItem("theme") || "light");
-    initThemeToggle();
-    applyAdSettings();
-
-    // تحميل analysis_data.js
-    try {
-        const { default: data } = await import("./analysis_data.js");
-        analysisData = data;
-    } catch (e) {
-        console.error("فشل تحميل analysis_data.js", e);
-    }
-
-    // إخفاء شاشة التحميل
-    setTimeout(() => {
-        const screen = document.getElementById('loadingScreen');
-        if (screen) {
-            screen.style.opacity = '0';
-            setTimeout(() => screen.style.display = 'none', 500);
-        }
-    }, 1500);
-
-    logEvent("App initialized", { deviceId, lang: currentLang });
-});
+@media (min-width: 1200px) {
+    body { padding: 1.875rem 3.125rem; }
+    .site-title { font-size: 2.5rem; }
+    #content > section { max-width: 50rem; margin: 1.25rem auto; }
+    .modal-content { max-width: 50rem; }
+    .ad-placeholder { max-width: 25rem; }
+}
