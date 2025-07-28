@@ -1,252 +1,385 @@
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        const el = document.getElementById('loadingScreen');
-        if (el) {
-            el.style.opacity = '0';
-            setTimeout(() => el.style.display = 'none', 500);
-        }
-    }, 1500);
+// 🌟 script.js - النسخة النهائية المتكاملة | "Secrets Room Pro"
+document.addEventListener('DOMContentLoaded', async () => {
+    // --- 1. إعدادات أولية ---
+    let translations = {};
+    let currentLang = localStorage.getItem("lang") || "ar";
+    let deviceId = localStorage.getItem("deviceId") || "";
+    let userSession = JSON.parse(localStorage.getItem("session")) || null;
+    let currentQuestion = 0;
+    let answers = [];
+    let analysisData = null;
+    let myChart = null; // لتجنب تكرار الرسم البياني
 
-    const userDataKey = 'psychAnalysisApp_v1';
-    let data = JSON.parse(localStorage.getItem(userDataKey)) || { visitorCount: 0, analysisCount: 0 };
-    data.visitorCount++;
-    localStorage.setItem(userDataKey, JSON.stringify(data));
-
-    const analysisTypes = {
-        vision: { title: "الرؤية الداخلية", icon: "fas fa-eye", color: "#3498db" },
-        analysis: { title: "التحليل العميق", icon: "fas fa-brain", color: "#9b59b6" },
-        healing: { title: "الشفاء النفسي", icon: "fas fa-heart", color: "#2ecc71" },
-        revelation: { title: "الكشف الصادق", icon: "fas fa-crystal-ball", color: "#f39c12" }
+    const userDataKey = 'psychApp_v2'; // تخزين مركزي
+    let userData = JSON.parse(localStorage.getItem(userDataKey)) || {
+        visitorCount: 0,
+        testCount: 0,
+        lastVisit: null
     };
 
-    const analysisContent = {
-        vision: {
-            descriptions: [
-                "لقد اكتشفت جانبًا مخفيًا من شخصيتك لم تكن تتخيله...",
-                "رؤية داخلية قوية تشير إلى وعي عالٍ ومتفوق...",
-                "البصيرة التي لديك تفوق التوقعات العادية بمستوى كبير...",
-                "لديك قدرة استثنائية على رؤية الحقائق الخفية...",
-                "العمق البصيري لديك يفتح أبوابًا لا نهائية للفهم..."
-            ],
-            insights: [
-                "تحليلك يشير إلى قدرة استباقية مميزة وفريدة",
-                "نمط التفكير الخاص بك غير تقليدي ومبتكِر",
-                "التطور المستقبلي يعتمد على الثقة بالنفس والجرأة",
-                "الوعي العالي لديك يخلق فرصًا لا محدودة للنمو",
-                "القدرة على التنبؤ تجعلك قائدًا طبيعيًا"
-            ]
-        },
-        analysis: {
-            descriptions: [
-                "تحليلك النفسي يشير إلى قوة داخلية غير متوقعة ومذهلة...",
-                "العمق العاطفي الذي تمتلكه يستحق كل التقدير والاحترام...",
-                "القدرة على فهم الذات تتطور بشكل متسارع ومثير...",
-                "التحليل الدقيق يكشف عن طاقات خفية لم تكتشفها...",
-                "الفهم العميق لنفسيتك يفتح آفاقًا جديدة للتطور..."
-            ],
-            insights: [
-                "نمط التفكير الخاص بك فريد من نوعه ومتعدد الأبعاد",
-                "التحديات الحالية فرص ذهبية للنمو الشخصي",
-                "العلاقات الاجتماعية تؤثر بشكل كبير وعميق على تقدمك",
-                "القدرة على التحليل تجعلك محصلًا متميزًا",
-                "الفهم الذاتي يخلق توازنًا داخليًا قويًا"
-            ]
-        },
-        healing: {
-            descriptions: [
-                "عملية الشفاء بدأت، وستشعر بالتغيير تدريجيًا ومريح...",
-                "الشفاء النفسي يسير في المسار الصحيح والمثالي...",
-                "التحول الداخلي يحدث بشكل طبيعي ومريح جدًا...",
-                "التعافي يسير بسرعة أكبر مما تتوقع...",
-                "الشفاء يخلق قوة داخلية لا تُقهر..."
-            ],
-            insights: [
-                "القوة الداخلية أكبر مما تتخيل وتفوق التوقعات",
-                "الوقت المناسب للشفاء هو الآن والفرص مواتية",
-                "التقدم المستمر يبشر بمستقبل أفضل وأكثر إشراقًا",
-                "التعافي يخلق مرونة نفسية استثنائية",
-                "الشفاء يفتح قلوبًا جديدة للحب والثقة"
-            ]
-        },
-        revelation: {
-            descriptions: [
-                "الحقيقة التي كنت تبحث عنها هي: أنت أقوى مما تتخيل...",
-                "الكشف الصادق يُظهر قدرات لم تكتشفها بعد...",
-                "الحقيقة الداخلية تحررك من القيود الوهمية...",
-                "الكشف يفتح أبوابًا جديدة للفهم الذاتي...",
-                "الحقيقة التي تكتشفها الآن ستغير كل شيء..."
-            ],
-            insights: [
-                "الحقيقة التي تكتشفها الآن ستغير كل شيء بشكل جذري",
-                "الوعي الجديد يفتح أبوابًا لا نهائية للتطور",
-                "التطور الشخصي في أوجة ويتقدم بسرعة",
-                "الكشف يخلق وعيًا جديدًا بالذات والعالم",
-                "الحقيقة تحرر الطاقات الخفية داخلك..."
-            ]
-        }
-    };
-
-    function updateStats() {
-        const v = document.getElementById('visitorCount'), a = document.getElementById('analysisCount');
-        if (v) v.textContent = data.visitorCount;
-        if (a) a.textContent = data.analysisCount;
+    // --- 2. دوال الأمان والتنظيم ---
+    function sanitizeInput(input) {
+        return input ? String(input).replace(/[<>&"]/g, "") : "";
     }
 
-    document.querySelectorAll('.section-card').forEach(card => {
-        const type = card.dataset.type;
-        if (!analysisTypes[type]) return;
+    function logEvent(action, details = {}) {
+        console.log(`[PsychApp] ${action}`, { timestamp: new Date().toISOString(), ...details });
+    }
 
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px) scale(1.02)';
-            card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)';
+    // --- 3. تهيئة الجهاز والجلسة ---
+    function initDevice() {
+        if (!deviceId) {
+            deviceId = "SR-" + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem("deviceId", deviceId);
+        }
+        userData.visitorCount++;
+        userData.lastVisit = new Date().toISOString();
+        localStorage.setItem(userDataKey, JSON.stringify(userData));
+    }
+
+    // --- 4. إدارة اللغة ---
+    async function loadLanguage(lang) {
+        if (translations[lang]) return applyLanguage(lang);
+
+        try {
+            const { default: langData } = await import(`./locales/${lang}.js`);
+            translations[lang] = langData;
+            applyLanguage(lang);
+        } catch (error) {
+            console.error(`فشل تحميل اللغة: ${lang}`, error);
+            if (lang !== "en") await loadLanguage("en");
+            showNotification(translations["en"]?.ui?.language_error || "فشل تحميل اللغة", "error");
+        }
+    }
+
+    function applyLanguage(lang) {
+        const t = translations[lang]?.ui || {};
+        const r = translations[lang]?.results || {};
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        document.title = t.title || "Secrets Room";
+
+        // تحديث العناصر
+        updateElement("ageLabel", t.age || "Age");
+        updateElement("genderLabel", t.gender || "Gender");
+        updateElement("startBtn", t.start || "Start");
+        updateElement("nextBtn", t.next || "Next");
+        updateElement("quizTitle", t.quiz_title || "Personality Quiz");
+
+        const genderSelect = document.getElementById("genderSelect");
+        if (genderSelect && t.male) {
+            genderSelect.innerHTML = `
+                <option value="male">${t.male}</option>
+                <option value="female">${t.female}</option>
+                <option value="other">${t.other}</option>
+            `;
+        }
+
+        // تحديث إحصائيات الزوار
+        updateElement("visitorCount", userData.visitorCount);
+        updateElement("testCount", userData.testCount);
+
+        updateResultButtonTitles();
+    }
+
+    function updateElement(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+    }
+
+    function updateResultButtonTitles() {
+        const t = translations[currentLang]?.ui || {};
+        updateElement("btnPersonalityType", t.personality_type || "Personality Type");
+        updateElement("btnSummary", t.result_summary || "Summary");
+        updateElement("btnTheories", t.theories || "Theories");
+        updateElement("btnDetailedAnalysis", t.result_full || "Detailed");
+        updateElement("btnRecommendations", t.recommendations || "Recommendations");
+        updateElement("downloadPdfBtn", t.download_pdf || "PDF");
+        updateElement("shareBtn", t.share || "Share");
+    }
+
+    // --- 5. إدارة الثيم (فاتح / داكن) ---
+    function initThemeToggle() {
+        const toggle = document.querySelector(".theme-toggle");
+        if (toggle) {
+            toggle.addEventListener("click", () => {
+                const theme = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+                applyTheme(theme);
+            });
+        }
+    }
+
+    function applyTheme(theme) {
+        document.body.className = theme;
+        localStorage.setItem("theme", theme);
+        const toggle = document.querySelector(".theme-toggle i");
+        if (toggle) toggle.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+    }
+
+    // --- 6. إدارة الإعلانات ---
+    function applyAdSettings() {
+        const adSettings = JSON.parse(localStorage.getItem("adSettings")) || {};
+        document.querySelectorAll('ins.adsbygoogle').forEach(ins => {
+            if (adSettings.adClient) ins.setAttribute("data-ad-client", adSettings.adClient);
+            if (ins.closest("#quizSection") && adSettings.adSlotQuiz)
+                ins.setAttribute("data-ad-slot", adSettings.adSlotQuiz);
+            if (ins.closest("#resultSection") && adSettings.adSlotResults)
+                ins.setAttribute("data-ad-slot", adSettings.adSlotResults);
         });
+        try { window.adsbygoogle?.push({}); } catch (e) { console.warn("إعلانات فشلت", e); }
+    }
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-            card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+    // --- 7. منطق الاختبار ---
+    function startTest() {
+        const age = sanitizeInput(document.getElementById("ageInput").value);
+        if (!age || isNaN(age) || age < 10 || age > 100) {
+            return showNotification(translations[currentLang]?.ui?.age_error || "أدخل عمراً صحيحاً (10-100)", "error");
+        }
+
+        const gender = sanitizeInput(document.getElementById("genderSelect").value);
+        userSession = { age, gender, deviceId, timestamp: Date.now() };
+        localStorage.setItem("session", JSON.stringify(userSession));
+
+        document.getElementById("welcomeSection").classList.remove("active");
+        document.getElementById("quizSection").classList.add("active");
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        if (currentQuestion >= questions.length) return showResults();
+        const q = questions[currentQuestion];
+        const questionText = q.text[currentLang] || q.text["en"] || "سؤال غير متوفر";
+
+        document.getElementById("questionContainer").innerHTML = `<div class="question">${questionText}</div>`;
+        updateProgress();
+
+        const optionsContainer = document.getElementById("answerOptions");
+        optionsContainer.innerHTML = "";
+
+        const createOption = (text, value) => {
+            const opt = document.createElement("div");
+            opt.className = "answer-option";
+            opt.textContent = text;
+            opt.onclick = () => selectAnswer(value);
+            optionsContainer.appendChild(opt);
+        };
+
+        if (q.scale === "1-5") {
+            for (let i = 1; i <= 5; i++) createOption(i, i);
+        } else if (q.scale === "yes-no") {
+            const opts = translations[currentLang]?.options?.yes_no || { yes: "نعم", no: "لا" };
+            createOption(opts.yes, 5);
+            createOption(opts.no, 1);
+        } else {
+            const likert = translations[currentLang]?.options?.likert || {};
+            Object.entries(likert).forEach(([v, txt]) => createOption(txt, Number(v)));
+        }
+
+        document.getElementById("nextBtn").disabled = true;
+    }
+
+    function selectAnswer(value) {
+        answers[currentQuestion] = value;
+        document.querySelectorAll(".answer-option").forEach((el, i) => {
+            el.classList.toggle("selected", i === value - 1 || (value === 5 && i === 0) || (value === 1 && i === 1));
         });
+        document.getElementById("nextBtn").disabled = false;
+    }
 
-        card.addEventListener('click', () => {
-            showAnalysis(type);
-            data.analysisCount++;
-            localStorage.setItem(userDataKey, JSON.stringify(data));
-            updateStats();
+    function updateProgress() {
+        const progress = ((currentQuestion + 1) / questions.length) * 100;
+        document.getElementById("progressFill").style.width = `${progress}%`;
+        document.getElementById("progressText").textContent = `${currentQuestion + 1} / ${questions.length}`;
+    }
+
+    function nextQuestion() {
+        if (answers[currentQuestion] === undefined) {
+            return showNotification(translations[currentLang]?.ui?.select_answer || "اختر إجابة", "info");
+        }
+        currentQuestion++;
+        if (currentQuestion < questions.length) renderQuestion();
+        else showResults();
+    }
+
+    // --- 8. عرض النتائج ---
+    function showResults() {
+        document.getElementById("quizSection").classList.remove("active");
+        document.getElementById("resultSection").classList.add("active");
+        calculateAverages();
+        displayResultContent("personalityType");
+        applyAdSettings();
+        userData.testCount++;
+        localStorage.setItem(userDataKey, JSON.stringify(userData));
+        updateElement("testCount", userData.testCount);
+    }
+
+    function calculateAverages() {
+        const scores = {};
+        answers.forEach((val, i) => {
+            const q = questions[i];
+            const cat = q.category;
+            scores[cat] = (scores[cat] || 0) + val;
         });
-    });
+        for (const cat in scores) scores[cat] = scores[cat] / questions.filter(q => q.category === cat).length;
+        window.categoryAverages = scores;
+    }
 
-    function showAnalysis(type) {
-        const analysis = analysisTypes[type], content = analysisContent[type];
-        if (!analysis || !content) return;
+    function displayResultContent(section) {
+        document.querySelectorAll(".result-section-content").forEach(el => el.style.display = "none");
+        document.getElementById(`${section}Section`).style.display = "block";
 
-        const desc = content.descriptions[Math.floor(Math.random() * content.descriptions.length)];
-        const insight = content.insights[Math.floor(Math.random() * content.insights.length)];
+        switch (section) {
+            case "personalityType": displayPersonalityType(); break;
+            case "summary": displaySummary(); break;
+            case "theories": displayTheories(); break;
+            case "detailedAnalysis": displayDetailed(); break;
+            case "recommendations": displayRecommendations(); break;
+        }
+    }
 
-        document.getElementById('modalTitle').textContent = analysis.title;
-        document.getElementById('modalTitle').style.color = analysis.color;
+    function displayPersonalityType() {
+        const scores = window.categoryAverages;
+        const topCat = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        const t = translations[currentLang]?.results || {};
+        const color = topCat === "vision" ? "#e74c3c" : topCat === "analysis" ? "#3498db" : "#9b59b6";
+        const personality = t[`${topCat}_personality`] || "Personality";
+        const desc = t[`${topCat}_description`] || "وصف";
 
-        document.getElementById('modalBody').innerHTML = `
-            <div class="analysis-content">
-                <div class="analysis-header" style="border-right-color:${analysis.color}">
-                    <div class="analysis-icon" style="color:${analysis.color}"><i class="${analysis.icon}"></i></div>
-                    <h3>تحليلك الشخصي</h3>
-                </div>
-                <div class="analysis-description"><p>${desc}</p></div>
-                <div class="analysis-progress">
-                    <div class="progress-bar" style="background:${analysis.color}">
-                        <div class="progress-fill" style="width:${Math.floor(Math.random()*40)+60}%;background:${analysis.color}"></div>
-                    </div>
-                </div>
-                <div class="analysis-insight">
-                    <div class="insight-header"><i class="fas fa-lightbulb"></i><h4>رؤية AI</h4></div>
-                    <p>${insight}</p>
-                </div>
-                <div class="analysis-recommendations">
-                    <div class="recommendations-header"><i class="fas fa-star"></i><h4>توصيات للتطوير</h4></div>
-                    <ul>
-                        <li>مارس التأمل اليومي لمدة 10 دقائق</li>
-                        <li>اكتب ملاحظاتك البصيرية يوميًا</li>
-                        <li>شارك تجربتك مع شخص تثق به</li>
-                        <li>تابع تطورك خلال الأسبوع القادم</li>
-                    </ul>
-                </div>
-                <div class="analysis-timestamp">
-                    <i class="fas fa-clock"></i>
-                    <span>تم التحليل في: ${new Date().toLocaleDateString('ar-EG')} - ${new Date().toLocaleTimeString('ar-EG')}</span>
-                </div>
-            </div>
+        document.getElementById("personalityTypeContent").innerHTML = `
+            <h2 style="color:${color}">${personality}</h2>
+            <p>${desc}</p>
         `;
 
-        const modal = document.getElementById('analysisModal');
-        modal.classList.add('active');
-
-        document.getElementById('closeModal').onclick = () => modal.classList.remove('active');
-        document.getElementById('saveReportBtn').onclick = () => savePDF(type, desc, insight);
-        document.getElementById('shareBtn').onclick = shareAnalysis;
-        modal.onclick = e => e.target === modal && modal.classList.remove('active');
+        // رسم بياني
+        const ctx = document.getElementById("resultChart").getContext("2d");
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: "radar",
+            data: {
+                labels: Object.keys(scores).map(k => t.domains[k] || k),
+                datasets: [{ label: t.domain_scores || "النتائج", data: Object.values(scores), backgroundColor: "rgba(52,152,219,0.2)", borderColor: "#3498db" }]
+            },
+            options: { scales: { r: { suggestedMin: 1, suggestedMax: 5 } } }
+        });
     }
 
-    async function savePDF(type, desc, insight) {
+    function displaySummary() {
+        const t = translations[currentLang]?.results || {};
+        let html = `<h2>${t.summary_intro || "ملخص"}</h2>`;
+        for (const [k, v] of Object.entries(window.categoryAverages)) {
+            html += `<p>${t.domains[k] || k}: ${v.toFixed(2)}/5</p>`;
+        }
+        document.getElementById("summaryContent").innerHTML = html;
+    }
+
+    function displayTheories() {
+        const t = translations[currentLang]?.results || {};
+        let html = `<h2>${t.theories_intro || "نظريات"}</h2>`;
+        html += Object.keys(window.categoryAverages).map(cat => {
+            const theory = analysisData?.[cat]?.MBTI;
+            if (!theory) return "";
+            const score = window.categoryAverages[cat];
+            const interp = score > 3 ? theory.high_score_interpretation : theory.low_score_interpretation;
+            return `<div class="theory-card"><h4>${theory.name}</h4><p>${interp}</p></div>`;
+        }).join("");
+        document.getElementById("theoriesContent").innerHTML = html;
+    }
+
+    function displayDetailed() {
+        const t = translations[currentLang]?.results || {};
+        let html = `<h2>${t.full_intro || "تحليل مفصل"}</h2>`;
+        for (const [k, v] of Object.entries(window.categoryAverages)) {
+            html += `<div class="result-card" style="border-left: 4px solid ${v > 3 ? "#2ecc71" : "#e74c3c"}"><p>${t.traits[k] || k}: ${v.toFixed(2)}/5</p></div>`;
+        }
+        document.getElementById("detailedAnalysisContent").innerHTML = html;
+    }
+
+    function displayRecommendations() {
+        const t = translations[currentLang]?.results || {};
+        const tips = Object.keys(window.categoryAverages).flatMap(cat => {
+            const theory = analysisData?.[cat]?.MBTI;
+            return theory ? theory.development_tips || [] : [];
+        });
+        const list = tips.length ? tips : [t.general_recommendation || "واصل التطور"];
+        document.getElementById("recommendationsContent").innerHTML = `<ul>${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
+    }
+
+    // --- 9. PDF ومشاركة ---
+    async function downloadPDF() {
         try {
             await loadJS('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
             const { jsPDF } = jspdf;
-            const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-            doc.setFont('Amiri');
-            doc.setFontSize(20);
-            doc.text('تقرير التحليل النفسي', 105, 30, { align: 'center' });
+            const doc = new jsPDF({ format: 'a4' });
             doc.setFontSize(16);
-            const titles = { vision: "الرؤية الداخلية", analysis: "التحليل العميق", healing: "الشفاء النفسي", revelation: "الكشف الصادق" };
-            doc.text(`نوع التحليل: ${titles[type]}`, 20, 50);
-            const date = new Date().toLocaleDateString('ar-EG');
-            doc.text(`التاريخ: ${date}`, 20, 65);
-            doc.setFontSize(14);
-            doc.text('التحليل:', 20, 85);
-            const lines1 = doc.splitTextToSize(desc, 170);
-            doc.text(lines1, 20, 95);
-            let y = 95 + (lines1.length * 8);
-            doc.text('الرؤية:', 20, y + 10);
-            const lines2 = doc.splitTextToSize(insight, 170);
-            doc.text(lines2, 20, y + 20);
-            doc.setFontSize(10);
-            doc.text('تقرير مُولد آليًا من نظام التحليل النفسي', 105, 280, { align: 'center' });
-            doc.save(`تحليل_${titles[type]}_${date.replace(/\//g, '-')}.pdf`);
-            showNotification('تم حفظ التقرير بنجاح!', 'success');
+            doc.text("تقرير شخصيتك", 105, 20, { align: 'center' });
+
+            doc.setFontSize(12);
+            doc.text(`النتيجة: ${document.getElementById("personalityTypeContent").innerText}`, 20, 40);
+            doc.text(`الملخص: ${document.getElementById("summaryContent").innerText}`, 20, 70);
+            doc.text(`التوصيات: ${document.getElementById("recommendationsContent").innerText}`, 20, 100);
+
+            doc.save(`تقرير_الشخصية_${new Date().toLocaleDateString()}.pdf`);
+            showNotification("تم الحفظ بنجاح", "success");
         } catch (e) {
-            showNotification('فشل في حفظ التقرير. تحقق من الاتصال.', 'error');
+            showNotification("فشل الحفظ", "error");
         }
     }
 
-    function loadJS(src) {
+    function shareResult() {
+        const text = "اكتشفت شخصيتي! جرب أنت كمان!";
+        if (navigator.share) {
+            navigator.share({ title: "تحليل شخصيتي", text, url: location.href });
+        } else {
+            navigator.clipboard.writeText(location.href).then(() => showNotification("تم النسخ", "info"));
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("session");
+        location.reload();
+    }
+
+    // --- 10. أدوات ---
+    async function loadJS(src) {
         return new Promise((res, rej) => {
             if (document.querySelector(`script[src="${src}"]`)) return res();
             const s = document.createElement('script');
-            s.src = src;
-            s.onload = res;
-            s.onerror = rej;
+            s.src = src; s.onload = res; s.onerror = rej;
             document.head.appendChild(s);
         });
-    }
-
-    function shareAnalysis() {
-        const url = window.location.href;
-        if (navigator.share) {
-            navigator.share({ title: 'تحليلي النفسي', text: 'اكتشفت شيئًا جديدًا عن نفسي!', url }).catch(() => copy(url));
-        } else {
-            copy(url);
-        }
-    }
-
-    function copy(url) {
-        navigator.clipboard.writeText(url).then(
-            () => showNotification('تم نسخ الرابط!', 'info'),
-            () => showNotification('تعذر النسخ. من فضلك انسخه يدويًا.', 'error')
-        );
     }
 
     function showNotification(msg, type = 'info') {
         const notif = document.createElement('div');
         notif.className = `notification notification-${type}`;
-        notif.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${msg}</span>
-                <button class="notification-close">&times;</button>
-            </div>
-        `;
+        notif.innerHTML = `<i class="fas fa-${type === 'error' ? 'times' : type === 'success' ? 'check' : 'info'}-circle"></i> ${msg}`;
         document.body.appendChild(notif);
-        notif.querySelector('.notification-close').addEventListener('click', () => notif.remove());
         setTimeout(() => notif.remove(), 3000);
     }
 
-    updateStats();
+    // --- 11. بدء التشغيل ---
+    initDevice();
+    await loadLanguage(currentLang);
+    applyTheme(localStorage.getItem("theme") || "light");
+    initThemeToggle();
+    applyAdSettings();
 
-    window.addEventListener('load', () => {
-        document.querySelectorAll('img').forEach(img => { img.loading = 'lazy'; });
-    });
+    // تحميل analysis_data.js
+    try {
+        const { default: data } = await import("./analysis_data.js");
+        analysisData = data;
+    } catch (e) {
+        console.error("فشل تحميل analysis_data.js", e);
+    }
 
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes glow { 0%,100% { box-shadow: 0 0 20px rgba(52,152,219,0.3); } 50% { box-shadow: 0 0 30px rgba(52,152,219,0.6); } }
-        .section-card:hover { animation: glow 2s infinite; }
-    `;
-    document.head.appendChild(style);
+    // تأخير تحميل شاشة التحميل
+    setTimeout(() => {
+        const screen = document.getElementById('loadingScreen');
+        if (screen) {
+            screen.style.opacity = '0';
+            setTimeout(() => screen.style.display = 'none', 500);
+        }
+    }, 1500);
+
+    logEvent("App initialized", { deviceId, lang: currentLang });
 });
