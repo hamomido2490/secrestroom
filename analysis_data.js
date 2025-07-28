@@ -1,735 +1,1003 @@
 // analysis_data.js - بيانات النظريات النفسية لتحليل نتائج الاختبار
 // الفئات:
-// - personality_types: نماذج تصنيف الشخصية (DISC, Enneagram, Keirsey, Colors)
-// - developmental: نظريات التطور النفسي والاجتماعي (Kohlberg, Vygotsky, Erikson)
-// - cognitive: النظريات المعرفية (Multiple Intelligences, Theory of Mind)
-// - therapeutic: النظريات العلاجية (REBT, Family Systems, IFS)
+// - personality_types: نماذج تصنيف الشخصية (DISC, Enneagram, Keirsey, Colors, Freud, Jung, Adler, Big Five, MBTI, Eysenck PEN)
+// - developmental: نظريات التطور النفسي والاجتماعي (Kohlberg, Vygotsky, Erikson, Maslow, Bandura)
+// - cognitive: النظريات المعرفية (Multiple Intelligences, Theory of Mind, Skinner)
+// - therapeutic: النظريات العلاجية (REBT, Family Systems, IFS, Rogers)
 // - wellness: النظريات المتعلقة بالرفاهية (Sleep)
-
 export const analysis_data = {
   personality_types: {
     disc: {
       id: "disc_001",
       category: "personality_types",
-      name: {
-        ar: "نموذج DISC (الهيمنة، التأثير، الثبات، الالتزام)",
-        en: "DISC Model (Dominance, Influence, Steadiness, Conscientiousness)",
-        fr: "Modèle DISC (Domination, Influence, Stabilité, Conformité)",
-        es: "Modelo DISC (Dominio, Influencia, Estabilidad, Cumplimiento)",
-        de: "DISC-Modell (Dominanz, Einfluss, Stabilität, Gewissenhaftigkeit)",
-        zh: "DISC模型（支配、影响、稳定、尽责）"
-      },
-      description: {
-        ar: "طُور نموذج DISC في الأربعينيات بواسطة وليام مولتون مارستون، ويصنف السلوكيات إلى أربعة أنماط: الهيمنة (التركيز على الإنجاز والسيطرة)، التأثير (التركيز على التفاعل الاجتماعي والإقناع)، الثبات (التركيز على التعاون والاستقرار)، والالتزام (التركيز على الدقة والتحليل). يُستخدم في تطوير القيادة، بناء الفرق، وتحسين التواصل في بيئات العمل.",
-        en: "Developed by William Moulton Marston in the 1940s, the DISC model classifies behaviors into four types: Dominance (focus on achievement and control), Influence (focus on social interaction and persuasion), Steadiness (focus on cooperation and stability), and Conscientiousness (focus on accuracy and analysis). Used in leadership development, team building, and workplace communication.",
-        fr: "Développé par William Moulton Marston dans les années 1940, le modèle DISC classe les comportements en quatre types : Domination (axée sur la réussite et le contrôle), Influence (axée sur l’interaction sociale et la persuasion), Stabilité (axée sur la coopération et la stabilité), et Conformité (axée sur la précision et l’analyse). Utilisé dans le développement du leadership, la construction d’équipes et la communication en milieu de travail.",
-        es: "Desarrollado por William Moulton Marston en la década de 1940, el modelo DISC clasifica los comportamientos en cuatro tipos: Dominio (enfoque en logros y control), Influencia (enfoque en la interacción social y la persuasión), Estabilidad (enfoque en la cooperación y la estabilidad) y Cumplimiento (enfoque en la precisión y el análisis). Utilizado en el desarrollo de liderazgo, la formación de equipos y la comunicación en el lugar de trabajo.",
-        de: "Das von William Moulton Marston in den 1940er Jahren entwickelte DISC-Modell klassifiziert Verhaltensweisen in vier Typen: Dominanz (Fokus auf Erfolg und Kontrolle), Einfluss (Fokus auf soziale Interaktion und Überzeugung), Stabilität (Fokus auf Zusammenarbeit und Stabilität) und Gewissenhaftigkeit (Fokus auf Genauigkeit und Analyse). Wird in der Führungskräfteentwicklung, im Teambuilding und in der Arbeitsplatzkombination verwendet.",
-        zh: "由威廉·莫尔顿·马斯顿在1940年代开发，DISC模型将行为分为四种类型：支配（专注于成就和控制）、影响（专注于社交互动和说服）、稳定（专注于合作和稳定性）和尽责（专注于准确性和分析）。用于领导力发展、团队建设和工作场所沟通。"
-      },
-      scientific_background: {
-        ar: "يستند النموذج إلى نظرية مارستون حول العواطف والسلوك (Marston, 1928)، ولكنه يفتقر إلى دعم تجريبي قوي مقارنة بنظريات السمات مثل Big Five. ومع ذلك، أثبتت دراسات (مثل Jones & Hartley, 2013) فعاليته في بيئات العمل.",
-        en: "Based on Marston’s theory of emotions and behavior (Marston, 1928), it lacks strong empirical support compared to trait theories like Big Five. However, studies (e.g., Jones & Hartley, 2013) have demonstrated its effectiveness in workplace settings.",
-        fr: "Basé sur la théorie de Marston sur les émotions et le comportement (Marston, 1928), il manque de soutien empirique fort par rapport aux théories des traits comme le Big Five. Cependant, des études (par exemple, Jones & Hartley, 2013) ont démontré son efficacité dans les environnements de travail.",
-        es: "Basado en la teoría de Marston sobre las emociones y el comportamiento (Marston, 1928), carece de un fuerte apoyo empírico en comparación con teorías de rasgos como Big Five. Sin embargo, estudios (por ejemplo, Jones & Hartley, 2013) han demostrado su efectividad en entornos laborales.",
-        de: "Basierend auf Marstons Theorie der Emotionen und des Verhaltens (Marston, 1928), fehlt es im Vergleich zu Trait-Theorien wie Big Five an starker empirischer Unterstützung. Studien (z. B. Jones & Hartley, 2013) haben jedoch seine Wirksamkeit in Arbeitsumgebungen nachgewiesen.",
-        zh: "基于马斯顿的情绪与行为理论（Marston, 1928），与Big Five等特质理论相比缺乏强有力的实证支持。然而，研究（例如Jones & Hartley, 2013）证明了其在工作场所的有效性。"
-      },
+      name: "نموذج DISC للشخصية",
+      description: "نموذج DISC هو أداة لتصنيف الشخصية طُورت في القرن العشرين بناءً على أعمال ويليام مولتون مارستون، وتركز على أربع سمات رئيسية: الهيمنة (Dominance)، التأثير (Influence)، الثبات (Steadiness)، والالتزام (Conscientiousness).",
+      scientific_background: "يفتقر نموذج DISC إلى دعم تجريبي قوي مقارنة بنماذج مثل Big Five، لكنه شائع في الإرشاد المهني والتدريب (Marston, 1928).",
       key_concepts: [
-        {
-          ar: "الهيمنة (D): التركيز على النتائج والتحديات.",
-          en: "Dominance (D): Focus on results and challenges.",
-          fr: "Domination (D) : Concentration sur les résultats et les défis.",
-          es: "Dominio (D): Enfoque en resultados y desafíos.",
-          de: "Dominanz (D): Fokus auf Ergebnisse und Herausforderungen.",
-          zh: "支配（D）：专注于结果和挑战。"
-        },
-        {
-          ar: "التأثير (I): التركيز على التفاعل الاجتماعي والإلهام.",
-          en: "Influence (I): Focus on social interaction and inspiration.",
-          fr: "Influence (I) : Concentration sur l’interaction sociale et l’inspiration.",
-          es: "Influencia (I): Enfoque en la interacción social y la inspiración.",
-          de: "Einfluss (I): Fokus auf soziale Interaktion und Inspiration.",
-          zh: "影响（I）：专注于社交互动和启发。"
-        },
-        {
-          ar: "الثبات (S): التركيز على التعاون والاستقرار.",
-          en: "Steadiness (S): Focus on cooperation and stability.",
-          fr: "Stabilité (S) : Concentration sur la coopération et la stabilité.",
-          es: "Estabilidad (S): Enfoque en la cooperación y la estabilidad.",
-          de: "Stabilität (S): Fokus auf Zusammenarbeit und Stabilität.",
-          zh: "稳定（S）：专注于合作和稳定性。"
-        },
-        {
-          ar: "الالتزام (C): التركيز على الدقة والجودة.",
-          en: "Conscientiousness (C): Focus on accuracy and quality.",
-          fr: "Conformité (C) : Concentration sur la précision et la qualité.",
-          es: "Cumplimiento (C): Enfoque en la precisión y la calidad.",
-          de: "Gewissenhaftigkeit (C): Fokus auf Genauigkeit und Qualität.",
-          zh: "尽责（C）：专注于准确性和质量。"
-        }
+        "الهيمنة: التركيز على الإنجاز والسيطرة.",
+        "التأثير: التركيز على التفاعل الاجتماعي والإقناع.",
+        "الثبات: التركيز على التعاون والاستقرار.",
+        "الالتزام: التركيز على الدقة والتحليل."
       ],
       strengths: [
-        {
-          ar: "سهولة الفهم والتطبيق في بيئات العمل.",
-          en: "Easy to understand and apply in workplace settings.",
-          fr: "Facile à comprendre et à appliquer dans les environnements de travail.",
-          es: "Fácil de entender y aplicar en entornos laborales.",
-          de: "Leicht verständlich und anwendbar in Arbeitsumgebungen.",
-          zh: "易于理解并应用于工作场所。"
-        },
-        {
-          ar: "تعزيز التواصل وبناء الفرق من خلال فهم الأنماط السلوكية.",
-          en: "Enhances communication and team building through understanding behavioral styles.",
-          fr: "Améliore la communication et la construction d’équipe grâce à la compréhension des styles comportementaux.",
-          es: "Mejora la comunicación y la formación de equipos mediante la comprensión de los estilos de comportamiento.",
-          de: "Fördert Kommunikation und Teambuilding durch das Verständnis von Verhaltensstilen.",
-          zh: "通过了解行为风格提升沟通和团队建设。"
-        },
-        {
-          ar: "مناسب للتطبيقات العملية مثل التدريب المهني.",
-          en: "Suitable for practical applications like professional training.",
-          fr: "Adapté aux applications pratiques comme la formation professionnelle.",
-          es: "Adecuado para aplicaciones prácticas como la formación profesional.",
-          de: "Geeignet für praktische Anwendungen wie berufliche Schulungen.",
-          zh: "适用于职业培训等实际应用。"
-        }
+        "سهل الاستخدام في بيئات العمل والتدريب.",
+        "يعزز فهم ديناميكيات الفريق."
       ],
       weaknesses: [
-        {
-          ar: "نقص الأدلة العلمية القوية مقارنة بنماذج مثل Big Five.",
-          en: "Lack of strong scientific evidence compared to models like Big Five.",
-          fr: "Manque de preuves scientifiques solides par rapport à des modèles comme le Big Five.",
-          es: "Falta de evidencia científica sólida en comparación con modelos como Big Five.",
-          de: "Mangel an starker wissenschaftlicher Evidenz im Vergleich zu Modellen wie Big Five.",
-          zh: "与Big Five等模型相比缺乏强有力的科学证据。"
-        },
-        {
-          ar: "التركيز على السلوك الملحوظ دون الدوافع الداخلية.",
-          en: "Focus on observable behavior rather than internal motivations.",
-          fr: "Concentration sur le comportement observable plutôt que sur les motivations internes.",
-          es: "Enfoque en el comportamiento observable en lugar de las motivaciones internas.",
-          de: "Fokus auf beobachtbares Verhalten statt auf innere Motivationen.",
-          zh: "专注于可观察的行为而非内在动机。"
-        },
-        {
-          ar: "قد لا يناسب التحليل العميق للشخصية.",
-          en: "May not be suitable for deep personality analysis.",
-          fr: "Peut ne pas convenir à une analyse approfondie de la personnalité.",
-          es: "Puede no ser adecuado para un análisis profundo de la personalidad.",
-          de: "Möglicherweise nicht geeignet für eine tiefgehende Persönlichkeitsanalyse.",
-          zh: "可能不适合深入的个性分析。"
-        }
+        "نقص الأدلة العلمية القوية.",
+        "التصنيف قد يُبسّط الشخصية بشكل مفرط."
       ],
-      high_score_interpretation: {
-        ar: "تشير درجاتك العالية إلى توافق مع نموذج DISC، مما يعني أنكِ تقدرين تصنيف السلوكيات وتستفيدين من فهم أنماطك السلوكية (مثل الهيمنة أو التأثير) في التفاعلات اليومية.",
-        en: "Your high scores indicate alignment with the DISC model, meaning you value behavioral classification and benefit from understanding your behavioral patterns (e.g., Dominance or Influence) in daily interactions.",
-        fr: "Vos scores élevés indiquent un alignement avec le modèle DISC, ce qui signifie que vous appréciez la classification des comportements et tirez parti de la compréhension de vos schémas comportementaux (par exemple, Domination ou Influence) dans les interactions quotidiennes.",
-        es: "Tus altas puntuaciones indican alineación con el modelo DISC, lo que significa que valoras la clasificación de comportamientos y te beneficias de entender tus patrones de comportamiento (por ejemplo, Dominio o Influencia) en las interacciones diarias.",
-        de: "Deine hohen Punktzahlen deuten auf eine Übereinstimmung mit dem DISC-Modell hin, was bedeutet, dass du die Klassifizierung von Verhaltensweisen schätzt und von der Einsicht in deine Verhaltensmuster (z. B. Dominanz oder Einfluss) in täglichen Interaktionen profitierst.",
-        zh: "你的高分表明你与DISC模型一致，这意味着你重视行为分类，并从了解你的行为模式（例如支配或影响）在日常互动中受益。"
-      },
-      low_score_interpretation: {
-        ar: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الأكثر تعقيدًا للشخصية أو التركيز على الدوافع الداخلية بدلاً من السلوكيات الملحوظة.",
-        en: "Your low scores suggest a preference for more complex personality interpretations or a focus on internal motivations rather than observable behaviors.",
-        fr: "Vos scores faibles suggèrent une préférence pour des interprétations de la personnalité plus complexes ou un accent sur les motivations internes plutôt que sur les comportements observables.",
-        es: "Tus bajas puntuaciones sugieren una preferencia por interpretaciones de la personalidad más complejas o un enfoque en las motivaciones internas en lugar de los comportamientos observables.",
-        de: "Deine niedrigen Punktzahlen deuten auf eine Vorliebe für komplexere Persönlichkeitsinterpretationen oder einen Fokus auf innere Motivationen statt auf beobachtbare Verhaltensweisen hin.",
-        zh: "你的低分表明你更倾向于更复杂的个性解读或专注于内在动机而非可观察的行为。"
-      },
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج DISC، مما يعني أنك تقدر تصنيفات السلوك في بيئات العمل والتفاعل الاجتماعي.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو الأكثر تعقيدًا للشخصية.",
       high_score_traits: [
-        {
-          ar: "وضوح السلوك",
-          en: "Behavioral clarity",
-          fr: "Clarté comportementale",
-          es: "Claridad conductual",
-          de: "Verhaltensklarheit",
-          zh: "行为清晰"
-        },
-        {
-          ar: "القدرة على التكيف مع الأنماط",
-          en: "Adaptability to patterns",
-          fr: "Adaptabilité aux schémas",
-          es: "Adaptabilidad a los patrones",
-          de: "Anpassungsfähigkeit an Muster",
-          zh: "对模式的适应能力"
-        },
-        {
-          ar: "مهارات التواصل",
-          en: "Communication skills",
-          fr: "Compétences en communication",
-          es: "Habilidades de comunicación",
-          de: "Kommunikationsfähigkeiten",
-          zh: "沟通技能"
-        }
+        "الوعي بالسلوكيات في بيئات العمل",
+        "مهارات التواصل الاجتماعي"
       ],
       low_score_traits: [
-        {
-          ar: "التركيز على الدوافع الداخلية",
-          en: "Focus on internal motivations",
-          fr: "Concentration sur les motivations internes",
-          es: "Enfoque en las motivaciones internas",
-          de: "Fokus auf innere Motivationen",
-          zh: "专注于内在动机"
-        },
-        {
-          ar: "الشك في التصنيفات السلوكية",
-          en: "Skepticism of behavioral classifications",
-          fr: "Scepticisme envers les classifications comportementales",
-          es: "Escepticismo hacia las clasificaciones conductuales",
-          de: "Skepsis gegenüber Verhaltensklassifikationen",
-          zh: "对行为分类的怀疑"
-        }
+        "التركيز على الدوافع العميقة",
+        "الشك في التصنيفات السلوكية"
       ],
       development_tips: [
-        {
-          ar: "خذي تقييم DISC رسميًا لتحديد نمطك السلوكي الرئيسي.",
-          en: "Take a formal DISC assessment to identify your primary behavioral style.",
-          fr: "Passez une évaluation DISC officielle pour identifier votre style comportemental principal.",
-          es: "Realiza una evaluación DISC formal para identificar tu estilo conductual principal.",
-          de: "Führe eine formale DISC-Bewertung durch, um deinen primären Verhaltensstil zu identifizieren.",
-          zh: "进行正式的DISC评估以确定你的主要行为风格。"
-        },
-        {
-          ar: "استخدمي فهمك لأنماط DISC لتحسين التواصل مع الزملاء أو الأصدقاء.",
-          en: "Use your understanding of DISC patterns to improve communication with colleagues or friends.",
-          fr: "Utilisez votre compréhension des schémas DISC pour améliorer la communication avec vos collègues ou amis.",
-          es: "Utiliza tu comprensión de los patrones DISC para mejorar la comunicación con colegas o amigos.",
-          de: "Nutze dein Verständnis der DISC-Muster, um die Kommunikation mit Kollegen oder Freunden zu verbessern.",
-          zh: "利用你对DISC模式的理解来改善与同事或朋友的沟通。"
-        },
-        {
-          ar: "اقرئي كتاب 'Emotions of Normal People' لمارستون لفهم الأسس النظرية.",
-          en: "Read Marston’s 'Emotions of Normal People' to understand the theoretical foundations.",
-          fr: "Lisez 'Emotions of Normal People' de Marston pour comprendre les fondements théoriques.",
-          es: "Lee 'Emotions of Normal People' de Marston para comprender los fundamentos teóricos.",
-          de: "Lies Marstons 'Emotions of Normal People', um die theoretischen Grundlagen zu verstehen.",
-          zh: "阅读马斯顿的《正常人的情感》以了解理论基础。"
-        }
+        "خذ تقييم DISC لتحديد نمط سلوكك الرئيسي.",
+        "استخدم فهمك لـ DISC لتحسين التواصل في الفرق."
       ],
       case_studies: [
-        {
-          ar: "استخدام DISC في تدريب فرق المبيعات لتحسين التواصل مع العملاء.",
-          en: "Using DISC in sales team training to improve customer communication.",
-          fr: "Utilisation de DISC dans la formation des équipes de vente pour améliorer la communication avec les clients.",
-          es: "Uso de DISC en la formación de equipos de ventas para mejorar la comunicación con los clientes.",
-          de: "Verwendung von DISC im Vertriebsteam-Training zur Verbesserung der Kundenkommunikation.",
-          zh: "在销售团队培训中使用DISC以改善客户沟通。"
-        },
-        {
-          ar: "تطبيق النموذج في حل النزاعات داخل الفرق من خلال فهم الأنماط السلوكية.",
-          en: "Applying the model to resolve team conflicts through understanding behavioral styles.",
-          fr: "Application du modèle pour résoudre les conflits d’équipe grâce à la compréhension des styles comportementaux.",
-          es: "Aplicación del modelo para resolver conflictos de equipo mediante la comprensión de los estilos de comportamiento.",
-          de: "Anwendung des Modells zur Lösung von Teamkonflikten durch Verständnis der Verhaltensstile.",
-          zh: "通过了解行为风格应用模型来解决团队冲突。"
-        }
+        "استخدام نموذج DISC في بناء الفرق لتحسين التعاون في بيئات العمل."
       ],
-      cultural_considerations: {
-        ar: "قد يحتاج إلى تعديلات في الثقافات الجماعية التي تركز على التعاون أكثر من الهيمنة أو التأثير الفردي.",
-        en: "May require adjustments in collectivist cultures that prioritize cooperation over individual dominance or influence.",
-        fr: "Peut nécessiter des ajustements dans les cultures collectivistes qui privilégient la coopération à la domination ou à l’influence individuelle.",
-        es: "Puede requerir ajustes en culturas colectivistas que priorizan la cooperación sobre el dominio o la influencia individual.",
-        de: "Kann Anpassungen in kollektivistischen Kulturen erfordern, die Zusammenarbeit über individuelle Dominanz oder Einfluss priorisieren.",
-        zh: "在重视合作而非个人支配或影响的集体主义文化中可能需要调整。"
-      },
-      modern_relevance: {
-        ar: "يُستخدم على نطاق واسع في التطوير المهني، بناء الفرق، وبرامج القيادة.",
-        en: "Widely used in professional development, team building, and leadership programs.",
-        fr: "Largement utilisé dans le développement professionnel, la construction d’équipe et les programmes de leadership.",
-        es: "Ampliamente utilizado en el desarrollo profesional, la formación de equipos y los programas de liderazgo.",
-        de: "Weit verbreitet in der beruflichen Entwicklung, im Teambuilding und in Führungsprogrammen.",
-        zh: "广泛用于职业发展、团队建设和领导力项目。"
-      },
-      related_domains: ["team_dynamics", "communication", "leadership"],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي لا تفضل التصنيفات السلوكية الواضحة.",
+      modern_relevance: "يُستخدم في الإرشاد المهني، تدريب الفرق، وتحسين التواصل في بيئات العمل.",
+      related_domains: ["career_counseling", "team_building", "workplace_dynamics"],
       references: [
-        {
-          ar: "Marston, W. M. (1928). عواطف الناس العاديين. لندن: Kegan Paul.",
-          en: "Marston, W. M. (1928). Emotions of Normal People. London: Kegan Paul."
-        },
-        {
-          ar: "Jones, C., & Hartley, N. (2013). فعالية نموذج DISC في بيئات العمل. Journal of Workplace Behavioral Analysis.",
-          en: "Jones, C., & Hartley, N. (2013). Effectiveness of the DISC Model in Workplace Settings. Journal of Workplace Behavioral Analysis."
-        }
+        "Marston, W. M. (1928). عواطف الأشخاص العاديين. نيويورك: Harcourt, Brace & Company."
       ]
     },
     enneagram: {
       id: "enneagram_002",
       category: "personality_types",
-      name: {
-        ar: "نموذج الإنياغرام (Enneagram)",
-        en: "Enneagram Model",
-        fr: "Modèle de l’Ennéagramme",
-        es: "Modelo del Eneagrama",
-        de: "Enneagramm-Modell",
-        zh: "九型人格模型"
-      },
-      description: {
-        ar: "نموذج الإنياغرام هو نظام تصنيف شخصي يُرجع أصله إلى أعمال جورج غوردجييف وتم تطويره لاحقًا بواسطة أوسكار إيكازو وكلاوديو نارانجو في القرن العشرين. يصنف الأفراد إلى تسعة أنواع شخصية (مثل المصلح، المساعد، المنجز) بناءً على الدوافع الأساسية والمخاوف. يُستخدم في التطوير الشخصي والروحي.",
-        en: "The Enneagram is a personality classification system originating from the work of George Gurdjieff and later developed by Oscar Ichazo and Claudio Naranjo in the 20th century. It categorizes individuals into nine personality types (e.g., Reformer, Helper, Achiever) based on core motivations and fears. Used in personal and spiritual development.",
-        fr: "L’Ennéagramme est un système de classification de la personnalité issu des travaux de George Gurdjieff et développé par Oscar Ichazo et Claudio Naranjo au 20e siècle. Il catégorise les individus en neuf types de personnalité (par exemple, Réformateur, Aide, Réalisateur) en fonction des motivations et des peurs fondamentales. Utilisé dans le développement personnel et spirituel.",
-        es: "El Eneagrama es un sistema de clasificación de la personalidad que proviene de los trabajos de George Gurdjieff y fue desarrollado posteriormente por Oscar Ichazo y Claudio Naranjo en el siglo XX. Clasifica a los individuos en nueve tipos de personalidad (por ejemplo, Reformador, Ayudante, Triunfador) según las motivaciones y miedos fundamentales. Utilizado en el desarrollo personal y espiritual.",
-        de: "Das Enneagramm ist ein Persönlichkeitsklassifikationssystem, das auf die Arbeiten von George Gurdjieff zurückgeht und später im 20. Jahrhundert von Oscar Ichazo und Claudio Naranjo entwickelt wurde. Es kategorisiert Individuen in neun Persönlichkeitstypen (z. B. Reformer, Helfer, Erfolgstyp) basierend auf Kernmotivationen und Ängsten. Wird in der persönlichen und spirituellen Entwicklung verwendet.",
-        zh: "九型人格是一个起源于乔治·古尔杰夫的工作，并于20世纪由奥斯卡·伊查佐和克劳迪奥·纳兰霍开发的个性分类系统。它根据核心动机和恐惧将个体分为九种人格类型（例如改革者、助人者、成就者）。用于个人和精神发展。"
-      },
-      scientific_background: {
-        ar: "يفتقر الإنياغرام إلى دعم تجريبي قوي، لكنه يعتمد على ملاحظات نفسية وروحية. دراسات محدودة (مثل Wagner, 1981) أشارت إلى فعاليته في التطوير الشخصي، لكنه يُعتبر أقل علمية من Big Five أو MBTI.",
-        en: "The Enneagram lacks strong empirical support but relies on psychological and spiritual observations. Limited studies (e.g., Wagner, 1981) suggest its effectiveness in personal development, though it is considered less scientific than Big Five or MBTI.",
-        fr: "L’Ennéagramme manque de soutien empirique fort, mais repose sur des observations psychologiques et spirituelles. Des études limitées (par exemple, Wagner, 1981) suggèrent son efficacité dans le développement personnel, bien qu’il soit considéré comme moins scientifique que le Big Five ou le MBTI.",
-        es: "El Eneagrama carece de un fuerte apoyo empírico, pero se basa en observaciones psicológicas y espirituales. Estudios limitados (por ejemplo, Wagner, 1981) sugieren su efectividad en el desarrollo personal, aunque se considera menos científico que Big Five o MBTI.",
-        de: "Das Enneagramm fehlt an starker empirischer Unterstützung, stützt sich aber auf psychologische und spirituelle Beobachtungen. Begrenzte Studien (z. B. Wagner, 1981) deuten auf seine Wirksamkeit in der persönlichen Entwicklung hin, obwohl es als weniger wissenschaftlich als Big Five oder MBTI gilt.",
-        zh: "九型人格缺乏强有力的实证支持，但依赖于心理和精神观察。有限的研究（例如Wagner, 1981）表明其在个人发展中的有效性，尽管它被认为不如Big Five或MBTI科学。"
-      },
+      name: "نموذج الإنياجرام للشخصية",
+      description: "نموذج الإنياجرام هو نظام لتصنيف الشخصية يحدد تسعة أنواع رئيسية للشخصية، كل نوع يتميز بدوافع ومخاوف أساسية. يُستخدم لفهم السلوك والنمو الشخصي.",
+      scientific_background: "يفتقر الإنياجرام إلى دعم تجريبي قوي، لكنه شائع في التطوير الشخصي والروحانيات (Riso & Hudson, 1996).",
       key_concepts: [
-        {
-          ar: "التسعة أنواع: المصلح، المساعد، المنجز، الفردي، المحقق، الموالي، المتحمس، المتحدي، صانع السلام.",
-          en: "Nine Types: Reformer, Helper, Achiever, Individualist, Investigator, Loyalist, Enthusiast, Challenger, Peacemaker.",
-          fr: "Neuf types : Réformateur, Aide, Réalisateur, Individualiste, Enquêteur, Loyaliste, Enthousiaste, Challenger, Pacificateur.",
-          es: "Nueve tipos: Reformador, Ayudante, Triunfador, Individualista, Investigador, Leal, Entusiasta, Desafiante, Pacificador.",
-          de: "Neun Typen: Reformer, Helfer, Erfolgstyp, Individualist, Forscher, Loyalist, Enthusiast, Herausforderer, Friedensstifter.",
-          zh: "九种类型：改革者、助人者、成就者、个人主义者、研究者、忠诚者、热情者、挑战者、和平使者。"
-        },
-        {
-          ar: "الدوافع الأساسية: كل نوع يحركه دافع وخوف أساسي.",
-          en: "Core Motivations: Each type is driven by a core motivation and fear.",
-          fr: "Motivations fondamentales : Chaque type est motivé par une motivation et une peur fondamentale.",
-          es: "Motivaciones fundamentales: Cada tipo está impulsado por una motivación y un miedo fundamental.",
-          de: "Kernmotivationen: Jeder Typ wird von einer Kernmotivation und Angst angetrieben.",
-          zh: "核心动机：每种类型都由核心动机和恐惧驱动。"
-        },
-        {
-          ar: "الأجنحة والمستويات: التفاعل بين الأنواع ومستويات النمو.",
-          en: "Wings and Levels: Interaction between types and levels of development.",
-          fr: "Ailes et niveaux : Interaction entre les types et les niveaux de développement.",
-          es: "Alas y niveles: Interacción entre tipos y niveles de desarrollo.",
-          de: "Flügel und Ebenen: Interaktion zwischen Typen und Entwicklungsstufen.",
-          zh: "侧翼和层次：类型与发展层次的互动。"
-        }
+        "التسعة أنواع: كل نوع له دوافع ومخاوف مميزة (مثل المصلح، المساعد، المنجز).",
+        "الأجنحة: التأثيرات من الأنواع المجاورة للنوع الرئيسي."
       ],
       strengths: [
-        {
-          ar: "تقديم رؤى عميقة حول الدوافع والمخاوف الشخصية.",
-          en: "Provides deep insights into personal motivations and fears.",
-          fr: "Offre des perspectives profondes sur les motivations et les peurs personnelles.",
-          es: "Proporciona perspectivas profundas sobre las motivaciones y los miedos personales.",
-          de: "Bietet tiefe Einblicke in persönliche Motivationen und Ängste.",
-          zh: "提供对个人动机和恐惧的深刻见解。"
-        },
-        {
-          ar: "تطبيقات في التطوير الشخصي والروحي.",
-          en: "Applications in personal and spiritual development.",
-          fr: "Applications dans le développement personnel et spirituel.",
-          es: "Aplicaciones en el desarrollo personal y espiritual.",
-          de: "Anwendungen in der persönlichen und spirituellen Entwicklung.",
-          zh: "在个人和精神发展中的应用。"
-        }
+        "تقديم رؤى عميقة حول الدوافع الشخصية.",
+        "تطبيقات في النمو الشخصي والعلاقات."
       ],
       weaknesses: [
-        {
-          ar: "نقص الأدلة العلمية القوية.",
-          en: "Lack of strong scientific evidence.",
-          fr: "Manque de preuves scientifiques solides.",
-          es: "Falta de evidencia científica sólida.",
-          de: "Mangel an starker wissenschaftlicher Evidenz.",
-          zh: "缺乏强有力的科学证据。"
-        },
-        {
-          ar: "التعقيد في تحديد النوع بدقة.",
-          en: "Complexity in accurately identifying the type.",
-          fr: "Complexité à identifier précisément le type.",
-          es: "Complejidad para identificar con precisión el tipo.",
-          de: "Komplexität bei der genauen Identifizierung des Typs.",
-          zh: "准确识别类型的复杂性。"
-        }
+        "نقص الأدلة العلمية القوية.",
+        "التعقيد في تحديد النوع بدقة."
       ],
-      high_score_interpretation: {
-        ar: "تشير درجاتك العالية إلى توافق مع نموذج الإنياغرام، مع اهتمام بالدوافع العميقة والنمو الشخصي.",
-        en: "Your high scores indicate alignment with the Enneagram model, with a focus on deep motivations and personal growth.",
-        fr: "Vos scores élevés indiquent un alignement avec le modèle de l’Ennéagramme, avec un accent sur les motivations profondes et la croissance personnelle.",
-        es: "Tus altas puntuaciones indican alineación con el modelo del Eneagrama, con un enfoque en las motivaciones profundas y el crecimiento personal.",
-        de: "Deine hohen Punktzahlen deuten auf eine Übereinstimmung mit dem Enneagramm-Modell hin, mit einem Fokus auf tiefe Motivationen und persönliches Wachstum.",
-        zh: "你的高分表明你与九型人格模型一致，注重深层动机和个人成长。"
-      },
-      low_score_interpretation: {
-        ar: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو السلوكية بدلاً من الدوافع الروحية.",
-        en: "Your low scores suggest a preference for scientific or behavioral interpretations over spiritual motivations.",
-        fr: "Vos scores faibles suggèrent une préférence pour des interprétations scientifiques ou comportementales plutôt que des motivations spirituelles.",
-        es: "Tus bajas puntuaciones sugieren una preferencia por interpretaciones científicas o conductuales en lugar de motivaciones espirituales.",
-        de: "Deine niedrigen Punktzahlen deuten auf eine Vorliebe für wissenschaftliche oder verhaltensbasierte Interpretationen statt spiritueller Motivationen hin.",
-        zh: "你的低分表明你更倾向于科学或行为解读而非精神动机。"
-      },
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع الإنياجرام، مما يعني أنك تقدر فهم الدوافع والمخاوف الشخصية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو البسيطة للشخصية.",
       high_score_traits: [
-        {
-          ar: "الوعي بالدوافع",
-          en: "Awareness of motivations",
-          fr: "Conscience des motivations",
-          es: "Conciencia de las motivaciones",
-          de: "Bewusstsein für Motivationen",
-          zh: "动机意识"
-        },
-        {
-          ar: "النمو الشخصي",
-          en: "Personal growth",
-          fr: "Croissance personnelle",
-          es: "Crecimiento personal",
-          de: "Persönliches Wachstum",
-          zh: "个人成长"
-        },
-        {
-          ar: "التفكير الروحي",
-          en: "Spiritual thinking",
-          fr: "Pensée spirituelle",
-          es: "Pensamiento espiritual",
-          de: "Spirituelles Denken",
-          zh: "精神思考"
-        }
+        "الوعي بالدوافع الشخصية",
+        "الرغبة في النمو الذاتي"
       ],
       low_score_traits: [
-        {
-          ar: "التركيز على السلوك الملحوظ",
-          en: "Focus on observable behavior",
-          fr: "Concentration sur le comportement observable",
-          es: "Enfoque en el comportamiento observable",
-          de: "Fokus auf beobachtbares Verhalten",
-          zh: "专注于可观察的行为"
-        },
-        {
-          ar: "الشك في التصنيفات الروحية",
-          en: "Skepticism of spiritual classifications",
-          fr: "Scepticisme envers les classifications spirituelles",
-          es: "Escepticismo hacia las clasificaciones espirituales",
-          de: "Skepsis gegenüber spirituellen Klassifikationen",
-          zh: "对精神分类的怀疑"
-        }
+        "التركيز على السلوكيات الملحوظة",
+        "الشك في التصنيفات الروحانية"
       ],
       development_tips: [
-        {
-          ar: "خذي تقييم الإنياغرام لتحديد نوعك وفهم دوافعك الأساسية.",
-          en: "Take an Enneagram assessment to identify your type and understand your core motivations.",
-          fr: "Passez une évaluation de l’Ennéagramme pour identifier votre type et comprendre vos motivations fondamentales.",
-          es: "Realiza una evaluación del Eneagrama para identificar tu tipo y comprender tus motivaciones fundamentales.",
-          de: "Führe eine Enneagramm-Bewertung durch, um deinen Typ zu identifizieren und deine Kernmotivationen zu verstehen.",
-          zh: "进行九型人格评估以确定你的类型并了解你的核心动机。"
-        },
-        {
-          ar: "استخدمي الإنياغرام لتحديد مجالات النمو الشخصي وتطويرها.",
-          en: "Use the Enneagram to identify and develop areas of personal growth.",
-          fr: "Utilisez l’Ennéagramme pour identifier et développer des domaines de croissance personnelle.",
-          es: "Utiliza el Eneagrama para identificar y desarrollar áreas de crecimiento personal.",
-          de: "Nutze das Enneagramm, um Bereiche des persönlichen Wachstums zu identifizieren und zu entwickeln.",
-          zh: "使用九型人格来识别和发展个人成长领域。"
-        },
-        {
-          ar: "اقرئي كتاب 'The Wisdom of the Enneagram' لدون ريسو وراس هودسون.",
-          en: "Read 'The Wisdom of the Enneagram' by Don Riso and Russ Hudson.",
-          fr: "Lisez 'The Wisdom of the Enneagram' de Don Riso et Russ Hudson.",
-          es: "Lee 'The Wisdom of the Enneagram' de Don Riso y Russ Hudson.",
-          de: "Lies 'The Wisdom of the Enneagram' von Don Riso und Russ Hudson.",
-          zh: "阅读唐·里索和拉斯·哈德森的《九型人格的智慧》。"
-        }
+        "اقرأ كتاب 'The Wisdom of the Enneagram' لريزو وهدسون لفهم الأنواع.",
+        "حدد نوعك في الإنياجرام مع مختص لتحسين وعيك الذاتي."
       ],
       case_studies: [
-        {
-          ar: "استخدام الإنياغرام في برامج التطوير الشخصي لتعزيز الوعي الذاتي.",
-          en: "Using the Enneagram in personal development programs to enhance self-awareness.",
-          fr: "Utilisation de l’Ennéagramme dans les programmes de développement personnel pour renforcer la conscience de soi.",
-          es: "Uso del Eneagrama en programas de desarrollo personal para mejorar la autoconciencia.",
-          de: "Verwendung des Enneagramms in Persönlichkeitsentwicklungsprogrammen zur Förderung der Selbstwahrnehmung.",
-          zh: "在个人发展项目中使用九型人格以增强自我意识。"
-        },
-        {
-          ar: "تطبيق النموذج في العلاج النفسي لفهم الدوافع العميقة.",
-          en: "Applying the model in psychotherapy to understand deep motivations.",
-          fr: "Application du modèle en psychothérapie pour comprendre les motivations profondes.",
-          es: "Aplicación del modelo en psicoterapia para comprender motivaciones profundas.",
-          de: "Anwendung des Modells in der Psychotherapie zur Erfassung tiefer Motivationen.",
-          zh: "在心理治疗中应用该模型以了解深层动机。"
-        }
+        "استخدام الإنياجرام في التطوير الشخصي لفهم الدوافع والمخاوف."
       ],
-      cultural_considerations: {
-        ar: "يناسب الثقافات التي تقدر التأمل الذاتي والروحانيات، وقد يحتاج إلى تعديلات في الثقافات العملية.",
-        en: "Suitable for cultures valuing self-reflection and spirituality, but may require adjustments in practical cultures.",
-        fr: "Convient aux cultures valorisant l’auto-réflexion et la spiritualité, mais peut nécessiter des ajustements dans les cultures pratiques.",
-        es: "Adecuado para culturas que valoran la autorreflexión y la espiritualidad, pero puede requerir ajustes en culturas prácticas.",
-        de: "Geeignet für Kulturen, die Selbstreflexion und Spiritualität schätzen, kann jedoch in praktischen Kulturen Anpassungen erfordern.",
-        zh: "适合重视自我反思和精神性的文化，但在实用文化中可能需要调整。"
-      },
-      modern_relevance: {
-        ar: "يُستخدم في التطوير الشخصي، الإرشاد الروحي، والعلاج النفسي.",
-        en: "Used in personal development, spiritual coaching, and psychotherapy.",
-        fr: "Utilisé dans le développement personnel, le coaching spirituel et la psychothérapie.",
-        es: "Utilizado en el desarrollo personal, el coaching espiritual y la psicoterapia.",
-        de: "Wird in der persönlichen Entwicklung, im spirituellen Coaching und in der Psychotherapie verwendet.",
-        zh: "用于个人发展、精神指导和心理治疗。"
-      },
-      related_domains: ["self_discovery", "growth", "spirituality"],
+      cultural_considerations: "يناسب الثقافات التي تقدر النمو الذاتي، لكنه قد يحتاج إلى تعديلات في الثقافات العملية.",
+      modern_relevance: "يُستخدم في التطوير الشخصي، الإرشاد، والروحانيات.",
+      related_domains: ["self_discovery", "spirituality", "counseling"],
       references: [
-        {
-          ar: "Riso, D. R., & Hudson, R. (1999). حكمة الإنياغرام. نيويورك: Bantam Books.",
-          en: "Riso, D. R., & Hudson, R. (1999). The Wisdom of the Enneagram. New York: Bantam Books."
-        }
+        "Riso, D. R., & Hudson, R. (1996). حكمة الإنياجرام. نيويورك: Bantam Books."
       ]
     },
     keirsey: {
       id: "keirsey_003",
       category: "personality_types",
-      name: {
-        ar: "نموذج كيرسي للطباع (Keirsey Temperament Sorter)",
-        en: "Keirsey Temperament Sorter",
-        fr: "Sorteuse de Tempérament de Keirsey",
-        es: "Clasificador de Temperamentos de Keirsey",
-        de: "Keirsey Temperament Sorter",
-        zh: "凯尔西气质分类"
-      },
-      description: {
-        ar: "طوّر ديفيد كيرسي نموذج الطباع في السبعينيات استنادًا إلى MBTI، لكنه يركز على أربعة طباع رئيسية: الحرفي، الحامي، المثالي، والعقلاني. يُستخدم في فهم الأنماط السلوكية وتحسين العلاقات الشخصية والمهنية.",
-        en: "Developed by David Keirsey in the 1970s based on MBTI, it focuses on four main temperaments: Artisan, Guardian, Idealist, and Rational. Used to understand behavioral patterns and improve personal and professional relationships.",
-        fr: "Développé par David Keirsey dans les années 1970 sur la base du MBTI, il se concentre sur quatre tempéraments principaux : Artisan, Gardien, Idéaliste et Rationnel. Utilisé pour comprendre les schémas comportementaux et améliorer les relations personnelles et professionnelles.",
-        es: "Desarrollado por David Keirsey en la década de 1970 basado en el MBTI, se centra en cuatro temperamentos principales: Artesano, Guardián, Idealista y Racional. Utilizado para comprender patrones de comportamiento y mejorar las relaciones personales y profesionales.",
-        de: "Entwickelt von David Keirsey in den 1970er Jahren auf Basis des MBTI, konzentriert es sich auf vier Haupttemperamente: Handwerker, Wächter, Idealist und Rational. Wird verwendet, um Verhaltensmuster zu verstehen und persönliche sowie berufliche Beziehungen zu verbessern.",
-        zh: "由大卫·凯尔西在1970年代基于MBTI开发，专注于四种主要气质：工匠、守护者、理想主义者和理性主义者。用于理解行为模式并改善个人和职业关系。"
-      },
-      scientific_background: {
-        ar: "يستند إلى أعمال يونغ وMBTI، لكنه يفتقر إلى دعم تجريبي قوي (Keirsey, 1987). يُعتبر أداة عملية وليست علمية بحتة.",
-        en: "Based on Jung’s work and MBTI, it lacks strong empirical support (Keirsey, 1987). Considered a practical rather than purely scientific tool.",
-        fr: "Basé sur les travaux de Jung et le MBTI, il manque de soutien empirique fort (Keirsey, 1987). Considéré comme un outil pratique plutôt que purement scientifique.",
-        es: "Basado en el trabajo de Jung y el MBTI, carece de un fuerte apoyo empírico (Keirsey, 1987). Considerado una herramienta práctica más que puramente científica.",
-        de: "Basierend auf Jungs Arbeiten und dem MBTI, fehlt es an starker empirischer Unterstützung (Keirsey, 1987). Wird als praktisches, nicht rein wissenschaftliches Werkzeug betrachtet.",
-        zh: "基于荣格的工作和MBTI，缺乏强有力的实证支持（Keirsey, 1987）。被视为实用工具而非纯科学工具。"
-      },
+      name: "نموذج كيرسي للمزاج",
+      description: "طوّر ديفيد كيرسي نموذج المزاج في القرن العشرين، ويصنف الأفراد إلى أربعة مزاجات (الحرفي، الحارس، المثالي، العقلاني) بناءً على MBTI.",
+      scientific_background: "يعتمد نموذج كيرسي على MBTI، وبالتالي يفتقر إلى دعم تجريبي قوي، لكنه شائع في الإرشاد (Keirsey, 1998).",
       key_concepts: [
-        {
-          ar: "الطباع الأربعة: الحرفي (SP)، الحامي (SJ)، المثالي (NF)، العقلاني (NT).",
-          en: "Four Temperaments: Artisan (SP), Guardian (SJ), Idealist (NF), Rational (NT).",
-          fr: "Quatre tempéraments : Artisan (SP), Gardien (SJ), Idéaliste (NF), Rationnel (NT).",
-          es: "Cuatro temperamentos: Artesano (SP), Guardián (SJ), Idealista (NF), Racional (NT).",
-          de: "Vier Temperamente: Handwerker (SP), Wächter (SJ), Idealist (NF), Rational (NT).",
-          zh: "四种气质：工匠（SP）、守护者（SJ）、理想主义者（NF）、理性主义者（NT）。"
-        },
-        {
-          ar: "السلوكيات الملحوظة: التركيز على الأنماط السلوكية بدلاً من الدوافع الداخلية.",
-          en: "Observable Behaviors: Focus on behavioral patterns rather than internal motivations.",
-          fr: "Comportements observables : Concentration sur les schémas comportementaux plutôt que sur les motivations internes.",
-          es: "Comportamientos observables: Enfoque en patrones de comportamiento en lugar de motivaciones internas.",
-          de: "Beobachtbare Verhaltensweisen: Fokus auf Verhaltensmuster statt auf innere Motivationen.",
-          zh: "可观察行为：专注于行为模式而非内在动机。"
-        }
+        "المزاجات الأربعة: الحرفي (SP)، الحارس (SJ)، المثالي (NF)، العقلاني (NT).",
+        "السلوكيات المميزة: كل مزاج له تفضيلات وسلوكيات معينة."
       ],
       strengths: [
-        {
-          ar: "بساطة التصنيف وسهولة التطبيق.",
-          en: "Simplicity of classification and ease of application.",
-          fr: "Simplicité de la classification et facilité d’application.",
-          es: "Simplicidad de la clasificación y facilidad de aplicación.",
-          de: "Einfachheit der Klassifikation und Anwendungsfreundlichkeit.",
-          zh: "分类的简单性和应用的便捷性。"
-        },
-        {
-          ar: "تطبيقات في التطوير المهني وبناء الفرق.",
-          en: "Applications in professional development and team building.",
-          fr: "Applications dans le développement professionnel et la construction d’équipe.",
-          es: "Aplicaciones en el desarrollo profesional y la formación de equipos.",
-          de: "Anwendungen in der beruflichen Entwicklung und im Teambuilding.",
-          zh: "在职业发展和团队建设中的应用。"
-        }
+        "سهل الفهم ويربط بين MBTI والسلوكيات اليومية.",
+        "تطبيقات في الإرشاد المهني وبناء الفرق."
       ],
       weaknesses: [
-        {
-          ar: "نقص الأدلة العلمية مقارنة بنماذج السمات.",
-          en: "Lack of scientific evidence compared to trait models.",
-          fr: "Manque de preuves scientifiques par rapport aux modèles de traits.",
-          es: "Falta de evidencia científica en comparación con los modelos de rasgos.",
-          de: "Mangel an wissenschaftlicher Evidenz im Vergleich zu Trait-Modellen.",
-          zh: "与特质模型相比缺乏科学证据。"
-        },
-        {
-          ar: "الاعتماد على MBTI، مما يحد من موثوقيته.",
-          en: "Reliance on MBTI, which limits its reliability.",
-          fr: "Dépendance au MBTI, ce qui limite sa fiabilité.",
-          es: "Dependencia del MBTI, lo que limita su fiabilidad.",
-          de: "Abhängigkeit vom MBTI, was seine Zuverlässigkeit einschränkt.",
-          zh: "依赖MBTI，这限制了其可靠性。"
-        }
+        "نقص الأدلة العلمية القوية.",
+        "الاعتماد على MBTI قد يحد من دقته."
       ],
-      high_score_interpretation: {
-        ar: "تشير درجاتك العالية إلى توافق مع نموذج كيرسي، مع تقدير لتصنيف الطباع وفهم الأنماط السلوكية.",
-        en: "Your high scores indicate alignment with the Keirsey model, with an appreciation for temperament classification and understanding behavioral patterns.",
-        fr: "Vos scores élevés indiquent un alignement avec le modèle de Keirsey, avec une appréciation de la classification des tempéraments et de la compréhension des schémas comportementaux.",
-        es: "Tus altas puntuaciones indican alineación con el modelo de Keirsey, con una apreciación por la clasificación de temperamentos y la comprensión de patrones de comportamiento.",
-        de: "Deine hohen Punktzahlen deuten auf eine Übereinstimmung mit dem Keirsey-Modell hin, mit einer Wertschätzung für die Temperamentklassifikation und das Verständnis von Verhaltensmustern.",
-        zh: "你的高分表明你与凯尔西模型一致，重视气质分类和理解行为模式。"
-      },
-      low_score_interpretation: {
-        ar: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الأكثر تعقيدًا أو العلمية.",
-        en: "Your low scores suggest a preference for more complex or scientific interpretations.",
-        fr: "Vos scores faibles suggèrent une préférence pour des interprétations plus complexes ou scientifiques.",
-        es: "Tus bajas puntuaciones sugieren una preferencia por interpretaciones más complejas o científicas.",
-        de: "Deine niedrigen Punktzahlen deuten auf eine Vorliebe für komplexere oder wissenschaftliche Interpretationen hin.",
-        zh: "你的低分表明你更倾向于更复杂或科学的解读。"
-      },
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج كيرسي، مما يعني أنك تقدر تصنيفات المزاج وتستفيد من فهم سلوكياتك.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو الأكثر مرونة.",
       high_score_traits: [
-        {
-          ar: "الوعي بالطباع",
-          en: "Awareness of temperaments",
-          fr: "Conscience des tempéraments",
-          es: "Conciencia de los temperamentos",
-          de: "Bewusstsein für Temperamente",
-          zh: "气质意识"
-        },
-        {
-          ar: "القدرة على التكيف",
-          en: "Adaptability",
-          fr: "Adaptabilité",
-          es: "Adaptabilidad",
-          de: "Anpassungsfähigkeit",
-          zh: "适应能力"
-        },
-        {
-          ar: "مهارات التواصل",
-          en: "Communication skills",
-          fr: "Compétences en communication",
-          es: "Habilidades de comunicación",
-          de: "Kommunikationsfähigkeiten",
-          zh: "沟通技能"
-        }
+        "الوعي بالمزاجات",
+        "مهارات التكيف مع الفرق"
       ],
       low_score_traits: [
-        {
-          ar: "التركيز على الدوافع الداخلية",
-          en: "Focus on internal motivations",
-          fr: "Concentration sur les motivations internes",
-          es: "Enfoque en las motivaciones internas",
-          de: "Fokus auf innere Motivationen",
-          zh: "专注于内在动机"
-        },
-        {
-          ar: "الشك في التصنيفات",
-          en: "Skepticism of classifications",
-          fr: "Scepticisme envers les classifications",
-          es: "Escepticismo hacia las clasificaciones",
-          de: "Skepsis gegenüber Klassifikationen",
-          zh: "对分类的怀疑"
-        }
+        "التركيز على المرونة",
+        "الشك في التصنيفات القائمة على MBTI"
       ],
       development_tips: [
-        {
-          ar: "خذي تقييم كيرسي لتحديد طبعك الرئيسي.",
-          en: "Take a Keirsey assessment to identify your primary temperament.",
-          fr: "Passez une évaluation Keirsey pour identifier votre tempérament principal.",
-          es: "Realiza una evaluación de Keirsey para identificar tu temperamento principal.",
-          de: "Führe eine Keirsey-Bewertung durch, um dein primäres Temperament zu identifizieren.",
-          zh: "进行凯尔西评估以确定你的主要气质。"
-        },
-        {
-          ar: "استخدمي فهمك للطباع لتحسين التفاعلات في العمل أو العلاقات.",
-          en: "Use your understanding of temperaments to improve interactions at work or in relationships.",
-          fr: "Utilisez votre compréhension des tempéraments pour améliorer les interactions au travail ou dans les relations.",
-          es: "Utiliza tu comprensión de los temperamentos para mejorar las interacciones en el trabajo o en las relaciones.",
-          de: "Nutze dein Verständnis der Temperamente, um Interaktionen am Arbeitsplatz oder in Beziehungen zu verbessern.",
-          zh: "利用你对气质的理解来改善工作或关系中的互动。"
-        },
-        {
-          ar: "اقرئي كتاب 'Please Understand Me' لكيرسي.",
-          en: "Read 'Please Understand Me' by Keirsey.",
-          fr: "Lisez 'Please Understand Me' de Keirsey.",
-          es: "Lee 'Please Understand Me' de Keirsey.",
-          de: "Lies 'Please Understand Me' von Keirsey.",
-          zh: "阅读凯尔西的《请理解我》。"
-        }
+        "اقرأ كتاب 'Please Understand Me' لكيرسي لفهم المزاجات.",
+        "حدد مزاجك لتحسين التفاعلات في العمل والحياة الشخصية."
       ],
       case_studies: [
-        {
-          ar: "تطبيق نموذج كيرسي في بناء فرق العمل لتحسين التعاون.",
-          en: "Applying the Keirsey model in team building to enhance collaboration.",
-          fr: "Application du modèle Keirsey dans la construction d’équipe pour améliorer la collaboration.",
-          es: "Aplicación del modelo de Keirsey en la formación de equipos para mejorar la colaboración.",
-          de: "Anwendung des Keirsey-Modells im Teambuilding zur Förderung der Zusammenarbeit.",
-          zh: "在团队建设中应用凯尔西模型以增强协作。"
-        },
-        {
-          ar: "استخدام النموذج في الإرشاد المهني لاختيار الوظائف.",
-          en: "Using the model in career counseling for job selection.",
-          fr: "Utilisation du modèle dans l’orientation professionnelle pour la sélection d’emplois.",
-          es: "Uso del modelo en la orientación profesional para la selección de empleos.",
-          de: "Verwendung des Modells in der Berufsberatung für die Berufswahl.",
-          zh: "在职业咨询中使用该模型进行职业选择。"
-        }
+        "استخدام نموذج كيرسي في تحسين ديناميكيات الفرق في بيئات العمل."
       ],
-      cultural_considerations: {
-        ar: "قد يحتاج إلى تعديلات في الثقافات الجماعية التي تركز على التعاون بدلاً من التصنيفات الفردية.",
-        en: "May require adjustments in collectivist cultures that prioritize cooperation over individual classifications.",
-        fr: "Peut nécessiter des ajustements dans les cultures collectivistes qui privilégient la coopération à la classification individuelle.",
-        es: "Puede requerir ajustes en culturas colectivistas que priorizan la cooperación sobre las clasificaciones individuales.",
-        de: "Kann Anpassungen in kollektivistischen Kulturen erfordern, die Zusammenarbeit über individuelle Klassifikationen priorisieren.",
-        zh: "在重视合作而非个人分类的集体主义文化中可能需要调整。"
-      },
-      modern_relevance: {
-        ar: "يُستخدم في التطوير المهني والإرشاد، لكنه أقل شيوعًا من MBTI أو DISC.",
-        en: "Used in professional development and counseling, but less common than MBTI or DISC.",
-        fr: "Utilisé dans le développement professionnel et l’orientation, mais moins courant que le MBTI ou le DISC.",
-        es: "Utilizado en el desarrollo profesional y la orientación, pero menos común que el MBTI o DISC.",
-        de: "Wird in der beruflichen Entwicklung und Beratung verwendet, ist jedoch weniger verbreitet als MBTI oder DISC.",
-        zh: "用于职业发展和咨询，但不如MBTI或DISC常见。"
-      },
-      related_domains: ["team_dynamics", "self_discovery", "career_planning"],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي لا تفضل التصنيفات المبنية على MBTI.",
+      modern_relevance: "يُستخدم في الإرشاد المهني وبناء الفرق.",
+      related_domains: ["career_counseling", "team_building", "self_discovery"],
       references: [
-        {
-          ar: "Keirsey, D. (1987). من فضلك افهمني II. ديلمار، كاليفورنيا: Prometheus Nemesis Book Company.",
-          en: "Keirsey, D. (1987). Please Understand Me II. Delmar, CA: Prometheus Nemesis Book Company."
-        }
+        "Keirsey, D. (1998). من فضلك افهمني II. ديلمار، كاليفورنيا: Prometheus Nemesis Book Company."
       ]
     },
-    colors_personality: {
-      id: "colors_personality_004",
+    colors: {
+      id: "colors_004",
       category: "personality_types",
-      name: {
-        ar: "نموذج الألوان الشخصية",
-        en: "Personality Colors Model",
-        fr: "Modèle des Couleurs de la Personnalité",
-        es: "Modelo de Colores de la Personalidad",
-        de: "Persönlichkeitsfarben-Modell",
-        zh: "个性色彩模型"
-      },
-      description: {
-        ar: "نموذج الألوان الشخصية هو أداة بسيطة تصنف الشخصية إلى أربعة ألوان (الأحمر، الأزرق، الأخضر، الأصفر) بناءً على السمات السلوكية والدوافع. طُور في القرن العشرين كأداة عملية لفهم الشخصية في بيئات العمل والتعليم، ويُركز على السلوكيات الملحوظة.",
-        en: "The Personality Colors Model is a simple tool that classifies personality into four colors (Red, Blue, Green, Yellow) based on behavioral traits and motivations. Developed in the 20th century as a practical tool for understanding personality in work and educational settings, it focuses on observable behaviors.",
-        fr: "Le Modèle des Couleurs de la Personnalité est un outil simple qui classe la personnalité en quatre couleurs (Rouge, Bleu, Vert, Jaune) en fonction des traits comportementaux et des motivations. Développé au 20e siècle comme un outil pratique pour comprendre la personnalité dans les environnements de travail et éducatifs, il se concentre sur les comportements observables.",
-        es: "El Modelo de Colores de la Personalidad es una herramienta simple que clasifica la personalidad en cuatro colores (Rojo, Azul, Verde, Amarillo) según rasgos y motivaciones conductuales. Desarrollado en el siglo XX como una herramienta práctica para entender la personalidad en entornos laborales y educativos, se centra en comportamientos observables.",
-        de: "Das Persönlichkeitsfarben-Modell ist ein einfaches Werkzeug, das die Persönlichkeit in vier Farben (Rot, Blau, Grün, Gelb) basierend auf Verhaltensmerkmalen und Motivationen klassifiziert. Entwickelt im 20. Jahrhundert als praktisches Werkzeug zur Persönlichkeitsverständnis in Arbeits- und Bildungsumgebungen, konzentriert es sich auf beobachtbare Verhaltensweisen.",
-        zh: "个性色彩模型是一种简单的工具，根据行为特质和动机将个性分为四种颜色（红色、蓝色、绿色、黄色）。在20世纪开发，作为工作和教育环境中理解个性的实用工具，专注于可观察的行为。"
-      },
-      scientific_background: {
-        ar: "يفتقر إلى دعم تجريبي قوي، لكنه مستوحى من نماذج مثل DISC. يُستخدم كأداة تعليمية وعملية (Hartman, 1998).",
-        en: "Lacks strong empirical support but is inspired by models like DISC. Used as an educational and practical tool (Hartman, 1998).",
-        fr: "Manque de soutien empirique fort, mais inspiré par des modèles comme DISC. Utilisé comme outil éducatif et pratique (Hartman, 1998).",
-        es: "Carece de un fuerte apoyo empírico, pero está inspirado en modelos como DISC. Utilizado como una herramienta educativa y práctica (Hartman, 1998).",
-        de: "Fehlt an starker empirischer Unterstützung, ist aber von Modellen wie DISC inspiriert. Wird als pädagogisches und praktisches Werkzeug verwendet (Hartman, 1998).",
-        zh: "缺乏强有力的实证支持，但受到DISC等模型的启发。用作教育和实用工具（Hartman, 1998）。"
-      },
+      name: "نموذج الألوان للشخصية",
+      description: "نموذج الألوان للشخصية هو أداة مبسطة تصنف الشخصية إلى أربعة ألوان (أحمر، أزرق، أخضر، أصفر) بناءً على السمات السلوكية والدوافع.",
+      scientific_background: "يفتقر نموذج الألوان إلى دعم تجريبي قوي، لكنه شائع في التدريب وتطوير الفرق بسبب بساطته (Lowry, 1978).",
       key_concepts: [
-        {
-          ar: "الأحمر: القيادة، الطموح، التركيز على النتائج.",
-          en: "Red: Leadership, ambition, focus on results.",
-          fr: "Rouge : Leadership, ambition, concentration sur les résultats.",
-          es: "Rojo: Liderazgo, ambición, enfoque en resultados.",
-          de: "Rot: Führung, Ehrgeiz, Fokus auf Ergebnisse.",
-          zh: "红色：领导力、雄心、专注于结果。"
-        },
-        {
-          ar: "الأزرق: التحليل، الدقة، التفكير المنطقي.",
-          en: "Blue: Analysis, precision, logical thinking.",
-          fr: "Bleu : Analyse, précision, pensée logique.",
-          es: "Azul: Análisis, precisión, pensamiento lógico.",
-          de: "Blau: Analyse, Präzision, logisches Denken.",
-          zh: "蓝色：分析、精确、逻辑思维。"
-        },
-        {
-          ar: "الأخضر: التعاطف، التعاون، الاستقرار.",
-          en: "Green: Empathy, cooperation, stability.",
-          fr: "Vert : Empathie, coopération, stabilité.",
-          es: "Verde: Empatía, cooperación, estabilidad.",
-          de: "Grün: Empathie, Zusammenarbeit, Stabilität.",
-          zh: "绿色：同理心、合作、稳定性。"
-        },
-        {
-          ar: "
+        "الأحمر: التوجه نحو القيادة واتخاذ القرار.",
+        "الأزرق: التركيز على العلاقات والتعاطف.",
+        "الأخضر: التركيز على التحليل والتفكير.",
+        "الأصفر: التركيز على الإبداع والحماس."
+      ],
+      strengths: [
+        "بسيط وسهل الفهم للأفراد والفرق.",
+        "يعزز التواصل في بيئات العمل."
+      ],
+      weaknesses: [
+        "نقص الأدلة العلمية القوية.",
+        "التصنيف المبسط قد يهمل تعقيدات الشخصية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج الألوان، مما يعني أنك تقدر التصنيفات البسيطة للسلوكيات.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو الأكثر تعقيدًا.",
+      high_score_traits: [
+        "الوعي بالسلوكيات البسيطة",
+        "مهارات التواصل في الفرق"
+      ],
+      low_score_traits: [
+        "التركيز على التحليل العميق",
+        "الشك في التصنيفات المبسطة"
+      ],
+      development_tips: [
+        "خذ تقييم الألوان لتحديد لونك الرئيسي.",
+        "استخدم فهمك للألوان لتحسين التفاعلات في بيئات العمل."
+      ],
+      case_studies: [
+        "تطبيق نموذج الألوان في تدريب الفرق لتحسين التواصل."
+      ],
+      cultural_considerations: "مناسب للثقافات التي تفضل التصنيفات البسيطة، لكنه قد يحتاج إلى تعديلات في الثقافات الأكثر تعقيدًا.",
+      modern_relevance: "يُستخدم في التدريب، بناء الفرق، والتواصل في بيئات العمل.",
+      related_domains: ["team_building", "workplace_dynamics", "training"],
+      references: [
+        "Lowry, D. (1978). ألوان حقيقية: دليل لفهم الشخصية. ريفرسايد، كاليفورنيا: True Colors International."
+      ]
+    },
+    freud: {
+      id: "freud_005",
+      category: "personality_types",
+      name: "نظرية فرويد التحليلية النفسية",
+      description: "طوّر سيغموند فرويد نظرية التحليل النفسي في أواخر القرن التاسع عشر، وتركز على العقل الباطن، الهو، الأنا، والأنا العليا. تُستخدم لفهم الدوافع اللاواعية والصراعات النفسية.",
+      scientific_background: "يُعتبر فرويد مؤسس التحليل النفسي، لكن نظريته تفتقر إلى دعم تجريبي قوي (Freud, 1900). لا تزال تُستخدم في العلاج النفسي.",
+      key_concepts: [
+        "العقل الباطن: الدوافع اللاواعية تؤثر على السلوك.",
+        "الهو، الأنا، الأنا العليا: الصراع بين الرغبات، الواقع، والأخلاق."
+      ],
+      strengths: [
+        "تقديم رؤى عميقة حول الدوافع اللاواعية.",
+        "تأسيس أساس العلاج النفسي الحديث."
+      ],
+      weaknesses: [
+        "نقص الأدلة العلمية القوية.",
+        "التعقيد في التطبيق العملي."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى اهتمام بالدوافع اللاواعية وفهم الصراعات النفسية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو العلمية.",
+      high_score_traits: [
+        "الوعي بالدوافع اللاواعية",
+        "التفكير العميق"
+      ],
+      low_score_traits: [
+        "التركيز على السلوك الملحوظ",
+        "الشك في التحليل النفسي"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'The Interpretation of Dreams' لفرويد لفهم العقل الباطن.",
+        "استكشف العلاج النفسي التحليلي مع مختص."
+      ],
+      case_studies: [
+        "تطبيق التحليل النفسي في العلاج لفهم الصراعات الداخلية."
+      ],
+      cultural_considerations: "قد لا يناسب الثقافات التي تركز على الحلول العملية بدلاً من التحليل العميق.",
+      modern_relevance: "يُستخدم في العلاج النفسي وفهم الدوافع اللاواعية.",
+      related_domains: ["psychotherapy", "self_discovery", "mental_health"],
+      references: [
+        "Freud, S. (1900). تفسير الأحلام. فيينا: Franz Deuticke."
+      ]
+    },
+    jung: {
+      id: "jung_006",
+      category: "personality_types",
+      name: "نظرية يونغ للأنواع النفسية",
+      description: "طوّر كارل يونغ نظرية الأنواع النفسية في أوائل القرن العشرين، وتركز على تصنيف الشخصية بناءً على التوجهات (الانبساط/الانطواء) والوظائف النفسية (التفكير، الشعور، الحدس، الإحساس). شكّلت أساس MBTI.",
+      scientific_background: "تُعتبر نظرية يونغ أساسًا لMBTI، لكنها تفتقر إلى دعم تجريبي قوي (Jung, 1921). تُستخدم في العلاج النفسي والتطوير الشخصي.",
+      key_concepts: [
+        "الانبساط والانطواء: التوجه نحو العالم الخارجي أو الداخلي.",
+        "الوظائف النفسية: التفكير، الشعور، الحدس، الإحساس."
+      ],
+      strengths: [
+        "تقديم رؤى حول التفضيلات النفسية.",
+        "أساس لتطوير MBTI."
+      ],
+      weaknesses: [
+        "نقص الأدلة العلمية القوية.",
+        "التعقيد في التطبيق العملي."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى اهتمام بالوظائف النفسية وفهم التوجهات الشخصية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو العملية.",
+      high_score_traits: [
+        "الوعي بالوظائف النفسية",
+        "التفكير التأملي"
+      ],
+      low_score_traits: [
+        "التركيز على السلوك الملحوظ",
+        "الشك في التصنيفات النفسية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Psychological Types' ليونغ لفهم الأنواع النفسية.",
+        "استكشف MBTI كتطبيق عملي لنظرية يونغ."
+      ],
+      case_studies: [
+        "تطبيق نظرية يونغ في العلاج النفسي لفهم التفضيلات النفسية."
+      ],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي تركز على السلوكيات العملية بدلاً من التحليل النفسي.",
+      modern_relevance: "يُستخدم في العلاج النفسي، التطوير الشخصي، وتطوير MBTI.",
+      related_domains: ["psychotherapy", "self_discovery", "personality_assessment"],
+      references: [
+        "Jung, C. G. (1921). الأنواع النفسية. زيوريخ: Rascher Verlag."
+      ]
+    },
+    adler: {
+      id: "adler_007",
+      category: "personality_types",
+      name: "نظرية أدلر الفردية",
+      description: "طوّر ألفريد أدلر نظرية الفردية في أوائل القرن العشرين، وتركز على السعي للتفوق، تعويض النقص، والشعور بالانتماء الاجتماعي كدوافع أساسية للشخصية.",
+      scientific_background: "تُعتبر نظرية أدلر أقل تجريبية من Big Five، لكنها مؤثرة في العلاج النفسي (Adler, 1927).",
+      key_concepts: [
+        "السعي للتفوق: الدافع لتحقيق الأهداف الشخصية.",
+        "تعويض النقص: محاولة التغلب على الشعور بالنقص.",
+        "الانتماء الاجتماعي: الحاجة إلى الارتباط بالمجتمع."
+      ],
+      strengths: [
+        "التركيز على الدوافع الاجتماعية والنمو الشخصي.",
+        "تطبيقات في العلاج النفسي وتنمية الذات."
+      ],
+      weaknesses: [
+        "نقص الأدلة العلمية القوية مقارنة بنماذج مثل Big Five.",
+        "التركيز المفرط على الدوافع الاجتماعية قد يهمل العوامل البيولوجية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نظرية أدلر، مع تقدير للدوافع الاجتماعية والسعي لتحقيق الأهداف الشخصية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو البيولوجية للشخصية بدلاً من الدوافع الاجتماعية.",
+      high_score_traits: [
+        "الطموح الاجتماعي",
+        "الوعي بالانتماء",
+        "المرونة في مواجهة النقص"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل البيولوجية",
+        "الشك في الدوافع الاجتماعية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'The Individual Psychology of Alfred Adler' لفهم نظريته.",
+        "ركز على بناء علاقات اجتماعية تدعم أهدافك الشخصية.",
+        "استكشف العلاج النفسي الأدلري مع مختص."
+      ],
+      case_studies: [
+        "استخدام نظرية أدلر في العلاج النفسي لتعزيز الشعور بالانتماء.",
+        "تطبيق النظرية في التعليم لتحفيز الطلاب على التغلب على النقص."
+      ],
+      cultural_considerations: "يناسب الثقافات التي تقدر العلاقات الاجتماعية، لكنه قد يحتاج إلى تعديلات في الثقافات الفردية.",
+      modern_relevance: "يُستخدم في العلاج النفسي، التعليم، وتنمية الذات لتعزيز الانتماء الاجتماعي.",
+      related_domains: ["psychotherapy", "self_discovery", "education"],
+      references: [
+        "Adler, A. (1927). فهم الطبيعة البشرية. فيينا: Rascher Verlag."
+      ]
+    },
+    big_five: {
+      id: "big_five_008",
+      category: "personality_types",
+      name: "نموذج السمات الخمس الكبرى",
+      description: "نموذج السمات الخمس الكبرى هو إطار علمي يصنف الشخصية إلى خمسة أبعاد: الانفتاح، الضمير الحي، الانبساط، القبول، والعصابية. طُور في القرن العشرين بناءً على تحليل اللغة والإحصاءات.",
+      scientific_background: "يُعتبر نموذج السمات الخمس الكبرى من أكثر نماذج الشخصية دعمًا تجريبيًا (Costa & McCrae, 1992). يُستخدم على نطاق واسع في البحث النفسي.",
+      key_concepts: [
+        "الانفتاح: الخيال، الفضول، الإبداع.",
+        "الضمير الحي: التنظيم، المسؤولية، العمل الجاد.",
+        "الانبساط: الاجتماعية، الطاقة، الحماس.",
+        "القبول: التعاون، التعاطف، الثقة.",
+        "العصابية: القلق، عدم الاستقرار العاطفي."
+      ],
+      strengths: [
+        "دعم تجريبي قوي وموثوقية عالية.",
+        "تطبيقات واسعة في البحث والإرشاد المهني."
+      ],
+      weaknesses: [
+        "قد يفتقر إلى التركيز على الدوافع العميقة.",
+        "يعتمد على التقارير الذاتية، مما قد يؤثر على الدقة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج السمات الخمس الكبرى، مما يعني أنك تقدر التصنيفات العلمية للشخصية وتستفيد من فهم سماتك.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الأكثر تعقيدًا أو النوعية للشخصية.",
+      high_score_traits: [
+        "الوعي بالسمات الشخصية",
+        "التقدير للنهج العلمي",
+        "القدرة على التكيف بناءً على السمات"
+      ],
+      low_score_traits: [
+        "التركيز على الدوافع العميقة",
+        "الشك في التصنيفات العامة"
+      ],
+      development_tips: [
+        "خذ تقييم Big Five لتحديد سماتك الرئيسية.",
+        "استخدم فهمك للسمات لتحسين قراراتك المهنية والشخصية.",
+        "اقرأ كتاب 'Personality: What Makes You the Way You Are' لدانيال نتل لفهم النموذج."
+      ],
+      case_studies: [
+        "استخدام Big Five في التوظيف لتحديد السمات المناسبة للوظائف.",
+        "تطبيق النموذج في التعليم لتخصيص أساليب التعلم."
+      ],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي تُفضل التصنيفات النوعية على الكمية.",
+      modern_relevance: "يُستخدم على نطاق واسع في البحث النفسي، التوظيف، والتعليم.",
+      related_domains: ["psychological_research", "career_counseling", "education"],
+      references: [
+        "Costa, P. T., & McCrae, R. R. (1992). دليل NEO PI-R. أوديسا، فلوريدا: Psychological Assessment Resources."
+      ]
+    },
+    mbti: {
+      id: "mbti_009",
+      category: "personality_types",
+      name: "مؤشر مايرز-بريغز للأنواع",
+      description: "مؤشر مايرز-بريغز هو أداة لتصنيف الشخصية طُورت بناءً على نظرية يونغ، وتصنف الأفراد إلى 16 نوعًا بناءً على أربعة ثنائيات: الانبساط/الانطواء، الحدس/الإحساس، التفكير/الشعور، الحكم/الإدراك.",
+      scientific_background: "يفتقر MBTI إلى دعم تجريبي قوي مقارنة بنماذج مثل Big Five، لكنه شائع في الإرشاد المهني (Myers & Myers, 1980).",
+      key_concepts: [
+        "الانبساط/الانطواء: التوجه نحو العالم الخارجي أو الداخلي.",
+        "الحدس/الإحساس: التركيز على الأنماط أو التفاصيل الحسية.",
+        "التفكير/الشعور: اتخاذ القرارات بناءً على المنطق أو القيم.",
+        "الحكم/الإدراك: تفضيل الهيكلية أو المرونة."
+      ],
+      strengths: [
+        "سهل الاستخدام وشائع في الإرشاد المهني.",
+        "يعزز الوعي الذاتي والتواصل الجماعي."
+      ],
+      weaknesses: [
+        "نقص الأدلة العلمية القوية مقارنة بنماذج مثل Big Five.",
+        "التصنيف الثنائي قد يُبسّط الشخصية بشكل مفرط."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع MBTI، مما يعني أنك تقدر تصنيفات الشخصية وتستفيد من فهم تفضيلاتك.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو المرنة للشخصية.",
+      high_score_traits: [
+        "الوعي بالتفضيلات الشخصية",
+        "مهارات التواصل الجماعي"
+      ],
+      low_score_traits: [
+        "التركيز على المرونة",
+        "الشك في التصنيفات الثنائية"
+      ],
+      development_tips: [
+        "خذ تقييم MBTI لتحديد نوع شخصيتك.",
+        "استخدم فهمك لنوعك لتحسين التواصل في العمل والحياة الشخصية."
+      ],
+      case_studies: [
+        "استخدام MBTI في بناء الفرق لتحسين التعاون."
+      ],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي لا تفضل التصنيفات الثنائية.",
+      modern_relevance: "يُستخدم في الإرشاد المهني، بناء الفرق، والتطوير الشخصي.",
+      related_domains: ["career_counseling", "team_building", "self_discovery"],
+      references: [
+        "Myers, I. B., & Myers, P. B. (1980). هدايا مختلفة: فهم نوع الشخصية. بالو ألتو، كاليفورنيا: Consulting Psychologists Press."
+      ]
+    },
+    eysenck_pen: {
+      id: "eysenck_pen_010",
+      category: "personality_types",
+      name: "نموذج إيسنك للشخصية",
+      description: "طوّر هانز إيسنك نموذج الشخصية PEN في منتصف القرن العشرين، ويركز على ثلاثة أبعاد رئيسية: الانبساط، العصابية، والذهانية. يعتمد على العوامل البيولوجية للشخصية.",
+      scientific_background: "يتمتع نموذج إيسنك بدعم تجريبي جيد، خاصة في دراسة العوامل البيولوجية (Eysenck, 1967). يُستخدم في البحث النفسي والتشخيص.",
+      key_concepts: [
+        "الانبساط: مستوى النشاط الاجتماعي والتحفيز.",
+        "العصابية: الاستقرار العاطفي أو عدمه.",
+        "الذهانية: ميل للسلوك العدواني أو عدم التعاطف."
+      ],
+      strengths: [
+        "دعم تجريبي قوي مقارنة بنماذج أخرى.",
+        "التركيز على العوامل البيولوجية يجعله مفيدًا في البحث."
+      ],
+      weaknesses: [
+        "قد يهمل الجوانب الاجتماعية والثقافية للشخصية.",
+        "الذهانية كبعد قد تكون مثيرة للجدل."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج إيسنك، مع اهتمام بالعوامل البيولوجية للشخصية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الاجتماعية أو الثقافية للشخصية.",
+      high_score_traits: [
+        "الوعي بالعوامل البيولوجية",
+        "التقدير للنهج العلمي"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل الاجتماعية",
+        "الشك في التصنيفات البيولوجية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Dimensions of Personality' لإيسنك لفهم النموذج.",
+        "استكشف تأثير العوامل البيولوجية على سلوكك."
+      ],
+      case_studies: [
+        "استخدام نموذج PEN في تشخيص اضطرابات الشخصية."
+      ],
+      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي تركز على الجوانب الاجتماعية بدلاً من البيولوجية.",
+      modern_relevance: "يُستخدم في البحث النفسي والتشخيص السريري.",
+      related_domains: ["psychological_research", "clinical_psychology"],
+      references: [
+        "Eysenck, H. J. (1967). أبعاد الشخصية. لندن: Routledge & Kegan Paul."
+      ]
+    }
+  },
+  developmental: {
+    kohlberg: {
+      id: "kohlberg_011",
+      category: "developmental",
+      name: "نظرية كولبرغ للتطور الأخلاقي",
+      description: "طوّر لورانس كولبرغ نظرية التطور الأخلاقي في القرن العشرين، وتركز على ست مراحل للتفكير الأخلاقي مقسمة إلى ثلاثة مستويات: ما قبل التقليدي، التقليدي، وما بعد التقليدي.",
+      scientific_background: "تُعتبر نظرية كولبرغ مؤثرة في علم النفس التنموي، مع دعم تجريبي معتدل (Kohlberg, 1981). تُستخدم في التعليم ودراسة الأخلاق.",
+      key_concepts: [
+        "ما قبل التقليدي: التفكير الأخلاقي يعتمد على المكافآت والعقوبات.",
+        "التقليدي: الالتزام بالقواعد والتوقعات الاجتماعية.",
+        "ما بعد التقليدي: التفكير بناءً على المبادئ الأخلاقية العالمية."
+      ],
+      strengths: [
+        "تقديم إطار منظم لفهم التطور الأخلاقي.",
+        "تطبيقات واسعة في التعليم والإرشاد."
+      ],
+      weaknesses: [
+        "نقص التركيز على الفروق الثقافية.",
+        "التعقيد في قياس المراحل بدقة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى اهتمام بالتفكير الأخلاقي وفهم تطور القيم.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو العملية بدلاً من الأخلاقية.",
+      high_score_traits: [
+        "الوعي بالقيم الأخلاقية",
+        "التفكير التأملي حول الأخلاق"
+      ],
+      low_score_traits: [
+        "التركيز على السلوك العملي",
+        "الشك في التصنيفات الأخلاقية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'The Philosophy of Moral Development' لكولبرغ لفهم المراحل.",
+        "ناقش القضايا الأخلاقية مع الآخرين لتطوير تفكيرك."
+      ],
+      case_studies: [
+        "تطبيق نظرية كولبرغ في التعليم لتعزيز التفكير الأخلاقي لدى الطلاب."
+      ],
+      cultural_considerations: "قد لا تناسب الثقافات التي تركز على القيم الجماعية بدلاً من الفردية.",
+      modern_relevance: "يُستخدم في التعليم، الإرشاد، ودراسة الأخلاق.",
+      related_domains: ["education", "ethics", "developmental_psychology"],
+      references: [
+        "Kohlberg, L. (1981). فلسفة التطور الأخلاقي. نيويورك: Harper & Row."
+      ]
+    },
+    vygotsky: {
+      id: "vygotsky_012",
+      category: "developmental",
+      name: "نظرية فيجوتسكي الاجتماعية-الثقافية",
+      description: "طوّر ليف فيجوتسكي نظرية التنمية الاجتماعية-الثقافية في أوائل القرن العشرين، وتركز على دور التفاعل الاجتماعي والثقافة في التطور المعرفي، خاصة مفهوم منطقة التطور القريب.",
+      scientific_background: "تُعتبر نظرية فيجوتسكي مؤثرة في علم النفس التنموي والتعليم، مع دعم تجريبي جيد (Vygotsky, 1978).",
+      key_concepts: [
+        "منطقة التطور القريب: الفرق بين ما يمكن للطفل تحقيقه بمفرده وما يمكنه تحقيقه بمساعدة.",
+        "التفاعل الاجتماعي: التعلم يحدث من خلال التفاعل مع الآخرين."
+      ],
+      strengths: [
+        "التركيز على دور الثقافة والتفاعل الاجتماعي.",
+        "تطبيقات واسعة في التعليم."
+      ],
+      weaknesses: [
+        "نقص التركيز على العوامل البيولوجية.",
+        "التعقيد في قياس منطقة التطور القريب."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لدور التفاعل الاجتماعي في التعلم والتطور.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات البيولوجية أو الفردية للتطور.",
+      high_score_traits: [
+        "الوعي بالتفاعل الاجتماعي",
+        "التقدير للثقافة في التعلم"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل الفردية",
+        "الشك في النهج الاجتماعي-الثقافي"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Mind in Society' لفيجوتسكي لفهم النظرية.",
+        "شارك في أنشطة تعليمية تعاونية."
+      ],
+      case_studies: [
+        "تطبيق نظرية فيجوتسكي في التعليم لتصميم برامج تعليمية تعاونية."
+      ],
+      cultural_considerations: "مناسبة جدًا للثقافات الجماعية، لكن قد تحتاج إلى تعديلات في الثقافات الفردية.",
+      modern_relevance: "يُستخدم في التعليم، خاصة في تصميم بيئات التعلم التعاوني.",
+      related_domains: ["education", "developmental_psychology"],
+      references: [
+        "Vygotsky, L. S. (1978). العقل في المجتمع. كامبريدج، ماساتشوستس: Harvard University Press."
+      ]
+    },
+    erikson: {
+      id: "erikson_013",
+      category: "developmental",
+      name: "نظرية إريكسون للتطور النفسي-الاجتماعي",
+      description: "طوّر إريك إريكسون نظرية التطور النفسي-الاجتماعي، وتركز على ثماني مراحل يمر بها الفرد من الطفولة إلى الشيخوخة، كل مرحلة تتميز بصراع نفسي-اجتماعي.",
+      scientific_background: "تُعتبر نظرية إريكسون مؤثرة في علم النفس التنموي، لكنها أقل تجريبية من نماذج مثل Big Five (Erikson, 1950).",
+      key_concepts: [
+        "مراحل التطور: ثماني مراحل، مثل الثقة مقابل عدم الثقة، والهوية مقابل الارتباك.",
+        "الصراع النفسي-الاجتماعي: كل مرحلة تتطلب حل صراع لتحقيق النمو."
+      ],
+      strengths: [
+        "تقديم إطار شامل للتطور عبر العمر.",
+        "تطبيقات في العلاج النفسي والتعليم."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "التعقيد في قياس المراحل بدقة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لمراحل التطور النفسي-الاجتماعي وفهم الصراعات الشخصية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو البيولوجية.",
+      high_score_traits: [
+        "الوعي بمراحل التطور",
+        "التفكير التأملي حول الهوية"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل العملية",
+        "الشك في التصنيفات النفسية-الاجتماعية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Childhood and Society' لإريكسون لفهم المراحل.",
+        "استكشف صراعاتك الشخصية مع معالج نفسي."
+      ],
+      case_studies: [
+        "تطبيق نظرية إريكسون في العلاج لفهم صراعات الهوية لدى المراهقين."
+      ],
+      cultural_considerations: "قد تحتاج إلى تعديلات في الثقافات التي تركز على القيم الجماعية بدلاً من الفردية.",
+      modern_relevance: "يُستخدم في العلاج النفسي، التعليم، وفهم التطور عبر العمر.",
+      related_domains: ["psychotherapy", "developmental_psychology", "education"],
+      references: [
+        "Erikson, E. H. (1950). الطفولة والمجتمع. نيويورك: W.W. Norton."
+      ]
+    },
+    maslow: {
+      id: "maslow_014",
+      category: "developmental",
+      name: "نظرية ماسلو لتسلسل الحاجات",
+      description: "طوّر أبراهام ماسلو نظرية تسلسل الحاجات في منتصف القرن العشرين، وتركز على هرم من خمس حاجات: الفسيولوجية، الأمان، الحب والانتماء، التقدير، وتحقيق الذات.",
+      scientific_background: "تُعتبر نظرية ماسلو مؤثرة في علم النفس الإنساني، لكنها تفتقر إلى دعم تجريبي قوي (Maslow, 1943). تُستخدم في الإرشاد والإدارة.",
+      key_concepts: [
+        "هرم الحاجات: الحاجات الأساسية يجب تلبيتها قبل الحاجات العليا.",
+        "تحقيق الذات: الوصول إلى الإمكانات الكاملة للفرد."
+      ],
+      strengths: [
+        "تقديم إطار بسيط ومفهوم للحاجات البشرية.",
+        "تطبيقات واسعة في الإدارة والإرشاد."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "التسلسل الهرمي قد لا ينطبق على جميع الأفراد."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للحاجات البشرية واهتمام بتحقيق الذات.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو السلوكية.",
+      high_score_traits: [
+        "الوعي بالحاجات البشرية",
+        "السعي لتحقيق الذات"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل العملية",
+        "الشك في التسلسل الهرمي"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Motivation and Personality' لماسلو لفهم النظرية.",
+        "حدد أولويات حاجاتك لتحقيق توازن في حياتك."
+      ],
+      case_studies: [
+        "تطبيق نظرية ماسلو في الإدارة لتحفيز الموظفين."
+      ],
+      cultural_considerations: "قد لا تناسب الثقافات الجماعية التي تركز على الحاجات الاجتماعية أكثر من الفردية.",
+      modern_relevance: "يُستخدم في الإدارة، الإرشاد، وتنمية الذات.",
+      related_domains: ["management", "self_development", "counseling"],
+      references: [
+        "Maslow, A. H. (1943). نظرية التحفيز البشري. Psychological Review."
+      ]
+    },
+    bandura: {
+      id: "bandura_015",
+      category: "developmental",
+      name: "نظرية باندورا للتعلم الاجتماعي",
+      description: "طوّر ألبرت باندورا نظرية التعلم الاجتماعي، وتركز على التعلم من خلال المراقبة، التقليد، والنمذجة، مع التأكيد على مفهوم الكفاءة الذاتية.",
+      scientific_background: "تتمتع نظرية باندورا بدعم تجريبي قوي، خاصة في التعليم وعلم النفس (Bandura, 1977).",
+      key_concepts: [
+        "التعلم بالمراقبة: التعلم من خلال مشاهدة الآخرين.",
+        "الكفاءة الذاتية: الاعتقاد بقدرتك على تحقيق الأهداف."
+      ],
+      strengths: [
+        "دعم تجريبي قوي وتطبيقات واسعة في التعليم.",
+        "التركيز على الكفاءة الذاتية يعزز التحفيز."
+      ],
+      weaknesses: [
+        "قد يهمل العوامل البيولوجية.",
+        "التعقيد في قياس الكفاءة الذاتية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للتعلم الاجتماعي والكفاءة الذاتية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات البيولوجية أو الفردية.",
+      high_score_traits: [
+        "الوعي بالتعلم الاجتماعي",
+        "الثقة بالنفس"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل الفردية",
+        "الشك في التعلم بالمراقبة"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Social Learning Theory' لباندورا لفهم النظرية.",
+        "مارس التقليد الإيجابي لتعزيز مهاراتك."
+      ],
+      case_studies: [
+        "تطبيق نظرية باندورا في التعليم لتعزيز الكفاءة الذاتية لدى الطلاب."
+      ],
+      cultural_considerations: "مناسبة للثقافات التي تقدر التعلم الجماعي، لكن قد تحتاج إلى تعديلات في الثقافات الفردية.",
+      modern_relevance: "يُستخدم في التعليم، الإرشاد، وتنمية المهارات.",
+      related_domains: ["education", "self_development", "psychology"],
+      references: [
+        "Bandura, A. (1977). نظرية التعلم الاجتماعي. إنجلوود كليفس، نيوجيرسي: Prentice-Hall."
+      ]
+    }
+  },
+  cognitive: {
+    multiple_intelligences: {
+      id: "multiple_intelligences_016",
+      category: "cognitive",
+      name: "نظرية الذكاءات المتعددة لغاردنر",
+      description: "طوّر هوارد غاردنر نظرية الذكاءات المتعددة في الثمانينيات، وتقترح أن لدى الأفراد أنواعًا متعددة من الذكاءات، مثل اللغوي، المنطقي-الرياضي، المكاني، والموسيقي.",
+      scientific_background: "تُعتبر النظرية مؤثرة في التعليم، لكنها مثيرة للجدل بسبب نقص الأدلة التجريبية القوية (Gardner, 1983).",
+      key_concepts: [
+        "الذكاءات المتعددة: ثمانية أنواع على الأقل من الذكاءات.",
+        "التعلم المخصص: تصميم التعليم بناءً على نقاط القوة."
+      ],
+      strengths: [
+        "تعزيز التنوع في التعليم.",
+        "تطبيقات واسعة في تصميم المناهج."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "التعقيد في قياس الذكاءات بدقة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للتنوع في الذكاءات واهتمام بالتعلم المخصص.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات التقليدية للذكاء.",
+      high_score_traits: [
+        "الوعي بالذكاءات المتعددة",
+        "المرونة في التعلم"
+      ],
+      low_score_traits: [
+        "التركيز على الذكاء التقليدي",
+        "الشك في الذكاءات المتعددة"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Frames of Mind' لغاردنر لفهم النظرية.",
+        "حدد نقاط قوتك في الذكاءات المختلفة."
+      ],
+      case_studies: [
+        "تطبيق النظرية في التعليم لتصميم مناهج مخصصة."
+      ],
+      cultural_considerations: "مناسبة للثقافات التي تقدر التنوع، لكن قد تحتاج إلى تعديلات في الأنظمة التعليمية التقليدية.",
+      modern_relevance: "يُستخدم في التعليم وتصميم المناهج.",
+      related_domains: ["education", "cognitive_psychology"],
+      references: [
+        "Gardner, H. (1983). إطارات العقل: نظرية الذكاءات المتعددة. نيويورك: Basic Books."
+      ]
+    },
+    theory_of_mind: {
+      id: "theory_of_mind_017",
+      category: "cognitive",
+      name: "نظرية العقل",
+      description: "نظرية العقل هي القدرة على فهم الحالات العقلية للآخرين (الاعتقادات، النوايا، الرغبات) وتوقع سلوكهم. طُورت في علم النفس المعرفي في الثمانينيات.",
+      scientific_background: "تتمتع النظرية بدعم تجريبي قوي في دراسة التطور المعرفي، خاصة عند الأطفال (Premack & Woodruff, 1978).",
+      key_concepts: [
+        "فهم الحالات العقلية: القدرة على إدراك أفكار الآخرين.",
+        "التطور المعرفي: تتطور هذه القدرة في مرحلة الطفولة."
+      ],
+      strengths: [
+        "دعم تجريبي قوي في علم النفس المعرفي.",
+        "تطبيقات في التعليم والعلاج."
+      ],
+      weaknesses: [
+        "قد تكون معقدة في التطبيق العملي.",
+        "نقص التركيز على العوامل الثقافية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى مهارة عالية في فهم الحالات العقلية للآخرين.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية بدلاً من المعرفية.",
+      high_score_traits: [
+        "التعاطف المعرفي",
+        "مهارات التواصل الاجتماعي"
+      ],
+      low_score_traits: [
+        "التركيز على السلوك الملحوظ",
+        "الشك في التفسيرات المعرفية"
+      ],
+      development_tips: [
+        "مارس تمارين التعاطف لفهم وجهات نظر الآخرين.",
+        "اقرأ عن التطور المعرفي لفهم نظرية العقل."
+      ],
+      case_studies: [
+        "تطبيق نظرية العقل في علاج اضطرابات طيف التوحد."
+      ],
+      cultural_considerations: "قد تحتاج إلى تعديلات في الثقافات التي تركز على السلوك بدلاً من الحالات العقلية.",
+      modern_relevance: "يُستخدم في التعليم، العلاج، ودراسة التطور المعرفي.",
+      related_domains: ["cognitive_psychology", "education", "clinical_psychology"],
+      references: [
+        "Premack, D., & Woodruff, G. (1978). هل يمتلك الشمبانزي نظرية عقل؟ Behavioral and Brain Sciences."
+      ]
+    },
+    skinner: {
+      id: "skinner_018",
+      category: "cognitive",
+      name: "نظرية سكينر للتكييف الإجرائي",
+      description: "طوّر بي إف سكينر نظرية التكييف الإجرائي في القرن العشرين، وتركز على التعلم من خلال المكافآت والعقوبات التي تؤثر على السلوك.",
+      scientific_background: "تتمتع النظرية بدعم تجريبي قوي، خاصة في علم النفس السلوكي (Skinner, 1938). تُستخدم في التعليم والعلاج.",
+      key_concepts: [
+        "التعزيز: المكافآت تزيد من احتمالية تكرار السلوك.",
+        "العقاب: العواقب السلبية تقلل من السلوك."
+      ],
+      strengths: [
+        "دعم تجريبي قوي وتطبيقات عملية.",
+        "سهولة التطبيق في التعليم والعلاج."
+      ],
+      weaknesses: [
+        "تهمل العوامل المعرفية والعاطفية.",
+        "قد لا تناسب السلوكيات المعقدة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للتعلم السلوكي والتأثير البيئي.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات المعرفية أو الداخلية.",
+      high_score_traits: [
+        "الوعي بالتأثيرات البيئية",
+        "التقدير للنهج السلوكي"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل المعرفية",
+        "الشك في التكييف الإجرائي"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'The Behavior of Organisms' لسكينر لفهم النظرية.",
+        "مارس تقنيات التعزيز الإيجابي في حياتك اليومية."
+      ],
+      case_studies: [
+        "تطبيق التكييف الإجرائي في التعليم لتحسين سلوك الطلاب."
+      ],
+      cultural_considerations: "مناسبة للثقافات التي تقدر التغيير السلوكي، لكن قد تحتاج إلى تعديلات في الثقافات التي تركز على العوامل الداخلية.",
+      modern_relevance: "يُستخدم في التعليم، العلاج السلوكي، والتدريب.",
+      related_domains: ["behavioral_psychology", "education", "therapy"],
+      references: [
+        "Skinner, B. F. (1938). سلوك الكائنات الحية. نيويورك: Appleton-Century-Crofts."
+      ]
+    }
+  },
+  therapeutic: {
+    rebt: {
+      id: "rebt_019",
+      category: "therapeutic",
+      name: "العلاج السلوكي العقلاني-العاطفي (REBT)",
+      description: "طوّر ألبرت إليس العلاج السلوكي العقلاني-العاطفي في الخمسينيات، ويركز على تغيير الأفكار اللاعقلانية لتحسين العواطف والسلوكيات.",
+      scientific_background: "تتمتع REBT بدعم تجريبي جيد في العلاج النفسي (Ellis, 1957). تُستخدم في علاج القلق والاكتئاب.",
+      key_concepts: [
+        "نموذج ABC: الأحداث (A) تؤدي إلى المعتقدات (B) التي تؤثر على العواقب (C).",
+        "الأفكار اللاعقلانية: تغيير المعتقدات السلبية لتحسين الصحة النفسية."
+      ],
+      strengths: [
+        "دعم تجريبي قوي وتطبيقات عملية.",
+        "سهولة التطبيق في العلاج الفردي."
+      ],
+      weaknesses: [
+        "قد لا تناسب الأفراد الذين يفضلون العلاجات العاطفية.",
+        "تعتمد على الوعي الذاتي للأفكار."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لتغيير الأفكار لتحسين الصحة النفسية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل العلاجات العاطفية أو غير المعرفية.",
+      high_score_traits: [
+        "الوعي بالأفكار اللاعقلانية",
+        "الرغبة في تحسين الصحة النفسية"
+      ],
+      low_score_traits: [
+        "التركيز على العواطف",
+        "الشك في النهج المعرفي"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'A Guide to Rational Living' لإليس لفهم REBT.",
+        "مارس تحديد الأفكار اللاعقلانية في حياتك اليومية."
+      ],
+      case_studies: [
+        "تطبيق REBT في علاج اضطرابات القلق."
+      ],
+      cultural_considerations: "قد تحتاج إلى تعديلات في الثقافات التي تركز على العواطف بدلاً من الأفكار.",
+      modern_relevance: "يُستخدم في العلاج النفسي لعلاج القلق والاكتئاب.",
+      related_domains: ["psychotherapy", "mental_health"],
+      references: [
+        "Ellis, A. (1957). العلاج السلوكي العقلاني-العاطفي. Journal of Individual Psychology."
+      ]
+    },
+    family_systems: {
+      id: "family_systems_020",
+      category: "therapeutic",
+      name: "نظرية أنظمة الأسرة",
+      description: "طوّر موراي بوين نظرية أنظمة الأسرة في القرن العشرين، وتركز على ديناميكيات العلاقات الأسرية وتأثيرها على السلوك الفردي.",
+      scientific_background: "تُعتبر النظرية مؤثرة في العلاج الأسري، مع دعم تجريبي معتدل (Bowen, 1978).",
+      key_concepts: [
+        "التمايز: القدرة على فصل العواطف عن الأفكار في العلاقات.",
+        "الديناميكيات الأسرية: التفاعلات الأسرية تؤثر على الفرد."
+      ],
+      strengths: [
+        "تقديم رؤى حول العلاقات الأسرية.",
+        "تطبيقات في العلاج الأسري."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "التعقيد في تطبيق النظرية على الأفراد."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لدور العلاقات الأسرية في السلوك.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الفردية بدلاً من الأسرية.",
+      high_score_traits: [
+        "الوعي بالديناميكيات الأسرية",
+        "مهارات العلاقات"
+      ],
+      low_score_traits: [
+        "التركيز على العوامل الفردية",
+        "الشك في تأثير الأسرة"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Family Therapy' لبوين لفهم النظرية.",
+        "شارك في جلسات علاج أسري لتحسين العلاقات."
+      ],
+      case_studies: [
+        "تطبيق نظرية أنظمة الأسرة في حل الصراعات الأسرية."
+      ],
+      cultural_considerations: "مناسبة جدًا للثقافات الجماعية، لكن قد تحتاج إلى تعديلات في الثقافات الفردية.",
+      modern_relevance: "يُستخدم في العلاج الأسري وفهم العلاقات.",
+      related_domains: ["family_therapy", "relationships"],
+      references: [
+        "Bowen, M. (1978). العلاج الأسري في الممارسة السريرية. نيويورك: Jason Aronson."
+      ]
+    },
+    ifs: {
+      id: "ifs_021",
+      category: "therapeutic",
+      name: "العلاج بنظم الأسرة الداخلية (IFS)",
+      description: "طوّر ريتشارد شوارتز العلاج بنظم الأسرة الداخلية، ويركز على فهم الأجزاء المختلفة للنفس (مثل المديرين، رجال الإطفاء، المنفيين) وتحقيق التوازن بينها.",
+      scientific_background: "تُعتبر IFS نهجًا جديدًا نسبيًا مع دعم تجريبي محدود ولكنه واعد (Schwartz, 1995). تُستخدم في العلاج النفسي.",
+      key_concepts: [
+        "الأجزاء: النفس تتكون من أجزاء متعددة لها أدوار مختلفة.",
+        "الذات: القيادة الداخلية لتحقيق التوازن بين الأجزاء."
+      ],
+      strengths: [
+        "تقديم نهج مبتكر لفهم النفس.",
+        "تطبيقات في علاج الصدمات النفسية."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "التعقيد في تطبيق النظرية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لفهم الأجزاء الداخلية للنفس.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل العلاجات التقليدية.",
+      high_score_traits: [
+        "الوعي بالأجزاء الداخلية",
+        "الرغبة في التوازن النفسي"
+      ],
+      low_score_traits: [
+        "التركيز على العلاجات السلوكية",
+        "الشك في النهج متعدد الأجزاء"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Internal Family Systems Therapy' لشوارتز لفهم IFS.",
+        "استكشف أجزاء نفسك مع معالج مدرب على IFS."
+      ],
+      case_studies: [
+        "تطبيق IFS في علاج الصدمات النفسية."
+      ],
+      cultural_considerations: "قد تحتاج إلى تعديلات في الثقافات التي تفضل العلاجات السلوكية.",
+      modern_relevance: "يُستخدم في علاج الصدمات والمشكلات النفسية المعقدة.",
+      related_domains: ["psychotherapy", "trauma_therapy"],
+      references: [
+        "Schwartz, R. C. (1995). نظم الأسرة الداخلية. نيويورك: Guilford Press."
+      ]
+    },
+    rogers: {
+      id: "rogers_022",
+      category: "therapeutic",
+      name: "العلاج المتمركز حول العميل لروجرز",
+      description: "طوّر كارل روجرز العلاج المتمركز حول العميل في القرن العشرين، ويركز على توفير بيئة داعمة تعزز النمو الذاتي من خلال التعاطف والقبول غير المشروط.",
+      scientific_background: "تُعتبر النظرية مؤثرة في علم النفس الإنساني، مع دعم تجريبي معتدل (Rogers, 1951).",
+      key_concepts: [
+        "القبول غير المشروط: قبول العميل بدون حكم.",
+        "التعاطف: فهم مشاعر العميل بعمق."
+      ],
+      strengths: [
+        "تعزيز النمو الذاتي والوعي الذاتي.",
+        "تطبيقات واسعة في العلاج النفسي."
+      ],
+      weaknesses: [
+        "نقص الأدلة التجريبية القوية.",
+        "قد لا تناسب الأفراد الذين يفضلون العلاجات التوجيهية."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للعلاج المتمركز حول العميل والتركيز على النمو الذاتي.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل العلاجات التوجيهية أو السلوكية.",
+      high_score_traits: [
+        "الوعي الذاتي العالي",
+        "التقدير للتعاطف والقبول"
+      ],
+      low_score_traits: [
+        "التركيز على الحلول العملية",
+        "الشك في العلاجات غير التوجيهية"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'On Becoming a Person' لروجرز لفهم النظرية.",
+        "مارس الاستماع النشط والتعاطف في علاقاتك."
+      ],
+      case_studies: [
+        "تطبيق العلاج المتمركز حول العميل في تحسين الصحة النفسية للأفراد."
+      ],
+      cultural_considerations: "مناسبة للثقافات التي تقدر النمو الفردي، لكن قد تحتاج إلى تعديلات في الثقافات الجماعية.",
+      modern_relevance: "يُستخدم في العلاج النفسي، الإرشاد، وتنمية الذات.",
+      related_domains: ["psychotherapy", "counseling", "self_development"],
+      references: [
+        "Rogers, C. R. (1951). العلاج المتمركز حول العميل. بوسطن: Houghton Mifflin."
+      ]
+    }
+  },
+  wellness: {
+    sleep: {
+      id: "sleep_023",
+      category: "wellness",
+      name: "نظريات النوم والرفاهية",
+      description: "تركز نظريات النوم على أهمية النوم في الصحة النفسية والجسدية، بما في ذلك تنظيم العواطف، تعزيز الذاكرة، والتعافي الجسدي.",
+      scientific_background: "تدعم الأبحاث العلمية أهمية النوم في الرفاهية، مع دراسات واسعة في علم النفس وعلم الأعصاب (Walker, 2017).",
+      key_concepts: [
+        "دورات النوم: مراحل النوم (REM وغير REM) وتأثيرها على الصحة.",
+        "النظافة النومية: ممارسات تعزز جودة النوم."
+      ],
+      strengths: [
+        "دعم تجريبي قوي من علم الأعصاب.",
+        "تطبيقات عملية في تحسين الصحة."
+      ],
+      weaknesses: [
+        "قد تختلف احتياجات النوم بين الأفراد.",
+        "صعوبة تطبيق النظافة النومية في بيئات معينة."
+      ],
+      high_score_interpretation: "تشير درجاتك العالية إلى تقدير لأهمية النوم في الرفاهية والصحة النفسية.",
+      low_score_interpretation: "تشير درجاتك المنخفضة إلى إهمال أهمية النوم أو تفضيل عوامل أخرى للرفاهية.",
+      high_score_traits: [
+        "الوعي بأهمية النوم",
+        "التزام بالنظافة النومية"
+      ],
+      low_score_traits: [
+        "التركيز على عوامل أخرى للرفاهية",
+        "إهمال جودة النوم"
+      ],
+      development_tips: [
+        "اقرأ كتاب 'Why We Sleep' لماثيو ووكر لفهم علم النوم.",
+        "حافظ على جدول نوم منتظم وتجنب المحفزات قبل النوم."
+      ],
+      case_studies: [
+        "تطبيق النظافة النومية لتحسين الأداء الأكاديمي والصحة النفسية."
+      ],
+      cultural_considerations: "قد تختلف عادات النوم حسب الثقافات، مما يتطلب تعديلات في التوصيات.",
+      modern_relevance: "يُستخدم في تعزيز الصحة النفسية والجسدية في مجالات العمل والتعليم.",
+      related_domains: ["mental_health", "physical_health", "wellness"],
+      references: [
+        "Walker, M. (2017). لماذا ننام: كشف قوة النوم والأحلام. نيويورك: Scribner."
+      ]
+    }
+  }
+};
