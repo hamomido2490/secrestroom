@@ -24,16 +24,16 @@ body {
   min-height: 100vh;
   font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   direction: rtl;
-  transition: background 0.5s ease; /* تأثير انتقال سلس بين الثيمات */
+  transition: background 0.5s ease, color 0.5s ease; /* تأثير انتقال سلس */
 }
 
 body.light {
-  background: linear-gradient(135deg, #e9f1fa 0%, #d4e4f5 100%); /* تدرج ألوان أكثر نعومة */
+  background: linear-gradient(135deg, #e9f1fa 0%, #d4e4f5 100%); /* تدرج ناعم */
   color: #2c3e50;
 }
 
 body.dark {
-  background: linear-gradient(135deg, #0a0a23 0%, #2a2a5e 50%, #1e1e3a 100%); /* تدرج داكن أكثر عمقًا */
+  background: linear-gradient(135deg, #0a0a23 0%, #2a2a5e 50%, #1e1e3a 100%); /* تدرج داكن أنيق */
   color: #e6ecef;
 }
 
@@ -71,14 +71,14 @@ body.dark header {
 .site-title {
   font-size: 2.2rem;
   font-weight: 800;
-  background: linear-gradient(45deg, #1e90ff, #8e44ad, #e84393); /* تدرج ألوان أكثر جاذبية */
+  background: linear-gradient(45deg, #1e90ff, #8e44ad, #e84393); /* تدرج ألوان جذاب */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-align: center;
   margin: 0 auto;
   padding: 0.625rem 0;
-  letter-spacing: 0.05rem; /* إضافة تباعد طفيف للأناقة */
+  letter-spacing: 0.05rem;
 }
 
 body.dark .site-title {
@@ -91,7 +91,7 @@ body.dark .site-title {
   top: 0.75rem;
   right: 0.75rem;
   padding: 0.625rem;
-  background: linear-gradient(135deg, #1e90ff, #3498db); /* تدرج ألوان أكثر احترافية */
+  background: linear-gradient(135deg, #1e90ff, #3498db);
   color: white;
   border-radius: 50%;
   cursor: pointer;
@@ -101,7 +101,7 @@ body.dark .site-title {
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   z-index: 1001;
-  aria-label: تبديل الثيم; /* تحسين إمكانية الوصول */
+  aria-label: تبديل الثيم;
 }
 
 body.dark .theme-toggle {
@@ -177,6 +177,12 @@ body.dark button:hover {
 button:focus {
   outline: 2px solid #1e90ff;
   outline-offset: 2px;
+}
+
+button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* تحسين الأقسام */
@@ -279,11 +285,11 @@ body.dark .answer-option:hover, body.dark .scale-option:hover {
 }
 
 .result-card {
-  border-top: 0.2rem solid #8e44ad; /* لون بنفسجي أكثر أناقة */
+  border-top: 0.2rem solid #8e44ad;
 }
 
 .theory-card {
-  border-left: 0.25rem solid #e84393; /* لون وردي دافئ */
+  border-left: 0.25rem solid #e84393;
 }
 
 body.dark .result-card, body.dark .theory-card {
@@ -363,6 +369,13 @@ body.dark .result-card[data-score="low"] {
 }
 
 /* أزرار التنقل في النتائج */
+#resultNavigation {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 #resultNavigation button {
   margin: 0.3125rem;
   padding: 0.75rem 1.25rem;
@@ -492,6 +505,35 @@ body.dark .close:hover {
   color: #e6ecef;
 }
 
+/* تنسيق الإعلانات */
+.ad-placeholder {
+  margin: 1.25rem auto;
+  max-width: 18.75rem;
+  text-align: center;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+body.dark .ad-placeholder {
+  background: rgba(25, 25, 40, 0.8);
+}
+
+/* تنسيق الفوتر */
+footer {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #5c6b80;
+}
+
+body.dark footer {
+  border-top: 1px solid #4a4a5e;
+  color: #b0b8c4;
+}
+
 /* Media Queries للأجهزة الصغيرة */
 @media (max-width: 576px) {
   body {
@@ -511,12 +553,12 @@ body.dark .close:hover {
   }
 
   .theme-toggle {
-    position: relative; /* إزالة التثبيت على الشاشات الصغيرة */
+    position: relative; /* إزالة التثبيت */
     order: 2;
     margin-top: 0.5rem;
     padding: 0.375rem;
     font-size: 0.9rem;
-    box-shadow: none; /* تحسين الأداء */
+    box-shadow: none;
   }
 
   #content > section {
@@ -549,6 +591,11 @@ body.dark .close:hover {
   .modal-content {
     width: 95%;
     padding: 0.9375rem;
+  }
+
+  .ad-placeholder {
+    max-width: 100%;
+    padding: 0.5rem;
   }
 }
 
@@ -583,9 +630,9 @@ body.dark .close:hover {
     max-width: 18.75rem;
   }
 
-  .theme-toggle {
-    top: 0.5rem;
-    right: 0.5rem;
+  #resultNavigation button {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -606,5 +653,9 @@ body.dark .close:hover {
 
   .modal-content {
     max-width: 50rem;
+  }
+
+  .ad-placeholder {
+    max-width: 25rem;
   }
 }
