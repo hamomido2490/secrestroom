@@ -37,7 +37,6 @@ export default {
       cultural_considerations: "قد لا يناسب الثقافات التي تركز على الحلول العملية بدلاً من التحليل العميق."
     }
   },
-
   jung: {
     MBTI: {
       name: "كارل يونغ",
@@ -75,7 +74,6 @@ export default {
       cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي تركز على السلوكيات العملية بدلاً من التحليل النفسي."
     }
   },
-
   erikson: {
     MBTI: {
       name: "إريك إريكسون",
@@ -113,7 +111,6 @@ export default {
       cultural_considerations: "قد تختلف الأولويات الثقافية في كل مرحلة."
     }
   },
-
   maslow: {
     MBTI: {
       name: "إبراهام ماسلو",
@@ -151,7 +148,6 @@ export default {
       cultural_considerations: "قد تختلف ترتيبات الاحتياجات حسب الثقافة."
     }
   },
-
   big_five: {
     MBTI: {
       name: "الخمسة الكبار",
@@ -189,7 +185,6 @@ export default {
       cultural_considerations: "قد تختلف تفسيرات السمات حسب السياق الثقافي."
     }
   },
-
   mbti: {
     MBTI: {
       name: "مؤشر مايرز-براجز",
@@ -227,7 +222,6 @@ export default {
       cultural_considerations: "قد لا يناسب جميع الثقافات بنفس الدرجة."
     }
   },
-
   disc: {
     MBTI: {
       name: "نموذج DISC",
@@ -265,7 +259,6 @@ export default {
       cultural_considerations: "قد تختلف تعبيرات السلوك حسب الثقافة."
     }
   },
-
   gardner: {
     MBTI: {
       name: "هاورد جاردنر",
