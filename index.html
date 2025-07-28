@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>غرفة الأسرار</title>
-    <meta name="description" content="اكتشف نفسك من خلال اختبار شخصية نفسي عميق">
-    <meta property="og:title" content="غرفة الأسرار">
-    <meta property="og:description" content="اكتشف نفسك من خلال اختبار شخصية نفسي عميق">
-    <meta property="og:image" content="https://example.com/image.jpg">
+    
+    <!-- SEO وOG Tags -->
+    <meta name="description" content="اكتشف نفسك من خلال اختبار شخصية نفسي عميق بناءً على نظريات علم النفس">
+    <meta name="keywords" content="اختبار شخصية, تحليل نفسي, MBTI, فرويد, يونغ, ماسلو, علم النفس">
+    <meta name="author" content="Mohammed Tarek">
+    <meta property="og:title" content="غرفة الأسرار - اكتشف شخصيتك">
+    <meta property="og:description" content="اختبار شخصية مجاني يعتمد على نظريات علم النفس لتحليل شخصيتك بدقة">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://secretsroom.com">
+    <meta property="og:image" content="https://secretsroom.com/images/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- خطوط عربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- أنماط CSS -->
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Noto+Sans+Arabic&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- مكتبات JavaScript (مهم جدًا) -->
+    <!-- مكتبة jsPDF مع دعم الخط العربي -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+    
+    <!-- مكتبة Chart.js للرسم البياني -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+    
+    <!-- إعلانات Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- تحميل ملفات المشروع (بترتيب صحيح) -->
+    <script type="module" src="questions.js"></script>
+    <script type="module" src="analysis_data.js"></script>
     <script type="module" src="script.js"></script>
 </head>
 <body class="light">
@@ -61,7 +87,14 @@
 
         <!-- إعلان -->
         <div class="ad-placeholder">
-            <ins class="adsbygoogle" data-ad-client="ca-pub-123456789" data-ad-slot="123456789"></ins>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-123456789"
+                 data-ad-slot="123456789"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true">
+            </ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
     </section>
 
@@ -88,20 +121,54 @@
             <button id="btnRecommendations" onclick="displayResultContent('recommendations')">توصيات</button>
         </div>
 
-        <canvas id="resultChart"></canvas>
+        <canvas id="resultChart" style="max-width: 400px; margin: 20px auto;" aria-label="رسم بياني لنتائج المجالات"></canvas>
 
-        <div id="personalityTypeSection" class="result-section-content"></div>
-        <div id="summarySection" class="result-section-content"></div>
-        <div id="theoriesSection" class="result-section-content"></div>
-        <div id="detailedAnalysisSection" class="result-section-content"></div>
-        <div id="recommendationsSection" class="result-section-content"></div>
+        <div id="personalityTypeSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnPersonalityType"></div>
+        <div id="summarySection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnSummary"></div>
+        <div id="theoriesSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnTheories"></div>
+        <div id="detailedAnalysisSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnDetailedAnalysis"></div>
+        <div id="recommendationsSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnRecommendations"></div>
 
         <div class="actions">
-            <button id="downloadPdfBtn" onclick="downloadPDF()">PDF</button>
+            <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
             <button id="shareBtn" onclick="shareResult()">مشاركة</button>
+        </div>
+
+        <!-- إعلان أسفل النتائج -->
+        <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-123456789"
+                 data-ad-slot="123456789"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true">
+            </ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
     </section>
 
-    <footer>&copy; 2025 غرفة الأسرار</footer>
+    <!-- مودال لعرض تفاصيل النظريات -->
+    <div id="theoryModal" class="modal" style="display:none;" role="dialog" aria-labelledby="theoryModalTitle">
+        <div class="modal-content">
+            <span class="close" onclick="closeTheoryModal()" aria-label="إغلاق نافذة النظرية">&times;</span>
+            <h3 id="theoryModalTitle">تفاصيل النظرية</h3>
+            <div id="theoryModalContent"></div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
+        <p>&copy; 2025 غرفة الأسرار</p>
+        <!-- إعلان في الفوتر -->
+        <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-123456789"
+                 data-ad-slot="123456789"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true">
+            </ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+    </footer>
 </body>
 </html>
