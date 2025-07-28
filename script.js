@@ -1,19 +1,18 @@
-// 🌟 script.js - النسخة النهائية | "غرفة الأسرار" | v3.0
+// 🌟 script.js - النسخة النهائية | "غرفة الأسرار" | v4.0
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- 1. التهيئة الأساسية ---
+    // --- 1. التهيئة ---
     let translations = {};
     let currentLang = localStorage.getItem("lang") || "ar";
     let deviceId = localStorage.getItem("deviceId") || "";
     let userSession = JSON.parse(localStorage.getItem("session")) || null;
     let currentQuestion = 0;
     let answers = [];
-    let userAnswers = {};
     let categoryAverages = {};
     let domainAverages = {};
     let analysisData = null;
     let myChart = null;
 
-    const userDataKey = 'psychApp_v3';
+    const userDataKey = 'psychApp_v4';
     let userData = JSON.parse(localStorage.getItem(userDataKey)) || {
         visitorCount: 0,
         testCount: 0,
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log(`[SecretsRoom] ${action}`, { ...details, time: new Date().toISOString() });
     }
 
-    // --- 3. تهيئة الجهاز والجلسة ---
+    // --- 3. تهيئة الجهاز ---
     function initDevice() {
         if (!deviceId) {
             deviceId = "SR-" + Math.random().toString(36).substr(2, 9);
@@ -57,12 +56,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function applyLanguage(lang) {
         const t = translations[lang]?.ui || {};
-        const r = translations[lang]?.results || {};
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
         document.title = t.title || "غرفة الأسرار";
 
-        // تحديث النصوص
         updateElement("ageLabel", t.age || "العمر");
         updateElement("genderLabel", t.gender || "الجنس");
         updateElement("startBtn", t.start || "ابدأ");
@@ -71,20 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateElement("visitorCount", userData.visitorCount);
         updateElement("testCount", userData.testCount);
 
-        // تحديث أزرار النتائج
         updateResultButtonTitles();
-
-        // تحديث قائمة الجنس
-        const genderSelect = document.getElementById("genderSelect");
-        if (genderSelect && t.male) {
-            genderSelect.innerHTML = `
-                <option value="male">${t.male}</option>
-                <option value="female">${t.female}</option>
-                <option value="other">${t.other}</option>
-            `;
-        }
-
-        logEvent("Language applied", { lang });
     }
 
     function updateElement(id, text) {
@@ -103,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateElement("shareBtn", t.share || "شارك");
     }
 
-    // --- 5. إدارة الثيم (فاتح / داكن) ---
+    // --- 5. إدارة الثيم ---
     function initThemeToggle() {
         const toggle = document.querySelector(".theme-toggle");
         if (toggle) {
@@ -168,7 +152,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             opt.className = "answer-option";
             opt.textContent = text;
             opt.onclick = () => selectAnswer(value);
-            opt.setAttribute("role", "button");
             optionsContainer.appendChild(opt);
         };
 
@@ -187,12 +170,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function selectAnswer(value) {
-        userAnswers[currentQuestion] = value;
+        answers[currentQuestion] = value;
         document.querySelectorAll(".answer-option").forEach((el, i) => {
-            const isSelected = (el.textContent.includes("5") && value === 5) ||
-                               (el.textContent.includes("1") && value === 1) ||
-                               (el.textContent === value.toString());
-            el.classList.toggle("selected", isSelected);
+            el.classList.toggle("selected", i === value - 1 || (value === 5 && i === 0) || (value === 1 && i === 1));
         });
         document.getElementById("nextBtn").disabled = false;
     }
@@ -204,19 +184,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextQuestion() {
-        if (userAnswers[currentQuestion] === undefined) {
+        if (answers[currentQuestion] === undefined) {
             return showNotification(translations[currentLang]?.ui?.select_answer || "اختر إجابة", "info");
         }
-
-        const q = questions[currentQuestion];
-        answers.push({
-            questionId: q.id,
-            category: q.category,
-            domain: q.domain,
-            value: userAnswers[currentQuestion],
-            weight: q.weight || 1
-        });
-
         currentQuestion++;
         if (currentQuestion < questions.length) renderQuestion();
         else showResults();
@@ -237,23 +207,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     function calculateAverages() {
         const categoryScores = {};
         const domainScores = {};
-        answers.forEach(a => {
-            if (!categoryScores[a.category]) categoryScores[a.category] = { total: 0, count: 0 };
-            if (!domainScores[a.domain]) domainScores[a.domain] = { total: 0, count: 0 };
-            categoryScores[a.category].total += a.value * a.weight;
-            categoryScores[a.category].count += a.weight;
-            domainScores[a.domain].total += a.value * a.weight;
-            domainScores[a.domain].count += a.weight;
+        answers.forEach((val, i) => {
+            const q = questions[i];
+            const cat = q.category;
+            const dom = q.domain;
+            categoryScores[cat] = (categoryScores[cat] || 0) + val;
+            domainScores[dom] = (domainScores[dom] || 0) + val;
         });
-
         categoryAverages = {};
-        for (const [cat, data] of Object.entries(categoryScores)) {
-            categoryAverages[cat] = data.total / data.count;
+        for (const [k, v] of Object.entries(categoryScores)) {
+            categoryAverages[k] = v / questions.filter(q => q.category === k).length;
         }
-
         domainAverages = {};
-        for (const [dom, data] of Object.entries(domainScores)) {
-            domainAverages[dom] = data.total / data.count;
+        for (const [k, v] of Object.entries(domainScores)) {
+            domainAverages[k] = v / questions.filter(q => q.domain === k).length;
         }
     }
 
@@ -272,38 +239,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function displayPersonalityType() {
         const scores = domainAverages;
-        const topDomainKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        const topDomain = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         const t = translations[currentLang]?.results || {};
-        const color = topDomainKey === "vision" ? "#e74c3c" : topDomainKey === "analysis" ? "#3498db" : "#9b59b6";
-        const personality = t[`${topDomainKey}_personality`] || "شخصيتك";
-        const desc = t[`${topDomainKey}_description`] || "وصف شخصيتك";
-        const themes = t[`${topDomainKey}_themes`] || ["الطاقة", "الشغف", "القيادة"];
+        const color = topDomain === "vision" ? "#e74c3c" : topDomain === "analysis" ? "#3498db" : "#9b59b6";
+        const personality = t[`${topDomain}_personality`] || "شخصيتك";
+        const desc = t[`${topDomain}_description`] || "وصف شخصيتك";
 
         document.getElementById("personalityTypeContent").innerHTML = `
             <h2 style="color:${color}">${personality}</h2>
             <p>${desc}</p>
-            <h3>${t.themes || "مواضيعك الأساسية"}:</h3>
-            <ul>${themes.map(t => `<li>${t}</li>`).join("")}</ul>
         `;
 
         const ctx = document.getElementById("resultChart").getContext("2d");
         if (myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: "radar",
-            data: {
+             {
                 labels: Object.keys(domainAverages).map(k => t.domains[k] || k),
                 datasets: [{
                     label: t.domain_scores || "النتائج",
                     data: Object.values(domainAverages),
                     backgroundColor: "rgba(52,152,219,0.2)",
-                    borderColor: "#3498db",
-                    borderWidth: 2
+                    borderColor: "#3498db"
                 }]
             },
-            options: {
-                scales: { r: { suggestedMin: 1, suggestedMax: 5 } },
-                plugins: { legend: { display: true } }
-            }
+            options: { scales: { r: { suggestedMin: 1, suggestedMax: 5 } } }
         });
     }
 
@@ -378,11 +338,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function logout() {
-        localStorage.removeItem("session");
-        location.reload();
-    }
-
     // --- 10. أدوات ---
     async function loadJS(src) {
         return new Promise((res, rej) => {
@@ -410,8 +365,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // تحميل analysis_data.js
     try {
-        const { default: data } = await import("./analysis_data.js");
-        analysisData = data;
+        const { analysis_data } = await import("./analysis_data.js");
+        analysisData = analysis_data;
     } catch (e) {
         console.error("فشل تحميل analysis_data.js", e);
     }
@@ -424,6 +379,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(() => screen.style.display = 'none', 500);
         }
     }, 1500);
+
+    // دعم Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('theoryModal');
+            if (modal && modal.style.display === 'block') modal.style.display = 'none';
+        }
+    });
 
     logEvent("App initialized", { deviceId, lang: currentLang });
 });
