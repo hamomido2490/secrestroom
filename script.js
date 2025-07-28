@@ -1,29 +1,32 @@
-// 🌟 script.js - النسخة النهائية المتكاملة | "Secrets Room Pro"
+// 🌟 script.js - النسخة النهائية | "غرفة الأسرار" | v3.0
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- 1. إعدادات أولية ---
+    // --- 1. التهيئة الأساسية ---
     let translations = {};
     let currentLang = localStorage.getItem("lang") || "ar";
     let deviceId = localStorage.getItem("deviceId") || "";
     let userSession = JSON.parse(localStorage.getItem("session")) || null;
     let currentQuestion = 0;
     let answers = [];
+    let userAnswers = {};
+    let categoryAverages = {};
+    let domainAverages = {};
     let analysisData = null;
-    let myChart = null; // لتجنب تكرار الرسم البياني
+    let myChart = null;
 
-    const userDataKey = 'psychApp_v2'; // تخزين مركزي
+    const userDataKey = 'psychApp_v3';
     let userData = JSON.parse(localStorage.getItem(userDataKey)) || {
         visitorCount: 0,
         testCount: 0,
         lastVisit: null
     };
 
-    // --- 2. دوال الأمان والتنظيم ---
+    // --- 2. دوال الأمان ---
     function sanitizeInput(input) {
         return input ? String(input).replace(/[<>&"]/g, "") : "";
     }
 
     function logEvent(action, details = {}) {
-        console.log(`[PsychApp] ${action}`, { timestamp: new Date().toISOString(), ...details });
+        console.log(`[SecretsRoom] ${action}`, { ...details, time: new Date().toISOString() });
     }
 
     // --- 3. تهيئة الجهاز والجلسة ---
@@ -57,15 +60,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         const r = translations[lang]?.results || {};
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-        document.title = t.title || "Secrets Room";
+        document.title = t.title || "غرفة الأسرار";
 
-        // تحديث العناصر
-        updateElement("ageLabel", t.age || "Age");
-        updateElement("genderLabel", t.gender || "Gender");
-        updateElement("startBtn", t.start || "Start");
-        updateElement("nextBtn", t.next || "Next");
-        updateElement("quizTitle", t.quiz_title || "Personality Quiz");
+        // تحديث النصوص
+        updateElement("ageLabel", t.age || "العمر");
+        updateElement("genderLabel", t.gender || "الجنس");
+        updateElement("startBtn", t.start || "ابدأ");
+        updateElement("nextBtn", t.next || "التالي");
+        updateElement("quizTitle", t.quiz_title || "اختبار الشخصية");
+        updateElement("visitorCount", userData.visitorCount);
+        updateElement("testCount", userData.testCount);
 
+        // تحديث أزرار النتائج
+        updateResultButtonTitles();
+
+        // تحديث قائمة الجنس
         const genderSelect = document.getElementById("genderSelect");
         if (genderSelect && t.male) {
             genderSelect.innerHTML = `
@@ -75,11 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
         }
 
-        // تحديث إحصائيات الزوار
-        updateElement("visitorCount", userData.visitorCount);
-        updateElement("testCount", userData.testCount);
-
-        updateResultButtonTitles();
+        logEvent("Language applied", { lang });
     }
 
     function updateElement(id, text) {
@@ -89,13 +94,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function updateResultButtonTitles() {
         const t = translations[currentLang]?.ui || {};
-        updateElement("btnPersonalityType", t.personality_type || "Personality Type");
-        updateElement("btnSummary", t.result_summary || "Summary");
-        updateElement("btnTheories", t.theories || "Theories");
-        updateElement("btnDetailedAnalysis", t.result_full || "Detailed");
-        updateElement("btnRecommendations", t.recommendations || "Recommendations");
+        updateElement("btnPersonalityType", t.personality_type || "نوع الشخصية");
+        updateElement("btnSummary", t.result_summary || "الملخص");
+        updateElement("btnTheories", t.theories || "النظريات");
+        updateElement("btnDetailedAnalysis", t.result_full || "تحليل مفصل");
+        updateElement("btnRecommendations", t.recommendations || "توصيات");
         updateElement("downloadPdfBtn", t.download_pdf || "PDF");
-        updateElement("shareBtn", t.share || "Share");
+        updateElement("shareBtn", t.share || "شارك");
     }
 
     // --- 5. إدارة الثيم (فاتح / داكن) ---
@@ -112,8 +117,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function applyTheme(theme) {
         document.body.className = theme;
         localStorage.setItem("theme", theme);
-        const toggle = document.querySelector(".theme-toggle i");
-        if (toggle) toggle.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+        const icon = document.querySelector(".theme-toggle i");
+        if (icon) icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
     }
 
     // --- 6. إدارة الإعلانات ---
@@ -125,6 +130,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ins.setAttribute("data-ad-slot", adSettings.adSlotQuiz);
             if (ins.closest("#resultSection") && adSettings.adSlotResults)
                 ins.setAttribute("data-ad-slot", adSettings.adSlotResults);
+            if (ins.closest("footer") && adSettings.adSlotFooter)
+                ins.setAttribute("data-ad-slot", adSettings.adSlotFooter);
         });
         try { window.adsbygoogle?.push({}); } catch (e) { console.warn("إعلانات فشلت", e); }
     }
@@ -133,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function startTest() {
         const age = sanitizeInput(document.getElementById("ageInput").value);
         if (!age || isNaN(age) || age < 10 || age > 100) {
-            return showNotification(translations[currentLang]?.ui?.age_error || "أدخل عمراً صحيحاً (10-100)", "error");
+            return showNotification(translations[currentLang]?.ui?.age_error || "أدخل عمرًا صحيحًا (10-100)", "error");
         }
 
         const gender = sanitizeInput(document.getElementById("genderSelect").value);
@@ -161,6 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             opt.className = "answer-option";
             opt.textContent = text;
             opt.onclick = () => selectAnswer(value);
+            opt.setAttribute("role", "button");
             optionsContainer.appendChild(opt);
         };
 
@@ -179,9 +187,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function selectAnswer(value) {
-        answers[currentQuestion] = value;
+        userAnswers[currentQuestion] = value;
         document.querySelectorAll(".answer-option").forEach((el, i) => {
-            el.classList.toggle("selected", i === value - 1 || (value === 5 && i === 0) || (value === 1 && i === 1));
+            const isSelected = (el.textContent.includes("5") && value === 5) ||
+                               (el.textContent.includes("1") && value === 1) ||
+                               (el.textContent === value.toString());
+            el.classList.toggle("selected", isSelected);
         });
         document.getElementById("nextBtn").disabled = false;
     }
@@ -193,9 +204,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function nextQuestion() {
-        if (answers[currentQuestion] === undefined) {
+        if (userAnswers[currentQuestion] === undefined) {
             return showNotification(translations[currentLang]?.ui?.select_answer || "اختر إجابة", "info");
         }
+
+        const q = questions[currentQuestion];
+        answers.push({
+            questionId: q.id,
+            category: q.category,
+            domain: q.domain,
+            value: userAnswers[currentQuestion],
+            weight: q.weight || 1
+        });
+
         currentQuestion++;
         if (currentQuestion < questions.length) renderQuestion();
         else showResults();
@@ -214,14 +235,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function calculateAverages() {
-        const scores = {};
-        answers.forEach((val, i) => {
-            const q = questions[i];
-            const cat = q.category;
-            scores[cat] = (scores[cat] || 0) + val;
+        const categoryScores = {};
+        const domainScores = {};
+        answers.forEach(a => {
+            if (!categoryScores[a.category]) categoryScores[a.category] = { total: 0, count: 0 };
+            if (!domainScores[a.domain]) domainScores[a.domain] = { total: 0, count: 0 };
+            categoryScores[a.category].total += a.value * a.weight;
+            categoryScores[a.category].count += a.weight;
+            domainScores[a.domain].total += a.value * a.weight;
+            domainScores[a.domain].count += a.weight;
         });
-        for (const cat in scores) scores[cat] = scores[cat] / questions.filter(q => q.category === cat).length;
-        window.categoryAverages = scores;
+
+        categoryAverages = {};
+        for (const [cat, data] of Object.entries(categoryScores)) {
+            categoryAverages[cat] = data.total / data.count;
+        }
+
+        domainAverages = {};
+        for (const [dom, data] of Object.entries(domainScores)) {
+            domainAverages[dom] = data.total / data.count;
+        }
     }
 
     function displayResultContent(section) {
@@ -238,35 +271,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function displayPersonalityType() {
-        const scores = window.categoryAverages;
-        const topCat = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        const scores = domainAverages;
+        const topDomainKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         const t = translations[currentLang]?.results || {};
-        const color = topCat === "vision" ? "#e74c3c" : topCat === "analysis" ? "#3498db" : "#9b59b6";
-        const personality = t[`${topCat}_personality`] || "Personality";
-        const desc = t[`${topCat}_description`] || "وصف";
+        const color = topDomainKey === "vision" ? "#e74c3c" : topDomainKey === "analysis" ? "#3498db" : "#9b59b6";
+        const personality = t[`${topDomainKey}_personality`] || "شخصيتك";
+        const desc = t[`${topDomainKey}_description`] || "وصف شخصيتك";
+        const themes = t[`${topDomainKey}_themes`] || ["الطاقة", "الشغف", "القيادة"];
 
         document.getElementById("personalityTypeContent").innerHTML = `
             <h2 style="color:${color}">${personality}</h2>
             <p>${desc}</p>
+            <h3>${t.themes || "مواضيعك الأساسية"}:</h3>
+            <ul>${themes.map(t => `<li>${t}</li>`).join("")}</ul>
         `;
 
-        // رسم بياني
         const ctx = document.getElementById("resultChart").getContext("2d");
         if (myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: "radar",
             data: {
-                labels: Object.keys(scores).map(k => t.domains[k] || k),
-                datasets: [{ label: t.domain_scores || "النتائج", data: Object.values(scores), backgroundColor: "rgba(52,152,219,0.2)", borderColor: "#3498db" }]
+                labels: Object.keys(domainAverages).map(k => t.domains[k] || k),
+                datasets: [{
+                    label: t.domain_scores || "النتائج",
+                    data: Object.values(domainAverages),
+                    backgroundColor: "rgba(52,152,219,0.2)",
+                    borderColor: "#3498db",
+                    borderWidth: 2
+                }]
             },
-            options: { scales: { r: { suggestedMin: 1, suggestedMax: 5 } } }
+            options: {
+                scales: { r: { suggestedMin: 1, suggestedMax: 5 } },
+                plugins: { legend: { display: true } }
+            }
         });
     }
 
     function displaySummary() {
         const t = translations[currentLang]?.results || {};
-        let html = `<h2>${t.summary_intro || "ملخص"}</h2>`;
-        for (const [k, v] of Object.entries(window.categoryAverages)) {
+        let html = `<h2>${t.summary_intro || "ملخص النتائج"}</h2>`;
+        for (const [k, v] of Object.entries(domainAverages)) {
             html += `<p>${t.domains[k] || k}: ${v.toFixed(2)}/5</p>`;
         }
         document.getElementById("summaryContent").innerHTML = html;
@@ -274,12 +318,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function displayTheories() {
         const t = translations[currentLang]?.results || {};
-        let html = `<h2>${t.theories_intro || "نظريات"}</h2>`;
-        html += Object.keys(window.categoryAverages).map(cat => {
+        let html = `<h2>${t.theories_intro || "تحليل النظريات"}</h2>`;
+        html += Object.keys(domainAverages).map(cat => {
             const theory = analysisData?.[cat]?.MBTI;
             if (!theory) return "";
-            const score = window.categoryAverages[cat];
-            const interp = score > 3 ? theory.high_score_interpretation : theory.low_score_interpretation;
+            const score = domainAverages[cat];
+            const interp = score > 3.5 ? theory.high_score_interpretation : theory.low_score_interpretation;
             return `<div class="theory-card"><h4>${theory.name}</h4><p>${interp}</p></div>`;
         }).join("");
         document.getElementById("theoriesContent").innerHTML = html;
@@ -288,15 +332,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     function displayDetailed() {
         const t = translations[currentLang]?.results || {};
         let html = `<h2>${t.full_intro || "تحليل مفصل"}</h2>`;
-        for (const [k, v] of Object.entries(window.categoryAverages)) {
-            html += `<div class="result-card" style="border-left: 4px solid ${v > 3 ? "#2ecc71" : "#e74c3c"}"><p>${t.traits[k] || k}: ${v.toFixed(2)}/5</p></div>`;
+        for (const [k, v] of Object.entries(categoryAverages)) {
+            html += `<div class="result-card" style="border-left: 4px solid ${v > 3.5 ? "#2ecc71" : "#e74c3c"}"><p>${t.traits[k] || k}: ${v.toFixed(2)}/5</p></div>`;
         }
         document.getElementById("detailedAnalysisContent").innerHTML = html;
     }
 
     function displayRecommendations() {
         const t = translations[currentLang]?.results || {};
-        const tips = Object.keys(window.categoryAverages).flatMap(cat => {
+        const tips = Object.keys(domainAverages).flatMap(cat => {
             const theory = analysisData?.[cat]?.MBTI;
             return theory ? theory.development_tips || [] : [];
         });
@@ -372,7 +416,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("فشل تحميل analysis_data.js", e);
     }
 
-    // تأخير تحميل شاشة التحميل
+    // إخفاء شاشة التحميل
     setTimeout(() => {
         const screen = document.getElementById('loadingScreen');
         if (screen) {
