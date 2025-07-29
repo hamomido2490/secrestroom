@@ -1,174 +1,89 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غرفة الأسرار</title>
-    
-    <!-- SEO وOG Tags -->
-    <meta name="description" content="اكتشف نفسك من خلال اختبار شخصية نفسي عميق بناءً على نظريات علم النفس">
-    <meta name="keywords" content="اختبار شخصية, تحليل نفسي, MBTI, فرويد, يونغ, ماسلو, علم النفس">
-    <meta name="author" content="Mohammed Tarek">
-    <meta property="og:title" content="غرفة الأسرار - اكتشف شخصيتك">
-    <meta property="og:description" content="اختبار شخصية مجاني يعتمد على نظريات علم النفس لتحليل شخصيتك بدقة">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://secretsroom.com">
-    <meta property="og:image" content="https://secretsroom.com/images/og-image.png">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <!-- خطوط عربية -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- أنماط CSS -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- مكتبات JavaScript (مهم جدًا) -->
-    <!-- مكتبة jsPDF مع دعم الخط العربي -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
-    
-    <!-- مكتبة Chart.js للرسم البياني -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
-    
-    <!-- إعلانات Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    
-    <!-- تحميل ملفات المشروع (بترتيب صحيح) -->
-    <script type="module" src="questions.js"></script>
-    <script type="module" src="analysis_data.js"></script>
-    <script type="module" src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تحليل الشخصية</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="light">
-    <!-- شاشة التحميل -->
-    <div id="loadingScreen" class="loading-screen active">
-        <div class="loading-spinner"></div>
-        <p>جاري التحميل...</p>
+<body>
+  <div class="container">
+    <h1>تحليل شخصيتك النفسي</h1>
+    <p>أجب عن 10 أسئلة بسيطة، واحصل على تحليل شامل يُظهر نوعك النفسي، أنماطك، ونظريات تتحكم في سلوكك.</p>
+
+    <div id="quiz" class="quiz">
+      <div id="question"></div>
+      <div id="options" class="options"></div>
+      <button id="nextBtn">السؤال التالي</button>
     </div>
 
-    <!-- القسم الترحيبي -->
-    <section id="welcomeSection" class="welcome-section active">
-        <header>
-            <div class="site-title">غرفة الأسرار<br><span>Secrets Room</span></div>
-            <div>
-                <p id="welcome">مرحبًا بك في رحلة اكتشاف الذات</p>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <button class="theme-toggle" aria-label="تبديل الثيم"><i class="fas fa-moon"></i></button>
-                    <select id="langSelect" onchange="changeLanguage(this.value)" aria-label="اختيار اللغة">
-                        <option value="ar">🇪🇬 العربية</option>
-                        <option value="en">🇺🇸 English</option>
-                    </select>
-                </div>
-            </div>
-        </header>
-
-        <div class="intro-card">
-            <h2>من نحن؟</h2>
-            <p>مشروع نفسي تفاعلي يساعدك على فهم نفسك بشكل أعمق.</p>
-        </div>
-
-        <div class="stats">
-            <div>الزوار: <span id="visitorCount">0</span></div>
-            <div>الاختبارات: <span id="testCount">0</span></div>
-        </div>
-
-        <div class="user-info">
-            <label id="ageLabel">العمر</label>
-            <input type="number" id="ageInput" placeholder="أدخل عمرك">
-            <label id="genderLabel">الجنس</label>
-            <select id="genderSelect">
-                <option value="male">ذكر</option>
-                <option value="female">أنثى</option>
-                <option value="other">غير ذلك</option>
-            </select>
-        </div>
-
-        <button id="startBtn" onclick="startTest()">ابدأ الاختبار</button>
-
-        <!-- إعلان -->
-        <div class="ad-placeholder">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-123456789"
-                 data-ad-slot="123456789"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true">
-            </ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-    </section>
-
-    <!-- قسم الاختبار -->
-    <section id="quizSection" class="quiz-section">
-        <div class="progress-bar">
-            <div id="progressFill"></div>
-            <div id="progressText">0 / 0</div>
-        </div>
-        <h2 id="quizTitle">اختبار الشخصية</h2>
-        <div id="questionContainer"></div>
-        <div id="answerOptions"></div>
-        <button id="nextBtn" disabled onclick="nextQuestion()">التالي</button>
-    </section>
-
-    <!-- قسم النتائج -->
-    <section id="resultSection" class="result-section">
-        <h2>نتائجك</h2>
-        <div id="resultNavigation">
-            <button id="btnPersonalityType" onclick="displayResultContent('personalityType')">نوع الشخصية</button>
-            <button id="btnSummary" onclick="displayResultContent('summary')">الملخص</button>
-            <button id="btnTheories" onclick="displayResultContent('theories')">النظريات</button>
-            <button id="btnDetailedAnalysis" onclick="displayResultContent('detailedAnalysis')">تحليل مفصل</button>
-            <button id="btnRecommendations" onclick="displayResultContent('recommendations')">توصيات</button>
-        </div>
-
-        <canvas id="resultChart" style="max-width: 400px; margin: 20px auto;" aria-label="رسم بياني لنتائج المجالات"></canvas>
-
-        <div id="personalityTypeSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnPersonalityType"></div>
-        <div id="summarySection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnSummary"></div>
-        <div id="theoriesSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnTheories"></div>
-        <div id="detailedAnalysisSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnDetailedAnalysis"></div>
-        <div id="recommendationsSection" class="result-section-content" style="display:none;" role="tabpanel" aria-labelledby="btnRecommendations"></div>
-
-        <div class="actions">
-            <button id="downloadPdfBtn" onclick="downloadPDF()">تحميل التقرير PDF</button>
-            <button id="shareBtn" onclick="shareResult()">مشاركة</button>
-        </div>
-
-        <!-- إعلان أسفل النتائج -->
-        <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-123456789"
-                 data-ad-slot="123456789"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true">
-            </ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-    </section>
-
-    <!-- مودال لعرض تفاصيل النظريات -->
-    <div id="theoryModal" class="modal" style="display:none;" role="dialog" aria-labelledby="theoryModalTitle">
-        <div class="modal-content">
-            <span class="close" onclick="closeTheoryModal()" aria-label="إغلاق نافذة النظرية">&times;</span>
-            <h3 id="theoryModalTitle">تفاصيل النظرية</h3>
-            <div id="theoryModalContent"></div>
-        </div>
+    <div id="result" class="result" style="display: none;">
+      <pre id="analysis"></pre>
+      <button id="restartBtn">أعد المحاولة</button>
     </div>
+  </div>
 
-    <footer style="text-align: center; margin-top: 30px; padding: 15px; font-size: 0.9rem; color: #666; border-top: 1px solid #eee;">
-        <p>&copy; 2025 غرفة الأسرار</p>
-        <!-- إعلان في الفوتر -->
-        <div class="ad-placeholder" style="margin: 20px auto; max-width: 300px;" aria-hidden="true">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-123456789"
-                 data-ad-slot="123456789"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true">
-            </ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-    </footer>
+  <script type="module">
+    import questions from './questions.js';
+    import generatePersonalityAnalysis from './analyzer.js';
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultEl = document.getElementById('result');
+    const analysisEl = document.getElementById('analysis');
+    const restartBtn = document.getElementById('restartBtn');
+
+    let currentQ = 0;
+    let userAnswers = [];
+
+    const showQuestion = () => {
+      const q = questions[currentQ];
+      questionEl.innerHTML = `<h3>${currentQ + 1}. ${q.text}</h3>`;
+      optionsEl.innerHTML = '';
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.classList.add('option-btn');
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => {
+          userAnswers[currentQ] = index;
+          btn.classList.add('selected');
+          Array.from(optionsEl.children).forEach(b => {
+            if (b !== btn) b.classList.remove('selected');
+          });
+        });
+        optionsEl.appendChild(btn);
+      });
+    };
+
+    nextBtn.addEventListener('click', () => {
+      if (userAnswers[currentQ] === undefined) {
+        alert("الرجاء اختيار إجابة");
+        return;
+      }
+
+      currentQ++;
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        const analysis = generatePersonalityAnalysis(userAnswers);
+        analysisEl.textContent = analysis;
+        document.getElementById('quiz').style.display = 'none';
+        resultEl.style.display = 'block';
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      currentQ = 0;
+      userAnswers = [];
+      resultEl.style.display = 'none';
+      document.getElementById('quiz').style.display = 'block';
+      showQuestion();
+    });
+
+    // ابدأ
+    showQuestion();
+  </script>
 </body>
 </html>
