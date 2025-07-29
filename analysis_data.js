@@ -1,299 +1,193 @@
-// analysis_data.js - النسخة المكتملة والجاهزة
-export default {
-  freud: {
-    MBTI: {
-      name: "سيغموند فرويد",
-      description: "مؤسس التحليل النفسي، يركز على الدوافع اللاواعية والصراعات النفسية.",
-      scientific_background: "يُعتبر فرويد مؤسس التحليل النفسي، لكن نظريته تفتقر إلى دعم تجريبي قوي (Freud, 1900). لا تزال تُستخدم في العلاج النفسي.",
-      key_concepts: [
-        "العقل الباطن: الدوافع اللاواعية تؤثر على السلوك.",
-        "الهو، الأنا، الأنا العليا: الصراع بين الرغبات، الواقع، والأخلاق."
-      ],
-      strengths: [
-        "تقديم رؤى عميقة حول الدوافع اللاواعية.",
-        "تأسيس أساس العلاج النفسي الحديث."
-      ],
-      weaknesses: [
-        "نقص الأدلة العلمية القوية.",
-        "التعقيد في التطبيق العملي."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى اهتمام بالدوافع اللاواعية وفهم الصراعات النفسية.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو العلمية.",
-      high_score_traits: [
-        "الوعي بالدوافع اللاواعية",
-        "التفكير العميق"
-      ],
-      low_score_traits: [
-        "التركيز على السلوك الملحوظ",
-        "الشك في التحليل النفسي"
-      ],
-      development_tips: [
-        "اقرأ كتاب 'The Interpretation of Dreams' لفرويد لفهم العقل الباطن.",
-        "استكشف العلاج النفسي التحليلي مع مختص."
-      ],
-      case_studies: [
-        "تطبيق التحليل النفسي في العلاج لفهم الصراعات الداخلية."
-      ],
-      cultural_considerations: "قد لا يناسب الثقافات التي تركز على الحلول العملية بدلاً من التحليل العميق."
-    }
-  },
-  jung: {
-    MBTI: {
-      name: "كارل يونغ",
-      description: "عالم نفس سويسري، طوّر نظرية الأنا المتعددة واللاوعي الجماعي.",
-      scientific_background: "طوّر يونغ نظرية الأنا المتعددة والرموز المشتركة. نظريته تُستخدم في العلاج النفسي والتحليل.",
-      key_concepts: [
-        "الأنا المتعددة: الشخص يمتلك جوانب متعددة من الهوية.",
-        "الظل: الجوانب المكبوتة من الشخصية."
-      ],
-      strengths: [
-        "تقديم فهم عميق للهوية والصراعات الداخلية.",
-        "الربط بين الفرد والمجتمع من خلال اللاوعي الجماعي."
-      ],
-      weaknesses: [
-        "صعوبة في قياس المفاهيم كميًا.",
-        "التركيز على الرموز قد يكون غامضًا."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى اهتمام بالهوية المتعددة والتحليل النفسي العميق.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات السلوكية أو العملية.",
-      high_score_traits: [
-        "الوعي بالوظائف النفسية",
-        "التفكير التأملي"
-      ],
-      low_score_traits: [
-        "التركيز على السلوك الملحوظ",
-        "الشك في التصنيفات النفسية"
-      ],
-      development_tips: [
-        "اقرأ كتاب 'Psychological Types' ليونغ لفهم الأنواع النفسية.",
-        "استكشف MBTI كتطبيق عملي لنظرية يونغ."
-      ],
-      case_studies: [
-        "تطبيق نظرية يونغ في العلاج النفسي لفهم التفضيلات النفسية."
-      ],
-      cultural_considerations: "قد يحتاج إلى تعديلات في الثقافات التي تركز على السلوكيات العملية بدلاً من التحليل النفسي."
-    }
-  },
-  erikson: {
-    MBTI: {
-      name: "إريك إريكسون",
-      description: "عالم نفس، طوّر نظرية المراحل النفسية-الاجتماعية.",
-      scientific_background: "نظرية المراحل الثمانية للنمو النفسي-الاجتماعي. تُستخدم في علم النفس التنموي.",
-      key_concepts: [
-        "الثقة مقابل الشك: المرحلة الأولى في الطفولة.",
-        "الهوية مقابل التشتت: مرحلة المراهقة."
-      ],
-      strengths: [
-        "تقديم إطار زمني للنمو النفسي.",
-        "التركيز على التفاعل الاجتماعي."
-      ],
-      weaknesses: [
-        "النماذج قد تكون مثالية أكثر من اللازم.",
-        "صعوبة في قياس المراحل بدقة."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى فهم عميق لتطور الهوية عبر المراحل.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات الحالية للسلوك.",
-      high_score_traits: [
-        "الوعي بالتطور النفسي",
-        "الفهم الزمني للذات"
-      ],
-      low_score_traits: [
-        "التركيز على الحاضر فقط",
-        "تجاهل التطورات النفسية الطويلة"
-      ],
-      development_tips: [
-        "راجع مراحل حياتك وفقًا لنظرية إريكسون.",
-        "افهم كيف تشكلت هويتك في المراهقة."
-      ],
-      case_studies: [
-        "استخدام النظرية في العلاج لتقييم التحديات الحالية بناءً على المراحل الماضية."
-      ],
-      cultural_considerations: "قد تختلف الأولويات الثقافية في كل مرحلة."
-    }
-  },
-  maslow: {
-    MBTI: {
-      name: "إبراهام ماسلو",
-      description: "عالم نفس، طوّر هرم الاحتياجات، من الأساسيات إلى التحقيق الذاتي.",
-      scientific_background: "هرم الاحتياجات يُستخدم في علم النفس، الإدارة، والتعليم.",
-      key_concepts: [
-        "الاحتياجات الأساسية: الغذاء، الأمان.",
-        "الاحتياجات العليا: الانتماء، التقدير، تحقيق الذات."
-      ],
-      strengths: [
-        "سهولة الفهم والتطبيق.",
-        "إطار شامل للنمو البشري."
-      ],
-      weaknesses: [
-        "الافتراض بوجود تسلسل خطي.",
-        "صعوبة قياس التحقيق الذاتي."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى تركيز على الاحتياجات العليا والنمو الشخصي.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تركيز على الاحتياجات الأساسية والعملية.",
-      high_score_traits: [
-        "السعي لتحقيق الذات",
-        "الاهتمام بالنمو الداخلي"
-      ],
-      low_score_traits: [
-        "التركيز على الأمان والاحتياجات المادية",
-        "الشك في المفاهيم الروحية"
-      ],
-      development_tips: [
-        "حدد أي مستوى من الهرم أنت فيه حاليًا.",
-        "ضع أهدافًا للانتقال إلى المستوى التالي."
-      ],
-      case_studies: [
-        "استخدام الهرم في التوجيه المهني لتقييم أولويات الأفراد."
-      ],
-      cultural_considerations: "قد تختلف ترتيبات الاحتياجات حسب الثقافة."
-    }
-  },
-  big_five: {
-    MBTI: {
-      name: "الخمسة الكبار",
-      description: "نموذج شخصية حديث يقيس الانفتاح، الود، السيطرة، الانبساط، والعصابية.",
-      scientific_background: "نموذج مدعوم إحصائيًا، يُستخدم في الأبحاث وعلم النفس السريري.",
-      key_concepts: [
-        "الانفتاح: الاهتمام بالفنون والأفكار الجديدة.",
-        "الانبساط: الطاقة الاجتماعية والانفتاح."
-      ],
-      strengths: [
-        "دعم تجريبي قوي.",
-        "قابلية للقياس الدقيق."
-      ],
-      weaknesses: [
-        "قد يُبسط التعقيد البشري.",
-        "قلة التركيز على الدوافع العميقة."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع السمات المقيسة في النموذج.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل تفسيرات نفسية أخرى.",
-      high_score_traits: [
-        "الانفتاح على التجارب",
-        "الاستقرار العاطفي"
-      ],
-      low_score_traits: [
-        "التقليدية",
-        "التركيز على السلوك الظاهر"
-      ],
-      development_tips: [
-        "افهم نتائجك في كل بُعد من الأبعاد الخمسة.",
-        "استخدمها لتحسين التفاعل مع الآخرين."
-      ],
-      case_studies: [
-        "استخدام النموذج في التوظيف لتقييم التوافق مع بيئة العمل."
-      ],
-      cultural_considerations: "قد تختلف تفسيرات السمات حسب السياق الثقافي."
-    }
-  },
-  mbti: {
-    MBTI: {
-      name: "مؤشر مايرز-براجز",
-      description: "تصنيف للشخصية إلى 16 نوعًا بناءً على 4 تفضيلات نفسية.",
-      scientific_background: "مستوحى من نظرية يونغ، يُستخدم في التطوير المهني والعلاج.",
-      key_concepts: [
-        "الانبساط مقابل الانطواء: مصدر الطاقة.",
-        "الحدس مقابل الحدس: طريقة جمع المعلومات."
-      ],
-      strengths: [
-        "سهولة الاستخدام والفهم.",
-        "مفيد في فهم ديناميكيات الفريق."
-      ],
-      weaknesses: [
-        "ضعف الثبات الزمني.",
-        "التصنيف الثنائي قد لا يعكس التدرجات."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع أحد أنواع MBTI.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل نماذج شخصية أكثر مرونة.",
-      high_score_traits: [
-        "الوعي بتفضيلاتك النفسية",
-        "القدرة على فهم أنماط الآخرين"
-      ],
-      low_score_traits: [
-        "الشك في التصنيفات النفسية",
-        "التفضيل للتحليل السلوكي"
-      ],
-      development_tips: [
-        "حدد نوع MBTI الخاص بك بدقة.",
-        "افهم كيف يؤثر على تفاعلاتك مع الفريق."
-      ],
-      case_studies: [
-        "استخدام MBTI في التدريب المهني لتحسين التواصل."
-      ],
-      cultural_considerations: "قد لا يناسب جميع الثقافات بنفس الدرجة."
-    }
-  },
-  disc: {
-    MBTI: {
-      name: "نموذج DISC",
-      description: "نموذج يصنف السلوك إلى 4 أنماط: السيطرة، التأثير، الاستقرار، والامتثال.",
-      scientific_background: "يُستخدم في بيئات العمل لفهم ديناميكيات الفريق.",
-      key_concepts: [
-        "السيطرة: التركيز على النتائج والكفاءة.",
-        "الالتزام: التركيز على الدقة والتحليل."
-      ],
-      strengths: [
-        "سهل الاستخدام في بيئات العمل والتدريب.",
-        "يعزز فهم ديناميكيات الفريق."
-      ],
-      weaknesses: [
-        "نقص الأدلة العلمية القوية.",
-        "التصنيف قد يُبسّط الشخصية بشكل مفرط."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى توافق مع نموذج DISC، مما يعني أنك تقدر تصنيفات السلوك في بيئات العمل والتفاعل الاجتماعي.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات العلمية أو الأكثر تعقيدًا للشخصية.",
-      high_score_traits: [
-        "الوعي بالسلوكيات في بيئات العمل",
-        "مهارات التواصل الاجتماعي"
-      ],
-      low_score_traits: [
-        "التركيز على الدوافع العميقة",
-        "الشك في التصنيفات السلوكية"
-      ],
-      development_tips: [
-        "افهم أنماط DISC الأربعة.",
-        "استخدمها لتحسين التواصل في الفريق."
-      ],
-      case_studies: [
-        "استخدام DISC في التوظيف لتقييم التوافق مع الثقافة التنظيمية."
-      ],
-      cultural_considerations: "قد تختلف تعبيرات السلوك حسب الثقافة."
-    }
-  },
-  gardner: {
-    MBTI: {
-      name: "هاورد جاردنر",
-      description: "عالم نفس، طوّر نظرية الذكاءات المتعددة.",
-      scientific_background: "الذكاءات تشمل اللغوي، المنطقي، الحركي، الموسيقي، البصري، الاجتماعي، والذاتي.",
-      key_concepts: [
-        "الذكاءات المتعددة: البشر لديهم أنواع مختلفة من الذكاء.",
-        "التعليم المخصص: يجب تكييف التعلم حسب نوع الذكاء."
-      ],
-      strengths: [
-        "توسيع مفهوم الذكاء وراء القياسات التقليدية.",
-        "مفيد في التعليم."
-      ],
-      weaknesses: [
-        "نقص الأدلة التجريبية القوية.",
-        "التعقيد في قياس الذكاءات بدقة."
-      ],
-      high_score_interpretation: "تشير درجاتك العالية إلى تقدير للتنوع في الذكاءات واهتمام بالتعلم المخصص.",
-      low_score_interpretation: "تشير درجاتك المنخفضة إلى تفضيل التفسيرات التقليدية للذكاء.",
-      high_score_traits: [
-        "الوعي بالذكاءات المتعددة",
-        "المرونة في التعلم"
-      ],
-      low_score_traits: [
-        "التركيز على الذكاء التقليدي",
-        "الشك في الذكاءات المتعددة"
-      ],
-      development_tips: [
-        "اقرأ كتاب 'Frames of Mind' لغاردنر لفهم النظرية.",
-        "حدد نقاط قوتك في الذكاءات المختلفة."
-      ],
-      case_studies: [
-        "تطبيق النظرية في التعليم لتصميم مناهج مخصصة."
-      ],
-      cultural_considerations: "قد تختلف أولويات الذكاءات حسب الثقافة."
+// analyzer.js
+// تحليل الشخصية بناءً على الإجابات - تقرير شبه بشري
+
+import personalityQuestions from './questions.js';
+
+// دالة رئيسية لتوليد التحليل
+function generatePersonalityAnalysis(answers) {
+  /*
+   * answers: مصفوفة من أرقام (اختيار كل سؤال من 0 إلى 3)
+   * مثال: [0, 2, 1, 3, ...] حسب الفهرس في options
+   */
+
+  // عدّ الاختيارات حسب لون الشخصية (من السؤال 11 أو من الأنماط)
+  const colorCount = { red: 0, yellow: 0, green: 0, blue: 0 };
+
+  answers.forEach((answerIndex, questionIndex) => {
+    const option = personalityQuestions[questionIndex]?.options[answerIndex];
+    if (!option) return;
+
+    if (option.text.includes('أحمر') || option.trait === 'D') colorCount.red++;
+    if (option.text.includes('أصفر') || option.trait === 'I') colorCount.yellow++;
+    if (option.text.includes('أخضر') || option.trait === 'S') colorCount.green++;
+    if (option.text.includes('أزرق') || option.trait === 'C') colorCount.blue++;
+  });
+
+  // تحديد لون الشخصية المسيطر
+  let dominantColor = 'green';
+  let max = 0;
+  for (const [color, count] of Object.entries(colorCount)) {
+    if (count > max) {
+      max = count;
+      dominantColor = color;
     }
   }
-};
+
+  // خرائط الألوان إلى الصفات
+  const colorProfiles = {
+    red: {
+      name: "النوع الأحمر",
+      title: "القائد الطموح",
+      traits: "حازم، طموح، مباشر، يركز على النتائج، يحب السيطرة، واثق، صاحب قرار.",
+      style: "تُقدّر الكفاءة أكثر من التفاصيل. تكره الفوضى وتحب أن تتحرك الأمور بسرعة. أنت من يبدأ، يقود، ويُنهي."
+    },
+    yellow: {
+      name: "النوع الأصفر",
+      title: "المحفّز المرح",
+      traits: "اجتماعي، متفائل، مرن، إبداعي، مليء بالطاقة، يحب الاعتراف.",
+      style: "أنت بطل الجلسات، تُضيء المكان بحضورك. تحب الحرية، تكره الروتين، وتحتاج إلى الإلهام والتقدير."
+    },
+    green: {
+      name: "النوع الأخضر",
+      title: "الداعم المستقر",
+      traits: "ودود، صبور، متعاون، مستقر، يكره الصراع، مخلص، مُستمع جيد.",
+      style: "أنت القلب الهادئ في أي فريق. تُقدّر العلاقات، تُكمل الآخرين، وتعمل من وراء الكواليس دون ضجيج."
+    },
+    blue: {
+      name: "النوع الأزرق",
+      title: "المُخطط الدقيق",
+      traits: "منطقي، تحليلي، منظم، دقيق، يحب التخطيط، يهتم بالجودة، يبحث عن المعنى.",
+      style: "أنت تفكر قبل أن تتصرف. تحب الأنظمة، تكره العشوائية، وتحتاج إلى فهم الصورة الكاملة قبل اتخاذ قرار."
+    }
+  };
+
+  const profile = colorProfiles[dominantColor];
+
+  // احسب مؤشرات نظرية أخرى
+  let mbti = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  let theories = {
+    adler: 0,
+    erikson: 0,
+    maslow: 0,
+    rogers: 0,
+    bigFive: { C: 0, E: 0, O: 0, A: 0, N: 0 },
+    disc: { D: 0, I: 0, S: 0, C: 0 },
+    keirsey: { Guardian: 0, Artisan: 0, Idealist: 0, Rational: 0 },
+    flow: 0,
+    perma: 0
+  };
+
+  answers.forEach((answerIndex, questionIndex) => {
+    const option = personalityQuestions[questionIndex]?.options[answerIndex];
+    if (!option) return;
+
+    // MBTI
+    if (option.trait.includes('E')) mbti.E++;
+    if (option.trait.includes('I')) mbti.I++;
+    if (option.trait.includes('S')) mbti.S++;
+    if (option.trait.includes('N')) mbti.N++;
+    if (option.trait.includes('T')) mbti.T++;
+    if (option.trait.includes('F')) mbti.F++;
+    if (option.trait.includes('J')) mbti.J++;
+    if (option.trait.includes('P')) mbti.P++;
+
+    // DISC
+    if (option.trait === 'D') theories.disc.D++;
+    if (option.trait === 'I') theories.disc.I++;
+    if (option.trait === 'S') theories.disc.S++;
+    if (option.trait === 'C') theories.disc.C++;
+
+    // Keirsey
+    if (option.trait.includes('Guardian')) theories.keirsey.Guardian++;
+    if (option.trait.includes('Artisan')) theories.keirsey.Artisan++;
+    if (option.trait.includes('Idealist')) theories.keirsey.Idealist++;
+    if (option.trait.includes('Rational')) theories.keirsey.Rational++;
+
+    // Big Five
+    if (option.trait === 'C') theories.bigFive.C++;
+    if (option.trait === 'E') theories.bigFive.E++;
+    if (option.trait === 'O') theories.bigFive.O++;
+    if (option.trait === 'A') theories.bigFive.A++;
+    if (option.trait === 'N') theories.bigFive.N++;
+
+    // Other theories
+    if (option.theory.includes('Adler')) theories.adler++;
+    if (option.theory.includes('Erikson')) theories.erikson++;
+    if (option.theory.includes('Maslow')) theories.maslow++;
+    if (option.theory.includes('Rogers')) theories.rogers++;
+    if (option.theory.includes('Flow')) theories.flow++;
+    if (option.theory.includes('PERMA')) theories.perma++;
+  });
+
+  // توليد تقرير بشري
+  const mbtiType = 
+    (mbti.E > mbti.I ? 'E' : 'I') +
+    (mbti.S > mbti.N ? 'S' : 'N') +
+    (mbti.T > mbti.F ? 'T' : 'F') +
+    (mbti.J > mbti.P ? 'J' : 'P');
+
+  const keirseyType = Object.keys(theories.keirsey).reduce((a, b) => theories.keirsey[a] > theories.keirsey[b] ? a : b);
+
+  // === التقرير النهائي ===
+  const analysis = `
+التحليل النفسي للشخصية
+==========================
+
+${profile.name}: ${profile.title}
+
+${profile.style}
+
+أنت شخصية تُقدّر ${{
+  red: "النتائج، التحدي، والقيادة.",
+  yellow: "الحرية، التفاعل، والتقدير.",
+  green: "الاستقرار، الدعم، والولاء.",
+  blue: "الدقة، الفهم، والمعنى."
+}[dominantColor]}
+
+في بيئة العمل، أنت غالبًا ما تُنظر إليك كـ:
+- ${profile.traits.split('، ')[0]} و${profile.traits.split('، ')[1]}
+
+تحليل نفسي معمق:
+------------------
+- وفقًا لنظرية **MBTI**، أنماطك تشير إلى: ${mbtiType}
+- حسب **نظرية كيرسي**، أنت من النوع: ${keirseyType}
+- في **نظرية DISC**، لديك هيمنة على نمط: ${Object.keys(theories.disc).reduce((a, b) => theories.disc[a] > theories.disc[b] ? a : b)}
+- مستوى الـ **Big Five** يُظهر أنك: 
+  - ضمير عالٍ: ${theories.bigFive.C > 2 ? 'نعم' : 'متوسط'}
+  - انفتاح: ${theories.bigFive.O > 2 ? 'عالي' : 'متوسط'}
+  - انبساط: ${theories.bigFive.E > 2 ? 'عالي' : 'منخفض'}
+  - وئام: ${theories.bigFive.A > 2 ? 'عالي' : 'متوسط'}
+  - عصابية: ${theories.bigFive.N > 2 ? 'متوسطة إلى عالية' : 'منخفضة'}
+
+- تُظهر إجاباتك علامات على:
+  ${theories.adler > 2 ? "شعور بالنقص وسعي للتفوق (نظرية أدلر)" : ""}
+  ${theories.maslow > 2 ? "سعي نحو تحقيق الذات (ماسلو)" : ""}
+  ${theories.rogers > 2 ? "بحث عن التحقق الذاتي (روجرز)" : ""}
+  ${theories.flow > 2 ? "تجربة حالات انغماس (Flow) عند التحدي المتوازن" : ""}
+  ${theories.perma > 2 ? "اهتمام بالعلاقات والمعنى (PERMA)" : ""}
+
+خلاصة:
+--------
+أنت شخصية مُركبة، لكن لونك النفسي المسيطر هو **${profile.name}**، وهذا يشرح الكثير عن طريقة تفكيرك، اتخاذ قراراتك، وتفاعلك مع العالم. سواء كنت تقود، تُلهم، تدعم، أو تُحلل — فإنك تُحدث فرقًا بطريقتك الخاصة.
+
+تم بناء هذا التحليل بناءً على النظريات التالية:
+- نظرية الألوان الشخصية
+- نظرية MBTI (مايرز-برiggs)
+- نظرية كيرسي للنُظم
+- نظرية DISC
+- نظرية العوامل الخمسة الكبرى (Big Five)
+- نظرية أدلر (الشعور بالنقص)
+- نظرية ماسلو (سلم الحاجات)
+- نظرية روجرز (التحقق الذاتي)
+- نظرية PERMA (الرفاهية النفسية)
+- نظرية Flow (الانغماس)
+- نظرية إريكسون (المراحل النفسية الاجتماعية)
+
+تم إعداد التقرير بواسطة: نظام تحليل الشخصية الذكي
+`;
+
+  return analysis.trim();
+}
+
+// تصدير الدالة
+export default generatePersonalityAnalysis;
