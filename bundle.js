@@ -262,36 +262,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentQ < personalityQuestions.length) {
       showQuestion();
     } else {
-      const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
+     const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
 analysisEl.textContent = fullAnalysis;
 quizEl.style.display = 'none';
+resultEl.style.display = 'block'; // اعرض النتيجة أولًا
 
-// === إعلانات Monetag Popunder - تدوير بين الأيديه الموثوقة ===
-try {
-  const monetagZones = ['9643618', '9643617', '9643591', '9643590'];
-  const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+// === تفعيل إعلانات Monetag بعد 2 ثانية من ظهور النتيجة ===
+setTimeout(() => {
+  try {
+    // تأكد أن الإعلان لم يُفعّل من قبل
+    if (window.monetagLoaded) return;
 
-  const monetagScript = document.createElement('script');
-  monetagScript.id = 'monetag-popunder';
-  monetagScript.async = true;
-  monetagScript.type = 'text/javascript';
-  monetagScript.setAttribute('data-cfasync', 'false');
-  monetagScript.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
-  document.body.appendChild(monetagScript);
+    // الأيديه الخاصة بك
+    const monetagZones = ['9643618', '9643617', '9643591', '9643590'];
+    const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
 
-  setTimeout(() => {
-    if (typeof goAds !== 'undefined' && goAds.length > 0) {
-      if (goAds[0].loadAd) goAds[0].loadAd();
-    }
-  }, 1500);
+    // إنشاء سكربت Monetag
+    const script = document.createElement('script');
+    script.id = 'monetag-popunder';
+    script.async = true;
+    script.type = 'text/javascript';
+    script.setAttribute('data-cfasync', 'false');
+    script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
 
-  window.monetagLoaded = true;
+    // إضافة السكربت إلى الصفحة
+    document.body.appendChild(script);
 
-} catch (e) {
-  console.warn("Monetag: فشل في تحميل الإعلان", e);
-}
+    // بعد التحميل، شغّل الإعلان
+    script.onload = () => {
+      console.log("Monetag: السكربت حُمّل بنجاح");
+      setTimeout(() => {
+        if (typeof goAds !== 'undefined' && goAds.length > 0) {
+          if (goAds[0].loadAd) {
+            goAds[0].loadAd();
+            console.log("Monetag: الإعلان تم تحميله وعرضه");
+          }
+        }
+      }, 100); // تأخير بسيط داخلي لضمان التفاعل
+    };
 
-resultEl.style.display = 'block';
+    script.onerror = () => {
+      console.error("Monetag: فشل في تحميل السكربت");
+    };
+
+    // علامة أن الإعلان تم تفعيله
+    window.monetagLoaded = true;
+
+  } catch (e) {
+    console.error("Monetag: خطأ غير متوقع", e);
+  }
+}, 2000); // ⏱️ 2 ثانية بعد ظهور النتيجة
     }
   });
 
