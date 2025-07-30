@@ -491,3 +491,124 @@ document.addEventListener('DOMContentLoaded', () => {
     userInfoEl.style.display = 'block';
   });
 });
+// === نظام الترجمة: عربي / إنجليزي ===
+(function () {
+  // ترجمات النصوص
+  const translations = {
+    ar: {
+      welcome_title: 'مرحبا بك في غرفة الاسرار',
+      user_info_title: 'أخبرنا عنك أولًا',
+      user_info_desc: 'هذه المعلومات تساعدنا في تخصيص التحليل لك بدقة أكبر',
+      age_label: 'العمر:',
+      gender_label: 'الجنس:',
+      submit_user_info: 'أدخل الغرفة',
+      intro_title: 'غرفة الأسرار',
+      intro_subtitle: 'Chamber of Secrets',
+      intro_desc: 'اكتشف شخصيتك الحقيقية من خلال 6 أسئلة تفتح لك أبواب الذات',
+      intro_p1: 'أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.',
+      intro_p2: 'أجب بصدق... وسترى ما لم تره من قبل.',
+      start_btn: 'ادخل إلى الغرفة',
+      question: 'سؤال',
+      next_btn: 'السؤال التالي',
+      restart_btn: 'أعد الرحلة',
+      footer1: '© 2025 غرفة الأسرار | Chamber of Secrets',
+      footer2: 'تم التصميم والتحليل النفسي والتطوير من قبل: Mohammed Tarek',
+      lang_switch: 'EN'
+    },
+    en: {
+      welcome_title: 'Welcome to Chamber of Secrets',
+      user_info_title: 'Tell Us About You First',
+      user_info_desc: 'This information helps us customize the analysis for you more accurately',
+      age_label: 'Age:',
+      gender_label: 'Gender:',
+      submit_user_info: 'Enter the Chamber',
+      intro_title: 'Chamber of Secrets',
+      intro_subtitle: 'غرفة الأسرار',
+      intro_desc: 'Discover your true personality through 6 questions that open the doors to your inner self',
+      intro_p1: 'You are about to enter a room that reveals itself only to those honest with themselves.',
+      intro_p2: 'Answer honestly... and you will see what you have never seen before.',
+      start_btn: 'Enter the Chamber',
+      question: 'Question',
+      next_btn: 'Next Question',
+      restart_btn: 'Restart the Journey',
+      footer1: '© 2025 Chamber of Secrets | غرفة الأسرار',
+      footer2: 'Designed, analyzed, and developed by: Mohammed Tarek',
+      lang_switch: 'AR'
+    }
+  };
+
+  // تطبيق الترجمة
+  function applyTranslation(lang) {
+    const t = translations[lang];
+    if (!t) return;
+
+    // تحديث النصوص
+    if (document.getElementById('userInfo')) {
+      document.querySelector('#userInfo h3:nth-of-type(1)').textContent = t.welcome_title;
+      document.querySelector('#userInfo h3:nth-of-type(2)').textContent = t.user_info_title;
+      document.querySelector('#userInfo p').textContent = t.user_info_desc;
+      document.querySelector('#age').previousElementSibling.textContent = t.age_label;
+      document.querySelector('#gender').previousElementSibling.textContent = t.gender_label;
+      document.querySelector('#submitUserInfo').textContent = t.submit_user_info;
+    }
+
+    if (document.getElementById('intro')) {
+      document.querySelector('#intro h1').textContent = t.intro_title;
+      document.querySelector('#intro h2').textContent = t.intro_subtitle;
+      document.querySelector('#intro .divider').nextElementSibling.textContent = t.intro_desc;
+      document.querySelectorAll('#intro p')[0].textContent = t.intro_p1;
+      document.querySelectorAll('#intro p')[1].textContent = t.intro_p2;
+      document.querySelector('#startBtn').textContent = t.start_btn;
+    }
+
+    if (document.getElementById('nextBtn')) {
+      document.querySelector('#nextBtn').textContent = t.next_btn;
+    }
+
+    if (document.getElementById('restartBtn')) {
+      document.querySelector('#restartBtn').textContent = t.restart_btn;
+    }
+
+    // تحديث الفوتر
+    document.querySelectorAll('footer p')[0].textContent = t.footer1;
+    document.querySelectorAll('footer p')[1].textContent = t.footer2;
+
+    // تحديث زر اللغة
+    const langBtn = document.getElementById('langToggle');
+    if (langBtn) langBtn.textContent = t.lang_switch;
+
+    // تغيير اتجاه الصفحة
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }
+
+  // إدارة زر الترجمة
+  function initLanguageSwitcher() {
+    const langBtn = document.createElement('button');
+    langBtn.id = 'langToggle';
+    langBtn.title = 'Change Language';
+    langBtn.style.cssText = `
+      position: absolute; top: 20px; left: 20px; z-index: 1000;
+      background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24;
+      padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem;
+    `;
+    langBtn.textContent = localStorage.getItem('lang') === 'en' ? 'AR' : 'EN';
+    document.body.appendChild(langBtn);
+
+    const savedLang = localStorage.getItem('lang') || 'ar';
+    applyTranslation(savedLang);
+
+    langBtn.addEventListener('click', () => {
+      const newLang = document.documentElement.lang === 'ar' ? 'en' : 'ar';
+      localStorage.setItem('lang', newLang);
+      applyTranslation(newLang);
+    });
+  }
+
+  // تفعيل النظام بعد تحميل الصفحة
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLanguageSwitcher);
+  } else {
+    initLanguageSwitcher();
+  }
+})();
