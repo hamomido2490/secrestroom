@@ -8,16 +8,45 @@
 </head>
 <body>
   <div class="container">
-    <!-- اسم الموقع -->
-    <div class="logo">
-      <h1>غرفة الأسرار</h1>
-      <h2>Chamber of Secrets</h2>
-      <div class="divider"></div>
-      <p>اكتشف شخصيتك الحقيقية من خلال 10 أسئلة تفتح لك أبواب الذات</p>
+    <!-- بيانات المستخدم -->
+    <div id="userInfo" class="user-info">
+      <h3>أخبرنا عنك أولًا</h3>
+      <p>هذه المعلومات تساعدنا في تخصيص التحليل لك بدقة أكبر</p>
+
+      <div class="form-group">
+        <label for="age">العمر:</label>
+        <select id="age" required>
+          <option value="">اختر عمرك</option>
+          <option value="13-18">13–18 سنة</option>
+          <option value="19-25">19–25 سنة</option>
+          <option value="26-35">26–35 سنة</option>
+          <option value="36-45">36–45 سنة</option>
+          <option value="46-60">46–60 سنة</option>
+          <option value="60+">60+ سنة</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">الجنس:</label>
+        <select id="gender" required>
+          <option value="">اختر جنسك</option>
+          <option value="ذكر">ذكر</option>
+          <option value="أنثى">أنثى</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+      </div>
+
+      <button id="submitUserInfo">ابدأ الرحلة</button>
     </div>
 
-    <!-- القسم الجديد: المقدمة -->
-    <div id="intro" class="intro">
+    <!-- صفحة الترحيب -->
+    <div id="intro" class="intro" style="display: none;">
+      <div class="logo">
+        <h1>غرفة الأسرار</h1>
+        <h2>Chamber of Secrets</h2>
+        <div class="divider"></div>
+        <p>اكتشف شخصيتك الحقيقية من خلال 10 أسئلة تفتح لك أبواب الذات</p>
+      </div>
       <p>أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.</p>
       <p>أجب بصدق... وسترى ما لم تره من قبل.</p>
       <button id="startBtn">ادخل إلى الغرفة</button>
@@ -41,18 +70,42 @@
     import questions from './questions.js';
     import generatePersonalityAnalysis from './analyzer.js';
 
-    const startBtn = document.getElementById('startBtn');
+    const userInfoEl = document.getElementById('userInfo');
     const introEl = document.getElementById('intro');
     const quizEl = document.getElementById('quiz');
     const resultEl = document.getElementById('result');
+
+    const submitUserInfo = document.getElementById('submitUserInfo');
+    const startBtn = document.getElementById('startBtn');
     const questionEl = document.getElementById('question');
     const optionsEl = document.getElementById('options');
     const nextBtn = document.getElementById('nextBtn');
     const analysisEl = document.getElementById('analysis');
     const restartBtn = document.getElementById('restartBtn');
 
+    let userData = {
+      age: '',
+      gender: ''
+    };
+
     let currentQ = 0;
     let userAnswers = [];
+
+    submitUserInfo.addEventListener('click', () => {
+      const age = document.getElementById('age').value;
+      const gender = document.getElementById('gender').value;
+
+      if (!age || !gender) {
+        alert("الرجاء اختيار العمر والجنس");
+        return;
+      }
+
+      userData.age = age;
+      userData.gender = gender;
+
+      userInfoEl.style.display = 'none';
+      introEl.style.display = 'block';
+    });
 
     startBtn.addEventListener('click', () => {
       introEl.style.display = 'none';
@@ -90,8 +143,8 @@
       if (currentQ < questions.length) {
         showQuestion();
       } else {
-        const analysis = generatePersonalityAnalysis(userAnswers);
-        analysisEl.textContent = analysis;
+        const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
+        analysisEl.textContent = fullAnalysis;
         quizEl.style.display = 'none';
         resultEl.style.display = 'block';
       }
@@ -101,9 +154,8 @@
       currentQ = 0;
       userAnswers = [];
       resultEl.style.display = 'none';
-      introEl.style.display = 'block';
+      userInfoEl.style.display = 'block';
     });
-
   </script>
 </body>
 </html>
