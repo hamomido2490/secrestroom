@@ -437,7 +437,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           if (window.monetagLoaded) return;
 
-          const monetagZones = ['9643618', '9643617', '9643591', '9643590'];
+          const monetagZones = [
+  '9643750',
+  '9643749',
+  '9643709',
+  '9643708',
+  '9643638',
+];
           const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
 
           const script = document.createElement('script');
