@@ -263,9 +263,35 @@ document.addEventListener('DOMContentLoaded', () => {
       showQuestion();
     } else {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
-      analysisEl.textContent = fullAnalysis;
-      quizEl.style.display = 'none';
-      resultEl.style.display = 'block';
+analysisEl.textContent = fullAnalysis;
+quizEl.style.display = 'none';
+
+// === إعلانات Monetag Popunder - تدوير بين الأيديه الموثوقة ===
+try {
+  const monetagZones = ['9643618', '9643617', '9643591', '9643590'];
+  const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+
+  const monetagScript = document.createElement('script');
+  monetagScript.id = 'monetag-popunder';
+  monetagScript.async = true;
+  monetagScript.type = 'text/javascript';
+  monetagScript.setAttribute('data-cfasync', 'false');
+  monetagScript.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+  document.body.appendChild(monetagScript);
+
+  setTimeout(() => {
+    if (typeof goAds !== 'undefined' && goAds.length > 0) {
+      if (goAds[0].loadAd) goAds[0].loadAd();
+    }
+  }, 1500);
+
+  window.monetagLoaded = true;
+
+} catch (e) {
+  console.warn("Monetag: فشل في تحميل الإعلان", e);
+}
+
+resultEl.style.display = 'block';
     }
   });
 
