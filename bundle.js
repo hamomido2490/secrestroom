@@ -1,3 +1,39 @@
+// --- تحقق من أن الموقع يعمل أونلاين فقط ---
+(function () {
+  // تأكد أن الموقع يعمل على بروتوكول آمن (http أو https)
+  if (!window.location.protocol.startsWith('http')) {
+    document.body.innerHTML = `
+      <div style="text-align: center; padding: 50px; font-family: 'Segoe UI', sans-serif; direction: rtl; background: #0f172a; color: #e2e8f0;">
+        <h2>🚫 الموقع غير متاح محليًا</h2>
+        <p>هذا الموقع يعمل فقط عند فتحه من الإنترنت.</p>
+        <p>يرجى زيارة: <a href="https://yourdomain.com" style="color: #38bdf8; text-decoration: none;">https://yourdomain.com</a></p>
+      </div>
+    `;
+    throw new Error("الموقع يعمل فقط أونلاين");
+  }
+
+  // تأكد من وجود اتصال بالإنترنت
+  function checkOnline() {
+    if (!navigator.onLine) {
+      document.body.innerHTML = `
+        <div style="text-align: center; padding: 50px; font-family: 'Segoe UI', sans-serif; direction: rtl; background: #0f172a; color: #e2e8f0;">
+          <h2>🔴 لا يوجد اتصال بالإنترنت</h2>
+          <p>للحصول على التحليل، تأكد من أنك متصل بالإنترنت.</p>
+          <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+            أعد المحاولة
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  // تحقق فورًا
+  checkOnline();
+
+  // تحقق عند تغيير حالة الاتصال
+  window.addEventListener('online', checkOnline);
+  window.addEventListener('offline', checkOnline);
+})();
 // bundle.js - غرفة الأسرار | تحليل موسّع ومنسق للعربية
 // تم التصميم والتطوير من قبل: Mohammed Tarek
 
