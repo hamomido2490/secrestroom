@@ -434,97 +434,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // === تفعيل إعلانات Monetag بعد 2 ثانية من ظهور النتيجة ===
       setTimeout(() => {
-        try {
-          if (window.monetagLoaded) return;
+       // === تفعيل إعلان داخلي فوري من Monetag ===
+try {
+  // تأكد من عدم التكرار
+  if (window.monetagInPageLoaded) return;
 
-          const monetagZones = [
-  '9643750',
-  '9643749',
-  '9643709',
-  '9643708',
-  '9643638',
-];
-          const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+  // الأيديه الخاصة بك (استخدم اللي عندك)
+  const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
+  const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
 
-          const script = document.createElement('script');
-          script.id = 'monetag-popunder';
-          script.async = true;
-          script.type = 'text/javascript';
-          script.setAttribute('data-cfasync', 'false');
-          script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+  // عنصر الإعلان في الصفحة
+  const adContainer = document.getElementById('monetag-inpage');
+  if (!adContainer) return;
 
-          document.body.appendChild(script);
+  // رسالة تحميل
+  adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
 
-          script.onload = () => {
-            setTimeout(() => {
-              if (typeof goAds !== 'undefined' && goAds.length > 0) {
-                if (goAds[0].loadAd) goAds[0].loadAd();
-              }
-            }, 100);
-          };
+  // إنشاء سكربت Monetag
+  const script = document.createElement('script');
+  script.id = 'monetag-inpage-script';
+  script.async = true;
+  script.type = 'text/javascript';
+  script.setAttribute('data-cfasync', 'false');
+  script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
 
-          window.monetagLoaded = true;
+  // إضافة السكربت
+  document.body.appendChild(script);
 
-        } catch (e) {
-          console.error("Monetag: فشل في التحميل", e);
-        }
-      }, 2000);
-// === تفعيل إعلان Monetag داخلي بعد 2 ثانية من ظهور النتيجة ===
-setTimeout(() => {
-  try {
-    // تأكد من عدم التكرار
-    if (window.monetagInPageLoaded) return;
-
-    // الأيديه الخاصة بك
-    const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
-    const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
-
-    // عنصر الإعلان
-    const adContainer = document.getElementById('monetag-inpage');
-    if (!adContainer) return;
-
-    // جهّز العنصر للظهور
-    adContainer.innerHTML = '<div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 15px; display: inline-block;">جارٍ تحميل الإعلان...</div>';
-
-    // إنشاء سكربت Monetag
-    const script = document.createElement('script');
-    script.id = 'monetag-inpage-script';
-    script.async = true;
-    script.type = 'text/javascript';
-    script.setAttribute('data-cfasync', 'false');
-    script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
-
-    // إضافة السكربت
-    document.body.appendChild(script);
-
-    // بعد التحميل، أظهر الإعلان
-    script.onload = () => {
-      setTimeout(() => {
-        adContainer.style.opacity = '1'; // اجعله مرئيًا
-        if (typeof goAds !== 'undefined' && goAds.length > 0) {
-          goAds[0].loadAd && goAds[0].loadAd();
-        }
-      }, 300);
-    };
-
-    script.onerror = () => {
+  // بعد التحميل، شغّل الإعلان
+  script.onload = () => {
+    if (typeof goAds !== 'undefined' && goAds.length > 0) {
+      goAds[0].loadAd && goAds[0].loadAd();
+    } else {
       adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
-    };
-
-    window.monetagInPageLoaded = true;
-
-  } catch (e) {
-    console.error("Monetag In-Page: فشل في التحميل", e);
-  }
-}, 2000); // ⏱️ بعد 2 ثانية من ظهور النتيجة
-      resultEl.style.display = 'block';
     }
-  });
+  };
 
-  restartBtn.addEventListener('click', () => {
-    currentQ = 0;
-    userAnswers = [];
-    resultEl.style.display = 'none';
-    userInfoEl.style.display = 'block';
-  });
-});
+  // في حالة فشل التحميل
+  script.onerror = () => {
+    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
+  };
+
+  window.monetagInPageLoaded = true;
+
+} catch (e) {
+  console.error("Monetag In-Page: فشل في التحميل", e);
+}
