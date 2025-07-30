@@ -159,9 +159,9 @@ function generatePersonalityAnalysis(answers, userData) {
   } else {
     genderInsight = "أنت تتجاوز التصنيفات، وتُظهر توازنًا نادرًا بين الحدس والمنطق، بين العاطفة والتحليل.";
   }
+// ... (الجزء السابق من الدالة)
 
-  // === التقرير النهائي ===
-  const analysis = `
+const analysis = `
 ${profile.name}
 ${"=".repeat(profile.name.length + 1)}
 
@@ -197,10 +197,16 @@ ${ageInsight ? "وكلما تقدّمت في رحلتك، زاد وعيك بذا
 - نظرية PERMA (مكونات الرفاهية النفسية)
 - نظرية الانغماس (Flow) - ميهل يتشينتنهامي
 
-تم إعداد هذا التقرير بعناية من قِبل: غرفة الأسرار | Chamber of Secrets
-  `.trim();
+تم إعداد هذا التقرير بعناية من قِبل:  
+**غرفة الأسرار | Chamber of Secrets**  
+تم تطوير النظام وتحليله النفسي من قبل:  
+**Mohammed Tarek**  
+© 2025 جميع الحقوق محفوظة.
 
-  return analysis;
-}
+---
+شكرًا لثقتك.  
+قد تكون أول من يرى نفسه بوضوح...  
+ولكنك لن تكون آخر من يُحدث فرقًا.
+`.trim();
 
-export default generatePersonalityAnalysis;
+return analysis;
