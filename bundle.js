@@ -1,4 +1,4 @@
-// bundle.js - غرفة الأسرار | تحليل دقيق وموسع مع تشبيه بشخصيات مشهورة
+// bundle.js - غرفة الأسرار | نسخة نهائية - لا كود خبيث - إعلانات شغالة
 // تم التصميم والتطوير من قبل: Mohammed Tarek
 
 // --- تحقق من أن الموقع يعمل أونلاين فقط ---
@@ -30,7 +30,7 @@
   window.addEventListener('offline', checkOnline);
 })();
 
-// --- الأسئلة (20 سؤالًا) ---
+// --- الأسئلة ---
 const personalityQuestions = [
   {
     id: 1,
@@ -91,146 +91,6 @@ const personalityQuestions = [
       { text: "ابتكار فكرة جديدة", trait: "N" },
       { text: "الالتزام بالواجبات والمسؤوليات", trait: "J" }
     ]
-  },
-  {
-    id: 7,
-    text: "عند اتخاذ قرار مهم، ما الذي تثق به أكثر؟",
-    options: [
-      { text: "منطق العقل وتحليل المخاطر", trait: "T" },
-      { text: "مشاعر القلب وتأثير القرار على الآخرين", trait: "F" },
-      { text: "ما يقوله القانون أو التقاليد", trait: "S" },
-      { text: "رؤيتي المستقبلية والبصيرة", trait: "N" }
-    ]
-  },
-  {
-    id: 8,
-    text: "ماذا تفعل عندما تشعر بالضغط؟",
-    options: [
-      { text: "أتحدى الموقف مباشرة", trait: "D" },
-      { text: "أبحث عن دعم من الآخرين", trait: "I" },
-      { text: "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
-      { text: "أحلل المشكلة من كل الزوايا", trait: "C" }
-    ]
-  },
-  {
-    id: 9,
-    text: "ما نوع الكتب أو المحتوى الذي تفضله؟",
-    options: [
-      { text: "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
-      { text: "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
-      { text: "أدلة عملية، خطوات، تقنيات", trait: "S,J" },
-      { text: "ألعاب، ألغاز، تجارب جديدة", trait: "SP" }
-    ]
-  },
-  {
-    id: 10,
-    text: "ما الذي يعطيك إحساسًا بالمعنى؟",
-    options: [
-      { text: "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
-      { text: "خدمة الآخرين", trait: "Meaning" },
-      { text: "فهم الكون أو النظام الكوني", trait: "Rational" },
-      { text: "الاستقرار والانتماء", trait: "Generativity" }
-    ]
-  },
-  {
-    id: 11,
-    text: "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
-    options: [
-      { text: "نادرًا، أنا واثق من قراراتي", trait: "D" },
-      { text: "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
-      { text: "غالبًا، أحب التعلم المستمر", trait: "N" },
-      { text: "بشكل متكرر، أتأثر بمشاعر الآخرين", trait: "F" }
-    ]
-  },
-  {
-    id: 12,
-    text: "ما أهم شيء في بيئة العمل بالنسبة لك؟",
-    options: [
-      { text: "النتائج والإنجازات", trait: "D" },
-      { text: "الطاقة والتفاعل الاجتماعي", trait: "I" },
-      { text: "الاستقرار والانسجام", trait: "S" },
-      { text: "الدقة والتنظيم", trait: "C" }
-    ]
-  },
-  {
-    id: 13,
-    text: "كيف تتعامل مع التغيير؟",
-    options: [
-      { text: "أنا من يُحدثه", trait: "D" },
-      { text: "أرحب به إذا كان ممتعًا", trait: "I" },
-      { text: "أتأقلم ببطء وحذر", trait: "S" },
-      { text: "أحلله قبل قبوله", trait: "C" }
-    ]
-  },
-  {
-    id: 14,
-    text: "ما الذي يُشعرك بالقلق؟",
-    options: [
-      { text: "فقدان السيطرة على الأمور", trait: "D" },
-      { text: "الوحدة أو فقدان التفاعل", trait: "I" },
-      { text: "الصراع أو التوتر بين الفريق", trait: "S" },
-      { text: "العشوائية أو غياب النظام", trait: "C" }
-    ]
-  },
-  {
-    id: 15,
-    text: "ما أكثر شيء تُقدّره في الآخرين؟",
-    options: [
-      { text: "القوة والطموح", trait: "D" },
-      { text: "الطاقة والحيوية", trait: "I" },
-      { text: "الولاء والدعم", trait: "S" },
-      { text: "الذكاء والتحليل", trait: "C" }
-    ]
-  },
-  {
-    id: 16,
-    text: "كيف تُخطط ليومك؟",
-    options: [
-      { text: "بشكل مباشر، أركز على المهام العاجلة", trait: "D" },
-      { text: "بحسب ما يُشعرني بالحماس", trait: "I" },
-      { text: "بهدوء، حسب الأولويات والالتزامات", trait: "S" },
-      { text: "بجدول دقيق وتفصيلي", trait: "C" }
-    ]
-  },
-  {
-    id: 17,
-    text: "ما نوع التحدي الذي يثيرك؟",
-    options: [
-      { text: "التحديات الكبيرة التي تغير الواقع", trait: "D" },
-      { text: "التحديات التي تُظهر إبداعي", trait: "I" },
-      { text: "التحديات التي تساعد الآخرين", trait: "S" },
-      { text: "التحديات التي تتطلب تفكيرًا عميقًا", trait: "C" }
-    ]
-  },
-  {
-    id: 18,
-    text: "كيف تُظهر قوتك؟",
-    options: [
-      { text: "بالقيادة والسيطرة", trait: "D" },
-      { text: "بالإلهام والحماس", trait: "I" },
-      { text: "بالدعم والثبات", trait: "S" },
-      { text: "بالتحليل والدقة", trait: "C" }
-    ]
-  },
-  {
-    id: 19,
-    text: "ما الذي يُشعرك بالراحة؟",
-    options: [
-      { text: "تحقيق الهدف", trait: "D" },
-      { text: "الضحك والتفاعل", trait: "I" },
-      { text: "الهدوء والاستقرار", trait: "S" },
-      { text: "النظام والفهم الكامل", trait: "C" }
-    ]
-  },
-  {
-    id: 20,
-    text: "ما هو شعارك في الحياة؟",
-    options: [
-      { text: "النتيجة أهم من الطريقة", trait: "D" },
-      { text: "الحياة للمرح والتجربة", trait: "I" },
-      { text: "العلاقات تُبني بالصبر والوفاء", trait: "S" },
-      { text: "الفهم يسبق كل شيء", trait: "C" }
-    ]
   }
 ];
 
@@ -261,7 +121,6 @@ function generatePersonalityAnalysis(answers, userData) {
     red: {
       name: "النوع الأحمر",
       title: "القائد الطموح",
-      celebrity: "مثل ستيف جوبز — قائدٌ لا يقبل الوسط، ويُحدث تغييرًا في العالم بقوة الإرادة.",
       description: `
 أنت من النوع الذي لا ينتظر الفرصة، بل يصنعها بيديه. فيك قوة دفع داخلية لا تتوقف، ورغبة عميقة في التحكم في مصيرك. أنت لا تهرب من المسؤولية، بل تطلبها، لأنك تعرف أنك قادر على صنع الفارق. القرارات الحاسمة تخرج منك بسرعة، ليس لأنك متسرع، بل لأنك تثق بحدسك وخبرتك. تحب أن ترى النتائج بوضوح، والوقت الضائع يشعرك بالإحباط. لكنك لست قاسيًا، بل صريح — تُقدّر الصدق أكثر من المجاملة. في المواقف الصعبة، أنت أول من يقف في المقدمة. لست بحاجة إلى تصفيق، لكنك تعرف قيمتك. النجاح بالنسبة لك ليس ترفًا، بل ضرورة. أنت تُحدث تغييرًا ليس لأنه مطلوب، بل لأنه واجب.
       `.trim()
@@ -269,7 +128,6 @@ function generatePersonalityAnalysis(answers, userData) {
     yellow: {
       name: "النوع الأصفر",
       title: "المحفّز المرح",
-      celebrity: "مثل أوبرا وينفري — شخصية مُلهمة، تُحيي الآمال، وتُحدث تغييرًا بالحماس والكلمة.",
       description: `
 أنت شرارة الضوء في أي مكان تدخله. طاقتك لا تنضب، وابتسامتك معدية. أنت لا ترى العقبات كما يراها الآخرون، بل تراها فرصة لإثبات أن المستحيل ممكن. تحب أن تكون محط الأنظار، ليس من أجل الغرور، بل لأنك تشعر بالحياة عندما تُلهم الآخرين. أنت تفكر خارج الصندوق، وتحب أن تكسر الروتين. القيود تُثبّطك، أما الحرية فتُطلق إبداعك. العلاقات بالنسبة لك ليست مجرد تواصل، بل تبادل للطاقة. أنت تُحيي من حولك، وتجعل المهام العادية تبدو كمغامرات. قد يراك البعض غير جاد، لكنهم لا يعلمون أنك جاد جدًا في الحفاظ على البهجة. أنت تُحدث تغييرًا ليس بالقوة، بل بالحماس.
       `.trim()
@@ -277,7 +135,6 @@ function generatePersonalityAnalysis(answers, userData) {
     green: {
       name: "النوع الأخضر",
       title: "الداعم المستقر",
-      celebrity: "مثل نيلسون مانديلا — رجل السلام، يُعيد بناء العلاقات، ويُثبت أن القوة الحقيقية في الصبر والتسامح.",
       description: `
 أنت القلب الهادئ في وسط العاصفة. لا تُسرع، لكنك لا تتوقف. أنت تبني الثقة ببطء، لكنها تدوم مدى الحياة. الصراع يُرهقك، لكنك لا تهرب منه — بل تسعى لتسوية الأمور بهدوء. أنت لا تبحث عن التقدير، لكنك تستحقه أكثر من غيرك. أنت من يُكمل الفريق، من يُشعر الآخرين بالأمان. تحب الاستقرار، ليس لأنك خائف من التغيير، بل لأنك تعرف قيمته. أنت تُخطط بقلبك قبل عقلك، وتحدد أولوياتك حسب من يحبونك ويحتاجونك. أنت لا تقود بالصراخ، بل بالقدوة. لا تُظهر كل ما تشعر به، لكن من يعرفك جيدًا يعلم أن في داخلك بحرًا من العطاء. أنت تُحدث تغييرًا بصمت، لكن أثرك يدوم.
       `.trim()
@@ -285,7 +142,6 @@ function generatePersonalityAnalysis(answers, userData) {
     blue: {
       name: "النوع الأزرق",
       title: "المُخطط الدقيق",
-      celebrity: "مثل إيلون ماسك — عقل تحليلي، يُعيد تعريف المستقبل بمنطق دقيق ورؤية بعيدة.",
       description: `
 أنت لا تُسرع، لأنك تعرف أن الخطأ الواحد قد يُكلّف الكثير. أنت تُفكّر بعمق، تُحلّل بتركيز، وتحب أن تفهم "لماذا" قبل أن تفعل "كيف". العشوائية تُربكك، أما النظام فيعطيك شعورًا بالأمان. أنت لا تُعجب بالانطباع الأول، بل بالأساس المتين. تحب أن تعرف كل التفاصيل، ليس من باب التفتيش، بل من باب المسؤولية. أنت تبحث عن المعنى وراء الأشياء، عن القاعدة الكامنة وراء السلوك. العلاقات عندك ليست عاطفية فقط، بل يجب أن تكون منطقية أيضًا. قد يراك البعض باردًا، لكنك ببساطة تحترم العقل بقدر احترامك للقلب. أنت تُحدث تغييرًا ليس بالحماس، بل بالرؤية.
       `.trim()
@@ -317,8 +173,6 @@ function generatePersonalityAnalysis(answers, userData) {
   const analysis = `
 ${profile.name}
 ${"=".repeat(profile.name.length + 1)}
-
-${profile.celebrity}
 
 ${profile.description}
 
@@ -431,49 +285,62 @@ document.addEventListener('DOMContentLoaded', () => {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
-      
-try {
-  // تأكد من عدم التكرار
-  if (window.monetagInPageLoaded) return;
 
-  // الأيديه الخاصة بك (استخدم اللي عندك)
-  const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
-  const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+      // === تفعيل إعلان داخلي فوري من Monetag ===
+      try {
+        // تأكد من عدم التكرار
+        if (window.monetagInPageLoaded) return;
 
-  // عنصر الإعلان في الصفحة
-  const adContainer = document.getElementById('monetag-inpage');
-  if (!adContainer) return;
+        // الأيديه الخاصة بك
+        const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
+        const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
 
-  // رسالة تحميل
-  adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
+        // عنصر الإعلان
+        const adContainer = document.getElementById('monetag-inpage');
+        if (!adContainer) return;
 
-  // إنشاء سكربت Monetag
-  const script = document.createElement('script');
-  script.id = 'monetag-inpage-script';
-  script.async = true;
-  script.type = 'text/javascript';
-  script.setAttribute('data-cfasync', 'false');
-  script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+        // رسالة تحميل
+        adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
 
-  // إضافة السكربت
-  document.body.appendChild(script);
+        // إنشاء سكربت Monetag
+        const script = document.createElement('script');
+        script.id = 'monetag-inpage-script';
+        script.async = true;
+        script.type = 'text/javascript';
+        script.setAttribute('data-cfasync', 'false');
+        script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
 
-  // بعد التحميل، شغّل الإعلان
-  script.onload = () => {
-    if (typeof goAds !== 'undefined' && goAds.length > 0) {
-      goAds[0].loadAd && goAds[0].loadAd();
-    } else {
-      adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
+        // إضافة السكربت
+        document.body.appendChild(script);
+
+        // بعد التحميل، شغّل الإعلان
+        script.onload = () => {
+          if (typeof goAds !== 'undefined' && goAds.length > 0) {
+            goAds[0].loadAd && goAds[0].loadAd();
+          } else {
+            adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
+          }
+        };
+
+        // في حالة فشل التحميل
+        script.onerror = () => {
+          adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
+        };
+
+        window.monetagInPageLoaded = true;
+
+      } catch (e) {
+        console.error("Monetag In-Page: فشل في التحميل", e);
+      }
+
+      resultEl.style.display = 'block';
     }
-  };
+  });
 
-  // في حالة فشل التحميل
-  script.onerror = () => {
-    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
-  };
-
-  window.monetagInPageLoaded = true;
-
-} catch (e) {
-  console.error("Monetag In-Page: فشل في التحميل", e);
-}
+  restartBtn.addEventListener('click', () => {
+    currentQ = 0;
+    userAnswers = [];
+    resultEl.style.display = 'none';
+    userInfoEl.style.display = 'block';
+  });
+});
