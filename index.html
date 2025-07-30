@@ -3,23 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تحليل الشخصية</title>
+  <title>غرفة الأسرار | Chamber of Secrets</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>تحليل شخصيتك النفسي</h1>
-    <p>أجب عن 10 أسئلة بسيطة، واحصل على تحليل شامل يُظهر نوعك النفسي، أنماطك، ونظريات تتحكم في سلوكك.</p>
+    <!-- اسم الموقع -->
+    <div class="logo">
+      <h1>غرفة الأسرار</h1>
+      <h2>Chamber of Secrets</h2>
+      <div class="divider"></div>
+      <p>اكتشف شخصيتك الحقيقية من خلال 10 أسئلة تفتح لك أبواب الذات</p>
+    </div>
 
-    <div id="quiz" class="quiz">
+    <!-- القسم الجديد: المقدمة -->
+    <div id="intro" class="intro">
+      <p>أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.</p>
+      <p>أجب بصدق... وسترى ما لم تره من قبل.</p>
+      <button id="startBtn">ادخل إلى الغرفة</button>
+    </div>
+
+    <!-- القائمة: الأسئلة -->
+    <div id="quiz" class="quiz" style="display: none;">
       <div id="question"></div>
       <div id="options" class="options"></div>
       <button id="nextBtn">السؤال التالي</button>
     </div>
 
+    <!-- النتيجة -->
     <div id="result" class="result" style="display: none;">
       <pre id="analysis"></pre>
-      <button id="restartBtn">أعد المحاولة</button>
+      <button id="restartBtn">أعد الرحلة</button>
     </div>
   </div>
 
@@ -27,15 +41,24 @@
     import questions from './questions.js';
     import generatePersonalityAnalysis from './analyzer.js';
 
+    const startBtn = document.getElementById('startBtn');
+    const introEl = document.getElementById('intro');
+    const quizEl = document.getElementById('quiz');
+    const resultEl = document.getElementById('result');
     const questionEl = document.getElementById('question');
     const optionsEl = document.getElementById('options');
     const nextBtn = document.getElementById('nextBtn');
-    const resultEl = document.getElementById('result');
     const analysisEl = document.getElementById('analysis');
     const restartBtn = document.getElementById('restartBtn');
 
     let currentQ = 0;
     let userAnswers = [];
+
+    startBtn.addEventListener('click', () => {
+      introEl.style.display = 'none';
+      quizEl.style.display = 'block';
+      showQuestion();
+    });
 
     const showQuestion = () => {
       const q = questions[currentQ];
@@ -69,7 +92,7 @@
       } else {
         const analysis = generatePersonalityAnalysis(userAnswers);
         analysisEl.textContent = analysis;
-        document.getElementById('quiz').style.display = 'none';
+        quizEl.style.display = 'none';
         resultEl.style.display = 'block';
       }
     });
@@ -78,12 +101,9 @@
       currentQ = 0;
       userAnswers = [];
       resultEl.style.display = 'none';
-      document.getElementById('quiz').style.display = 'block';
-      showQuestion();
+      introEl.style.display = 'block';
     });
 
-    // ابدأ
-    showQuestion();
   </script>
 </body>
 </html>
