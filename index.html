@@ -36,7 +36,7 @@
         </select>
       </div>
 
-      <button id="submitUserInfo"> هيا لندخل الغرفة</button>
+      <button id="submitUserInfo">ابدأ الرحلة</button>
     </div>
 
     <!-- صفحة الترحيب -->
@@ -45,14 +45,14 @@
         <h1>غرفة الأسرار</h1>
         <h2>Chamber of Secrets</h2>
         <div class="divider"></div>
-        <p>اكتشف شخصيتك الحقيقية من خلال 10 أسئلة تفتح لك أبواب الذات</p>
+        <p>اكتشف شخصيتك الحقيقية من خلال 6 أسئلة تفتح لك أبواب الذات</p>
       </div>
       <p>أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.</p>
       <p>أجب بصدق... وسترى ما لم تره من قبل.</p>
       <button id="startBtn">ادخل إلى الغرفة</button>
     </div>
 
-    <!-- القائمة: الأسئلة -->
+    <!-- الأسئلة -->
     <div id="quiz" class="quiz" style="display: none;">
       <div id="question"></div>
       <div id="options" class="options"></div>
@@ -64,102 +64,14 @@
       <pre id="analysis"></pre>
       <button id="restartBtn">أعد الرحلة</button>
     </div>
+
+    <!-- حقوق الطبع -->
+    <footer>
+      <p>© 2025 غرفة الأسرار | Chamber of Secrets</p>
+      <p>تم التصميم والتحليل النفسي والتطوير من قبل: <strong>Mohammed Tarek</strong></p>
+    </footer>
   </div>
 
-  <script type="module">
-    import questions from './questions.js';
-    import generatePersonalityAnalysis from './analyzer.js';
-
-    const userInfoEl = document.getElementById('userInfo');
-    const introEl = document.getElementById('intro');
-    const quizEl = document.getElementById('quiz');
-    const resultEl = document.getElementById('result');
-
-    const submitUserInfo = document.getElementById('submitUserInfo');
-    const startBtn = document.getElementById('startBtn');
-    const questionEl = document.getElementById('question');
-    const optionsEl = document.getElementById('options');
-    const nextBtn = document.getElementById('nextBtn');
-    const analysisEl = document.getElementById('analysis');
-    const restartBtn = document.getElementById('restartBtn');
-
-    let userData = {
-      age: '',
-      gender: ''
-    };
-
-    let currentQ = 0;
-    let userAnswers = [];
-
-    submitUserInfo.addEventListener('click', () => {
-      const age = document.getElementById('age').value;
-      const gender = document.getElementById('gender').value;
-
-      if (!age || !gender) {
-        alert("الرجاء اختيار العمر والجنس");
-        return;
-      }
-
-      userData.age = age;
-      userData.gender = gender;
-
-      userInfoEl.style.display = 'none';
-      introEl.style.display = 'block';
-    });
-
-    startBtn.addEventListener('click', () => {
-      introEl.style.display = 'none';
-      quizEl.style.display = 'block';
-      showQuestion();
-    });
-
-    const showQuestion = () => {
-      const q = questions[currentQ];
-      questionEl.innerHTML = `<h3>${currentQ + 1}. ${q.text}</h3>`;
-      optionsEl.innerHTML = '';
-
-      q.options.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.classList.add('option-btn');
-        btn.textContent = opt.text;
-        btn.addEventListener('click', () => {
-          userAnswers[currentQ] = index;
-          btn.classList.add('selected');
-          Array.from(optionsEl.children).forEach(b => {
-            if (b !== btn) b.classList.remove('selected');
-          });
-        });
-        optionsEl.appendChild(btn);
-      });
-    };
-
-    nextBtn.addEventListener('click', () => {
-      if (userAnswers[currentQ] === undefined) {
-        alert("الرجاء اختيار إجابة");
-        return;
-      }
-
-      currentQ++;
-      if (currentQ < questions.length) {
-        showQuestion();
-      } else {
-        const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
-        analysisEl.textContent = fullAnalysis;
-        quizEl.style.display = 'none';
-        resultEl.style.display = 'block';
-      }
-    });
-
-    restartBtn.addEventListener('click', () => {
-      currentQ = 0;
-      userAnswers = [];
-      resultEl.style.display = 'none';
-      userInfoEl.style.display = 'block';
-    });
-  </script>
-  <footer style="text-align: center; margin-top: 50px; color: #94a3b8; font-size: 0.9rem; padding: 20px; border-top: 1px solid #334155;">
-  <p>© 2025 غرفة الأسرار | Chamber of Secrets</p>
-  <p>تم التصميم والتطوير بواسطة: <strong>Mohammed Tarek</strong></p>
-</footer>
+  <script src="bundle.js" defer></script>
 </body>
 </html>
