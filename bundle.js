@@ -30,10 +30,7 @@
   window.addEventListener('offline', checkOnline);
 })();
 
-// === نظام الترجمة: عربي / إنجليزي (تحديث فوري بدون إعادة تحميل) ===
-<amp-auto-ads type="adsense"
-        data-ad-client="ca-pub-1757552998322182">
-</amp-auto-ads>
+// --- نظام الترجمة ---
 const Lang = {
   current: localStorage.getItem('lang') || 'ar',
   translations: {
