@@ -431,10 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
-
-      // === تفعيل إعلانات Monetag بعد 2 ثانية من ظهور النتيجة ===
-      setTimeout(() => {
-       // === تفعيل إعلان داخلي فوري من Monetag ===
+      
 try {
   // تأكد من عدم التكرار
   if (window.monetagInPageLoaded) return;
