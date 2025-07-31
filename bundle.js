@@ -469,34 +469,48 @@ document.addEventListener('DOMContentLoaded', () => {
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
 
-      // === تفعيل إعلان داخلي فوري من Monetag ===
-     // === تفعيل إعلان من شبكة مربحة (Monetag + Adsterra + RichAds) ===
+// === تفعيل إعلان من شبكة مربحة (4 شبكات - توزيع ذكي) ===
 try {
   if (window.adNetworkLoaded) return;
 
   const adContainer = document.getElementById('monetag-inpage');
   if (!adContainer) return;
 
+  // رسالة تحميل
   adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
 
-  // توزيع ذكي: 50% Monetag, 30% Adsterra, 20% RichAds
+  // توزيع ذكي: 45% Monetag, 25% Adsterra, 20% RichAds, 10% HilltopAds
   const roll = Math.random();
   let network, scriptSrc;
 
-  if (roll < 0.5) {
-    // Monetag (50%)
+  if (roll < 0.45) {
+    // --- Monetag (الأعلى أداءً) ---
+    network = 'monetag';
     const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
     const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
-    network = 'monetag';
     scriptSrc = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
-  } else if (roll < 0.8) {
-    // Adsterra (30%)
+  } else if (roll < 0.70) {
+    // --- Adsterra (إعلانات داخلية جذابة) ---
     network = 'adsterra';
-    scriptSrc = "https://jsc.adskeeper.com/c/h/chn.com.1918848.js"; // ← غيرها بـ Zone ID الخاص بك
-  } else {
-    // RichAds (20%)
+    // ⬇️ ضع كود Adsterra هنا (مثل: https://jsc.adskeeper.com/...)
+    scriptSrc = ""; // ← املأ هذا الرابط من لوحة Adsterra
+  } else if (roll < 0.90) {
+    // --- RichAds (نافذة خلفية عالية CPM) ---
     network = 'richads';
-    scriptSrc = "https://cdn.richads.com/richads.js"; // ← تأكد من إضافة Zone ID
+    // ⬇️ ضع كود RichAds هنا (مثل: https://cdn.richads.com/...)
+    scriptSrc = ""; // ← املأ هذا الرابط من لوحة RichAds
+  } else {
+    // --- HilltopAds (نافذة خلفية بديلة) ---
+    network = 'hilltop';
+    // ⬇️ ضع كود HilltopAds هنا (مثل: https://cdn.hilltopads.com/...)
+    scriptSrc = ""; // ← املأ هذا الرابط من لوحة HilltopAds
+  }
+
+  // إذا ما حطيت كود، ما يُنشئش سكربت
+  if (!scriptSrc || scriptSrc.trim() === "") {
+    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
+    window.adNetworkLoaded = true;
+    return;
   }
 
   const script = document.createElement('script');
@@ -508,10 +522,8 @@ try {
     if (typeof goAds !== 'undefined' && goAds.length > 0) {
       goAds[0].loadAd && goAds[0].loadAd();
     } else if (window.RichAds && network === 'richads') {
-      // تفعيل RichAds إذا شغال
       window.RichAds.setup && window.RichAds.setup();
     }
-    // لا تظهر رسالة فشل إذا لم يُعرف goAds (لأن الشبكة قد لا تستخدمه)
   };
 
   script.onerror = () => {
