@@ -470,40 +470,60 @@ document.addEventListener('DOMContentLoaded', () => {
       quizEl.style.display = 'none';
 
       // === تفعيل إعلان داخلي فوري من Monetag ===
-      try {
-        if (window.monetagInPageLoaded) return;
+     // === تفعيل إعلان من شبكة مربحة (Monetag + Adsterra + RichAds) ===
+try {
+  if (window.adNetworkLoaded) return;
 
-        const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
-        const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+  const adContainer = document.getElementById('monetag-inpage');
+  if (!adContainer) return;
 
-        const adContainer = document.getElementById('monetag-inpage');
-        if (!adContainer) return;
+  adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
 
-        adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
+  // توزيع ذكي: 50% Monetag, 30% Adsterra, 20% RichAds
+  const roll = Math.random();
+  let network, scriptSrc;
 
-        const script = document.createElement('script');
-        script.id = 'monetag-inpage-script';
-        script.async = true;
-        script.src = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+  if (roll < 0.5) {
+    // Monetag (50%)
+    const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
+    const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+    network = 'monetag';
+    scriptSrc = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+  } else if (roll < 0.8) {
+    // Adsterra (30%)
+    network = 'adsterra';
+    scriptSrc = "https://jsc.adskeeper.com/c/h/chn.com.1918848.js"; // ← غيرها بـ Zone ID الخاص بك
+  } else {
+    // RichAds (20%)
+    network = 'richads';
+    scriptSrc = "https://cdn.richads.com/richads.js"; // ← تأكد من إضافة Zone ID
+  }
 
-        script.onload = () => {
-          if (typeof goAds !== 'undefined' && goAds.length > 0) {
-            goAds[0].loadAd && goAds[0].loadAd();
-          } else {
-            adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
-          }
-        };
+  const script = document.createElement('script');
+  script.id = `ad-network-script-${network}`;
+  script.async = true;
+  script.src = scriptSrc;
 
-        script.onerror = () => {
-          adContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
-        };
+  script.onload = () => {
+    if (typeof goAds !== 'undefined' && goAds.length > 0) {
+      goAds[0].loadAd && goAds[0].loadAd();
+    } else if (window.RichAds && network === 'richads') {
+      // تفعيل RichAds إذا شغال
+      window.RichAds.setup && window.RichAds.setup();
+    }
+    // لا تظهر رسالة فشل إذا لم يُعرف goAds (لأن الشبكة قد لا تستخدمه)
+  };
 
-        document.body.appendChild(script);
-        window.monetagInPageLoaded = true;
+  script.onerror = () => {
+    adContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
+  };
 
-      } catch (e) {
-        console.error("Monetag In-Page: فشل في التحميل", e);
-      }
+  document.body.appendChild(script);
+  window.adNetworkLoaded = true;
+
+} catch (e) {
+  console.error("Ad Networks: فشل في التحميل", e);
+}
 
       resultEl.style.display = 'block';
     }
