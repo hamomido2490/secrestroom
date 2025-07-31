@@ -11,7 +11,6 @@
       </div>
     `;
     throw new Error("الموقع يعمل فقط أونلاين");
-    throw new Error("الموقع يعمل فقط أونلاي");
   }
   function checkOnline() {
     if (!navigator.onLine) {
@@ -31,168 +30,7 @@
   window.addEventListener('offline', checkOnline);
 })();
 
-// --- الأسئلة (20 سؤالًا) ---
-const personalityQuestions = [
-  {
-    id: 1,
-    text: "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
-    options: [
-      { text: "أنا متحمس لأبدأ يومي!", trait: "E" },
-      { text: "هل كل شيء تحت السيطرة؟", trait: "C" },
-      { text: "هل سأكون كافيًا اليوم؟", trait: "Inferiority" },
-      { text: "أريد أن أفهم معنى هذا اليوم", trait: "N" }
-    ]
-  },
-  {
-    id: 2,
-    text: "في لقاء اجتماعي جديد، ماذا تفعل؟",
-    options: [
-      { text: "أبدأ الحديث مع الجميع بسرعة", trait: "E,I" },
-      { text: "أراقب أولًا ثم أتحدث مع شخص واحد", trait: "I,S" },
-      { text: "أركز على من يمكن أن يفيدني أو أفيد منه", trait: "T" },
-      { text: "أحاول فهم مشاعر الآخرين بسرعة", trait: "F" }
-    ]
-  },
-  {
-    id: 3,
-    text: "ما نوع المهمة التي تجعلك 'تُنسى' من نفسك؟",
-    options: [
-      { text: "التحديات السريعة والملتزمة بالوقت", trait: "Artisan" },
-      { text: "التحليل العميق للبيانات أو الأنظمة", trait: "NT" },
-      { text: "مساعدة شخص على تجاوز أزمة", trait: "Idealist" },
-      { text: "تنظيم فريق لتحقيق هدف منظم", trait: "Guardian" }
-    ]
-  },
-  {
-    id: 4,
-    text: "ما أكثر شيء تبحث عنه في الصداقات؟",
-    options: [
-      { text: "المرح والطاقة", trait: "I" },
-      { text: "الولاء والاستقرار", trait: "S" },
-      { text: "العمق والمعنى", trait: "NF" },
-      { text: "التحدي الفكري", trait: "Rational" }
-    ]
-  },
-  {
-    id: 5,
-    text: "كيف تتعامل مع الأخطاء؟",
-    options: [
-      { text: "أتعلم وأتحرك بسرعة", trait: "P" },
-      { text: "أحلل ما حدث بدقة", trait: "C" },
-      { text: "أشعر بالذنب، لكنني أسامح نفسي", trait: "A" },
-      { text: "أتساءل: هل هذا يثبت أنني غير كافٍ؟", trait: "Inferiority" }
-    ]
-  },
-  {
-    id: 6,
-    text: "ما الذي يُشعرك بالفخر؟",
-    options: [
-      { text: "تحقيق نتائج ملموسة", trait: "D" },
-      { text: "دعم شخص في أزمة", trait: "F" },
-      { text: "ابتكار فكرة جديدة", trait: "N" },
-      { text: "الالتزام بالواجبات والمسؤوليات", trait: "J" }
-    ]
-  },
-  {
-    id: 7,
-    text: "عند اتخاذ قرار مهم، ما الذي تثق به أكثر؟",
-    options: [
-      { text: "منطق العقل وتحليل المخاطر", trait: "T" },
-      { text: "مشاعر القلب وتأثير القرار على الآخرين", trait: "F" },
-      { text: "ما يقوله القانون أو التقاليد", trait: "S" },
-      { text: "رؤيتي المستقبلية والبصيرة", trait: "N" }
-    ]
-  },
-  {
-    id: 8,
-    text: "ماذا تفعل عندما تشعر بالضغط؟",
-    options: [
-      { text: "أتحدى الموقف مباشرة", trait: "D" },
-      { text: "أبحث عن دعم من الآخرين", trait: "I" },
-      { text: "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
-      { text: "أحلل المشكلة من كل الزوايا", trait: "C" }
-    ]
-  },
-  {
-    id: 9,
-    text: "ما نوع الكتب أو المحتوى الذي تفضله؟",
-    options: [
-      { text: "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
-      { text: "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
-      { text: "أدلة عملية، خطوات، تقنيات", trait: "S,J" },
-      { text: "ألعاب، ألغاز، تجارب جديدة", trait: "SP" }
-    ]
-  },
-  {
-    id: 10,
-    text: "ما الذي يعطيك إحساسًا بالمعنى؟",
-    options: [
-      { text: "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
-      { text: "خدمة الآخرين", trait: "Meaning" },
-      { text: "فهم الكون أو النظام الكوني", trait: "Rational" },
-      { text: "الاستقرار والانتماء", trait: "Generativity" }
-    ]
-  },
-  {
-    id: 11,
-    text: "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
-    options: [
-      { text: "نادرًا، أنا واثق من قراراتي", trait: "D" },
-      { text: "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
-      { text: "غالبًا، أحب التعلم المستمر", trait: "N" },
-      { text: "بشكل متكرر، أتأثر بمشاعر الآخرين", trait: "F" }
-    ]
-  },
-  {
-    id: 12,
-    text: "ما أهم شيء في بيئة العمل بالنسبة لك؟",
-    options: [
-      { text: "النتائج والإنجازات", trait: "D" },
-      { text: "الطاقة والتفاعل الاجتماعي", trait: "I" },
-      { text: "الاستقرار والانسجام", trait: "S" },
-      { text: "الدقة والتنظيم", trait: "C" }
-    ]
-  },
-  {
-    id: 13,
-    text: "كيف تتعامل مع التغيير؟",
-    options: [
-      { text: "أنا من يُحدثه", trait: "D" },
-      { text: "أرحب به إذا كان ممتعًا", trait: "I" },
-      { text: "أتأقلم ببطء وحذر", trait: "S" },
-      { text: "أحلله قبل قبوله", trait: "C" }
-    ]
-  },
-  {
-    id: 14,
-    text: "ما الذي يُشعرك بالقلق؟",
-    options: [
-      { text: "فقدان السيطرة على الأمور", trait: "D" },
-      { text: "الوحدة أو فقدان التفاعل", trait: "I" },
-      { text: "الصراع أو التوتر بين الفريق", trait: "S" },
-      { text: "العشوائية أو غياب النظام", trait: "C" }
-    ]
-  },
-  {
-    id: 15,
-    text: "ما أكثر شيء تُقدّره في الآخرين؟",
-    options: [
-      { text: "القوة والطموح", trait: "D" },
-      { text: "الطاقة والحيوية", trait: "I" },
-      { text: "الولاء والدعم", trait: "S" },
-      { text: "الذكاء والتحليل", trait: "C" }
-    ]
-  },
-  {
-    id: 16,
-    text: "كيف تُخطط ليومك؟",
-    options: [
-      { text: "بشكل مباشر، أركز على المهام العاجلة", trait: "D" },
-      { text: "بحسب ما يُشعرني بالحماس", trait: "I" },
-      { text: "بهدوء، حسب الأولويات والالتزامات", trait: "S" },
-      { text: "بجدول دقيق وتفصيلي", trait: "C" }
-    ]
-// --- نظام الترجمة ---
+// --- نظام الترجمة (عربي / إنجليزي) ---
 const Lang = {
   current: localStorage.getItem('lang') || 'ar',
   translations: {
@@ -297,31 +135,11 @@ const Lang = {
       o6_4: 'Commitment to duties and responsibilities'
     }
   },
-  {
-    id: 17,
-    text: "ما نوع التحدي الذي يثيرك؟",
-    options: [
-      { text: "التحديات الكبيرة التي تغير الواقع", trait: "D" },
-      { text: "التحديات التي تُظهر إبداعي", trait: "I" },
-      { text: "التحديات التي تساعد الآخرين", trait: "S" },
-      { text: "التحديات التي تتطلب تفكيرًا عميقًا", trait: "C" }
-    ]
-
   init() {
     this.addSwitcher();
     this.apply();
     this.bind();
   },
-  {
-    id: 18,
-    text: "كيف تُظهر قوتك؟",
-    options: [
-      { text: "بالقيادة والسيطرة", trait: "D" },
-      { text: "بالإلهام والحماس", trait: "I" },
-      { text: "بالدعم والثبات", trait: "S" },
-      { text: "بالتحليل والدقة", trait: "C" }
-    ]
-
   addSwitcher() {
     if (document.getElementById('langToggle')) return;
     const btn = document.createElement('button');
@@ -335,21 +153,9 @@ const Lang = {
     btn.textContent = this.current === 'ar' ? 'EN' : 'AR';
     document.body.appendChild(btn);
   },
-  {
-    id: 19,
-    text: "ما الذي يُشعرك بالراحة؟",
-    options: [
-      { text: "تحقيق الهدف", trait: "D" },
-      { text: "الضحك والتفاعل", trait: "I" },
-      { text: "الهدوء والاستقرار", trait: "S" },
-      { text: "النظام والفهم الكامل", trait: "C" }
-    ]
-
   apply() {
     const t = this.translations[this.current];
     if (!t) return;
-
-    // تحديث النصوص
     if (document.querySelector('#userInfo h3:nth-of-type(1)')) document.querySelector('#userInfo h3:nth-of-type(1)').textContent = t.welcome_title;
     if (document.querySelector('#userInfo h3:nth-of-type(2)')) document.querySelector('#userInfo h3:nth-of-type(2)').textContent = t.user_info_title;
     if (document.querySelector('#userInfo p')) document.querySelector('#userInfo p').textContent = t.user_info_desc;
@@ -366,41 +172,21 @@ const Lang = {
     if (document.querySelector('#restartBtn')) document.querySelector('#restartBtn').textContent = t.restart_btn;
     if (document.querySelector('footer p:nth-of-type(1)')) document.querySelector('footer p:nth-of-type(1)').textContent = t.footer1;
     if (document.querySelector('footer p:nth-of-type(2)')) document.querySelector('footer p:nth-of-type(2)').textContent = t.footer2;
-
-    // تحديث زر اللغة
     const btn = document.getElementById('langToggle');
     if (btn) btn.textContent = t.lang_switch;
-
-    // تغيير اتجاه الصفحة
     document.documentElement.dir = this.current === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = this.current;
   },
-  {
-    id: 20,
-    text: "ما هو شعارك في الحياة؟",
-    options: [
-      { text: "النتيجة أهم من الطريقة", trait: "D" },
-      { text: "الحياة للمرح والتجربة", trait: "I" },
-      { text: "العلاقات تُبني بالصبر والوفاء", trait: "S" },
-      { text: "الفهم يسبق كل شيء", trait: "C" }
-    ]
-
- bind() {
-  const btn = document.getElementById('langToggle');
-  if (btn) {
-    btn.onclick = () => {
-      // تغيير اللغة
-      const newLang = this.current === 'ar' ? 'en' : 'ar';
-      
-      // حفظ اللغة الجديدة
-      localStorage.setItem('lang', newLang);
-      
-      // إعادة تحميل الصفحة فورًا
-      location.reload();
-    };
+  bind() {
+    const btn = document.getElementById('langToggle');
+    if (btn) {
+      btn.onclick = () => {
+        this.current = this.current === 'ar' ? 'en' : 'ar';
+        localStorage.setItem('lang', this.current);
+        this.apply();
+      };
+    }
   }
-}
-];
 };
 
 // --- الأسئلة ---
@@ -470,7 +256,7 @@ function getQuestions() {
   ];
 }
 
-const personalityQuestions = getQuestions();
+let personalityQuestions = getQuestions();
 
 // --- توليد التحليل النفسي الموسع ---
 function generatePersonalityAnalysis(answers, userData) {
@@ -636,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
   startBtn.addEventListener('click', () => {
     introEl.style.display = 'none';
     quizEl.style.display = 'block';
+    personalityQuestions = getQuestions(); // تحديث الأسئلة حسب اللغة
     showQuestion();
   });
 
@@ -672,81 +459,69 @@ document.addEventListener('DOMContentLoaded', () => {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
-      
 
-     // === تفعيل إعلان من شبكة مربحة (4 شبكات - توزيع ذكي) ===
-try {
-  if (window.adNetworkLoaded) return;
+      // === تفعيل إعلان من شبكة مربحة (4 شبكات - توزيع ذكي) ===
+      try {
+        if (window.adNetworkLoaded) return;
 
-  const adContainer = document.getElementById('monetag-inpage');
-  if (!adContainer) return;
+        const adContainer = document.getElementById('monetag-inpage');
+        if (!adContainer) return;
 
-  // رسالة تحميل
-  adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
+        // رسالة تحميل
+        adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
 
-  // توزيع ذكي: 45% Monetag, 25% Adsterra, 20% RichAds, 10% HilltopAds
-  const roll = Math.random();
-  let network, scriptSrc;
+        // توزيع ذكي: 45% Monetag, 25% Adsterra, 20% RichAds, 10% HilltopAds
+        const roll = Math.random();
+        let network, scriptSrc;
 
-  if (roll < 0.45) {
-    // --- Monetag (الأعلى أداءً) ---
-    network = 'monetag';
-    const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
-    const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
-    scriptSrc = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
-  } else if (roll < 0.70) {
-    // --- Adsterra (إعلانات داخلية جذابة) ---
-    network = 'adsterra';
-    // ⬇️ ضع كود Adsterra هنا (مثل: https://jsc.adskeeper.com/...)
-    scriptSrc = ""; // ← املأ هذا الرابط من لوحة Adsterra
-  } else if (roll < 0.90) {
-    // --- RichAds (نافذة خلفية عالية CPM) ---
-    network = 'richads';
-    // ⬇️ ضع كود RichAds هنا (مثل: https://cdn.richads.com/...)
-    scriptSrc = ""; // ← املأ هذا الرابط من لوحة RichAds
-  } else {
-    // --- HilltopAds (نافذة خلفية بديلة) ---
-    network = 'hilltop';
-    // ⬇️ ضع كود HilltopAds هنا (مثل: https://cdn.hilltopads.com/...)
-    scriptSrc = ""; // ← املأ هذا الرابط من لوحة HilltopAds
-  }
+        if (roll < 0.45) {
+          // --- Monetag (الأعلى أداءً) ---
+          network = 'monetag';
+          const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
+          const randomEmid = monetagZones[Math.floor(Math.random() * monetagZones.length)];
+          scriptSrc = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
+        } else if (roll < 0.70) {
+          // --- Adsterra ---
+          network = 'adsterra';
+          scriptSrc = ""; // ← املأ هذا الرابط من لوحة Adsterra
+        } else if (roll < 0.90) {
+          // --- RichAds ---
+          network = 'richads';
+          scriptSrc = ""; // ← املأ هذا الرابط من لوحة RichAds
+        } else {
+          // --- HilltopAds ---
+          network = 'hilltop';
+          scriptSrc = ""; // ← املأ هذا الرابط من لوحة HilltopAds
+        }
 
-  // إذا ما حطيت كود، ما يُنشئش سكربت
-  if (!scriptSrc || scriptSrc.trim() === "") {
-    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
-    window.adNetworkLoaded = true;
-    return;
-  }
+        if (!scriptSrc || scriptSrc.trim() === "") {
+          adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
+          window.adNetworkLoaded = true;
+          return;
+        }
 
-  const script = document.createElement('script');
-  script.id = `ad-network-script-${network}`;
-  script.async = true;
-  script.src = scriptSrc;
+        const script = document.createElement('script');
+        script.id = `ad-network-script-${network}`;
+        script.async = true;
+        script.src = scriptSrc;
 
-  script.onload = () => {
-    if (typeof goAds !== 'undefined' && goAds.length > 0) {
-      goAds[0].loadAd && goAds[0].loadAd();
-    } else if (window.RichAds && network === 'richads') {
-      window.RichAds.setup && window.RichAds.setup();
-    }
-  };
+        script.onload = () => {
+          if (typeof goAds !== 'undefined' && goAds.length > 0) {
+            goAds[0].loadAd && goAds[0].loadAd();
+          } else if (window.RichAds && network === 'richads') {
+            window.RichAds.setup && window.RichAds.setup();
+          }
+        };
 
-  script.onerror = () => {
-    adContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
-  };
-
-  document.body.appendChild(script);
-  window.adNetworkLoaded = true;
-
-} catch (e) {
-  console.error("Ad Networks: فشل في التحميل", e);
-}
+        script.onerror = () => {
+          adContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
+        };
 
         document.body.appendChild(script);
-        window.monetagInPageLoaded = true;
+        window.adNetworkLoaded = true;
 
       } catch (e) {
-        console.error("Monetag In-Page: فشل في التحميل", e);
+        console.error("Ad Networks: فشل في التحميل", e);
       }
 
       resultEl.style.display = 'block';
@@ -760,124 +535,3 @@ try {
     userInfoEl.style.display = 'block';
   });
 });
-// === نظام الترجمة: عربي / إنجليزي ===
-(function () {
-  // ترجمات النصوص
-  const translations = {
-    ar: {
-      welcome_title: 'مرحبا بك في غرفة الاسرار',
-      user_info_title: 'أخبرنا عنك أولًا',
-      user_info_desc: 'هذه المعلومات تساعدنا في تخصيص التحليل لك بدقة أكبر',
-      age_label: 'العمر:',
-      gender_label: 'الجنس:',
-      submit_user_info: 'أدخل الغرفة',
-      intro_title: 'غرفة الأسرار',
-      intro_subtitle: 'Chamber of Secrets',
-      intro_desc: 'اكتشف شخصيتك الحقيقية من خلال 6 أسئلة تفتح لك أبواب الذات',
-      intro_p1: 'أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.',
-      intro_p2: 'أجب بصدق... وسترى ما لم تره من قبل.',
-      start_btn: 'ادخل إلى الغرفة',
-      question: 'سؤال',
-      next_btn: 'السؤال التالي',
-      restart_btn: 'أعد الرحلة',
-      footer1: '© 2025 غرفة الأسرار | Chamber of Secrets',
-      footer2: 'تم التصميم والتحليل النفسي والتطوير من قبل: Mohammed Tarek',
-      lang_switch: 'EN'
-    },
-    en: {
-      welcome_title: 'Welcome to Chamber of Secrets',
-      user_info_title: 'Tell Us About You First',
-      user_info_desc: 'This information helps us customize the analysis for you more accurately',
-      age_label: 'Age:',
-      gender_label: 'Gender:',
-      submit_user_info: 'Enter the Chamber',
-      intro_title: 'Chamber of Secrets',
-      intro_subtitle: 'غرفة الأسرار',
-      intro_desc: 'Discover your true personality through 6 questions that open the doors to your inner self',
-      intro_p1: 'You are about to enter a room that reveals itself only to those honest with themselves.',
-      intro_p2: 'Answer honestly... and you will see what you have never seen before.',
-      start_btn: 'Enter the Chamber',
-      question: 'Question',
-      next_btn: 'Next Question',
-      restart_btn: 'Restart the Journey',
-      footer1: '© 2025 Chamber of Secrets | غرفة الأسرار',
-      footer2: 'Designed, analyzed, and developed by: Mohammed Tarek',
-      lang_switch: 'AR'
-    }
-  };
-
-  // تطبيق الترجمة
-  function applyTranslation(lang) {
-    const t = translations[lang];
-    if (!t) return;
-
-    // تحديث النصوص
-    if (document.getElementById('userInfo')) {
-      document.querySelector('#userInfo h3:nth-of-type(1)').textContent = t.welcome_title;
-      document.querySelector('#userInfo h3:nth-of-type(2)').textContent = t.user_info_title;
-      document.querySelector('#userInfo p').textContent = t.user_info_desc;
-      document.querySelector('#age').previousElementSibling.textContent = t.age_label;
-      document.querySelector('#gender').previousElementSibling.textContent = t.gender_label;
-      document.querySelector('#submitUserInfo').textContent = t.submit_user_info;
-    }
-
-    if (document.getElementById('intro')) {
-      document.querySelector('#intro h1').textContent = t.intro_title;
-      document.querySelector('#intro h2').textContent = t.intro_subtitle;
-      document.querySelector('#intro .divider').nextElementSibling.textContent = t.intro_desc;
-      document.querySelectorAll('#intro p')[0].textContent = t.intro_p1;
-      document.querySelectorAll('#intro p')[1].textContent = t.intro_p2;
-      document.querySelector('#startBtn').textContent = t.start_btn;
-    }
-
-    if (document.getElementById('nextBtn')) {
-      document.querySelector('#nextBtn').textContent = t.next_btn;
-    }
-
-    if (document.getElementById('restartBtn')) {
-      document.querySelector('#restartBtn').textContent = t.restart_btn;
-    }
-
-    // تحديث الفوتر
-    document.querySelectorAll('footer p')[0].textContent = t.footer1;
-    document.querySelectorAll('footer p')[1].textContent = t.footer2;
-
-    // تحديث زر اللغة
-    const langBtn = document.getElementById('langToggle');
-    if (langBtn) langBtn.textContent = t.lang_switch;
-
-    // تغيير اتجاه الصفحة
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
-  }
-
-  // إدارة زر الترجمة
-  function initLanguageSwitcher() {
-    const langBtn = document.createElement('button');
-    langBtn.id = 'langToggle';
-    langBtn.title = 'Change Language';
-    langBtn.style.cssText = `
-      position: absolute; top: 20px; left: 20px; z-index: 1000;
-      background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24;
-      padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem;
-    `;
-    langBtn.textContent = localStorage.getItem('lang') === 'en' ? 'AR' : 'EN';
-    document.body.appendChild(langBtn);
-
-    const savedLang = localStorage.getItem('lang') || 'ar';
-    applyTranslation(savedLang);
-
-    langBtn.addEventListener('click', () => {
-      const newLang = document.documentElement.lang === 'ar' ? 'en' : 'ar';
-      localStorage.setItem('lang', newLang);
-      applyTranslation(newLang);
-    });
-  }
-
-  // تفعيل النظام بعد تحميل الصفحة
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLanguageSwitcher);
-  } else {
-    initLanguageSwitcher();
-  }
-})();
