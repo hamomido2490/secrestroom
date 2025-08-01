@@ -371,8 +371,41 @@ function getZodiacSign(dob) {
 }
 
 // --- تنبؤات برجك الأسبوعية ---
-function getWeeklyPrediction(zodiacSign, lang = 'ar') {
-  const predictions = {
+// --- تنبؤات برجك: يومية، أسبوعية، سنوية ---
+function getHoroscopePredictions(zodiacSign, lang = 'ar') {
+  // تنبؤات عشوائية متعددة لكل برج (تتغير حسب اليوم)
+  const dailyPredictions = {
+    ar: {
+      "الحمل": ["ستكون لديك طاقة عالية اليوم.", "فرصة للبدء بشيء جديد.", "كن حذرًا من التسرع في القرارات."],
+      "الثور": ["اليوم مناسب للعمل الهادئ.", "اهتم بصحتك الجسدية.", "لا تؤجل المهام المهمة."],
+      "الجوزاء": ["ستكون اجتماعيًا جدًا اليوم.", "رسالة غير متوقعة ستُسعدك.", "راقب نفقاتك."],
+      "السرطان": ["الانسجام العائلي في ذروته.", "يوم مناسب للتأمل.", "كن صبورًا مع نفسك."],
+      "الأسد": ["سيُقدّر جهودك اليوم.", "فرصة للظهور والتحدث.", "لا تخف من التعبير عن رأيك."],
+      "العذراء": ["اليوم مناسب للتنظيم.", "انتبه للتفاصيل الصغيرة.", "استخدم منطقك في كل قرار."],
+      "الميزان": ["ستحتاج لاتخاذ قرار مهم.", "التوازن بين العمل والحياة أساسي.", "استعن بصديق موثوق."],
+      "العقرب": ["ستكتشف حقيقة مهمة.", "كن حذرًا من الأشخاص الجدد.", "الحدس سيكون دليلك."],
+      "القوس": ["مغامرة جديدة في انتظارك.", "يوم مناسب للسفر أو التعلم.", "كن متفائلًا."],
+      "الجدي": ["الانضباط سيقودك للنجاح.", "لا تهمل واجباتك.", "العمل الجاد سيُكافأ."],
+      "الدلو": ["فكرة مبتكرة ستغير كل شيء.", "كن مستعدًا للتغيير.", "لا تخف من التفكير خارج الصندوق."],
+      "الحوت": ["الحدس سيكون دليلك.", "كن حذرًا من الأوهام.", "الاسترخاء ضروري اليوم."]
+    },
+    en: {
+      "الحمل": ["You'll have high energy today.", "A chance to start something new.", "Be careful not to rush decisions."],
+      "الثور": ["A quiet day is suitable for work.", "Take care of your physical health.", "Don't delay important tasks."],
+      "الجوزاء": ["You'll be very social today.", "An unexpected message will make you happy.", "Watch your expenses."],
+      "السرطان": ["Family harmony is at its peak.", "A day suitable for reflection.", "Be patient with yourself."],
+      "الأسد": ["Your efforts will be appreciated today.", "A chance to speak up.", "Don't hesitate to express your opinion."],
+      "العذراء": ["A good day for organization.", "Pay attention to small details.", "Use logic in every decision."],
+      "الميزان": ["You'll need to make an important decision.", "Balance between work and life is key.", "Consult a trusted friend."],
+      "العقرب": ["You'll discover an important truth.", "Be cautious with new people.", "Your intuition will guide you."],
+      "القوس": ["A new adventure awaits you.", "A good day for travel or learning.", "Stay optimistic."],
+      "الجدي": ["Discipline will lead you to success.", "Don't neglect your duties.", "Hard work will be rewarded."],
+      "الدلو": ["An innovative idea will change everything.", "Be ready for change.", "Don't be afraid to think outside the box."],
+      "الحوت": ["Your intuition will be your guide.", "Be careful of illusions.", "Relaxation is essential today."]
+    }
+  };
+
+  const weeklyPredictions = {
     ar: {
       "الحمل": "ستواجه فرصًا جديدة للقيادة. استغلها بثقة.",
       "الثور": "الاستقرار المالي سيكون في متناول يدك. خطط بحكمة.",
@@ -402,6 +435,50 @@ function getWeeklyPrediction(zodiacSign, lang = 'ar') {
       "الحوت": "Intuition will be your guide. Trust your feelings."
     }
   };
+
+  const yearlyPredictions = {
+    ar: {
+      "الحمل": "سنة مليئة بالتحديات والفرص. ستكون قائدًا في مجالك.",
+      "الثور": "سنة الاستقرار والنمو المالي. استثمر بحكمة.",
+      "الجوزاء": "سنة التعلم والاتصال. اقرأ كثيرًا وتحدث مع الناس.",
+      "السرطان": "سنة العائلة والمشاعر. اهتم بمن حولك.",
+      "الأسد": "سنة النجاح والاعتراف. لا تخف من الظهور.",
+      "العذراء": "سنة التفاصيل والدقة. خطط لكل شيء.",
+      "الميزان": "سنة التوازن والعلاقات. اختر شريكك بعناية.",
+      "العقرب": "سنة التحول والقوة. تجاوز مخاوفك.",
+      "القوس": "سنة المغامرة والسفر. اكتشف العالم.",
+      "الجدي": "سنة العمل الجاد. النتائج قادمة.",
+      "الدلو": "سنة الابتكار. أفكارك ستغير شيئًا ما.",
+      "الحوت": "سنة الروحانية والإبداع. ثق بحدسك."
+    },
+    en: {
+      "الحمل": "A year full of challenges and opportunities. You will lead in your field.",
+      "الثور": "A year of stability and financial growth. Invest wisely.",
+      "الجوزاء": "A year of learning and communication. Read and talk to people.",
+      "السرطان": "A year of family and emotions. Care for your loved ones.",
+      "الأسد": "A year of success and recognition. Don't fear the spotlight.",
+      "العذراء": "A year of details and precision. Plan everything.",
+      "الميزان": "A year of balance and relationships. Choose your partner wisely.",
+      "العقرب": "A year of transformation and power. Overcome your fears.",
+      "القوس": "A year of adventure and travel. Explore the world.",
+      "الجدي": "A year of hard work. Results are coming.",
+      "الدلو": "A year of innovation. Your ideas will change something.",
+      "الحوت": "A year of spirituality and creativity. Trust your intuition."
+    }
+  };
+
+  // اختيار تنبؤ عشوائي حسب اليوم (لتغييره يوميًا)
+  const today = new Date().getDate();
+  const dailyIndex = (zodiacSign.charCodeAt(0) + today) % 3; // يضمن تغيير يومي
+  const daily = dailyPredictions[lang][zodiacSign][dailyIndex];
+
+  return {
+    daily: daily,
+    weekly: weeklyPredictions[lang][zodiacSign],
+    yearly: yearlyPredictions[lang][zodiacSign]
+  };
+}
+
   return predictions[lang][zodiacSign] || (lang === 'ar' ? "توقعات إيجابية في الطريق." : "Positive predictions ahead.");
 }
 
@@ -716,19 +793,32 @@ if (document.querySelector('#userInfo .form-group:last-child')) {
           const prediction = getWeeklyPrediction(zodiacSign, Lang.current);
 
           zodiacBtn.addEventListener('click', () => {
-            zodiacResult.innerHTML = `
-              <h4>✨ برجك: ${zodiacSign}</h4>
-              <p><strong>تحليلك الفلكي:</strong> يتميز أشخاص برجك بالجرأة، التفاؤل، والطموح.</p>
-              <p><strong>تنبؤاتك الأسبوعية:</strong> ${prediction}</p>
-              <p><em>الكون يهمس لك... استمع جيدًا.</em></p>
-            `;
-            zodiacResult.style.display = 'block';
-            zodiacBtn.disabled = true;
-            zodiacBtn.textContent = '✨ تم فتح البوابة';
-            zodiacBtn.style.opacity = '0.8';
-            zodiacBtn.style.cursor = 'not-allowed';
-          });
+  const predictions = getHoroscopePredictions(zodiacSign, Lang.current);
 
+  zodiacResult.innerHTML = `
+    <h4>✨ برجك: ${zodiacSign}</h4>
+    <p><strong>تحليلك الفلكي:</strong> يتميز أشخاص برجك بالجرأة، التفاؤل، والطموح.</p>
+    
+    <div style="margin: 15px 0; padding: 10px; background: #1e293b; border-radius: 8px;">
+      <p><strong>🔮 التنبؤ اليومي:</strong> ${predictions.daily}</p>
+    </div>
+    
+    <div style="margin: 15px 0; padding: 10px; background: #1e293b; border-radius: 8px;">
+      <p><strong>📅 التنبؤ الأسبوعي:</strong> ${predictions.weekly}</p>
+    </div>
+    
+    <div style="margin: 15px 0; padding: 10px; background: #1e293b; border-radius: 8px;">
+      <p><strong>🎯 التنبؤ السنوي:</strong> ${predictions.yearly}</p>
+    </div>
+    
+    <p><em>الكون يهمس لك... استمع جيدًا.</em></p>
+  `;
+  zodiacResult.style.display = 'block';
+  zodiacBtn.disabled = true;
+  zodiacBtn.textContent = '✨ تم فتح البوابة';
+  zodiacBtn.style.opacity = '0.8';
+  zodiacBtn.style.cursor = 'not-allowed';
+});
         } catch (e) {
           console.error("Zodiac Button: فشل في التحميل", e);
         }
