@@ -1,5 +1,3 @@
-// utils.js - أدوات مساعدة عامة
-
 export function calculateAge(birthDateString) {
   const birthDate = new Date(birthDateString);
   const today = new Date();
@@ -12,7 +10,6 @@ export function calculateAge(birthDateString) {
 }
 
 export function showAlert(message) {
-  // يمكن تطويرها لمودال جميل لاحقًا
   alert(message);
 }
 
