@@ -1,4 +1,4 @@
-// bundle.js - غرفة الأسرار | تحليل دقيق وموسع مع تشبيه بشخصيات مشهورة
+// bundle.js - غرفة الأسرار | تحليل دقيق، 20 سؤال، أبراج، تنبؤات، وإعلانات ذكية
 // تم التصميم والتطوير من قبل: Mohammed Tarek
 
 // --- تحقق من أن الموقع يعمل أونلاين فقط ---
@@ -33,17 +33,19 @@
 // --- نظام الترجمة ---
 const Lang = {
   current: localStorage.getItem('lang') || 'ar',
-  translations: {
-    // ... نفس الترجمة كما بالكود السابق ...
-    ar: {/* ... تماثل السابق ... */},
-    en: {/* ... تماثل السابق ... */}
-  },
-  init() {
-    this.addSwitcher();
+  init: function () {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'ar' || saved === 'en') {
+      this.current = saved;
+    } else {
+      const browserLang = navigator.language || navigator.userLanguage;
+      this.current = browserLang.startsWith('ar') ? 'ar' : 'en';
+    }
     this.apply();
+    this.addSwitcher();
     this.bind();
   },
-  addSwitcher() {
+  addSwitcher: function () {
     if (document.getElementById('langToggle')) return;
     const btn = document.createElement('button');
     btn.id = 'langToggle';
@@ -56,261 +58,483 @@ const Lang = {
     btn.textContent = this.current === 'ar' ? 'EN' : 'AR';
     document.body.appendChild(btn);
   },
-  apply() {
+  apply: function () {
     const t = this.translations[this.current];
     if (!t) return;
-    // تحديث النصوص حسب اللغة (نفس الكود السابق)
-    function set(selector, value) {
-      const el = document.querySelector(selector);
-      if (el) el.textContent = value;
-    }
-    set('#userInfo h3:nth-of-type(1)', t.welcome_title);
-    set('#userInfo h3:nth-of-type(2)', t.user_info_title);
-    set('#userInfo p', t.user_info_desc);
+
+    // تحديث النصوص
+    if (document.querySelector('#userInfo h3:nth-of-type(1)')) document.querySelector('#userInfo h3:nth-of-type(1)').textContent = t.welcome_title;
+    if (document.querySelector('#userInfo h3:nth-of-type(2)')) document.querySelector('#userInfo h3:nth-of-type(2)').textContent = t.user_info_title;
+    if (document.querySelector('#userInfo p')) document.querySelector('#userInfo p').textContent = t.user_info_desc;
     if (document.querySelector('#age')) document.querySelector('#age').previousElementSibling.textContent = t.age_label;
     if (document.querySelector('#gender')) document.querySelector('#gender').previousElementSibling.textContent = t.gender_label;
-    set('#submitUserInfo', t.submit_user_info);
-    set('#intro h1', t.intro_title);
-    set('#intro h2', t.intro_subtitle);
+    if (document.querySelector('#submitUserInfo')) document.querySelector('#submitUserInfo').textContent = t.submit_user_info;
+    if (document.querySelector('#intro h1')) document.querySelector('#intro h1').textContent = t.intro_title;
+    if (document.querySelector('#intro h2')) document.querySelector('#intro h2').textContent = t.intro_subtitle;
     if (document.querySelector('#intro .divider + p')) document.querySelector('#intro .divider + p').textContent = t.intro_desc;
     if (document.querySelectorAll('#intro p')[0]) document.querySelectorAll('#intro p')[0].textContent = t.intro_p1;
     if (document.querySelectorAll('#intro p')[1]) document.querySelectorAll('#intro p')[1].textContent = t.intro_p2;
-    set('#startBtn', t.start_btn);
-    set('#nextBtn', t.next_btn);
-    set('#restartBtn', t.restart_btn);
-    set('footer p:nth-of-type(1)', t.footer1);
-    set('footer p:nth-of-type(2)', t.footer2);
+    if (document.querySelector('#startBtn')) document.querySelector('#startBtn').textContent = t.start_btn;
+    if (document.querySelector('#nextBtn')) document.querySelector('#nextBtn').textContent = t.next_btn;
+    if (document.querySelector('#restartBtn')) document.querySelector('#restartBtn').textContent = t.restart_btn;
+    if (document.querySelector('footer p:nth-of-type(1)')) document.querySelector('footer p:nth-of-type(1)').textContent = t.footer1;
+    if (document.querySelector('footer p:nth-of-type(2)')) document.querySelector('footer p:nth-of-type(2)').textContent = t.footer2;
+
     const btn = document.getElementById('langToggle');
-    if (btn) btn.textContent = t.lang_switch;
+    if (btn) btn.textContent = this.current === 'ar' ? 'EN' : 'AR';
+
     document.documentElement.dir = this.current === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = this.current;
   },
-  bind() {
+  bind: function () {
     const btn = document.getElementById('langToggle');
     if (btn) {
       btn.onclick = () => {
-        this.current = this.current === 'ar' ? 'en' : 'ar';
-        localStorage.setItem('lang', this.current);
-        location.reload(); // أفضل reload بدل apply فقط للأسئلة
+        const newLang = this.current === 'ar' ? 'en' : 'ar';
+        localStorage.setItem('lang', newLang);
+        location.reload();
       };
+    }
+  },
+  translations: {
+    ar: {
+      welcome_title: 'مرحبا بك في غرفة الاسرار',
+      user_info_title: 'أخبرنا عنك أولًا',
+      user_info_desc: 'هذه المعلومات تساعدنا في تخصيص التحليل لك بدقة أكبر',
+      age_label: 'العمر:',
+      gender_label: 'الجنس:',
+      submit_user_info: 'أدخل الغرفة',
+      intro_title: 'غرفة الأسرار',
+      intro_subtitle: 'Chamber of Secrets',
+      intro_desc: 'اكتشف شخصيتك الحقيقية من خلال 20 سؤالاً تفتح لك أبواب الذات',
+      intro_p1: 'أنت على وشك دخول غرفة لا تُظهر ما بداخلها إلا للصادقين مع أنفسهم.',
+      intro_p2: 'أجب بصدق... وسترى ما لم تره من قبل.',
+      start_btn: 'ادخل إلى الغرفة',
+      next_btn: 'السؤال التالي',
+      restart_btn: 'أعد الرحلة',
+      footer1: '© 2025 غرفة الأسرار | Chamber of Secrets',
+      footer2: 'تم التصميم والتحليل النفسي والتطوير من قبل: Mohammed Tarek',
+      dob_label: 'تاريخ الميلاد:',
+      zodiac_title: 'بناءً على برجك',
+      prediction_title: 'تنبؤات برجك الأسبوعية'
+    },
+    en: {
+      welcome_title: 'Welcome to Chamber of Secrets',
+      user_info_title: 'Tell Us About You First',
+      user_info_desc: 'This information helps us customize the analysis for you more accurately',
+      age_label: 'Age:',
+      gender_label: 'Gender:',
+      submit_user_info: 'Enter the Chamber',
+      intro_title: 'Chamber of Secrets',
+      intro_subtitle: 'غرفة الأسرار',
+      intro_desc: 'Discover your true personality through 20 questions that open the doors to your inner self',
+      intro_p1: 'You are about to enter a room that reveals itself only to those honest with themselves.',
+      intro_p2: 'Answer honestly... and you will see what you have never seen before.',
+      start_btn: 'Enter the Chamber',
+      next_btn: 'Next Question',
+      restart_btn: 'Restart the Journey',
+      footer1: '© 2025 Chamber of Secrets | غرفة الأسرار',
+      footer2: 'Designed, analyzed, and developed by: Mohammed Tarek',
+      dob_label: 'Date of Birth:',
+      zodiac_title: 'Based on your zodiac sign',
+      prediction_title: 'Your Weekly Horoscope'
     }
   }
 };
 
 // --- الأسئلة (20 سؤالاً) ---
-function getQuestions() {
-  const t = Lang.translations[Lang.current];
+function getQuestions(lang = 'ar') {
+  const t = Lang.translations[lang];
   return [
-    // 1 - 16 من كودك
     {
       id: 1,
-      text: t.q1,
+      text: t.q1 || "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
       options: [
-        { text: t.o1_1, trait: "E" },
-        { text: t.o1_2, trait: "C" },
-        { text: t.o1_3, trait: "Inferiority" },
-        { text: t.o1_4, trait: "N" }
+        { text: t.o1_1 || "أنا متحمس لأبدأ يومي!", trait: "E" },
+        { text: t.o1_2 || "هل كل شيء تحت السيطرة؟", trait: "C" },
+        { text: t.o1_3 || "هل سأكون كافيًا اليوم؟", trait: "Inferiority" },
+        { text: t.o1_4 || "أريد أن أفهم معنى هذا اليوم", trait: "N" }
       ]
     },
     {
       id: 2,
-      text: t.q2,
+      text: t.q2 || "في لقاء اجتماعي جديد، ماذا تفعل؟",
       options: [
-        { text: t.o2_1, trait: "E,I" },
-        { text: t.o2_2, trait: "I,S" },
-        { text: t.o2_3, trait: "T" },
-        { text: t.o2_4, trait: "F" }
+        { text: t.o2_1 || "أبدأ الحديث مع الجميع بسرعة", trait: "E,I" },
+        { text: t.o2_2 || "أراقب أولًا ثم أتحدث مع شخص واحد", trait: "I,S" },
+        { text: t.o2_3 || "أركز على من يمكن أن يفيدني أو أفيد منه", trait: "T" },
+        { text: t.o2_4 || "أحاول فهم مشاعر الآخرين بسرعة", trait: "F" }
       ]
     },
     {
       id: 3,
-      text: t.q3,
+      text: t.q3 || "ما نوع المهمة التي تجعلك 'تُنسى' من نفسك؟",
       options: [
-        { text: t.o3_1, trait: "Artisan" },
-        { text: t.o3_2, trait: "NT" },
-        { text: t.o3_3, trait: "Idealist" },
-        { text: t.o3_4, trait: "Guardian" }
+        { text: t.o3_1 || "التحديات السريعة والملتزمة بالوقت", trait: "Artisan" },
+        { text: t.o3_2 || "التحليل العميق للبيانات أو الأنظمة", trait: "NT" },
+        { text: t.o3_3 || "مساعدة شخص على تجاوز أزمة", trait: "Idealist" },
+        { text: t.o3_4 || "تنظيم فريق لتحقيق هدف منظم", trait: "Guardian" }
       ]
     },
     {
       id: 4,
-      text: t.q4,
+      text: t.q4 || "ما أكثر شيء تبحث عنه في الصداقات؟",
       options: [
-        { text: t.o4_1, trait: "I" },
-        { text: t.o4_2, trait: "S" },
-        { text: t.o4_3, trait: "NF" },
-        { text: t.o4_4, trait: "Rational" }
+        { text: t.o4_1 || "المرح والطاقة", trait: "I" },
+        { text: t.o4_2 || "الولاء والاستقرار", trait: "S" },
+        { text: t.o4_3 || "العمق والمعنى", trait: "NF" },
+        { text: t.o4_4 || "التحدي الفكري", trait: "Rational" }
       ]
     },
     {
       id: 5,
-      text: t.q5,
+      text: t.q5 || "كيف تتعامل مع الأخطاء؟",
       options: [
-        { text: t.o5_1, trait: "P" },
-        { text: t.o5_2, trait: "C" },
-        { text: t.o5_3, trait: "A" },
-        { text: t.o5_4, trait: "Inferiority" }
+        { text: t.o5_1 || "أتعلم وأتحرك بسرعة", trait: "P" },
+        { text: t.o5_2 || "أحلل ما حدث بدقة", trait: "C" },
+        { text: t.o5_3 || "أشعر بالذنب، لكنني أسامح نفسي", trait: "A" },
+        { text: t.o5_4 || "أتساءل: هل هذا يثبت أنني غير كافٍ؟", trait: "Inferiority" }
       ]
     },
     {
       id: 6,
-      text: t.q6,
+      text: t.q6 || "ما الذي يُشعرك بالفخر؟",
       options: [
-        { text: t.o6_1, trait: "D" },
-        { text: t.o6_2, trait: "F" },
-        { text: t.o6_3, trait: "N" },
-        { text: t.o6_4, trait: "J" }
+        { text: t.o6_1 || "تحقيق نتائج ملموسة", trait: "D" },
+        { text: t.o6_2 || "دعم شخص في أزمة", trait: "F" },
+        { text: t.o6_3 || "ابتكار فكرة جديدة", trait: "N" },
+        { text: t.o6_4 || "الالتزام بالواجبات والمسؤوليات", trait: "J" }
       ]
     },
-    // 7-16 (أكمل بنفس النمط)
     {
       id: 7,
-      text: "عند اتخاذ قرار مهم، ما الذي تثق به أكثر؟",
+      text: t.q7 || "ما الذي تبحث عنه في قرار مهم؟",
       options: [
-        { text: "منطق العقل وتحليل المخاطر", trait: "T" },
-        { text: "مشاعر القلب وتأثير القرار على الآخرين", trait: "F" },
-        { text: "ما يقوله القانون أو التقاليد", trait: "S" },
-        { text: "رؤيتي المستقبلية والبصيرة", trait: "N" }
+        { text: t.o7_1 || "السرعة والنتائج", trait: "D" },
+        { text: t.o7_2 || "الإلهام والانطباع الأول", trait: "I" },
+        { text: t.o7_3 || "استقرار الفريق والعلاقات", trait: "S" },
+        { text: t.o7_4 || "التحليل العميق والمنطق", trait: "T" }
       ]
     },
     {
       id: 8,
-      text: "ماذا تفعل عندما تشعر بالضغط؟",
+      text: t.q8 || "ماذا تفعل عندما تشعر بالضغط؟",
       options: [
-        { text: "أتحدى الموقف مباشرة", trait: "D" },
-        { text: "أبحث عن دعم من الآخرين", trait: "I" },
-        { text: "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
-        { text: "أحلل المشكلة من كل الزوايا", trait: "C" }
+        { text: t.o8_1 || "أتحدى الموقف مباشرة", trait: "D" },
+        { text: t.o8_2 || "أبحث عن دعم من الآخرين", trait: "I" },
+        { text: t.o8_3 || "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
+        { text: t.o8_4 || "أحلل المشكلة من كل الزوايا", trait: "C" }
       ]
     },
     {
       id: 9,
-      text: "ما نوع الكتب أو المحتوى الذي تفضله؟",
+      text: t.q9 || "ما نوع الكتب أو المحتوى الذي تفضله؟",
       options: [
-        { text: "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
-        { text: "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
-        { text: "أدلة عملية، خطوات، تقنيات", trait: "S,J" },
-        { text: "ألعاب، ألغاز، تجارب جديدة", trait: "SP" }
+        { text: t.o9_1 || "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
+        { text: t.o9_2 || "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
+        { text: t.o9_3 || "نكت، فيديوهات مضحكة، ترفيه", trait: "SP" },
+        { text: t.o9_4 || "أدلة عملية، خطوات، تقنيات", trait: "S,J" }
       ]
     },
     {
       id: 10,
-      text: "ما الذي يعطيك إحساسًا بالمعنى؟",
+      text: t.q10 || "ما الذي يعطيك إحساسًا بالمعنى؟",
       options: [
-        { text: "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
-        { text: "خدمة الآخرين", trait: "Meaning" },
-        { text: "فهم الكون أو النظام الكوني", trait: "Rational" },
-        { text: "الاستقرار والانتماء", trait: "Generativity" }
+        { text: t.o10_1 || "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
+        { text: t.o10_2 || "خدمة الآخرين", trait: "Meaning" },
+        { text: t.o10_3 || "فهم الكون أو النظام الكوني", trait: "Rational" },
+        { text: t.o10_4 || "الاستقرار والانتماء", trait: "Generativity" }
       ]
     },
     {
       id: 11,
-      text: "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
+      text: t.q11 || "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
       options: [
-        { text: "نادرًا، أنا واثق من قراراتي", trait: "D" },
-        { text: "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
-        { text: "غالبًا، أحب التعلم المستمر", trait: "N" },
-        { text: "بشكل متكرر، أتأثر بمشاعر الآخرين", trait: "F" }
+        { text: t.o11_1 || "نادرًا، أنا واثق من قراراتي", trait: "D" },
+        { text: t.o11_2 || "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
+        { text: t.o11_3 || "غالبًا، لأنني أحب التعلم", trait: "N" },
+        { text: t.o11_4 || "دائمًا، لأنني أكره التصلب", trait: "P" }
       ]
     },
     {
       id: 12,
-      text: "ما أهم شيء في بيئة العمل بالنسبة لك؟",
+      text: t.q12 || "ما الذي يُشعرك بالراحة؟",
       options: [
-        { text: "النتائج والإنجازات", trait: "D" },
-        { text: "الطاقة والتفاعل الاجتماعي", trait: "I" },
-        { text: "الاستقرار والانسجام", trait: "S" },
-        { text: "الدقة والتنظيم", trait: "C" }
+        { text: t.o12_1 || "تحقيق الهدف", trait: "D" },
+        { text: t.o12_2 || "الضحك والتفاعل", trait: "I" },
+        { text: t.o12_3 || "الهدوء والاستقرار", trait: "S" },
+        { text: t.o12_4 || "النظام والفهم الكامل", trait: "C" }
       ]
     },
     {
       id: 13,
-      text: "كيف تتعامل مع التغيير؟",
+      text: t.q13 || "ما هو شعارك في الحياة؟",
       options: [
-        { text: "أنا من يُحدثه", trait: "D" },
-        { text: "أرحب به إذا كان ممتعًا", trait: "I" },
-        { text: "أتأقلم ببطء وحذر", trait: "S" },
-        { text: "أحلله قبل قبوله", trait: "C" }
+        { text: t.o13_1 || "النتيجة أهم من الطريقة", trait: "D" },
+        { text: t.o13_2 || "الحياة للمرح والتجربة", trait: "I" },
+        { text: t.o13_3 || "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
+        { text: t.o13_4 || "الفهم يسبق كل شيء", trait: "C" }
       ]
     },
     {
       id: 14,
-      text: "ما الذي يُشعرك بالقلق؟",
+      text: t.q14 || "كيف تتعامل مع الانتقاد؟",
       options: [
-        { text: "فقدان السيطرة على الأمور", trait: "D" },
-        { text: "الوحدة أو فقدان التفاعل", trait: "I" },
-        { text: "الصراع أو التوتر بين الفريق", trait: "S" },
-        { text: "العشوائية أو غياب النظام", trait: "C" }
+        { text: t.o14_1 || "أتحداه وأثبت نفسي", trait: "D" },
+        { text: t.o14_2 || "أضحك وأحوله إلى نكتة", trait: "I" },
+        { text: t.o14_3 || "أتألم لكنني أسامح", trait: "S" },
+        { text: t.o14_4 || "أحلله بمنطق وعقل", trait: "T" }
       ]
     },
     {
       id: 15,
-      text: "ما أكثر شيء تُقدّره في الآخرين؟",
+      text: t.q15 || "ما الذي يُشعرك بالخوف؟",
       options: [
-        { text: "القوة والطموح", trait: "D" },
-        { text: "الطاقة والحيوية", trait: "I" },
-        { text: "الولاء والدعم", trait: "S" },
-        { text: "الذكاء والتحليل", trait: "C" }
+        { text: t.o15_1 || "الفشل وعدم التحكم", trait: "D" },
+        { text: t.o15_2 || "الوحدة والرفض", trait: "I" },
+        { text: t.o15_3 || "الصراع والانفصال", trait: "S" },
+        { text: t.o15_4 || "الغموض وعدم الفهم", trait: "N" }
       ]
     },
     {
       id: 16,
-      text: "كيف تُخطط ليومك؟",
+      text: t.q16 || "ما نوع القيادة التي تفضلها؟",
       options: [
-        { text: "بشكل مباشر، أركز على المهام العاجلة", trait: "D" },
-        { text: "بحسب ما يُشعرني بالحماس", trait: "I" },
-        { text: "بهدوء، حسب الأولويات والالتزامات", trait: "S" },
-        { text: "بجدول دقيق وتفصيلي", trait: "C" }
+        { text: t.o16_1 || "قيادة حاسمة وسريعة", trait: "D" },
+        { text: t.o16_2 || "قيادة ملهمة ومحفزة", trait: "I" },
+        { text: t.o16_3 || "قيادة داعمة ومستقرة", trait: "S" },
+        { text: t.o16_4 || "قيادة منظمة وتحليلية", trait: "C" }
       ]
     },
-    // 17-20 (أكمل كما في الكود الأصلي)
     {
       id: 17,
-      text: "ما نوع التحدي الذي يثيرك؟",
+      text: t.q17 || "ما الذي يُشعرك بالحرية؟",
       options: [
-        { text: "التحديات الكبيرة التي تغير الواقع", trait: "D" },
-        { text: "التحديات التي تُظهر إبداعي", trait: "I" },
-        { text: "التحديات التي تساعد الآخرين", trait: "S" },
-        { text: "التحديات التي تتطلب تفكيرًا عميقًا", trait: "C" }
+        { text: t.o17_1 || "التحكم في مصيري", trait: "D" },
+        { text: t.o17_2 || "التعبير عن نفسي بحرية", trait: "I" },
+        { text: t.o17_3 || "العيش بسلام مع نفسي", trait: "S" },
+        { text: t.o17_4 || "الفهم العميق للعالم", trait: "N" }
       ]
     },
     {
       id: 18,
-      text: "كيف تُظهر قوتك؟",
+      text: t.q18 || "كيف تتعامل مع التغيير؟",
       options: [
-        { text: "بالقيادة والسيطرة", trait: "D" },
-        { text: "بالإلهام والحماس", trait: "I" },
-        { text: "بالدعم والثبات", trait: "S" },
-        { text: "بالتحليل والدقة", trait: "C" }
+        { text: t.o18_1 || "أتحدىه وأقوده", trait: "D" },
+        { text: t.o18_2 || "أحتفل به وانغمس فيه", trait: "I" },
+        { text: t.o18_3 || "أتأقلم ببطء وحذر", trait: "S" },
+        { text: t.o18_4 || "أحلله وأفهمه أولًا", trait: "C" }
       ]
     },
     {
       id: 19,
-      text: "ما الذي يُشعرك بالراحة؟",
+      text: t.q19 || "ما الذي يُشعرك بالراحة؟",
       options: [
-        { text: "تحقيق الهدف", trait: "D" },
-        { text: "الضحك والتفاعل", trait: "I" },
-        { text: "الهدوء والاستقرار", trait: "S" },
-        { text: "النظام والفهم الكامل", trait: "C" }
+        { text: t.o19_1 || "تحقيق الهدف", trait: "D" },
+        { text: t.o19_2 || "الضحك والتفاعل", trait: "I" },
+        { text: t.o19_3 || "الهدوء والاستقرار", trait: "S" },
+        { text: t.o19_4 || "النظام والفهم الكامل", trait: "C" }
       ]
     },
     {
       id: 20,
-      text: "ما هو شعارك في الحياة؟",
+      text: t.q20 || "ما هو شعارك في الحياة؟",
       options: [
-        { text: "النتيجة أهم من الطريقة", trait: "D" },
-        { text: "الحياة للمرح والتجربة", trait: "I" },
-        { text: "العلاقات تُبني بالصبر والوفاء", trait: "S" },
-        { text: "الفهم يسبق كل شيء", trait: "C" }
+        { text: t.o20_1 || "النتيجة أهم من الطريقة", trait: "D" },
+        { text: t.o20_2 || "الحياة للمرح والتجربة", trait: "I" },
+        { text: t.o20_3 || "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
+        { text: t.o20_4 || "الفهم يسبق كل شيء", trait: "C" }
       ]
     }
   ];
 }
 
-// --- تحليل الشخصية المطوّل (نفس كودك السابق) ---
+// --- حساب البرج الفلكي ---
+function getZodiacSign(dob) {
+  const date = new Date(dob);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "الحمل";
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "الثور";
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "الجوزاء";
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "السرطان";
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "الأسد";
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "العذراء";
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "الميزان";
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "العقرب";
+  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "القوس";
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "الجدي";
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "الدلو";
+  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "الحوت";
+  return "غير معروف";
+}
+
+// --- تنبؤات برجك الأسبوعية ---
+function getWeeklyPrediction(zodiacSign, lang = 'ar') {
+  const predictions = {
+    ar: {
+      "الحمل": "ستواجه فرصًا جديدة للقيادة. استغلها بثقة.",
+      "الثور": "الاستقرار المالي سيكون في متناول يدك. خطط بحكمة.",
+      "الجوزاء": "ستكون اجتماعيًا أكثر من المعتاد. استمتع بالتفاعل.",
+      "السرطان": "الانسجام العائلي سيكون في ذروته. اقضِ وقتًا مع أحبائك.",
+      "الأسد": "سيُقدّر جهودك. لا تخف من المطالبة باستحقاقاتك.",
+      "العذراء": "الدقة ستُكافأ. ركّز على التفاصيل الصغيرة.",
+      "الميزان": "ستحتاج إلى اتخاذ قرار مهم. استعن بمن تثق بهم.",
+      "العقرب": "ستكتشف حقيقة مهمة. استخدمها بحكمة.",
+      "القوس": "مغامرة جديدة في انتظارك. كن مستعدًا.",
+      "الجدي": "الانضباط سيقودك للنجاح. تمسك بخطتك.",
+      "الدلو": "فكرة مبتكرة ستغير كل شيء. لا تتردد في تنفيذها.",
+      "الحوت": "الحدس سيكون دليلك. اعتمد على مشاعرك."
+    },
+    en: {
+      "الحمل": "You will face new leadership opportunities. Seize them with confidence.",
+      "الثور": "Financial stability is within reach. Plan wisely.",
+      "الجوزاء": "You'll be more social than usual. Enjoy the interaction.",
+      "السرطان": "Family harmony will peak. Spend time with loved ones.",
+      "الأسد": "Your efforts will be appreciated. Don't hesitate to claim your dues.",
+      "العذراء": "Precision will be rewarded. Focus on the small details.",
+      "الميزان": "You'll need to make an important decision. Consult trusted ones.",
+      "العقرب": "You'll discover a crucial truth. Use it wisely.",
+      "القوس": "A new adventure awaits. Be ready.",
+      "الجدي": "Discipline will lead you to success. Stick to your plan.",
+      "الدلو": "An innovative idea will change everything. Don't hesitate to execute it.",
+      "الحوت": "Intuition will be your guide. Trust your feelings."
+    }
+  };
+  return predictions[lang][zodiacSign] || (lang === 'ar' ? "توقعات إيجابية في الطريق." : "Positive predictions ahead.");
+}
+
+// --- توليد التحليل النفسي الموسع ---
 function generatePersonalityAnalysis(answers, userData) {
-  // ... نفس الدالة السابقة ...
-  // لم يتم تغيير أي منطق هنا للحفاظ على النتائج
+  const { age, gender, dob } = userData;
+
+  const colorCount = { red: 0, yellow: 0, green: 0, blue: 0 };
+  answers.forEach((answerIndex, questionIndex) => {
+    const option = getQuestions()[questionIndex]?.options[answerIndex];
+    if (!option) return;
+    if (option.text.includes('أحمر') || option.trait.includes('D')) colorCount.red++;
+    if (option.text.includes('أصفر') || option.trait.includes('I')) colorCount.yellow++;
+    if (option.text.includes('أخضر') || option.trait.includes('S')) colorCount.green++;
+    if (option.text.includes('أزرق') || option.trait.includes('C')) colorCount.blue++;
+  });
+
+  let dominantColor = 'green';
+  let max = 0;
+  for (const [color, count] of Object.entries(colorCount)) {
+    if (count > max) {
+      max = count;
+      dominantColor = color;
+    }
+  }
+
+  const colorProfiles = {
+    red: {
+      name: "النوع الأحمر",
+      title: "القائد الطموح",
+      celebrity: "مثل ستيف جوبز — قائدٌ لا يقبل الوسط، ويُحدث تغييرًا في العالم بقوة الإرادة.",
+      description: `
+أنت من النوع الذي لا ينتظر الفرصة، بل يصنعها بيديه. فيك قوة دفع داخلية لا تتوقف، ورغبة عميقة في التحكم في مصيرك. أنت لا تهرب من المسؤولية، بل تطلبها، لأنك تعرف أنك قادر على صنع الفارق. القرارات الحاسمة تخرج منك بسرعة، ليس لأنك متسرع، بل لأنك تثق بحدسك وخبرتك. تحب أن ترى النتائج بوضوح، والوقت الضائع يشعرك بالإحباط. لكنك لست قاسيًا، بل صريح — تُقدّر الصدق أكثر من المجاملة. في المواقف الصعبة، أنت أول من يقف في المقدمة. لست بحاجة إلى تصفيق، لكنك تعرف قيمتك. النجاح بالنسبة لك ليس ترفًا، بل ضرورة. أنت تُحدث تغييرًا ليس لأنه مطلوب، بل لأنه واجب.
+      `.trim()
+    },
+    yellow: {
+      name: "النوع الأصفر",
+      title: "المحفّز المرح",
+      celebrity: "مثل أوبرا وينفري — شخصية مُلهمة، تُحيي الآمال، وتُحدث تغييرًا بالحماس والكلمة.",
+      description: `
+أنت شرارة الضوء في أي مكان تدخله. طاقتك لا تنضب، وابتسامتك معدية. أنت لا ترى العقبات كما يراها الآخرون، بل تراها فرصة لإثبات أن المستحيل ممكن. تحب أن تكون محط الأنظار، ليس من أجل الغرور، بل لأنك تشعر بالحياة عندما تُلهم الآخرين. أنت تفكر خارج الصندوق، وتحب أن تكسر الروتين. القيود تُثبّطك، أما الحرية فتُطلق إبداعك. العلاقات بالنسبة لك ليست مجرد تواصل، بل تبادل للطاقة. أنت تُحيي من حولك، وتجعل المهام العادية تبدو كمغامرات. قد يراك البعض غير جاد، لكنهم لا يعلمون أنك جاد جدًا في الحفاظ على البهجة. أنت تُحدث تغييرًا ليس بالقوة، بل بالحماس.
+      `.trim()
+    },
+    green: {
+      name: "النوع الأخضر",
+      title: "الداعم المستقر",
+      celebrity: "مثل نيلسون مانديلا — رجل السلام، يُعيد بناء العلاقات، ويُثبت أن القوة الحقيقية في الصبر والتسامح.",
+      description: `
+أنت القلب الهادئ في وسط العاصفة. لا تُسرع، لكنك لا تتوقف. أنت تبني الثقة ببطء، لكنها تدوم مدى الحياة. الصراع يُرهقك، لكنك لا تهرب منه — بل تسعى لتسوية الأمور بهدوء. أنت لا تبحث عن التقدير، لكنك تستحقه أكثر من غيرك. أنت من يُكمل الفريق، من يُشعر الآخرين بالأمان. تحب الاستقرار، ليس لأنك خائف من التغيير، بل لأنك تعرف قيمته. أنت تُخطط بقلبك قبل عقلك، وتحدد أولوياتك حسب من يحبونك ويحتاجونك. أنت لا تقود بالصراخ، بل بالقدوة. لا تُظهر كل ما تشعر به، لكن من يعرفك جيدًا يعلم أن في داخلك بحرًا من العطاء. أنت تُحدث تغييرًا بصمت، لكن أثرك يدوم.
+      `.trim()
+    },
+    blue: {
+      name: "النوع الأزرق",
+      title: "المُخطط الدقيق",
+      celebrity: "مثل إيلون ماسك — عقل تحليلي، يُعيد تعريف المستقبل بمنطق دقيق ورؤية بعيدة.",
+      description: `
+أنت لا تُسرع، لأنك تعرف أن الخطأ الواحد قد يُكلّف الكثير. أنت تُفكّر بعمق، تُحلّل بتركيز، وتحب أن تفهم "لماذا" قبل أن تفعل "كيف". العشوائية تُربكك، أما النظام فيعطيك شعورًا بالأمان. أنت لا تُعجب بالانطباع الأول، بل بالأساس المتين. تحب أن تعرف كل التفاصيل، ليس من باب التفتيش، بل من باب المسؤولية. أنت تبحث عن المعنى وراء الأشياء، عن القاعدة الكامنة وراء السلوك. العلاقات عندك ليست عاطفية فقط، بل يجب أن تكون منطقية أيضًا. قد يراك البعض باردًا، لكنك ببساطة تحترم العقل بقدر احترامك للقلب. أنت تُحدث تغييرًا ليس بالحماس، بل بالرؤية.
+      `.trim()
+    }
+  };
+
+  const profile = colorProfiles[dominantColor];
+
+  let ageInsight = "";
+  if (age === '13-18') {
+    ageInsight = "أنت في مرحلة بناء الهوية، حيث تبحث عن نفسك ومكانك في العالم. كل سؤال تطرحه على ذاتك اليوم يُشكّل الأساس لما ستكون عليه غدًا.";
+  } else if (age === '19-25') {
+    ageInsight = "أنت في عمر الحميمية، حيث تبحث عن علاقات حقيقية، وارتباطات عميقة. قلبك يسأل: من سيفهمني حقًا؟";
+  } else if (age === '26-35' || age === '36-45') {
+    ageInsight = "أنت في مرحلة الإنجابية، حيث لا يكفي أن تنجح أنت، بل أن تُسهم في نجاح الآخرين. أنت تبني، تُعلّم، وتُشارك.";
+  } else if (age === '46-60' || age === '60+') {
+    ageInsight = "أنت في مرحلة التقييم، حيث تنظر إلى رحلة حياتك بعين الحكيم. السؤال لم يعد 'ماذا أنجزت؟' بل 'ماذا عنيت؟'";
+  }
+
+  let genderInsight = "";
+  if (gender === 'أنثى') {
+    genderInsight = "كأنثى، تُظهر قوة داخلية نادرة: التوازن بين القلب والعقل. أنت تُعطي دون أن تفقد ذاتك، وتدعم دون أن تذلّ نفسك.";
+  } else if (gender === 'ذكر') {
+    genderInsight = "كذكر، تحمل مسؤولية القيادة بثقلها وضوءها. أنت لا تهرب من التحدي، بل تراه فرصة لإثبات أن القوة الحقيقية تأتي من الداخل.";
+  } else {
+    genderInsight = "أنت تتجاوز التصنيفات، وتُظهر توازنًا نادرًا بين الحدس والمنطق، بين العاطفة والتحليل.";
+  }
+
+  const zodiacSign = getZodiacSign(dob);
+  const zodiacInsight = Lang.translations[Lang.current]['zodiac_title'] + ` (${zodiacSign}): ${profile.description}`;
+
+  const prediction = getWeeklyPrediction(zodiacSign, Lang.current);
+  const predictionInsight = Lang.translations[Lang.current]['prediction_title'] + `: ${prediction}`;
+
+  const analysis = `
+${profile.name}
+${"=".repeat(profile.name.length + 1)}
+
+${profile.celebrity}
+
+${profile.description}
+
+أنت شخصية لا تُشبه غيرها، لكن نمطك النفسي يُظهر أنك تنتمي إلى عالم القادة، المُخططين، أو المُلهمين. أنت لا تتبع، بل تُعيد تعريف الطريق. ما يميّزك ليس فقط ما تفعله، بل كيف تفكر، وكيف تتفاعل مع من حولك. أنت تمتلك قدرة نادرة على التوازن بين القوة والهدوء، بين الإصرار والتعاطف، وبين الطموح والمعنى.
+
+${ageInsight ? `${ageInsight}` : ""}
+${genderInsight ? `${genderInsight}` : ""}
+${zodiacInsight ? `${zodiacInsight}` : ""}
+${predictionInsight ? `${predictionInsight}` : ""}
+
+أنت لا تُظهر كل ما في داخلك، لكن من يراقبك جيدًا يلاحظ أن في عينيك بريقًا لا يُطفأ. أنت تُخطط بصمت، وتُقرر بثقة. أخطاؤك لا تُكسرك، بل تُعلّمك. ونجاحاتك لا تُغررك، بل تُذكّرك بأن الطريق لا ينتهي.
+
+أنت تبحث عن المعنى أكثر من البحث عن التقدير. عن التأثير أكثر من الشهرة. عن الاستقرار الداخلي أكثر من الظهور الخارجي. وهذا ما يجعلك مختلفًا. أنت لا تُسرع، لكنك لا تتوقف. أنت لا تُصيح، لكن صمتك له صدى.
+
+في عالم مليء بالضجيج، أنت من يُحدث تغييرًا حقيقيًا. ليس بالصراخ، بل بالوجود. ليس بالسيطرة، بل بالتأثير. أنت لست مجرد شخصية، بل ظاهرة.
+
+---
+
+المصادر النفسية المستخدمة في التحليل:
+- نظرية الألوان الشخصية
+- نظرية MBTI (مايرز-بريجز)
+- نظرية كيرسي للنُظم النفسية
+- نظرية DISC للسلوك البشري
+- نظرية العوامل الخمسة الكبرى (Big Five)
+- نظرية أدلر (الشعور بالنقص والسعي للتفوق)
+- نظرية ماسلو (هرم الحاجات)
+- نظرية روجرز (التحقق الذاتي)
+- نظرية إريكسون (المراحل النفسية الاجتماعية)
+- نظرية PERMA (مكونات الرفاهية النفسية)
+- نظرية الانغماس (Flow) - ميهل يتشينتنهامي
+
+تم إعداد هذا التقرير بعناية من قِبل:  
+**غرفة الأسرار | Chamber of Secrets**  
+تم التصميم والتحليل النفسي والتطوير من قبل:  
+**Mohammed Tarek**  
+© 2025 جميع الحقوق محفوظة.
+  `.trim();
+
+  return analysis;
 }
 
 // --- نظام التفاعل ---
@@ -319,6 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const introEl = document.getElementById('intro');
   const quizEl = document.getElementById('quiz');
   const resultEl = document.getElementById('result');
+
   const submitUserInfo = document.getElementById('submitUserInfo');
   const startBtn = document.getElementById('startBtn');
   const questionEl = document.getElementById('question');
@@ -327,22 +552,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const analysisEl = document.getElementById('analysis');
   const restartBtn = document.getElementById('restartBtn');
 
-  let userData = { age: '', gender: '' };
+  let userData = { age: '', gender: '', dob: '' };
   let currentQ = 0;
   let userAnswers = [];
-  let personalityQuestions = getQuestions();
 
+  // تفعيل نظام الترجمة
   Lang.init();
+
+  // إضافة حقل تاريخ الميلاد
+  if (document.querySelector('#userInfo .form-group:last-child')) {
+    const dobGroup = document.createElement('div');
+    dobGroup.className = 'form-group';
+    dobGroup.innerHTML = `
+      <label for="dob">${Lang.translations[Lang.current].dob_label}</label>
+      <input type="date" id="dob" required>
+    `;
+    userInfoEl.insertBefore(dobGroup, submitUserInfo);
+  }
 
   submitUserInfo.addEventListener('click', () => {
     const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
-    if (!age || !gender) {
-      alert("الرجاء اختيار العمر والجنس");
+    const dob = document.getElementById('dob').value;
+
+    if (!age || !gender || !dob) {
+      alert("الرجاء اختيار العمر، الجنس، وتاريخ الميلاد");
       return;
     }
+
     userData.age = age;
     userData.gender = gender;
+    userData.dob = dob;
     userInfoEl.style.display = 'none';
     introEl.style.display = 'block';
   });
@@ -350,14 +590,14 @@ document.addEventListener('DOMContentLoaded', () => {
   startBtn.addEventListener('click', () => {
     introEl.style.display = 'none';
     quizEl.style.display = 'block';
-    personalityQuestions = getQuestions(); // تحديث حسب اللغة
     showQuestion();
   });
 
-  function showQuestion() {
-    const q = personalityQuestions[currentQ];
+  const showQuestion = () => {
+    const q = getQuestions()[currentQ];
     questionEl.innerHTML = `<h3>${currentQ + 1}. ${q.text}</h3>`;
     optionsEl.innerHTML = '';
+
     q.options.forEach((opt, index) => {
       const btn = document.createElement('button');
       btn.classList.add('option-btn');
@@ -371,29 +611,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       optionsEl.appendChild(btn);
     });
-  }
+  };
 
   nextBtn.addEventListener('click', () => {
     if (userAnswers[currentQ] === undefined) {
       alert("الرجاء اختيار إجابة");
       return;
     }
+
     currentQ++;
-    if (currentQ < personalityQuestions.length) {
+    if (currentQ < getQuestions().length) {
       showQuestion();
     } else {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
 
-      // --- إعلانات (كما هو بكودك) ---
+      // === تفعيل إعلان من شبكة مربحة (4 شبكات - توزيع ذكي) ===
       try {
         if (window.adNetworkLoaded) return;
+
         const adContainer = document.getElementById('monetag-inpage');
         if (!adContainer) return;
+
         adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
+
         const roll = Math.random();
         let network, scriptSrc;
+
         if (roll < 0.45) {
           network = 'monetag';
           const monetagZones = ['9643708', '9643709', '9643715', '9643714'];
@@ -401,23 +646,26 @@ document.addEventListener('DOMContentLoaded', () => {
           scriptSrc = `https://g.adspeed.net/gads.js?async=1&emid=${randomEmid}`;
         } else if (roll < 0.70) {
           network = 'adsterra';
-          scriptSrc = "";
+          scriptSrc = ""; // ← ضع كود Adsterra هنا
         } else if (roll < 0.90) {
           network = 'richads';
-          scriptSrc = "";
+          scriptSrc = ""; // ← ضع كود RichAds هنا
         } else {
           network = 'hilltop';
-          scriptSrc = "";
+          scriptSrc = ""; // ← ضع كود HilltopAds هنا
         }
+
         if (!scriptSrc || scriptSrc.trim() === "") {
           adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
           window.adNetworkLoaded = true;
           return;
         }
+
         const script = document.createElement('script');
         script.id = `ad-network-script-${network}`;
         script.async = true;
         script.src = scriptSrc;
+
         script.onload = () => {
           if (typeof goAds !== 'undefined' && goAds.length > 0) {
             goAds[0].loadAd && goAds[0].loadAd();
@@ -425,14 +673,18 @@ document.addEventListener('DOMContentLoaded', () => {
             window.RichAds.setup && window.RichAds.setup();
           }
         };
+
         script.onerror = () => {
           adContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.9rem;">فشل تحميل الإعلان</div>';
         };
+
         document.body.appendChild(script);
         window.adNetworkLoaded = true;
+
       } catch (e) {
         console.error("Ad Networks: فشل في التحميل", e);
       }
+
       resultEl.style.display = 'block';
     }
   });
