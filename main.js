@@ -1,5 +1,5 @@
 // main.js - تم التحديث حسب طلبك
-
+import { showToast } from './toast.js';
 import { translations, getLang, setLang } from './lang.js';
 import { getQuestions } from './questions.js';
 import { getZodiacSign, getHoroscopePredictions } from './zodiac.js';
