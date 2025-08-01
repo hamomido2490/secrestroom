@@ -1,67 +1,154 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0f172a;
+  font-family: 'Segoe UI', 'Cairo', Tahoma, Arial, sans-serif;
+  background: linear-gradient(135deg, #151e30 0%, #234c6d 100%);
   color: #e2e8f0;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
 #app {
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: 32px 12px 60px 12px;
+  padding: 36px 10px 60px 10px;
 }
 
-.form-group {
-  margin-bottom: 1.2em;
+section, .option-btn {
+  background: #17233a;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+  margin-bottom: 24px;
+  padding: 24px 20px 22px 20px;
+}
+
+h1, h2, h3, h4 {
+  color: #fbbf24;
+  margin-bottom: 10px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-weight: bold;
+  color: #fbbf24;
 }
 
-input, select, button {
+input, select {
   font-size: 1em;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #334155;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #3b82f6;
   background: #1e293b;
   color: #e2e8f0;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 2px;
 }
 
-button {
-  background: #fbbf24;
-  color: #1e293b;
-  cursor: pointer;
+.form-group {
+  margin-bottom: 1.3em;
+}
+
+.main-btn, .option-btn, #langToggle, #nextBtn, #restartBtn, #zodiacBtn, #shareBtn, #copyBtn {
+  font-size: 1.07em;
+  border-radius: 10px;
   border: none;
-  transition: background 0.2s;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #00000022;
+  padding: 12px 24px;
+  margin: 7px 6px 7px 0;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  font-weight: 600;
+  outline: none;
 }
 
-button:hover, .option-btn.selected {
-  background: #fde68a;
+#langToggle {
+  position: fixed; top: 20px; left: 20px; z-index: 1000;
+  background: linear-gradient(90deg, #3b82f6 20%, #fbbf24 100%);
+  color: #0f172a;
+  border: none;
+}
+
+.main-btn, #nextBtn {
+  background: linear-gradient(90deg, #fbbf24 0%, #ef4444 100%);
+  color: #17233a;
+  margin: 0 8px 0 0;
+}
+
+#restartBtn {
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  color: #fff;
+}
+
+#zodiacBtn {
+  background: linear-gradient(90deg, #a855f7 0%, #3b82f6 100%);
+  color: #fff;
+}
+
+#shareBtn, #copyBtn {
+  background: linear-gradient(90deg, #fbbf24 20%, #ef4444 100%);
+  color: #17233a;
 }
 
 .option-btn {
   display: block;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   text-align: right;
+  background: #283b5a;
+  color: #f3f4f6;
+  border: 2px solid transparent;
+  padding: 14px 10px;
+  font-size: 1em;
+  transition: border 0.18s, background 0.18s;
+}
+.option-btn.selected {
+  border: 2.5px solid #fbbf24;
+  background: #fbbf2444;
+  color: #fff;
+}
+
+.disc-red { background: #ef4444; color: #fff; }
+.disc-yellow { background: #fbbf24; color: #1e293b; }
+.disc-green { background: #10b981; color: #fff; }
+.disc-blue { background: #3b82f6; color: #fff; }
+
+.btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 18px;
+  margin: 20px 0 0 0;
+  flex-wrap: wrap;
 }
 
 .progress-bar {
-  height: 8px;
-  background: #3b82f6;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  height: 10px;
+  background: linear-gradient(90deg, #fbbf24 0%, #3b82f6 100%);
+  border-radius: 10px;
+  margin-bottom: 18px;
   transition: width 0.3s;
+}
+
+#analysis {
+  white-space: pre-line;
+  background: #232e4a;
+  border-radius: 20px;
+  padding: 18px 18px 12px 18px;
+  margin-bottom: 18px;
+  color: #fafafa;
+  font-size: 1.04em;
 }
 
 footer {
   margin-top: 32px;
   color: #94a3b8;
   text-align: center;
-  font-size: .95em;
+  font-size: .98em;
+}
+
+@media (max-width: 700px) {
+  #app { padding: 12px 2vw 70px 2vw; }
+  section, .option-btn { padding: 14px 6px; }
 }
