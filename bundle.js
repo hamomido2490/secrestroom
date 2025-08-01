@@ -615,7 +615,19 @@ ${predictionInsight ? `${predictionInsight}` : ""}
 }
 
 // --- نظام التفاعل ---
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {document.addEventListener('DOMContentLoaded', () => {
+  // === إخفاء شاشة الشعار ===
+  const splash = document.getElementById('splashScreen');
+  if (splash) {
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.6s ease';
+      setTimeout(() => {
+        splash.style.display = 'none';
+        splash.style.pointerEvents = 'none';
+      }, 600);
+    }, 2000);
+  }
   const userInfoEl = document.getElementById('userInfo');
   const introEl = document.getElementById('intro');
   const quizEl = document.getElementById('quiz');
