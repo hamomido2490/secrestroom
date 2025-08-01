@@ -1,5 +1,5 @@
-// main.js - نقطة البداية وإدارة SPA
-
+// main.js - تم التحديث حسب طلبك
+import { showToast } from './toast.js';
 import { translations, getLang, setLang } from './lang.js';
 import { getQuestions } from './questions.js';
 import { getZodiacSign, getHoroscopePredictions } from './zodiac.js';
@@ -7,17 +7,36 @@ import { generatePersonalityAnalysis } from './analysis.js';
 import { loadAd } from './ads.js';
 import { calculateAge, showAlert, copyToClipboard } from './utils.js';
 
-// الحالة الرئيسية
 let state = {
   lang: getLang(),
-  page: 'userInfo', // userInfo | intro | quiz | result
+  page: 'userInfo',
   userData: { age: '', gender: '', dob: '' },
   currentQ: 0,
   userAnswers: []
 };
 
+// تحميل الحالة من localStorage
+if (typeof localStorage !== 'undefined') {
+  const saved = localStorage.getItem('quizState');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.lang) state.lang = parsed.lang;
+      if (parsed.page) state.page = parsed.page;
+      if (parsed.userData) state.userData = parsed.userData;
+      if (parsed.currentQ !== undefined) state.currentQ = parsed.currentQ;
+      if (parsed.userAnswers) state.userAnswers = parsed.userAnswers;
+    } catch (e) {
+      console.warn('فشل تحميل الحالة');
+    }
+  }
+}
+
 function setState(newState) {
   state = { ...state, ...newState };
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('quizState', JSON.stringify(state));
+  }
   render();
 }
 
@@ -25,6 +44,11 @@ function switchLang() {
   const newLang = state.lang === 'ar' ? 'en' : 'ar';
   setLang(newLang);
   setState({ lang: newLang });
+}
+
+function isValidDate(dateString) {
+  const date = new Date(dateString);
+  return date <= new Date() && !isNaN(date.getTime());
 }
 
 function render() {
@@ -35,213 +59,286 @@ function render() {
 
   let html = '';
 
-  // زر اللغة
-  html += `<button id="langToggle" style="position: fixed; top: 20px; left: 20px; z-index: 1000; background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid #fbbf24; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem;">${state.lang === 'ar' ? 'EN' : 'AR'}</button>`;
+  // زر تبديل اللغة
+  html += `<button id="langToggle">${state.lang === 'ar' ? 'EN' : 'AR'}</button>`;
 
   if (state.page === 'userInfo') {
     html += `
-      <section>
-        <h3>${t.welcome_title}</h3>
-        <h3>${t.user_info_title}</h3>
-        <p>${t.user_info_desc}</p>
-        <div class="form-group">
-          <label>${t.age_label}</label>
-          <select id="age">
-            <option value="">---</option>
-            <option value="13-18">13-18</option>
-            <option value="19-25">19-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-45">36-45</option>
-            <option value="46-60">46-60</option>
-            <option value="60+">60+</option>
-          </select>
+      <section style="display: flex; flex-direction: row; align-items: flex-start; gap: 32px;">
+        <!-- عرض العمر على اليسار -->
+        <div style="flex: 0.6; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+          <div id="ageCard" style="
+  background: linear-gradient(135deg, #fbbf24, #d97706), url('https://images.unsplash.com/photo-1509062522240-38782236d0a8?auto=format&fit=crop&w=600&q=80');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  width: 140px;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+  font-family: 'Segoe UI', sans-serif;
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+">
+  <div style="font-size: 1.1em; font-weight: 600; margin-bottom: 8px;">${t.age_label}</div>
+  <div id="calculatedAge" style="
+    font-size: 3.2em;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  ">${state.userData.age || '-'}</div>
+  <div style="font-size: 0.95em; margin-top: 4px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+    ${state.lang === 'ar' ? 'سنة' : 'years'}
+  </div>
+</div>
         </div>
-        <div class="form-group">
-          <label>${t.gender_label}</label>
-          <select id="gender">
-            <option value="">---</option>
-            <option value="${state.lang === 'ar' ? "ذكر" : "Male"}">${state.lang === 'ar' ? "ذكر" : "Male"}</option>
-            <option value="${state.lang === 'ar' ? "أنثى" : "Female"}">${state.lang === 'ar' ? "أنثى" : "Female"}</option>
-            <option value="other">${state.lang === 'ar' ? "آخر" : "Other"}</option>
-          </select>
+
+        <!-- نموذج المستخدم على اليمين -->
+        <div style="flex: 1;">
+          <h3>${t.welcome_title}</h3>
+          <h3>${t.user_info_title}</h3>
+          <p>${t.user_info_desc}</p>
+
+          <div class="form-group">
+            <label>${t.gender_label}</label>
+            <select id="gender" required style="
+              font-size: 1em;
+              padding: 12px;
+              border-radius: 12px;
+              border: 1.5px solid #3b82f6;
+              background: #1e293b;
+              color: white;
+              width: 100%;
+            ">
+              <option value="">---</option>
+              <option value="${state.lang === 'ar' ? 'ذكر' : 'Male'}" ${state.userData.gender === (state.lang === 'ar' ? 'ذكر' : 'Male') ? 'selected' : ''}>${state.lang === 'ar' ? 'ذكر' : 'Male'}</option>
+              <option value="${state.lang === 'ar' ? 'أنثى' : 'Female'}" ${state.userData.gender === (state.lang === 'ar' ? 'أنثى' : 'Female') ? 'selected' : ''}>${state.lang === 'ar' ? 'أنثى' : 'Female'}</option>
+              <option value="other" ${state.userData.gender === 'other' ? 'selected' : ''}>${state.lang === 'ar' ? 'آخر' : 'Other'}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>${t.dob_label}</label>
+            <input type="date" id="dob" value="${state.userData.dob || ''}" required style="
+              font-size: 1em;
+              padding: 12px;
+              border-radius: 12px;
+              border: 1.5px solid #3b82f6;
+              background: #1e293b;
+              color: white;
+              width: 100%;
+            ">
+          </div>
+
+          <div class="btn-row">
+            <button class="main-btn" id="submitUserInfo">${t.submit_user_info}</button>
+          </div>
         </div>
-        <div class="form-group">
-          <label>${t.dob_label}</label>
-          <input type="date" id="dob">
-        </div>
-        <div class="form-group">
-          <label>${t.age_label}</label>
-          <p id="calculatedAge" style="margin: 8px 0; color: #fbbf24; font-weight: 600;">-</p>
-        </div>
-        <button id="submitUserInfo">${t.submit_user_info}</button>
       </section>
     `;
   }
 
   if (state.page === 'intro') {
     html += `
-      <section id="intro">
+      <section>
         <h1>${t.intro_title}</h1>
         <h2>${t.intro_subtitle}</h2>
         <div class="divider"></div>
         <p>${t.intro_desc}</p>
         <p>${t.intro_p1}</p>
         <p>${t.intro_p2}</p>
-        <button id="startBtn">${t.start_btn}</button>
+        <div class="btn-row">
+          <button class="main-btn" id="startBtn">${t.start_btn}</button>
+        </div>
       </section>
     `;
   }
 
   if (state.page === 'quiz') {
-    let q = getQuestions(state.lang)[state.currentQ];
-    let progress = Math.floor((state.currentQ) / getQuestions(state.lang).length * 100);
+    const questions = getQuestions(state.lang);
+    const q = questions[state.currentQ];
+    const progress = Math.floor((state.currentQ) / questions.length * 100);
     html += `
       <div class="progress-bar" style="width:${progress}%;"></div>
-      <div style="margin-bottom: 8px; color:#fbbf24;">${t.progress} ${state.currentQ + 1} / 20</div>
-      <section id="quiz">
+      <div style="margin-bottom: 8px; color:#fbbf24;">${t.progress} ${state.currentQ + 1} / ${questions.length}</div>
+      <section>
         <div id="question"><h3>${state.currentQ + 1}. ${q.text}</h3></div>
         <div id="options">
           ${q.options.map((opt, idx) =>
             `<button class="option-btn${state.userAnswers[state.currentQ] === idx ? " selected" : ""}" data-opt="${idx}">${opt.text}</button>`
           ).join('')}
         </div>
-        <button id="nextBtn">${state.currentQ === getQuestions(state.lang).length - 1 ? t.restart_btn : t.next_btn}</button>
+        <div class="btn-row">
+          <button id="nextBtn" class="main-btn">${state.currentQ === questions.length - 1 ? t.restart_btn : t.next_btn}</button>
+        </div>
       </section>
     `;
   }
 
   if (state.page === 'result') {
-    let analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
+    const analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
     html += `
-      <section id="result">
-        <h2>${translations[state.lang].welcome_title}</h2>
-        <div id="analysis" style="white-space:pre-line; background: #1e293b; border-radius:12px; padding:14px 18px; margin-bottom:16px;">${analysis}</div>
-        <div style="margin-bottom: 16px;">
-          <button id="shareBtn">${translations[state.lang].share_btn}</button>
-          <button id="copyBtn">${translations[state.lang].copy_btn}</button>
+      <section>
+        <h2>${t.welcome_title}</h2>
+        <div id="analysis">${analysis}</div>
+        <div class="btn-row">
+          <button id="shareBtn">${t.share_btn}</button>
+          <button id="copyBtn">${t.copy_btn}</button>
         </div>
         <div id="monetag-inpage" style="margin-bottom: 24px;"></div>
-        <button id="zodiacBtn" style="background:#3b82f6; color:white;">🔮 ${translations[state.lang].zodiac_title}</button>
+        <div class="btn-row">
+          <button id="zodiacBtn">${t.zodiac_title}</button>
+          <button id="restartBtn">${t.restart_btn}</button>
+        </div>
         <div id="zodiacResult" style="display:none; margin-top:20px;"></div>
-        <button id="restartBtn" style="margin-top: 24px;">${translations[state.lang].restart_btn}</button>
       </section>
     `;
   }
 
-  // footer
-  html += `
-    <footer>
-      <p>${translations[state.lang].footer1}</p>
-      <p>${translations[state.lang].footer2}</p>
-    </footer>
-  `;
-
-  // عرض في الصفحة
+  html += `<footer><p>${t.footer1}</p><p>${t.footer2}</p></footer>`;
   document.getElementById('app').innerHTML = html;
 
   // ربط الأحداث
-  document.getElementById('langToggle').onclick = switchLang;
+  setupEventListeners();
+}
 
-  if (state.page === 'userInfo') {
-    // تحديث العمر تلقائياً
-    const dobInput = document.getElementById('dob');
-    dobInput && (dobInput.oninput = function () {
+function setupEventListeners() {
+  const app = document.getElementById('app');
+  app.removeEventListener('click', handleAppClick);
+  app.addEventListener('click', handleAppClick);
+
+  const dobInput = document.getElementById('dob');
+  if (dobInput) {
+    dobInput.oninput = function () {
       const val = this.value;
-      const age = val ? calculateAge(val) : '-';
-      document.getElementById('calculatedAge').textContent = age + (age !== '-' ? (state.lang === 'ar' ? " سنة" : " years") : '');
-      state.userData.dob = val;
-      state.userData.age = document.getElementById('age').value;
-    });
-    document.getElementById('age').onchange = e => state.userData.age = e.target.value;
-    document.getElementById('gender').onchange = e => state.userData.gender = e.target.value;
-    document.getElementById('submitUserInfo').onclick = () => {
-      const { age, gender } = state.userData;
-      const dob = document.getElementById('dob').value;
-      if (!age || !gender || !dob) {
-        showAlert(translations[state.lang].alert_missing_fields);
-        return;
-      }
-      setState({ page: 'intro', userData: { ...state.userData, age, gender, dob } });
-    };
-  }
-
-  if (state.page === 'intro') {
-    document.getElementById('startBtn').onclick = () => setState({ page: 'quiz', currentQ: 0, userAnswers: [] });
-  }
-
-  if (state.page === 'quiz') {
-    document.querySelectorAll('.option-btn').forEach(btn => {
-      btn.onclick = () => {
-        const idx = parseInt(btn.getAttribute('data-opt'));
-        const arr = [...state.userAnswers];
-        arr[state.currentQ] = idx;
-        setState({ userAnswers: arr });
-      };
-    });
-    document.getElementById('nextBtn').onclick = () => {
-      if (state.userAnswers[state.currentQ] === undefined) {
-        showAlert(translations[state.lang].alert_no_answer);
-        return;
-      }
-      if (state.currentQ < getQuestions(state.lang).length - 1) {
-        setState({ currentQ: state.currentQ + 1 });
+      if (val && isValidDate(val)) {
+        const age = calculateAge(val);
+        document.getElementById('calculatedAge').textContent = age;
+        setState({ userData: { ...state.userData, dob: val, age: age.toString() } });
       } else {
-        setTimeout(() => {
-          loadAd(document.getElementById('monetag-inpage'));
-        }, 100);
-        setState({ page: 'result' });
+        document.getElementById('calculatedAge').textContent = '-';
+        setState({ userData: { ...state.userData, dob: '', age: '' } });
+        if (val) showAlert(translations[state.lang].alert_invalid_dob);
       }
     };
   }
 
-  if (state.page === 'result') {
-    document.getElementById('restartBtn').onclick = () =>
-      setState({ page: 'userInfo', userData: { age: '', gender: '', dob: '' }, userAnswers: [], currentQ: 0 });
-
-    document.getElementById('shareBtn').onclick = () => {
-      const url = window.location.href;
-      const text = generatePersonalityAnalysis(state.userAnswers, state.userData) + "\n\n" + url;
-      if (navigator.share) {
-        navigator.share({ title: translations[state.lang].welcome_title, text, url });
-      } else {
-        copyToClipboard(text);
-        showAlert(state.lang === 'ar' ? "تم نسخ النتيجة!" : "Result copied!");
-      }
+  const genderSelect = document.getElementById('gender');
+  if (genderSelect) {
+    genderSelect.onchange = (e) => {
+      setState({ userData: { ...state.userData, gender: e.target.value } });
     };
-
-    document.getElementById('copyBtn').onclick = () => {
-      const text = generatePersonalityAnalysis(state.userAnswers, state.userData);
-      copyToClipboard(text);
-      showAlert(state.lang === 'ar' ? "تم نسخ النتيجة!" : "Result copied!");
-    };
-
-    // زر الأبراج
-    const zodiacBtn = document.getElementById('zodiacBtn');
-    const zodiacResult = document.getElementById('zodiacResult');
-    if (zodiacBtn && zodiacResult) {
-      zodiacBtn.onclick = () => {
-        const zodiacSign = getZodiacSign(state.userData.dob);
-        const pred = getHoroscopePredictions(zodiacSign, state.lang);
-        zodiacResult.innerHTML = `
-          <h4>✨ ${translations[state.lang].zodiac_title}: ${zodiacSign}</h4>
-          <div style="margin: 10px 0; padding: 10px; background: #1e293b; border-radius: 8px;">
-            <p><strong>🔮 ${state.lang === 'ar' ? "التنبؤ اليومي" : "Daily"}:</strong> ${pred.daily}</p>
-            <p><strong>📅 ${state.lang === 'ar' ? "التنبؤ الأسبوعي" : "Weekly"}:</strong> ${pred.weekly}</p>
-            <p><strong>🎯 ${state.lang === 'ar' ? "التنبؤ السنوي" : "Yearly"}:</strong> ${pred.yearly}</p>
-          </div>
-          <p><em>${state.lang === 'ar' ? "الكون يهمس لك... استمع جيدًا." : "The universe whispers to you... Listen well."}</em></p>
-        `;
-        zodiacResult.style.display = 'block';
-        zodiacBtn.disabled = true;
-        zodiacBtn.textContent = '✨ ' + (state.lang === 'ar' ? "تم فتح البوابة" : "Gate opened");
-        zodiacBtn.style.opacity = '0.8';
-        zodiacBtn.style.cursor = 'not-allowed';
-      };
-    }
   }
 }
 
-// SPA البداية
+function handleAppClick(e) {
+  const t = translations[state.lang];
+
+  if (e.target.id === 'langToggle') {
+    switchLang();
+    return;
+  }
+
+  if (e.target.id === 'submitUserInfo') {
+    const { age, gender, dob } = state.userData;
+    if (!age || !gender || !dob) {
+      showAlert(t.alert_missing_fields);
+      return;
+    }
+    setState({ page: 'intro' });
+    return;
+  }
+
+  if (e.target.id === 'startBtn') {
+    setState({ page: 'quiz', currentQ: 0, userAnswers: [] });
+    return;
+  }
+
+  if (e.target.classList.contains('option-btn')) {
+    const idx = parseInt(e.target.getAttribute('data-opt'));
+    const arr = [...state.userAnswers];
+    arr[state.currentQ] = idx;
+    setState({ userAnswers: arr });
+    return;
+  }
+
+  if (e.target.id === 'nextBtn') {
+    const questions = getQuestions(state.lang);
+    if (state.userAnswers[state.currentQ] === undefined) {
+      showAlert(t.alert_no_answer);
+      return;
+    }
+    if (state.currentQ < questions.length - 1) {
+      setState({ currentQ: state.currentQ + 1 });
+    } else {
+      setTimeout(() => {
+        loadAd(document.getElementById('monetag-inpage'));
+      }, 100);
+      setState({ page: 'result' });
+    }
+    return;
+  }
+
+  if (e.target.id === 'restartBtn') {
+    setState({
+      page: 'userInfo',
+      userData: { age: '', gender: '', dob: '' },
+      userAnswers: [],
+      currentQ: 0
+    });
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('quizState');
+    }
+    return;
+  }
+
+  if (e.target.id === 'shareBtn') {
+    const text = generatePersonalityAnalysis(state.userAnswers, state.userData);
+    const url = window.location.href;
+    const shareData = { title: t.welcome_title, text, url };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {
+        copyToClipboard(text + '\n\n' + url);
+        showAlert(state.lang === 'ar' ? "تم نسخ النتيجة!" : "Result copied!");
+      });
+    } else {
+      copyToClipboard(text + '\n\n' + url);
+      showAlert(state.lang === 'ar' ? "تم نسخ النتيجة!" : "Result copied!");
+    }
+    return;
+  }
+
+  if (e.target.id === 'copyBtn') {
+    const text = generatePersonalityAnalysis(state.userAnswers, state.userData);
+    copyToClipboard(text);
+    showAlert(state.lang === 'ar' ? "تم نسخ النتيجة!" : "Result copied!");
+    return;
+  }
+
+  if (e.target.id === 'zodiacBtn') {
+    const zodiacSign = getZodiacSign(state.userData.dob);
+    const pred = getHoroscopePredictions(zodiacSign, state.lang);
+    const zodiacResult = document.getElementById('zodiacResult');
+    const zodiacBtn = document.getElementById('zodiacBtn');
+
+    zodiacResult.innerHTML = `
+      <h4>${t.zodiac_intro} ${zodiacSign}</h4>
+      <div style="margin:10px 0; padding:10px; background:#222c40; border-radius:12px;">
+        <p><strong>${t.zodiac_daily}</strong> ${pred.daily}</p>
+        <p><strong>${t.zodiac_weekly}</strong> ${pred.weekly}</p>
+        <p><strong>${t.zodiac_yearly}</strong> ${pred.yearly}</p>
+      </div>
+      <p><em>${t.zodiac_hint}</em></p>
+    `;
+    zodiacResult.style.display = 'block';
+    zodiacBtn.disabled = true;
+    zodiacBtn.textContent = '✨ ' + (state.lang === 'ar' ? "تم فتح البوابة" : "Gate opened");
+    zodiacBtn.style.opacity = '0.8';
+    zodiacBtn.style.cursor = 'not-allowed';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   render();
 });
