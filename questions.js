@@ -1,19 +1,18 @@
-// questions.js - الأسئلة والخيارات مع الدعم للترجمة
+// questions.js - الأسئلة والخيارات مع الدعم الكامل للترجمة
 
 import { translations, getLang } from './lang.js';
 
 export function getQuestions(lang = getLang()) {
   const t = translations[lang];
 
-  // ملاحظة: يمكنك توسيع الترجمة لإجابات الأسئلة في ملف lang.js لو أحببت
   return [
     {
       id: 1,
       text: t.q1 || "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
       options: [
-        { text: t.o1_1 || "أنا متحمس لأبدأ يومي!", trait: "E" },
+        { text: t.o1_1 || "أنا متحمس لأبدأ يومي!", trait: "I" },
         { text: t.o1_2 || "هل كل شيء تحت السيطرة؟", trait: "C" },
-        { text: t.o1_3 || "هل سأكون كافيًا اليوم؟", trait: "Inferiority" },
+        { text: t.o1_3 || "هل سأكون كافيًا اليوم؟", trait: "S" },
         { text: t.o1_4 || "أريد أن أفهم معنى هذا اليوم", trait: "N" }
       ]
     },
@@ -21,9 +20,9 @@ export function getQuestions(lang = getLang()) {
       id: 2,
       text: t.q2 || "في لقاء اجتماعي جديد، ماذا تفعل؟",
       options: [
-        { text: t.o2_1 || "أبدأ الحديث مع الجميع بسرعة", trait: "E,I" },
-        { text: t.o2_2 || "أراقب أولًا ثم أتحدث مع شخص واحد", trait: "I,S" },
-        { text: t.o2_3 || "أركز على من يمكن أن يفيدني أو أفيد منه", trait: "T" },
+        { text: t.o2_1 || "أبدأ الحديث مع الجميع بسرعة", trait: "I" },
+        { text: t.o2_2 || "أراقب أولًا ثم أتحدث مع شخص واحد", trait: "S" },
+        { text: t.o2_3 || "أركز على من يمكن أن يفيدني أو أفيد منه", trait: "D" },
         { text: t.o2_4 || "أحاول فهم مشاعر الآخرين بسرعة", trait: "F" }
       ]
     },
@@ -31,10 +30,10 @@ export function getQuestions(lang = getLang()) {
       id: 3,
       text: t.q3 || "ما نوع المهمة التي تجعلك 'تُنسى' من نفسك؟",
       options: [
-        { text: t.o3_1 || "التحديات السريعة والملتزمة بالوقت", trait: "Artisan" },
-        { text: t.o3_2 || "التحليل العميق للبيانات أو الأنظمة", trait: "NT" },
-        { text: t.o3_3 || "مساعدة شخص على تجاوز أزمة", trait: "Idealist" },
-        { text: t.o3_4 || "تنظيم فريق لتحقيق هدف منظم", trait: "Guardian" }
+        { text: t.o3_1 || "التحديات السريعة والملتزمة بالوقت", trait: "D" },
+        { text: t.o3_2 || "التحليل العميق للبيانات أو الأنظمة", trait: "C" },
+        { text: t.o3_3 || "مساعدة شخص على تجاوز أزمة", trait: "S" },
+        { text: t.o3_4 || "تنظيم فريق لتحقيق هدف منظم", trait: "D,C" }
       ]
     },
     {
@@ -44,7 +43,7 @@ export function getQuestions(lang = getLang()) {
         { text: t.o4_1 || "المرح والطاقة", trait: "I" },
         { text: t.o4_2 || "الولاء والاستقرار", trait: "S" },
         { text: t.o4_3 || "العمق والمعنى", trait: "NF" },
-        { text: t.o4_4 || "التحدي الفكري", trait: "Rational" }
+        { text: t.o4_4 || "التحدي الفكري", trait: "NT" }
       ]
     },
     {
@@ -53,7 +52,7 @@ export function getQuestions(lang = getLang()) {
       options: [
         { text: t.o5_1 || "أتعلم وأتحرك بسرعة", trait: "P" },
         { text: t.o5_2 || "أحلل ما حدث بدقة", trait: "C" },
-        { text: t.o5_3 || "أشعر بالذنب، لكنني أسامح نفسي", trait: "A" },
+        { text: t.o5_3 || "أشعر بالذنب، لكنني أسامح نفسي", trait: "S" },
         { text: t.o5_4 || "أتساءل: هل هذا يثبت أنني غير كافٍ؟", trait: "Inferiority" }
       ]
     },
@@ -62,9 +61,9 @@ export function getQuestions(lang = getLang()) {
       text: t.q6 || "ما الذي يُشعرك بالفخر؟",
       options: [
         { text: t.o6_1 || "تحقيق نتائج ملموسة", trait: "D" },
-        { text: t.o6_2 || "دعم شخص في أزمة", trait: "F" },
-        { text: t.o6_3 || "ابتكار فكرة جديدة", trait: "N" },
-        { text: t.o6_4 || "الالتزام بالواجبات والمسؤوليات", trait: "J" }
+        { text: t.o6_2 || "دعم شخص في أزمة", trait: "S" },
+        { text: t.o6_3 || "ابتكار فكرة جديدة", trait: "I" },
+        { text: t.o6_4 || "الالتزام بالواجبات والمسؤوليات", trait: "C" }
       ]
     },
     {
@@ -74,7 +73,7 @@ export function getQuestions(lang = getLang()) {
         { text: t.o7_1 || "السرعة والنتائج", trait: "D" },
         { text: t.o7_2 || "الإلهام والانطباع الأول", trait: "I" },
         { text: t.o7_3 || "استقرار الفريق والعلاقات", trait: "S" },
-        { text: t.o7_4 || "التحليل العميق والمنطق", trait: "T" }
+        { text: t.o7_4 || "التحليل العميق والمنطق", trait: "C" }
       ]
     },
     {
@@ -91,10 +90,10 @@ export function getQuestions(lang = getLang()) {
       id: 9,
       text: t.q9 || "ما نوع الكتب أو المحتوى الذي تفضله؟",
       options: [
-        { text: t.o9_1 || "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
-        { text: t.o9_2 || "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
-        { text: t.o9_3 || "نكت، فيديوهات مضحكة، ترفيه", trait: "SP" },
-        { text: t.o9_4 || "أدلة عملية، خطوات، تقنيات", trait: "S,J" }
+        { text: t.o9_1 || "قصص نجاح، قيادة، تأثير", trait: "D" },
+        { text: t.o9_2 || "روايات، فلسفة، تأملات وجودية", trait: "NF" },
+        { text: t.o9_3 || "نكت، فيديوهات مضحكة، ترفيه", trait: "I" },
+        { text: t.o9_4 || "أدلة عملية، خطوات، تقنيات", trait: "C" }
       ]
     },
     {
@@ -102,9 +101,9 @@ export function getQuestions(lang = getLang()) {
       text: t.q10 || "ما الذي يعطيك إحساسًا بالمعنى؟",
       options: [
         { text: t.o10_1 || "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
-        { text: t.o10_2 || "خدمة الآخرين", trait: "Meaning" },
-        { text: t.o10_3 || "فهم الكون أو النظام الكوني", trait: "Rational" },
-        { text: t.o10_4 || "الاستقرار والانتماء", trait: "Generativity" }
+        { text: t.o10_2 || "خدمة الآخرين", trait: "S" },
+        { text: t.o10_3 || "فهم الكون أو النظام الكوني", trait: "C" },
+        { text: t.o10_4 || "الاستقرار والانتماء", trait: "S" }
       ]
     },
     {
@@ -144,7 +143,7 @@ export function getQuestions(lang = getLang()) {
         { text: t.o14_1 || "أتحداه وأثبت نفسي", trait: "D" },
         { text: t.o14_2 || "أضحك وأحوله إلى نكتة", trait: "I" },
         { text: t.o14_3 || "أتألم لكنني أسامح", trait: "S" },
-        { text: t.o14_4 || "أحلله بمنطق وعقل", trait: "T" }
+        { text: t.o14_4 || "أحلله بمنطق وعقل", trait: "C" }
       ]
     },
     {
@@ -154,7 +153,7 @@ export function getQuestions(lang = getLang()) {
         { text: t.o15_1 || "الفشل وعدم التحكم", trait: "D" },
         { text: t.o15_2 || "الوحدة والرفض", trait: "I" },
         { text: t.o15_3 || "الصراع والانفصال", trait: "S" },
-        { text: t.o15_4 || "الغموض وعدم الفهم", trait: "N" }
+        { text: t.o15_4 || "الغموض وعدم الفهم", trait: "C" }
       ]
     },
     {
@@ -174,7 +173,7 @@ export function getQuestions(lang = getLang()) {
         { text: t.o17_1 || "التحكم في مصيري", trait: "D" },
         { text: t.o17_2 || "التعبير عن نفسي بحرية", trait: "I" },
         { text: t.o17_3 || "العيش بسلام مع نفسي", trait: "S" },
-        { text: t.o17_4 || "الفهم العميق للعالم", trait: "N" }
+        { text: t.o17_4 || "الفهم العميق للعالم", trait: "C" }
       ]
     },
     {
@@ -189,22 +188,22 @@ export function getQuestions(lang = getLang()) {
     },
     {
       id: 19,
-      text: t.q19 || "ما الذي يُشعرك بالراحة؟",
+      text: t.q19 || "ما الذي يُشعرك بالتوتر؟",
       options: [
-        { text: t.o19_1 || "تحقيق الهدف", trait: "D" },
-        { text: t.o19_2 || "الضحك والتفاعل", trait: "I" },
-        { text: t.o19_3 || "الهدوء والاستقرار", trait: "S" },
-        { text: t.o19_4 || "النظام والفهم الكامل", trait: "C" }
+        { text: t.o19_1 || "عدم وضوح الأهداف", trait: "C" },
+        { text: t.o19_2 || "القيود والروتين", trait: "I" },
+        { text: t.o19_3 || "الصراعات العاطفية", trait: "S" },
+        { text: t.o19_4 || "البطء في اتخاذ القرار", trait: "D" }
       ]
     },
     {
       id: 20,
-      text: t.q20 || "ما هو شعارك في الحياة؟",
+      text: t.q20 || "ماذا تتمنى أن يُقال عنك بعد سنوات؟",
       options: [
-        { text: t.o20_1 || "النتيجة أهم من الطريقة", trait: "D" },
-        { text: t.o20_2 || "الحياة للمرح والتجربة", trait: "I" },
-        { text: t.o20_3 || "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
-        { text: t.o20_4 || "الفهم يسبق كل شيء", trait: "C" }
+        { text: t.o20_1 || "لقد غيّر العالم", trait: "D" },
+        { text: t.o20_2 || "لقد جعل الحياة أكثر بهجة", trait: "I" },
+        { text: t.o20_3 || "لقد كان سندي في أصعب الأوقات", trait: "S" },
+        { text: t.o20_4 || "لقد فهم ما لا يُفهم", trait: "C" }
       ]
     }
   ];
