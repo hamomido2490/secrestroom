@@ -1,28 +1,19 @@
-// ads.js - نظام الإعلانات الذكي (اختياري حسب الشبكة)
-
 export function loadAd(adContainer) {
   if (!adContainer) return;
-
-  adContainer.innerHTML = '<div style="padding: 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; font-size: 0.9rem; color: #94a3b8;">جاري تحميل الإعلان...</div>';
+  adContainer.innerHTML = '<div style="padding: 15px; background: #232e4a; border-radius: 8px; color: #94a3b8;">جاري تحميل الإعلان...</div>';
   const roll = Math.random();
   let adCode = "";
-
   if (roll < 0.45) {
-    // Monetag
-    adCode = ""; // الكود الكامل لـ Monetag
+    adCode = "";
   } else if (roll < 0.70) {
-    // Adsterra
-    adCode = ""; // الكود الكامل لـ Adsterra
+    adCode = "";
   } else if (roll < 0.90) {
-    // RichAds
-    adCode = ""; // الكود الكامل لـ RichAds
+    adCode = "";
   } else {
-    // HilltopAds
-    adCode = ""; // الكود الكامل لـ HilltopAds
+    adCode = "";
   }
-
   if (!adCode || adCode.trim() === "") {
-    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem;">إعلان: شارك الموقع مع أصدقائك!</div>';
+    adContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.98em;">إعلان: شارك الموقع مع أصدقائك!</div>';
   } else {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = adCode;
