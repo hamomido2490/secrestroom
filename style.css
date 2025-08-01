@@ -1,0 +1,67 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 12px 60px 12px;
+}
+
+.form-group {
+  margin-bottom: 1.2em;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input, select, button {
+  font-size: 1em;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #e2e8f0;
+  margin-bottom: 5px;
+}
+
+button {
+  background: #fbbf24;
+  color: #1e293b;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+button:hover, .option-btn.selected {
+  background: #fde68a;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: width 0.3s;
+}
+
+footer {
+  margin-top: 32px;
+  color: #94a3b8;
+  text-align: center;
+  font-size: .95em;
+}
