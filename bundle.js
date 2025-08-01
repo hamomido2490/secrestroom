@@ -116,7 +116,38 @@ const Lang = {
       footer2: 'تم التصميم والتحليل النفسي والتطوير من قبل: Mohammed Tarek',
       dob_label: 'تاريخ الميلاد:',
       zodiac_title: 'بناءً على برجك',
-      prediction_title: 'تنبؤات برجك الأسبوعية'
+      prediction_title: 'تنبؤات برجك الأسبوعية',
+      // أسئلة 1-6 وخياراتها
+      q1: "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
+      o1_1: "أنا متحمس لأبدأ يومي!",
+      o1_2: "هل كل شيء تحت السيطرة؟",
+      o1_3: "هل سأكون كافيًا اليوم؟",
+      o1_4: "أريد أن أفهم معنى هذا اليوم",
+      q2: "في لقاء اجتماعي جديد، ماذا تفعل؟",
+      o2_1: "أبدأ الحديث مع الجميع بسرعة",
+      o2_2: "أراقب أولًا ثم أتحدث مع شخص واحد",
+      o2_3: "أركز على من يمكن أن يفيدني أو أفيد منه",
+      o2_4: "أحاول فهم مشاعر الآخرين بسرعة",
+      q3: "ما نوع المهمة التي تجعلك 'تُنسى' من نفسك؟",
+      o3_1: "التحديات السريعة والملتزمة بالوقت",
+      o3_2: "التحليل العميق للبيانات أو الأنظمة",
+      o3_3: "مساعدة شخص على تجاوز أزمة",
+      o3_4: "تنظيم فريق لتحقيق هدف منظم",
+      q4: "ما أكثر شيء تبحث عنه في الصداقات؟",
+      o4_1: "المرح والطاقة",
+      o4_2: "الولاء والاستقرار",
+      o4_3: "العمق والمعنى",
+      o4_4: "التحدي الفكري",
+      q5: "كيف تتعامل مع الأخطاء؟",
+      o5_1: "أتعلم وأتحرك بسرعة",
+      o5_2: "أحلل ما حدث بدقة",
+      o5_3: "أشعر بالذنب، لكنني أسامح نفسي",
+      o5_4: "أتساءل: هل هذا يثبت أنني غير كافٍ؟",
+      q6: "ما الذي يُشعرك بالفخر؟",
+      o6_1: "تحقيق نتائج ملموسة",
+      o6_2: "دعم شخص في أزمة",
+      o6_3: "ابتكار فكرة جديدة",
+      o6_4: "الالتزام بالواجبات والمسؤوليات"
     },
     en: {
       welcome_title: 'Welcome to Chamber of Secrets',
@@ -137,213 +168,245 @@ const Lang = {
       footer2: 'Designed, analyzed, and developed by: Mohammed Tarek',
       dob_label: 'Date of Birth:',
       zodiac_title: 'Based on your zodiac sign',
-      prediction_title: 'Your Weekly Horoscope'
+      prediction_title: 'Your Weekly Horoscope',
+      // Questions 1-6 and options
+      q1: "When you wake up in the morning, what is the first thing that comes to mind?",
+      o1_1: "I am excited to start my day!",
+      o1_2: "Is everything under control?",
+      o1_3: "Will I be enough today?",
+      o1_4: "I want to understand the meaning of this day",
+      q2: "In a new social gathering, what do you do?",
+      o2_1: "I start talking to everyone quickly",
+      o2_2: "I observe first, then talk to one person",
+      o2_3: "I focus on who can benefit me or I can benefit them",
+      o2_4: "I try to understand others' feelings quickly",
+      q3: "What type of task makes you 'forget yourself'?",
+      o3_1: "Fast-paced, time-bound challenges",
+      o3_2: "Deep analysis of data or systems",
+      o3_3: "Helping someone overcome a crisis",
+      o3_4: "Organizing a team to achieve a structured goal",
+      q4: "What do you look for most in friendships?",
+      o4_1: "Fun and energy",
+      o4_2: "Loyalty and stability",
+      o4_3: "Depth and meaning",
+      o4_4: "Intellectual challenge",
+      q5: "How do you deal with mistakes?",
+      o5_1: "I learn and move quickly",
+      o5_2: "I analyze what happened in detail",
+      o5_3: "I feel guilty, but I forgive myself",
+      o5_4: "I wonder: does this prove I'm not enough?",
+      q6: "What makes you feel proud?",
+      o6_1: "Achieving tangible results",
+      o6_2: "Supporting someone in a crisis",
+      o6_3: "Inventing a new idea",
+      o6_4: "Commitment to duties and responsibilities"
     }
   }
 };
 
 // --- الأسئلة (20 سؤالاً) ---
-function getQuestions(lang = 'ar') {
-  const t = Lang.translations[lang];
+function getQuestions() {
+  const t = Lang.translations[Lang.current];
   return [
     {
       id: 1,
-      text: t.q1 || "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
+      text: t.q1,
       options: [
-        { text: t.o1_1 || "أنا متحمس لأبدأ يومي!", trait: "E" },
-        { text: t.o1_2 || "هل كل شيء تحت السيطرة؟", trait: "C" },
-        { text: t.o1_3 || "هل سأكون كافيًا اليوم؟", trait: "Inferiority" },
-        { text: t.o1_4 || "أريد أن أفهم معنى هذا اليوم", trait: "N" }
+        { text: t.o1_1, trait: "E" },
+        { text: t.o1_2, trait: "C" },
+        { text: t.o1_3, trait: "Inferiority" },
+        { text: t.o1_4, trait: "N" }
       ]
     },
     {
       id: 2,
-      text: t.q2 || "في لقاء اجتماعي جديد، ماذا تفعل؟",
+      text: t.q2,
       options: [
-        { text: t.o2_1 || "أبدأ الحديث مع الجميع بسرعة", trait: "E,I" },
-        { text: t.o2_2 || "أراقب أولًا ثم أتحدث مع شخص واحد", trait: "I,S" },
-        { text: t.o2_3 || "أركز على من يمكن أن يفيدني أو أفيد منه", trait: "T" },
-        { text: t.o2_4 || "أحاول فهم مشاعر الآخرين بسرعة", trait: "F" }
+        { text: t.o2_1, trait: "E,I" },
+        { text: t.o2_2, trait: "I,S" },
+        { text: t.o2_3, trait: "T" },
+        { text: t.o2_4, trait: "F" }
       ]
     },
     {
       id: 3,
-      text: t.q3 || "ما نوع المهمة التي تجعلك 'تُنسى' من نفسك؟",
+      text: t.q3,
       options: [
-        { text: t.o3_1 || "التحديات السريعة والملتزمة بالوقت", trait: "Artisan" },
-        { text: t.o3_2 || "التحليل العميق للبيانات أو الأنظمة", trait: "NT" },
-        { text: t.o3_3 || "مساعدة شخص على تجاوز أزمة", trait: "Idealist" },
-        { text: t.o3_4 || "تنظيم فريق لتحقيق هدف منظم", trait: "Guardian" }
+        { text: t.o3_1, trait: "Artisan" },
+        { text: t.o3_2, trait: "NT" },
+        { text: t.o3_3, trait: "Idealist" },
+        { text: t.o3_4, trait: "Guardian" }
       ]
     },
     {
       id: 4,
-      text: t.q4 || "ما أكثر شيء تبحث عنه في الصداقات؟",
+      text: t.q4,
       options: [
-        { text: t.o4_1 || "المرح والطاقة", trait: "I" },
-        { text: t.o4_2 || "الولاء والاستقرار", trait: "S" },
-        { text: t.o4_3 || "العمق والمعنى", trait: "NF" },
-        { text: t.o4_4 || "التحدي الفكري", trait: "Rational" }
+        { text: t.o4_1, trait: "I" },
+        { text: t.o4_2, trait: "S" },
+        { text: t.o4_3, trait: "NF" },
+        { text: t.o4_4, trait: "Rational" }
       ]
     },
     {
       id: 5,
-      text: t.q5 || "كيف تتعامل مع الأخطاء؟",
+      text: t.q5,
       options: [
-        { text: t.o5_1 || "أتعلم وأتحرك بسرعة", trait: "P" },
-        { text: t.o5_2 || "أحلل ما حدث بدقة", trait: "C" },
-        { text: t.o5_3 || "أشعر بالذنب، لكنني أسامح نفسي", trait: "A" },
-        { text: t.o5_4 || "أتساءل: هل هذا يثبت أنني غير كافٍ؟", trait: "Inferiority" }
+        { text: t.o5_1, trait: "P" },
+        { text: t.o5_2, trait: "C" },
+        { text: t.o5_3, trait: "A" },
+        { text: t.o5_4, trait: "Inferiority" }
       ]
     },
     {
       id: 6,
-      text: t.q6 || "ما الذي يُشعرك بالفخر؟",
+      text: t.q6,
       options: [
-        { text: t.o6_1 || "تحقيق نتائج ملموسة", trait: "D" },
-        { text: t.o6_2 || "دعم شخص في أزمة", trait: "F" },
-        { text: t.o6_3 || "ابتكار فكرة جديدة", trait: "N" },
-        { text: t.o6_4 || "الالتزام بالواجبات والمسؤوليات", trait: "J" }
+        { text: t.o6_1, trait: "D" },
+        { text: t.o6_2, trait: "F" },
+        { text: t.o6_3, trait: "N" },
+        { text: t.o6_4, trait: "J" }
       ]
     },
+    // الأسئلة 7-20 تبقى كما هي (نص مباشر أو أضفها للترجمة إذا رغبت)
     {
       id: 7,
-      text: t.q7 || "ما الذي تبحث عنه في قرار مهم؟",
+      text: "ما الذي تبحث عنه في قرار مهم؟",
       options: [
-        { text: t.o7_1 || "السرعة والنتائج", trait: "D" },
-        { text: t.o7_2 || "الإلهام والانطباع الأول", trait: "I" },
-        { text: t.o7_3 || "استقرار الفريق والعلاقات", trait: "S" },
-        { text: t.o7_4 || "التحليل العميق والمنطق", trait: "T" }
+        { text: "السرعة والنتائج", trait: "D" },
+        { text: "الإلهام والانطباع الأول", trait: "I" },
+        { text: "استقرار الفريق والعلاقات", trait: "S" },
+        { text: "التحليل العميق والمنطق", trait: "T" }
       ]
     },
     {
       id: 8,
-      text: t.q8 || "ماذا تفعل عندما تشعر بالضغط؟",
+      text: "ماذا تفعل عندما تشعر بالضغط؟",
       options: [
-        { text: t.o8_1 || "أتحدى الموقف مباشرة", trait: "D" },
-        { text: t.o8_2 || "أبحث عن دعم من الآخرين", trait: "I" },
-        { text: t.o8_3 || "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
-        { text: t.o8_4 || "أحلل المشكلة من كل الزوايا", trait: "C" }
+        { text: "أتحدى الموقف مباشرة", trait: "D" },
+        { text: "أبحث عن دعم من الآخرين", trait: "I" },
+        { text: "أبتعد مؤقتًا لأعيد التفكير", trait: "S" },
+        { text: "أحلل المشكلة من كل الزوايا", trait: "C" }
       ]
     },
     {
       id: 9,
-      text: t.q9 || "ما نوع الكتب أو المحتوى الذي تفضله؟",
+      text: "ما نوع الكتب أو المحتوى الذي تفضله؟",
       options: [
-        { text: t.o9_1 || "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
-        { text: t.o9_2 || "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
-        { text: t.o9_3 || "نكت، فيديوهات مضحكة، ترفيه", trait: "SP" },
-        { text: t.o9_4 || "أدلة عملية، خطوات، تقنيات", trait: "S,J" }
+        { text: "قصص نجاح، قيادة، تأثير", trait: "Guardian,Rational" },
+        { text: "روايات، فلسفة، تأملات وجودية", trait: "Idealist" },
+        { text: "نكت، فيديوهات مضحكة، ترفيه", trait: "SP" },
+        { text: "أدلة عملية، خطوات، تقنيات", trait: "S,J" }
       ]
     },
     {
       id: 10,
-      text: t.q10 || "ما الذي يعطيك إحساسًا بالمعنى؟",
+      text: "ما الذي يعطيك إحساسًا بالمعنى؟",
       options: [
-        { text: t.o10_1 || "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
-        { text: t.o10_2 || "خدمة الآخرين", trait: "Meaning" },
-        { text: t.o10_3 || "فهم الكون أو النظام الكوني", trait: "Rational" },
-        { text: t.o10_4 || "الاستقرار والانتماء", trait: "Generativity" }
+        { text: "تحقيق إنجازات كبيرة", trait: "Self-actualization" },
+        { text: "خدمة الآخرين", trait: "Meaning" },
+        { text: "فهم الكون أو النظام الكوني", trait: "Rational" },
+        { text: "الاستقرار والانتماء", trait: "Generativity" }
       ]
     },
     {
       id: 11,
-      text: t.q11 || "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
+      text: "كم مرة تغير رأيك بناءً على معلومة جديدة؟",
       options: [
-        { text: t.o11_1 || "نادرًا، أنا واثق من قراراتي", trait: "D" },
-        { text: t.o11_2 || "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
-        { text: t.o11_3 || "غالبًا، لأنني أحب التعلم", trait: "N" },
-        { text: t.o11_4 || "دائمًا، لأنني أكره التصلب", trait: "P" }
+        { text: "نادرًا، أنا واثق من قراراتي", trait: "D" },
+        { text: "أحيانًا، إذا كانت الحجة قوية", trait: "T" },
+        { text: "غالبًا، لأنني أحب التعلم", trait: "N" },
+        { text: "دائمًا، لأنني أكره التصلب", trait: "P" }
       ]
     },
     {
       id: 12,
-      text: t.q12 || "ما الذي يُشعرك بالراحة؟",
+      text: "ما الذي يُشعرك بالراحة؟",
       options: [
-        { text: t.o12_1 || "تحقيق الهدف", trait: "D" },
-        { text: t.o12_2 || "الضحك والتفاعل", trait: "I" },
-        { text: t.o12_3 || "الهدوء والاستقرار", trait: "S" },
-        { text: t.o12_4 || "النظام والفهم الكامل", trait: "C" }
+        { text: "تحقيق الهدف", trait: "D" },
+        { text: "الضحك والتفاعل", trait: "I" },
+        { text: "الهدوء والاستقرار", trait: "S" },
+        { text: "النظام والفهم الكامل", trait: "C" }
       ]
     },
     {
       id: 13,
-      text: t.q13 || "ما هو شعارك في الحياة؟",
+      text: "ما هو شعارك في الحياة؟",
       options: [
-        { text: t.o13_1 || "النتيجة أهم من الطريقة", trait: "D" },
-        { text: t.o13_2 || "الحياة للمرح والتجربة", trait: "I" },
-        { text: t.o13_3 || "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
-        { text: t.o13_4 || "الفهم يسبق كل شيء", trait: "C" }
+        { text: "النتيجة أهم من الطريقة", trait: "D" },
+        { text: "الحياة للمرح والتجربة", trait: "I" },
+        { text: "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
+        { text: "الفهم يسبق كل شيء", trait: "C" }
       ]
     },
     {
       id: 14,
-      text: t.q14 || "كيف تتعامل مع الانتقاد؟",
+      text: "كيف تتعامل مع الانتقاد؟",
       options: [
-        { text: t.o14_1 || "أتحداه وأثبت نفسي", trait: "D" },
-        { text: t.o14_2 || "أضحك وأحوله إلى نكتة", trait: "I" },
-        { text: t.o14_3 || "أتألم لكنني أسامح", trait: "S" },
-        { text: t.o14_4 || "أحلله بمنطق وعقل", trait: "T" }
+        { text: "أتحداه وأثبت نفسي", trait: "D" },
+        { text: "أضحك وأحوله إلى نكتة", trait: "I" },
+        { text: "أتألم لكنني أسامح", trait: "S" },
+        { text: "أحلله بمنطق وعقل", trait: "T" }
       ]
     },
     {
       id: 15,
-      text: t.q15 || "ما الذي يُشعرك بالخوف؟",
+      text: "ما الذي يُشعرك بالخوف؟",
       options: [
-        { text: t.o15_1 || "الفشل وعدم التحكم", trait: "D" },
-        { text: t.o15_2 || "الوحدة والرفض", trait: "I" },
-        { text: t.o15_3 || "الصراع والانفصال", trait: "S" },
-        { text: t.o15_4 || "الغموض وعدم الفهم", trait: "N" }
+        { text: "الفشل وعدم التحكم", trait: "D" },
+        { text: "الوحدة والرفض", trait: "I" },
+        { text: "الصراع والانفصال", trait: "S" },
+        { text: "الغموض وعدم الفهم", trait: "N" }
       ]
     },
     {
       id: 16,
-      text: t.q16 || "ما نوع القيادة التي تفضلها؟",
+      text: "ما نوع القيادة التي تفضلها؟",
       options: [
-        { text: t.o16_1 || "قيادة حاسمة وسريعة", trait: "D" },
-        { text: t.o16_2 || "قيادة ملهمة ومحفزة", trait: "I" },
-        { text: t.o16_3 || "قيادة داعمة ومستقرة", trait: "S" },
-        { text: t.o16_4 || "قيادة منظمة وتحليلية", trait: "C" }
+        { text: "قيادة حاسمة وسريعة", trait: "D" },
+        { text: "قيادة ملهمة ومحفزة", trait: "I" },
+        { text: "قيادة داعمة ومستقرة", trait: "S" },
+        { text: "قيادة منظمة وتحليلية", trait: "C" }
       ]
     },
     {
       id: 17,
-      text: t.q17 || "ما الذي يُشعرك بالحرية؟",
+      text: "ما الذي يُشعرك بالحرية؟",
       options: [
-        { text: t.o17_1 || "التحكم في مصيري", trait: "D" },
-        { text: t.o17_2 || "التعبير عن نفسي بحرية", trait: "I" },
-        { text: t.o17_3 || "العيش بسلام مع نفسي", trait: "S" },
-        { text: t.o17_4 || "الفهم العميق للعالم", trait: "N" }
+        { text: "التحكم في مصيري", trait: "D" },
+        { text: "التعبير عن نفسي بحرية", trait: "I" },
+        { text: "العيش بسلام مع نفسي", trait: "S" },
+        { text: "الفهم العميق للعالم", trait: "N" }
       ]
     },
     {
       id: 18,
-      text: t.q18 || "كيف تتعامل مع التغيير؟",
+      text: "كيف تتعامل مع التغيير؟",
       options: [
-        { text: t.o18_1 || "أتحدىه وأقوده", trait: "D" },
-        { text: t.o18_2 || "أحتفل به وانغمس فيه", trait: "I" },
-        { text: t.o18_3 || "أتأقلم ببطء وحذر", trait: "S" },
-        { text: t.o18_4 || "أحلله وأفهمه أولًا", trait: "C" }
+        { text: "أتحدىه وأقوده", trait: "D" },
+        { text: "أحتفل به وانغمس فيه", trait: "I" },
+        { text: "أتأقلم ببطء وحذر", trait: "S" },
+        { text: "أحلله وأفهمه أولًا", trait: "C" }
       ]
     },
     {
       id: 19,
-      text: t.q19 || "ما الذي يُشعرك بالراحة؟",
+      text: "ما الذي يُشعرك بالراحة؟",
       options: [
-        { text: t.o19_1 || "تحقيق الهدف", trait: "D" },
-        { text: t.o19_2 || "الضحك والتفاعل", trait: "I" },
-        { text: t.o19_3 || "الهدوء والاستقرار", trait: "S" },
-        { text: t.o19_4 || "النظام والفهم الكامل", trait: "C" }
+        { text: "تحقيق الهدف", trait: "D" },
+        { text: "الضحك والتفاعل", trait: "I" },
+        { text: "الهدوء والاستقرار", trait: "S" },
+        { text: "النظام والفهم الكامل", trait: "C" }
       ]
     },
     {
       id: 20,
-      text: t.q20 || "ما هو شعارك في الحياة؟",
+      text: "ما هو شعارك في الحياة؟",
       options: [
-        { text: t.o20_1 || "النتيجة أهم من الطريقة", trait: "D" },
-        { text: t.o20_2 || "الحياة للمرح والتجربة", trait: "I" },
-        { text: t.o20_3 || "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
-        { text: t.o20_4 || "الفهم يسبق كل شيء", trait: "C" }
+        { text: "النتيجة أهم من الطريقة", trait: "D" },
+        { text: "الحياة للمرح والتجربة", trait: "I" },
+        { text: "العلاقات تُبنى بالصبر والوفاء", trait: "S" },
+        { text: "الفهم يسبق كل شيء", trait: "C" }
       ]
     }
   ];
@@ -413,10 +476,11 @@ function generatePersonalityAnalysis(answers, userData) {
   answers.forEach((answerIndex, questionIndex) => {
     const option = getQuestions()[questionIndex]?.options[answerIndex];
     if (!option) return;
-    if (option.text.includes('أحمر') || option.trait.includes('D')) colorCount.red++;
-    if (option.text.includes('أصفر') || option.trait.includes('I')) colorCount.yellow++;
-    if (option.text.includes('أخضر') || option.trait.includes('S')) colorCount.green++;
-    if (option.text.includes('أزرق') || option.trait.includes('C')) colorCount.blue++;
+    // فقط استخدم trait وليس النص (حتى لو تم تغيير الترجمة لا يؤثر على التحليل)
+    if (option.trait && option.trait.split(',').includes('D')) colorCount.red++;
+    if (option.trait && option.trait.split(',').includes('I')) colorCount.yellow++;
+    if (option.trait && option.trait.split(',').includes('S')) colorCount.green++;
+    if (option.trait && option.trait.split(',').includes('C')) colorCount.blue++;
   });
 
   let dominantColor = 'green';
@@ -559,14 +623,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // تفعيل نظام الترجمة
   Lang.init();
 
-  // إضافة حقل تاريخ الميلاد
-  if (document.querySelector('#userInfo .form-group:last-child')) {
+  // إضافة حقل تاريخ الميلاد مرة واحدة فقط
+  if (!document.getElementById('dob')) {
     const dobGroup = document.createElement('div');
     dobGroup.className = 'form-group';
     dobGroup.innerHTML = `
       <label for="dob">${Lang.translations[Lang.current].dob_label}</label>
       <input type="date" id="dob" required>
     `;
+    // أدخله قبل زر الإدخال فقط لو لم يكن موجوداً بالفعل
     userInfoEl.insertBefore(dobGroup, submitUserInfo);
   }
 
@@ -590,14 +655,15 @@ document.addEventListener('DOMContentLoaded', () => {
   startBtn.addEventListener('click', () => {
     introEl.style.display = 'none';
     quizEl.style.display = 'block';
+    currentQ = 0;
+    userAnswers = [];
     showQuestion();
   });
 
-  const showQuestion = () => {
+  function showQuestion() {
     const q = getQuestions()[currentQ];
     questionEl.innerHTML = `<h3>${currentQ + 1}. ${q.text}</h3>`;
     optionsEl.innerHTML = '';
-
     q.options.forEach((opt, index) => {
       const btn = document.createElement('button');
       btn.classList.add('option-btn');
@@ -611,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       optionsEl.appendChild(btn);
     });
-  };
+  }
 
   nextBtn.addEventListener('click', () => {
     if (userAnswers[currentQ] === undefined) {
