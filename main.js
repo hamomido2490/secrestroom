@@ -68,25 +68,30 @@ function render() {
         <!-- عرض العمر على اليسار -->
         <div style="flex: 0.6; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
           <div id="ageCard" style="
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: #17233a;
-            border-radius: 20px;
-            padding: 24px 16px;
-            text-align: center;
-            width: 140px;
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
-            font-family: 'Segoe UI', sans-serif;
-          ">
-            <div style="font-size: 1.1em; font-weight: 600; margin-bottom: 8px;">${t.age_label}</div>
-            <div id="calculatedAge" style="
-              font-size: 3.2em;
-              font-weight: bold;
-              line-height: 1;
-            ">${state.userData.age || '-'}</div>
-            <div style="font-size: 0.95em; margin-top: 4px; opacity: 0.9;">
-              ${state.lang === 'ar' ? 'سنة' : 'years'}
-            </div>
-          </div>
+  background: linear-gradient(135deg, #fbbf24, #d97706), url('https://images.unsplash.com/photo-1509062522240-38782236d0a8?auto=format&fit=crop&w=600&q=80');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  width: 140px;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+  font-family: 'Segoe UI', sans-serif;
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+">
+  <div style="font-size: 1.1em; font-weight: 600; margin-bottom: 8px;">${t.age_label}</div>
+  <div id="calculatedAge" style="
+    font-size: 3.2em;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  ">${state.userData.age || '-'}</div>
+  <div style="font-size: 0.95em; margin-top: 4px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+    ${state.lang === 'ar' ? 'سنة' : 'years'}
+  </div>
+</div>
         </div>
 
         <!-- نموذج المستخدم على اليمين -->
