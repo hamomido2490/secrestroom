@@ -283,3 +283,71 @@ footer strong {
   color: #0f172a;
   transform: translateY(-2px);
 }
+
+/* تصميم زر الأبراج */
+.zodiac-section {
+  margin: 30px auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.zodiac-btn {
+  background: linear-gradient(135deg, #8B4513, #DAA520, #FFD700);
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.zodiac-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(218, 165, 32, 0.6);
+}
+
+.zodiac-btn::before {
+  content: '✨';
+  margin-right: 8px;
+}
+
+.zodiac-btn::after {
+  content: '🌟';
+  margin-left: 8px;
+}
+
+/* تصميم نتيجة الأبراج */
+.zodiac-result {
+  margin-top: 20px;
+  padding: 20px;
+  background: #1e293b;
+  border: 2px solid #DAA520;
+  border-radius: 16px;
+  color: #e2e8f0;
+  font-size: 1rem;
+  line-height: 1.8;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(218, 165, 32, 0.2);
+  animation: fadeIn 0.5s ease;
+}
+
+.zodiac-result h4 {
+  color: #FFD700;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.zodiac-result p {
+  margin: 8px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
