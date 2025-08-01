@@ -1,5 +1,3 @@
-// main.js - نقطة البداية وإدارة SPA
-
 import { translations, getLang, setLang } from './lang.js';
 import { getQuestions } from './questions.js';
 import { getZodiacSign, getHoroscopePredictions } from './zodiac.js';
@@ -7,10 +5,9 @@ import { generatePersonalityAnalysis } from './analysis.js';
 import { loadAd } from './ads.js';
 import { calculateAge, showAlert, copyToClipboard } from './utils.js';
 
-// الحالة الرئيسية
 let state = {
   lang: getLang(),
-  page: 'userInfo', // userInfo | intro | quiz | result
+  page: 'userInfo',
   userData: { age: '', gender: '', dob: '' },
   currentQ: 0,
   userAnswers: []
@@ -32,11 +29,9 @@ function render() {
   document.documentElement.lang = state.lang;
   document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
   document.body.style.direction = state.lang === 'ar' ? 'rtl' : 'ltr';
-
   let html = '';
 
-  // زر اللغة
-  html += `<button id="langToggle" style="position: fixed; top: 20px; left: 20px; z-index: 1000; background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid #fbbf24; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem;">${state.lang === 'ar' ? 'EN' : 'AR'}</button>`;
+  html += `<button id="langToggle">${state.lang === 'ar' ? 'EN' : 'AR'}</button>`;
 
   if (state.page === 'userInfo') {
     html += `
@@ -46,8 +41,7 @@ function render() {
         <p>${t.user_info_desc}</p>
         <div class="form-group">
           <label>${t.age_label}</label>
-          <select id="age">
-            <option value="">---</option>
+          <select id="age"><option value="">---</option>
             <option value="13-18">13-18</option>
             <option value="19-25">19-25</option>
             <option value="26-35">26-35</option>
@@ -58,8 +52,7 @@ function render() {
         </div>
         <div class="form-group">
           <label>${t.gender_label}</label>
-          <select id="gender">
-            <option value="">---</option>
+          <select id="gender"><option value="">---</option>
             <option value="${state.lang === 'ar' ? "ذكر" : "Male"}">${state.lang === 'ar' ? "ذكر" : "Male"}</option>
             <option value="${state.lang === 'ar' ? "أنثى" : "Female"}">${state.lang === 'ar' ? "أنثى" : "Female"}</option>
             <option value="other">${state.lang === 'ar' ? "آخر" : "Other"}</option>
@@ -73,21 +66,25 @@ function render() {
           <label>${t.age_label}</label>
           <p id="calculatedAge" style="margin: 8px 0; color: #fbbf24; font-weight: 600;">-</p>
         </div>
-        <button id="submitUserInfo">${t.submit_user_info}</button>
+        <div class="btn-row">
+          <button class="main-btn" id="submitUserInfo">${t.submit_user_info}</button>
+        </div>
       </section>
     `;
   }
 
   if (state.page === 'intro') {
     html += `
-      <section id="intro">
+      <section>
         <h1>${t.intro_title}</h1>
         <h2>${t.intro_subtitle}</h2>
         <div class="divider"></div>
         <p>${t.intro_desc}</p>
         <p>${t.intro_p1}</p>
         <p>${t.intro_p2}</p>
-        <button id="startBtn">${t.start_btn}</button>
+        <div class="btn-row">
+          <button class="main-btn" id="startBtn">${t.start_btn}</button>
+        </div>
       </section>
     `;
   }
@@ -98,14 +95,16 @@ function render() {
     html += `
       <div class="progress-bar" style="width:${progress}%;"></div>
       <div style="margin-bottom: 8px; color:#fbbf24;">${t.progress} ${state.currentQ + 1} / 20</div>
-      <section id="quiz">
+      <section>
         <div id="question"><h3>${state.currentQ + 1}. ${q.text}</h3></div>
         <div id="options">
           ${q.options.map((opt, idx) =>
             `<button class="option-btn${state.userAnswers[state.currentQ] === idx ? " selected" : ""}" data-opt="${idx}">${opt.text}</button>`
           ).join('')}
         </div>
-        <button id="nextBtn">${state.currentQ === getQuestions(state.lang).length - 1 ? t.restart_btn : t.next_btn}</button>
+        <div class="btn-row">
+          <button id="nextBtn" class="main-btn">${state.currentQ === getQuestions(state.lang).length - 1 ? t.restart_btn : t.next_btn}</button>
+        </div>
       </section>
     `;
   }
@@ -113,37 +112,29 @@ function render() {
   if (state.page === 'result') {
     let analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
     html += `
-      <section id="result">
-        <h2>${translations[state.lang].welcome_title}</h2>
-        <div id="analysis" style="white-space:pre-line; background: #1e293b; border-radius:12px; padding:14px 18px; margin-bottom:16px;">${analysis}</div>
-        <div style="margin-bottom: 16px;">
-          <button id="shareBtn">${translations[state.lang].share_btn}</button>
-          <button id="copyBtn">${translations[state.lang].copy_btn}</button>
+      <section>
+        <h2>${t.welcome_title}</h2>
+        <div id="analysis">${analysis}</div>
+        <div class="btn-row">
+          <button id="shareBtn">${t.share_btn}</button>
+          <button id="copyBtn">${t.copy_btn}</button>
         </div>
         <div id="monetag-inpage" style="margin-bottom: 24px;"></div>
-        <button id="zodiacBtn" style="background:#3b82f6; color:white;">🔮 ${translations[state.lang].zodiac_title}</button>
+        <div class="btn-row">
+          <button id="zodiacBtn">${t.zodiac_title}</button>
+          <button id="restartBtn">${t.restart_btn}</button>
+        </div>
         <div id="zodiacResult" style="display:none; margin-top:20px;"></div>
-        <button id="restartBtn" style="margin-top: 24px;">${translations[state.lang].restart_btn}</button>
       </section>
     `;
   }
 
-  // footer
-  html += `
-    <footer>
-      <p>${translations[state.lang].footer1}</p>
-      <p>${translations[state.lang].footer2}</p>
-    </footer>
-  `;
-
-  // عرض في الصفحة
+  html += `<footer><p>${t.footer1}</p><p>${t.footer2}</p></footer>`;
   document.getElementById('app').innerHTML = html;
 
-  // ربط الأحداث
   document.getElementById('langToggle').onclick = switchLang;
 
   if (state.page === 'userInfo') {
-    // تحديث العمر تلقائياً
     const dobInput = document.getElementById('dob');
     dobInput && (dobInput.oninput = function () {
       const val = this.value;
@@ -223,13 +214,13 @@ function render() {
         const zodiacSign = getZodiacSign(state.userData.dob);
         const pred = getHoroscopePredictions(zodiacSign, state.lang);
         zodiacResult.innerHTML = `
-          <h4>✨ ${translations[state.lang].zodiac_title}: ${zodiacSign}</h4>
-          <div style="margin: 10px 0; padding: 10px; background: #1e293b; border-radius: 8px;">
-            <p><strong>🔮 ${state.lang === 'ar' ? "التنبؤ اليومي" : "Daily"}:</strong> ${pred.daily}</p>
-            <p><strong>📅 ${state.lang === 'ar' ? "التنبؤ الأسبوعي" : "Weekly"}:</strong> ${pred.weekly}</p>
-            <p><strong>🎯 ${state.lang === 'ar' ? "التنبؤ السنوي" : "Yearly"}:</strong> ${pred.yearly}</p>
+          <h4>${t.zodiac_intro} ${zodiacSign}</h4>
+          <div style="margin:10px 0; padding:10px; background:#222c40; border-radius:12px;">
+            <p><strong>${t.zodiac_daily}</strong> ${pred.daily}</p>
+            <p><strong>${t.zodiac_weekly}</strong> ${pred.weekly}</p>
+            <p><strong>${t.zodiac_yearly}</strong> ${pred.yearly}</p>
           </div>
-          <p><em>${state.lang === 'ar' ? "الكون يهمس لك... استمع جيدًا." : "The universe whispers to you... Listen well."}</em></p>
+          <p><em>${t.zodiac_hint}</em></p>
         `;
         zodiacResult.style.display = 'block';
         zodiacBtn.disabled = true;
@@ -241,7 +232,6 @@ function render() {
   }
 }
 
-// SPA البداية
 document.addEventListener('DOMContentLoaded', () => {
   render();
 });
