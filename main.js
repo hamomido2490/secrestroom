@@ -35,39 +35,33 @@ function render() {
 
   if (state.page === 'userInfo') {
     html += `
-      <section>
-        <h3>${t.welcome_title}</h3>
-        <h3>${t.user_info_title}</h3>
-        <p>${t.user_info_desc}</p>
-        <div class="form-group">
-          <label>${t.age_label}</label>
-          <select id="age"><option value="">---</option>
-            <option value="13-18">13-18</option>
-            <option value="19-25">19-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-45">36-45</option>
-            <option value="46-60">46-60</option>
-            <option value="60+">60+</option>
-          </select>
+      <section style="display: flex; flex-direction: row; align-items: flex-start; gap: 32px;">
+        <div style="flex:1;">
+          <h3>${t.welcome_title}</h3>
+          <h3>${t.user_info_title}</h3>
+          <p>${t.user_info_desc}</p>
+          <div class="form-group">
+            <label>${t.gender_label}</label>
+            <select id="gender"><option value="">---</option>
+              <option value="${state.lang === 'ar' ? "ذكر" : "Male"}">${state.lang === 'ar' ? "ذكر" : "Male"}</option>
+              <option value="${state.lang === 'ar' ? "أنثى" : "Female"}">${state.lang === 'ar' ? "أنثى" : "Female"}</option>
+              <option value="other">${state.lang === 'ar' ? "آخر" : "Other"}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>${t.dob_label}</label>
+            <input type="date" id="dob">
+          </div>
+          <div class="btn-row">
+            <button class="main-btn" id="submitUserInfo">${t.submit_user_info}</button>
+          </div>
         </div>
-        <div class="form-group">
-          <label>${t.gender_label}</label>
-          <select id="gender"><option value="">---</option>
-            <option value="${state.lang === 'ar' ? "ذكر" : "Male"}">${state.lang === 'ar' ? "ذكر" : "Male"}</option>
-            <option value="${state.lang === 'ar' ? "أنثى" : "Female"}">${state.lang === 'ar' ? "أنثى" : "Female"}</option>
-            <option value="other">${state.lang === 'ar' ? "آخر" : "Other"}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>${t.dob_label}</label>
-          <input type="date" id="dob">
-        </div>
-        <div class="form-group">
-          <label>${t.age_label}</label>
-          <p id="calculatedAge" style="margin: 8px 0; color: #fbbf24; font-weight: 600;">-</p>
-        </div>
-        <div class="btn-row">
-          <button class="main-btn" id="submitUserInfo">${t.submit_user_info}</button>
+        <div style="flex:0.7; display: flex; align-items: flex-start; justify-content: flex-end;">
+          <div id="ageDisplayBox" style="background: #232e4a; border-radius: 18px; padding: 32px 24px; min-width: 120px; min-height: 120px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 10px #0003;">
+            <span style="color:#fbbf24; font-size: 1.1em; font-weight:700; margin-bottom:10px;">${t.age_label}</span>
+            <span id="calculatedAge" style="color:#fbbf24; font-size: 2.8em; font-weight: bold;">-</span>
+            <span style="color:#b0b5be; font-size:1em; margin-top:5px;">${state.lang === 'ar' ? "سنة" : "years"}</span>
+          </div>
         </div>
       </section>
     `;
@@ -138,16 +132,15 @@ function render() {
     const dobInput = document.getElementById('dob');
     dobInput && (dobInput.oninput = function () {
       const val = this.value;
-      const age = val ? calculateAge(val) : '-';
-      document.getElementById('calculatedAge').textContent = age + (age !== '-' ? (state.lang === 'ar' ? " سنة" : " years") : '');
+      let age = val ? calculateAge(val) : '-';
+      const ageDisplay = document.getElementById('calculatedAge');
+      ageDisplay.textContent = (age !== '-' ? age : '-');
       state.userData.dob = val;
-      state.userData.age = document.getElementById('age').value;
+      state.userData.age = age !== '-' ? age.toString() : '';
     });
-    document.getElementById('age').onchange = e => state.userData.age = e.target.value;
     document.getElementById('gender').onchange = e => state.userData.gender = e.target.value;
     document.getElementById('submitUserInfo').onclick = () => {
-      const { age, gender } = state.userData;
-      const dob = document.getElementById('dob').value;
+      const { age, gender, dob } = state.userData;
       if (!age || !gender || !dob) {
         showAlert(translations[state.lang].alert_missing_fields);
         return;
