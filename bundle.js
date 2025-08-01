@@ -559,16 +559,50 @@ document.addEventListener('DOMContentLoaded', () => {
   // تفعيل نظام الترجمة
   Lang.init();
 
-  // إضافة حقل تاريخ الميلاد
-  if (document.querySelector('#userInfo .form-group:last-child')) {
-    const dobGroup = document.createElement('div');
-    dobGroup.className = 'form-group';
-    dobGroup.innerHTML = `
-      <label for="dob">${Lang.translations[Lang.current].dob_label}</label>
-      <input type="date" id="dob" required>
-    `;
-    userInfoEl.insertBefore(dobGroup, submitUserInfo);
+  // --- حساب العمر من تاريخ الميلاد ---
+function calculateAge(birthDateString) {
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
   }
+  return age;
+}
+
+// إضافة حقل تاريخ الميلاد
+if (document.querySelector('#userInfo .form-group:last-child')) {
+  const dobGroup = document.createElement('div');
+  dobGroup.className = 'form-group';
+  dobGroup.innerHTML = `
+    <label for="dob">${Lang.translations[Lang.current].dob_label}</label>
+    <input type="date" id="dob" required>
+  `;
+  userInfoEl.insertBefore(dobGroup, submitUserInfo);
+
+  // إضافة مكان لعرض العمر
+  const ageDisplay = document.createElement('div');
+  ageDisplay.className = 'form-group';
+  ageDisplay.innerHTML = `
+    <label>${Lang.translations[Lang.current].age_label}</label>
+    <p id="calculatedAge" style="margin: 8px 0; color: #fbbf24; font-weight: 600;">-</p>
+  `;
+  userInfoEl.insertBefore(ageDisplay, submitUserInfo);
+
+  // تحديث العمر عند تغيير تاريخ الميلاد
+  document.getElementById('dob').addEventListener('input', function () {
+    const dob = this.value;
+    if (dob) {
+      const age = calculateAge(dob);
+      document.getElementById('calculatedAge').textContent = `${age} سنة`;
+      userData.age = `${age}`; // حفظ العمر كرقم
+    } else {
+      document.getElementById('calculatedAge').textContent = '-';
+      userData.age = '';
+    }
+  });
+}
 
   submitUserInfo.addEventListener('click', () => {
     const age = document.getElementById('age').value;
