@@ -151,3 +151,4 @@ export function getLang() {
 export function setLang(newLang) {
   localStorage.setItem('lang', newLang);
 }
+
