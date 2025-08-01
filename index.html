@@ -8,6 +8,7 @@
 </head>
 <body>
   <!-- شاشة الشعار (Splash Screen) -->
+<!-- شاشة الشعار (Splash Screen) -->
 <div id="splashScreen" style="
   position: fixed;
   top: 0;
@@ -15,17 +16,21 @@
   width: 100%;
   height: 100%;
   background: #0f172a url('images/logo.png') no-repeat center center;
-  background-size: 80%;
+  background-size: contain;
+  background-position: center 30%;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   color: #fbbf24;
   font-family: 'Almarai', sans-serif;
-  font-size: 1rem;
-  padding-bottom: 30px;
+  font-size: 1.1rem;
+  padding-bottom: 50px;
+  margin: 0;
+  transition: opacity 0.6s ease;
 ">
   غرفة الأسرار
+</div>
     <!-- بيانات المستخدم -->
     <div id="userInfo" class="user-info">
       <h3>مرحبا بك في غرفة الاسرار</h3>
