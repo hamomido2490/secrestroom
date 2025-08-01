@@ -13,28 +13,22 @@ export function getZodiacSign(dob) {
   const date = new Date(dob);
   if (isNaN(date.getTime())) return "غير معروف";
 
-  export function getZodiacSign(dob) {
-  if (!dob) return "unknown";
-  const date = new Date(dob);
-  if (isNaN(date.getTime())) return "unknown";
-
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "aries";
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "taurus";
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "gemini";
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "cancer";
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "leo";
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "virgo";
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "libra";
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "scorpio";
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "sagittarius";
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "capricorn";
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "aquarius";
-  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "pisces";
-  return "unknown";
-}
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "الحمل";
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "الثور";
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "الجوزاء";
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "السرطان";
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "الأسد";
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "العذراء";
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "الميزان";
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "العقرب";
+  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "القوس";
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "الجدي";
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "الدلو";
+  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "الحوت";
+  return "غير معروف";
 }
 
 /**
