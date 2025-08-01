@@ -692,7 +692,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const fullAnalysis = generatePersonalityAnalysis(userAnswers, userData);
       analysisEl.textContent = fullAnalysis;
       quizEl.style.display = 'none';
+// === عرض نتيجة الأبراج في زر مميز ===
+const zodiacBtn = document.getElementById('zodiacBtn');
+const zodiacResult = document.getElementById('zodiacResult');
 
+if (zodiacBtn && userData.dob) {
+  const zodiacSign = getZodiacSign(userData.dob);
+  const prediction = getWeeklyPrediction(zodiacSign, Lang.current);
+
+  zodiacBtn.addEventListener('click', () => {
+    zodiacResult.innerHTML = `
+      <h4>🌟 برجك: ${zodiacSign}</h4>
+      <p><strong>تحليلك الفلكي:</strong> ${zodiacInsight}</p>
+      <p><strong>تنبؤاتك الأسبوعية:</strong> ${prediction}</p>
+      <p><em>الكون يتحدث إليك... استمع جيدًا.</em></p>
+    `;
+    zodiacResult.style.display = 'block';
+    zodiacBtn.disabled = true;
+    zodiacBtn.textContent = '✨ تم الكشف عن برجك';
+    zodiacBtn.style.opacity = '0.8';
+  });
+}
       // === تفعيل إعلان من شبكة مربحة (4 شبكات - توزيع ذكي) ===
       try {
         if (window.adNetworkLoaded) return;
