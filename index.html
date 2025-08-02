@@ -44,7 +44,7 @@
             transition: width 0.5s ease;
         }
         .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s ease-in-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -92,7 +92,6 @@
 </head>
 <body class="text-white">
     <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
-
     <script>
         // ===== TRANSLATIONS =====
         const translations = {
@@ -133,6 +132,11 @@
                 compatibility_title: "نسبة التوافق",
                 partner_traits: "صفات الشريك المثالي",
                 relationship_advice: "نصائح للعلاقة",
+                analysis_intro: "بعد تحليل إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:",
+                personality_section: "تحليل شخصيتك",
+                zodiac_section: "برجك الفلكي",
+                partner_section: "الشريك المثالي لك",
+                partner_analysis_title: "تحليل مفصل للشريك المثالي",
                 // Questions
                 q1: "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
                 o1_1: "أنا متحمس لأبدأ يومي!",
@@ -186,7 +190,12 @@
                 other: "Other",
                 compatibility_title: "Compatibility Score",
                 partner_traits: "Ideal Partner Traits",
-                relationship_advice: "Relationship Advice"
+                relationship_advice: "Relationship Advice",
+                analysis_intro: "Based on your answers, here's a detailed analysis of your personality:",
+                personality_section: "Your Personality",
+                zodiac_section: "Your Zodiac Sign",
+                partner_section: "Your Ideal Partner",
+                partner_analysis_title: "Detailed Partner Analysis"
             }
         };
 
@@ -509,92 +518,153 @@
             const scores = analyzePersonality(answers);
             const primaryTrait = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             const t = translations[state.lang];
-            let analysis = `<div class="glass-card rounded-xl p-6 mb-6">`;
-            analysis += `<h3 class="text-2xl font-bold gradient-text mb-4 text-center">تحليل شخصيتك الكامل</h3>`;
-            
+
             const personalityTypes = {
                 'D': {
                     name: 'القائد المهيمن (الأحمر)',
-                    description: 'شخصية قوية وحازمة، تحب التحدي واتخاذ القرارات السريعة. تتميز بالثقة العالية والقدرة على القيادة.',
-                    strengths: ['قيادة طبيعية', 'اتخاذ قرارات سريعة', 'تحمل المسؤولية', 'التركيز على النتائج'],
-                    challenges: ['قد تبدو متسلطة أحياناً', 'قلة الصبر', 'تجاهل مشاعر الآخرين أحياناً']
+                    description: `أنت شخصية قيادية بطبيعتك، تمتلك إرادة قوية وتحب التحكم في الأمور. لا تهاب التحديات، وتميل إلى اتخاذ القرارات بسرعة وثقة. أنت موجه نحو النتائج، وتحب أن ترى تقدماً ملموساً. قد تبدو أحياناً حازماً أكثر من اللازم، لكن دافعك هو إحداث تأثير حقيقي.`
                 },
                 'I': {
                     name: 'الشخصية المؤثرة (الأصفر)',
-                    description: 'شخصية اجتماعية محبوبة، تحب التفاعل مع الآخرين وتتميز بالحماس والطاقة الإيجابية.',
-                    strengths: ['تواصل ممتاز', 'حماس وطاقة', 'تحفيز الآخرين', 'نظرة إيجابية للحياة'],
-                    challenges: ['قد تكون غير منظمة أحياناً', 'تحتاج لموافقة الآخرين', 'صعوبة في التركيز لفترات طويلة']
+                    description: `أنت شخصية اجتماعية، محبوبة، ومحفزة. تمتلك طاقة إيجابية عالية، وتحب أن تكون محور الاهتمام. تُحدث تأثيراً من خلال كلماتك وحماسك، وتميل إلى بناء العلاقات بسهولة. قد تفتقر أحياناً للتنظيم، لكنك تُكمل ذلك بقدرتك على إلهام الآخرين وتحفيزهم.`
                 },
                 'S': {
                     name: 'الشخصية المستقرة (الأخضر)',
-                    description: 'شخصية هادئة وموثوقة، تحب الاستقرار والانسجام. تتميز بالصبر والإخلاص في العلاقات.',
-                    strengths: ['موثوقية عالية', 'صبر وتأني', 'دعم الآخرين', 'الحفاظ على العلاقات'],
-                    challenges: ['مقاومة للتغيير', 'صعوبة في قول "لا"', 'تجنب المواجهة']
+                    description: `أنت شخصية هادئة، موثوقة، وداعمة. تكره التوتر والصراع، وتحب الاستقرار والانسجام. أنت صبور، وفيّ، وتحافظ على العلاقات لفترة طويلة. قد تقاوم التغيير في البداية، لكنك تُحدث تأثيراً عميقاً من خلال ولائك وثباتك.`
                 },
                 'C': {
                     name: 'الشخصية الواعية (الأزرق)',
-                    description: 'شخصية تحليلية ودقيقة، تحب التفاصيل والجودة العالية. تتميز بالتفكير المنطقي والنظامي.',
-                    strengths: ['دقة عالية', 'تحليل عميق', 'جودة في العمل', 'تخطيط ممتاز'],
-                    challenges: ['مثالية مفرطة أحياناً', 'بطء في اتخاذ القرارات', 'انتقاد الذات']
+                    description: `أنت شخصية تحليلية، دقيقة، ومنطقية. تهتم بالتفاصيل، وتسعى لتحقيق الجودة في كل ما تفعل. تتخذ قراراتك بناءً على التفكير العميق، وتحب أن يكون كل شيء منظمًا. قد تبدو بارداً أحياناً، لكن دافعك هو السعي نحو الكمال والدقة.`
                 }
             };
+
             const mainType = personalityTypes[primaryTrait] || personalityTypes['D'];
-            analysis += `<div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-4 mb-4">`;
-            analysis += `<h4 class="text-xl font-bold text-yellow-400 mb-2">${mainType.name}</h4>`;
-            analysis += `<p class="text-gray-300 mb-3">${mainType.description}</p>`;
-            analysis += `</div>`;
-            analysis += `<div class="mb-4">`;
-            analysis += `<h5 class="text-lg font-semibold text-green-400 mb-2"><i class="fas fa-star mr-2"></i>نقاط القوة:</h5>`;
-            analysis += `<ul class="list-disc list-inside text-gray-300 space-y-1">`;
-            mainType.strengths.forEach(strength => {
-                analysis += `<li>${strength}</li>`;
-            });
-            analysis += `</ul></div>`;
-            analysis += `<div class="mb-4">`;
-            analysis += `<h5 class="text-lg font-semibold text-orange-400 mb-2"><i class="fas fa-arrow-up mr-2"></i>مجالات التطوير:</h5>`;
-            analysis += `<ul class="list-disc list-inside text-gray-300 space-y-1">`;
-            mainType.challenges.forEach(challenge => {
-                analysis += `<li>${challenge}</li>`;
-            });
-            analysis += `</ul></div>`;
-            analysis += `</div>`;
-            return analysis;
+
+            let html = `
+                <div class="glass-card rounded-xl p-6 mb-6">
+                    <h3 class="text-2xl font-bold gradient-text mb-4">تحليل شخصيتك</h3>
+                    <p class="text-gray-300 mb-4">بناءً على إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:</p>
+                    <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-4 mb-4">
+                        <h4 class="text-xl font-bold text-yellow-400 mb-2">${mainType.name}</h4>
+                        <p class="text-gray-300 leading-relaxed">${mainType.description}</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-semibold text-green-400 mb-2">نقاط قوتك:</h5>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                ${getStrengths(primaryTrait).map(s => `<li>${s}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold text-orange-400 mb-2">مجالات النمو:</h5>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                ${getGrowthAreas(primaryTrait).map(g => `<li>${g}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return { html, primaryTrait };
         }
 
-        function generatePartnerAnalysis(userScores, userZodiac) {
+        function getStrengths(trait) {
+            const strengths = {
+                'D': [
+                    'اتخاذ قرارات سريعة وحاسمة',
+                    'القدرة على قيادة الفرق بنجاح',
+                    'التركيز على النتائج والإنجازات',
+                    'الثقة بالنفس والجرأة في المواقف الصعبة'
+                ],
+                'I': [
+                    'ممتاز في التواصل والتأثير',
+                    'يُشعر الآخرين بالتحفيز والتقدير',
+                    'مرونة عالية في التعامل مع التغيير',
+                    'يُبقي الفريق في معنويات عالية'
+                ],
+                'S': [
+                    'الاستماع الجيد وفهم مشاعر الآخرين',
+                    'الوفاء والالتزام بالعلاقات',
+                    'القدرة على تهدئة المواقف المتوترة',
+                    'العمل الجماعي والانسجام مع الفريق'
+                ],
+                'C': [
+                    'الدقة والانتباه للتفاصيل',
+                    'التفكير المنطقي والتحليل العميق',
+                    'الالتزام بالجودة والمواعيد',
+                    'التنظيم الممتاز ووضع الخطط'
+                ]
+            };
+            return strengths[trait] || strengths['D'];
+        }
+
+        function getGrowthAreas(trait) {
+            const growth = {
+                'D': [
+                    'الاستماع أكثر لمشاعر الفريق',
+                    'منح الآخرين مساحة لاتخاذ القرارات',
+                    'التعامل بلطف مع من يختلفون معك',
+                    'الاعتراف بالمشاعر بدل تجاهلها'
+                ],
+                'I': [
+                    'التركيز على المهام بدلاً من الحديث عنها فقط',
+                    'اتباع خطة منظمة للإنجاز',
+                    'التعامل مع الانتقادات بعقلانية',
+                    'العمل على تطوير الصبر والمثابرة'
+                ],
+                'S': [
+                    'التحدث عن احتياجاتك بوضوح',
+                    'اتخاذ موقف حاسم عند الضرورة',
+                    'الانفتاح على التغيير والجديد',
+                    'الاعتناء بنفسك أولاً قبل الآخرين'
+                ],
+                'C': [
+                    'التحدث عن المشاعر بحرية',
+                    'اتخاذ قرارات أسرع دون تردد مفرط',
+                    'التعامل مع الأخطاء كفرص للتعلم',
+                    'الثقة بالآخرين في إنجاز المهام'
+                ]
+            };
+            return growth[trait] || growth['D'];
+        }
+
+        function generatePartnerAnalysis(userScores, userZodiac, userData) {
             const t = translations[state.lang];
             const userPrimaryTrait = Object.keys(userScores).reduce((a, b) => userScores[a] > userScores[b] ? a : b);
+
             const partnerTraits = {
                 'D': {
                     idealPartner: 'I',
                     name: 'الشخصية المؤثرة (الأصفر)',
-                    description: 'يحتاج القائد إلى شريك يوازن قوته بالدفء والتفاعل الاجتماعي',
+                    description: 'يحتاج القائد إلى شريك يوازن قوته بالدفء والتفاعل الاجتماعي، ويُكمل طاقته بالحماس والمرح.',
                     traits: ['مرح ومتفاعل', 'يقدر الإنجازات', 'مرن في التعامل', 'يشارك في الأهداف'],
                     advice: ['امنح شريكك مساحة للتعبير', 'تعلم الاستماع أكثر', 'اهتم بالجانب العاطفي']
                 },
                 'I': {
                     idealPartner: 'S',
                     name: 'الشخصية المستقرة (الأخضر)',
-                    description: 'تحتاج الشخصية المؤثرة إلى شريك يوفر الاستقرار والأمان العاطفي',
+                    description: 'تحتاج الشخصية المؤثرة إلى شريك يوفر الاستقرار والأمان العاطفي، ويُكمل حماسك بالهدوء والولاء.',
                     traits: ['صبور ومتفهم', 'يقدر التفاعل الاجتماعي', 'مخلص وموثوق', 'يوفر الاستقرار'],
                     advice: ['قدر حاجة شريكك للهدوء', 'لا تضغط عليه للتغيير السريع', 'أظهر التقدير المستمر']
                 },
                 'S': {
                     idealPartner: 'I',
                     name: 'الشخصية المؤثرة (الأصفر)',
-                    description: 'تحتاج الشخصية المستقرة إلى شريك يجلب الحيوية والطاقة للحياة',
+                    description: 'تحتاج الشخصية المستقرة إلى شريك يجلب الحيوية والطاقة للحياة، ويُكمل استقرارك بالحماس والتفاعل.',
                     traits: ['نشيط ومحفز', 'يجلب المرح', 'اجتماعي ومقبول', 'متفائل ومشجع'],
                     advice: ['كن صبوراً مع حاجة شريكك للوقت', 'شاركه في الأنشطة الاجتماعية', 'أظهر التقدير باستمرار']
                 },
                 'C': {
                     idealPartner: 'D',
-                    name: 'الشخصية القيادية (الأحمر)',
-                    description: 'تحتاج الشخصية الواعية إلى شريك يقدر دقتها ويوفر الدعم في اتخاذ القرارات',
+                    name: 'القائد (الأحمر)',
+                    description: 'تحتاج الشخصية الواعية إلى شريك يقدر دقتها ويوفر الدعم في اتخاذ القرارات، ويُكمل تحليلك بالجرأة والقيادة.',
                     traits: ['حاسم وواثق', 'يقدر الجودة', 'يتخذ قرارات سريعة', 'يوفر الحماية'],
                     advice: ['احترم حاجة شريكك للوقت في التفكير', 'قدر اهتمامه بالتفاصيل', 'كن واضحاً في التواصل']
                 }
             };
+
             const partnerInfo = partnerTraits[userPrimaryTrait] || partnerTraits['D'];
+
             const zodiacCompatibility = {
                 'الحمل': ['الأسد', 'القوس', 'الجوزاء', 'الدلو'],
                 'الثور': ['العذراء', 'الجدي', 'السرطان', 'الحوت'],
@@ -609,12 +679,13 @@
                 'الدلو': ['الجوزاء', 'الميزان', 'القوس', 'الحمل'],
                 'الحوت': ['السرطان', 'العقرب', 'الجدي', 'الثور']
             };
+
             const compatibleSigns = zodiacCompatibility[userZodiac] || [];
             const primaryCompatibleSign = compatibleSigns[0] || 'الحمل';
-            const personalityCompatibility = compatibilityMatrix[userPrimaryTrait] ? 
-                compatibilityMatrix[userPrimaryTrait][partnerInfo.idealPartner] || 80 : 80;
+            const personalityCompatibility = compatibilityMatrix[userPrimaryTrait]?.[partnerInfo.idealPartner] || 80;
             const zodiacCompatibilityScore = 85;
             const overallScore = Math.round((personalityCompatibility + zodiacCompatibilityScore) / 2);
+
             return {
                 partnerPersonality: partnerInfo,
                 compatibleZodiacSigns: compatibleSigns,
@@ -625,7 +696,101 @@
             };
         }
 
+        // ===== RENDER RESULT =====
+        function renderResult() {
+            const t = translations[state.lang];
+            const { html: personalityHtml, primaryTrait } = generatePersonalityAnalysis(state.userAnswers, state.userData);
+            const zodiacSign = getZodiacSign(state.userData.dob);
+            const partnerAnalysis = generatePartnerAnalysis(state.personalityScore, zodiacSign, state.userData);
+
+            return `
+                <div class="animate-fade-in space-y-8">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold gradient-text mb-2">${t.welcome_title}</h2>
+                        <p class="text-gray-300">تحليل شامل لشخصيتك وشريك حياتك المثالي</p>
+                    </div>
+
+                    ${personalityHtml}
+
+                    <div class="glass-card rounded-xl p-6 mb-6">
+                        <h3 class="text-2xl font-bold gradient-text mb-4">${t.partner_analysis_title}</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-xl font-bold text-pink-400 mb-3">نوع شخصية الشريك المثالي:</h4>
+                                <p class="text-gray-300 mb-4">${partnerAnalysis.partnerPersonality.name}</p>
+                                <p class="text-gray-300 mb-4">${partnerAnalysis.partnerPersonality.description}</p>
+                                <h5 class="font-semibold text-green-400 mb-2">صفاته المثالية:</h5>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    ${partnerAnalysis.partnerPersonality.traits.map(trait => `<li>${trait}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-blue-400 mb-3">التوافق الفلكي مع برجك:</h4>
+                                <p class="text-gray-300 mb-2"><strong>برجك:</strong> ${zodiacSign}</p>
+                                <p class="text-gray-300 mb-2"><strong>البرج الأكثر توافقًا:</strong> ${partnerAnalysis.primaryZodiacMatch}</p>
+                                <p class="text-gray-300 mb-4">الأبراج المتوافقة: ${partnerAnalysis.compatibleZodiacSigns.slice(0, 4).join('، ')}</p>
+                                <div class="text-center mb-4">
+                                    <div class="compatibility-score">${partnerAnalysis.compatibilityScore}%</div>
+                                    <p class="text-sm text-gray-400">نسبة التوافق الكلية</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h5 class="font-semibold text-blue-400 mb-2">نصائح للعلاقة:</h5>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                ${partnerAnalysis.partnerPersonality.advice.map(advice => `<li>${advice}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <button id="restartBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                            <i class="fas fa-redo mr-2"></i>${t.restart_btn}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         // ===== RENDER FUNCTIONS =====
+        function render() {
+            const t = translations[state.lang];
+            document.documentElement.lang = state.lang;
+            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+            let html = `
+                <div class="fixed top-4 right-4 z-50">
+                    <button id="langToggle" class="bg-yellow-400 text-slate-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors">
+                        ${state.lang === 'ar' ? 'EN' : 'AR'}
+                    </button>
+                </div>
+            `;
+
+            switch (state.page) {
+                case 'userInfo':
+                    html += renderUserInfo();
+                    break;
+                case 'intro':
+                    html += renderIntro();
+                    break;
+                case 'quiz':
+                    html += renderQuiz();
+                    break;
+                case 'result':
+                    html += renderResult();
+                    break;
+            }
+
+            html += `
+                <footer class="mt-16 text-center text-gray-400 space-y-2">
+                    <p class="font-semibold">جميع الحقوق محفوظة © ${new Date().getFullYear()} | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong></p>
+                    <p>${t.footer2}</p>
+                </footer>
+            `;
+
+            document.getElementById('app').innerHTML = html;
+            setupEventListeners();
+        }
+
         function renderUserInfo() {
             const t = translations[state.lang];
             return `
@@ -734,126 +899,7 @@
             `;
         }
 
-        function renderResult() {
-            const t = translations[state.lang];
-            const analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
-            const zodiacSign = getZodiacSign(state.userData.dob);
-            const partnerAnalysis = generatePartnerAnalysis(state.personalityScore, zodiacSign);
-            return `
-                <div class="animate-fade-in space-y-6">
-                    <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold gradient-text mb-2">${t.welcome_title}</h2>
-                        <p class="text-gray-300">إليك تحليلك الشخصي الكامل</p>
-                    </div>
-                    ${analysis}
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="zodiac-card rounded-xl p-6">
-                            <h4 class="text-xl font-bold text-blue-400 mb-4">
-                                <i class="fas fa-star mr-2"></i>برجك: ${zodiacSign}
-                            </h4>
-                            ${zodiacSigns.ar[zodiacSign] ? `
-                                <div class="space-y-2">
-                                    <p><span class="font-semibold">العنصر:</span> ${zodiacSigns.ar[zodiacSign].element}</p>
-                                    <p><span class="font-semibold">الصفات:</span></p>
-                                    <div class="flex flex-wrap gap-2">
-                                        ${zodiacSigns.ar[zodiacSign].traits.map(trait => 
-                                            `<span class="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-sm">${trait}</span>`
-                                        ).join('')}
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="partner-card rounded-xl p-6">
-                            <h4 class="text-xl font-bold text-pink-400 mb-4">
-                                <i class="fas fa-heart mr-2"></i>رفيق دربك المثالي
-                            </h4>
-                            <div class="text-center mb-4">
-                                <div class="compatibility-score">${partnerAnalysis.compatibilityScore}%</div>
-                                <p class="text-sm text-gray-400">نسبة التوافق</p>
-                            </div>
-                            <p class="text-sm text-gray-300 mb-2">
-                                <span class="font-semibold">نوع الشخصية:</span> ${partnerAnalysis.partnerPersonality.name}
-                            </p>
-                            <p class="text-sm text-gray-300">
-                                <span class="font-semibold">الأبراج المتوافقة:</span> 
-                                ${partnerAnalysis.compatibleZodiacSigns.slice(0, 2).join('، ')}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="glass-card rounded-xl p-6">
-                        <h4 class="text-xl font-bold text-pink-400 mb-4">
-                            <i class="fas fa-users mr-2"></i>دليل الشريك المثالي
-                        </h4>
-                        <p class="text-gray-300 mb-4">${partnerAnalysis.partnerPersonality.description}</p>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <h5 class="font-semibold text-green-400 mb-2">صفات الشريك المثالي:</h5>
-                                <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                    ${partnerAnalysis.partnerPersonality.traits.map(trait => 
-                                        `<li>${trait}</li>`
-                                    ).join('')}
-                                </ul>
-                            </div>
-                            <div>
-                                <h5 class="font-semibold text-blue-400 mb-2">نصائح للعلاقة:</h5>
-                                <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                    ${partnerAnalysis.partnerPersonality.advice.map(advice => 
-                                        `<li>${advice}</li>`
-                                    ).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-4 justify-center">
-                        <button id="shareBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-share mr-2"></i>${t.share_btn}
-                        </button>
-                        <button id="copyBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-copy mr-2"></i>${t.copy_btn}
-                        </button>
-                        <button id="restartBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-redo mr-2"></i>${t.restart_btn}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function render() {
-            const t = translations[state.lang];
-            document.documentElement.lang = state.lang;
-            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
-            let html = `
-                <div class="fixed top-4 right-4 z-50">
-                    <button id="langToggle" class="bg-yellow-400 text-slate-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors">
-                        ${state.lang === 'ar' ? 'EN' : 'AR'}
-                    </button>
-                </div>
-            `;
-            switch (state.page) {
-                case 'userInfo':
-                    html += renderUserInfo();
-                    break;
-                case 'intro':
-                    html += renderIntro();
-                    break;
-                case 'quiz':
-                    html += renderQuiz();
-                    break;
-                case 'result':
-                    html += renderResult();
-                    break;
-            }
-            html += `
-                <footer class="mt-16 text-center text-gray-400 space-y-2">
-                    <p class="font-semibold">جميع الحقوق محفوظة © ${new Date().getFullYear()} | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong></p>
-                    <p>${t.footer2}</p>
-                </footer>
-            `;
-            document.getElementById('app').innerHTML = html;
-            setupEventListeners();
-        }
-
+        // ===== EVENT LISTENERS =====
         function setupEventListeners() {
             document.addEventListener('click', handleClick);
             const dobInput = document.getElementById('dob');
@@ -935,28 +981,9 @@
                 };
                 render();
             }
-            if (e.target.id === 'shareBtn' || e.target.id === 'copyBtn') {
-                const analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
-                const textContent = analysis.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-                const shareText = `${textContent}
-اكتشف شخصيتك في: ${window.location.href}`;
-                if (e.target.id === 'shareBtn' && navigator.share) {
-                    navigator.share({
-                        title: t.welcome_title,
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(() => {
-                        copyToClipboard(shareText);
-                        showToast('تم نسخ النتيجة!');
-                    });
-                } else {
-                    copyToClipboard(shareText);
-                    showToast(state.lang === 'ar' ? 'تم نسخ النتيجة!' : 'Result copied!');
-                }
-            }
         }
 
-        // ✅ التصحيح: استدعاء render() بعد تحميل الصفحة
+        // ===== INIT =====
         document.addEventListener('DOMContentLoaded', () => {
             render();
         });
