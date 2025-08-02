@@ -4,52 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>غرفة الأسرار | Chamber of Secrets</title>
-    <meta name="description" content="اكتشف شخصيتك الحقيقية ورفيق دربك المثالي">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2KfZhNiz2LnZhSDYp9mE2YXYs9mFISIsInNob3J0X25hbWUiOiLZhtmC2LPYudmFICIsInN0YXJ0X3VybCI6Ii4vaW5kZXguaHRtbCIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZjE3MmEiLCJ0aGVtZV9jb2xvciI6IiNmYmJmMjQifQ==">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Inline minimal Tailwind-like styles for offline speed */
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            color: #fff;
-        }
-        .container {
-            width: 100%;
-            max-width: 1024px;
-            margin: 0 auto;
-            padding: 1rem;
         }
         .gradient-text {
             background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: bold;
         }
         .glass-card {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
         }
         .option-btn {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            margin: 0.5rem 0;
+            transition: all 0.3s ease;
             background: rgba(30, 41, 59, 0.6);
             border: 2px solid rgba(59, 130, 246, 0.3);
-            border-radius: 0.75rem;
-            color: #fff;
-            text-align: right;
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
         .option-btn:hover {
             background: rgba(59, 130, 246, 0.2);
@@ -62,8 +40,6 @@
             color: #fbbf24;
         }
         .progress-bar {
-            height: 12px;
-            border-radius: 9999px;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #fbbf24);
             transition: width 0.5s ease;
         }
@@ -92,56 +68,30 @@
         @keyframes toastSlide {
             to { opacity: 1; }
         }
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            margin: 0.25rem;
-            border: none;
-            border-radius: 0.5rem;
+        .zodiac-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .partner-card {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(251, 191, 36, 0.1));
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+        .compatibility-score {
+            font-size: 2.5rem;
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: linear-gradient(45deg, #ec4899, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .btn-yellow {
-            background: linear-gradient(45deg, #fbbf24, #f59e0b);
-            color: #1e293b;
-        }
-        .btn-blue {
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-            color: white;
-        }
-        .btn-green {
-            background: linear-gradient(45deg, #10b981, #059669);
-            color: white;
-        }
-        .btn-purple {
-            background: linear-gradient(45deg, #a855f7, #8b5cf6);
-            color: white;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-        }
-        footer {
-            margin-top: 4rem;
-            text-align: center;
-            color: #94a3b8;
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-        @font-face {
-            font-family: 'Cairo';
-            src: url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap') format('woff2');
-            font-display: swap;
-        }
-        @media (max-width: 640px) {
-            .container { padding: 0.5rem; }
-            .glass-card { padding: 1rem; }
+        @media print {
+            body { background: white !important; color: black !important; }
+            .glass-card { background: white !important; border: 1px solid #ccc !important; }
         }
     </style>
 </head>
-<body>
-    <div id="app" class="container"></div>
-
+<body class="text-white">
+    <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
     <script>
         // ===== TRANSLATIONS =====
         const translations = {
@@ -736,7 +686,7 @@
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
                     showToast(state.lang === 'ar' ? 'تم نسخ النتيجة!' : 'Result copied!');
-                }).catch(err => {
+                }).catch(() => {
                     fallbackCopy(text);
                 });
             } else {
@@ -781,18 +731,22 @@
             const personalityTypes = {
                 'D': {
                     name: 'القائد المهيمن (الأحمر)',
+                    color: 'red',
                     description: `أنت شخصية قيادية بطبيعتك، تمتلك إرادة قوية وتحب التحكم في الأمور. لا تهاب التحديات، وتميل إلى اتخاذ القرارات بسرعة وثقة. أنت موجه نحو النتائج، وتحب أن ترى تقدماً ملموساً. قد تبدو أحياناً حازماً أكثر من اللازم، لكن دافعك هو إحداث تأثير حقيقي.`
                 },
                 'I': {
                     name: 'الشخصية المؤثرة (الأصفر)',
+                    color: 'yellow',
                     description: `أنت شخصية اجتماعية، محبوبة، ومحفزة. تمتلك طاقة إيجابية عالية، وتحب أن تكون محور الاهتمام. تُحدث تأثيراً من خلال كلماتك وحماسك، وتميل إلى بناء العلاقات بسهولة. قد تفتقر أحياناً للتنظيم، لكنك تُكمل ذلك بقدرتك على إلهام الآخرين وتحفيزهم.`
                 },
                 'S': {
                     name: 'الشخصية المستقرة (الأخضر)',
+                    color: 'green',
                     description: `أنت شخصية هادئة، موثوقة، وداعمة. تكره التوتر والصراع، وتحب الاستقرار والانسجام. أنت صبور، وفيّ، وتحافظ على العلاقات لفترة طويلة. قد تقاوم التغيير في البداية، لكنك تُحدث تأثيراً عميقاً من خلال ولائك وثباتك.`
                 },
                 'C': {
                     name: 'الشخصية الواعية (الأزرق)',
+                    color: 'blue',
                     description: `أنت شخصية تحليلية، دقيقة، ومنطقية. تهتم بالتفاصيل، وتسعى لتحقيق الجودة في كل ما تفعل. تتخذ قراراتك بناءً على التفكير العميق، وتحب أن يكون كل شيء منظمًا. قد تبدو بارداً أحياناً، لكن دافعك هو السعي نحو الكمال والدقة.`
                 }
             };
@@ -800,10 +754,13 @@
             const mainType = personalityTypes[primaryTrait] || personalityTypes['D'];
 
             let html = `
-                <div class="glass-card">
+                <div class="glass-card rounded-xl p-6 mb-6">
                     <h3 class="text-2xl font-bold gradient-text mb-4">تحليل شخصيتك</h3>
                     <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-4 mb-4">
-                        <h4 class="text-xl font-bold text-yellow-400 mb-2">${mainType.name}</h4>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-4 h-4 rounded-full color-${mainType.color}"></div>
+                            <h4 class="text-xl font-bold text-${mainType.color}-400">${mainType.name}</h4>
+                        </div>
                         <p class="text-gray-300 leading-relaxed">${mainType.description}</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-6">
@@ -919,7 +876,7 @@
                 }
             };
 
-            const partnerInfo = partnerTraits[userPrimaryTrait] || partnerTraits['D'];
+            const partnerInfo = partnerTraits[userPrimaryTrait] || partnerTraits['C'];
 
             const zodiacCompatibility = {
                 'الحمل': ['الأسد', 'القوس', 'الجوزاء', 'الدلو'],
@@ -970,7 +927,7 @@
                             </div>
                         </div>
                         <div class="lg:w-2/3">
-                            <div class="glass-card">
+                            <div class="glass-card rounded-xl p-6">
                                 <h3 class="text-2xl font-bold mb-4">${t.user_info_title}</h3>
                                 <p class="text-gray-300 mb-6">${t.user_info_desc}</p>
                                 <div class="space-y-4">
@@ -988,7 +945,7 @@
                                         <input type="date" id="dob" value="${state.userData.dob || ''}" 
                                                class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:border-yellow-400 focus:outline-none">
                                     </div>
-                                    <button id="submitUserInfo" class="btn btn-yellow w-full">
+                                    <button id="submitUserInfo" class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all transform hover:scale-105">
                                         ${t.submit_user_info}
                                     </button>
                                 </div>
@@ -1012,7 +969,7 @@
                             <p>${t.intro_p1}</p>
                             <p>${t.intro_p2}</p>
                         </div>
-                        <button id="startBtn" class="btn btn-blue text-xl">
+                        <button id="startBtn" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg text-xl hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105">
                             <i class="fas fa-rocket mr-2"></i>${t.start_btn}
                         </button>
                     </div>
@@ -1033,14 +990,14 @@
                             <span class="text-sm font-semibold">${state.currentQ + 1} / ${questionsData.length}</span>
                         </div>
                         <div class="w-full bg-slate-700 rounded-full h-3">
-                            <div class="progress-bar" style="width: ${progress}%"></div>
+                            <div class="progress-bar h-3 rounded-full" style="width: ${progress}%"></div>
                         </div>
                     </div>
-                    <div class="glass-card">
+                    <div class="glass-card rounded-xl p-6 mb-6">
                         <h3 class="text-2xl font-bold mb-6 text-center">${state.currentQ + 1}. ${q.text}</h3>
                         <div class="space-y-3">
                             ${q.options.map((opt, idx) => `
-                                <button class="option-btn ${
+                                <button class="option-btn w-full p-4 rounded-lg text-right transition-all ${
                                     state.userAnswers[state.currentQ] === idx ? 'selected' : ''
                                 }" data-opt="${idx}">
                                     <div class="flex items-center justify-between">
@@ -1050,7 +1007,7 @@
                                 </button>
                             `).join('')}
                         </div>
-                        <button id="nextBtn" class="btn btn-blue w-full mt-6">
+                        <button id="nextBtn" class="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all">
                             ${state.currentQ === questionsData.length - 1 ? 'عرض النتائج' : t.next_btn}
                             <i class="fas fa-arrow-left mr-2"></i>
                         </button>
@@ -1074,7 +1031,7 @@
 
                     ${personalityHtml}
 
-                    <div class="glass-card">
+                    <div class="glass-card rounded-xl p-6">
                         <h3 class="text-2xl font-bold gradient-text mb-4">${t.partner_analysis_title}</h3>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
@@ -1106,13 +1063,13 @@
                     </div>
 
                     <div class="flex flex-wrap gap-4 justify-center">
-                        <button id="shareBtn" class="btn btn-green">
+                        <button id="shareBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
                             <i class="fas fa-share mr-2"></i>${t.share_btn}
                         </button>
-                        <button id="copyBtn" class="btn btn-blue">
+                        <button id="copyBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
                             <i class="fas fa-copy mr-2"></i>${t.copy_btn}
                         </button>
-                        <button id="restartBtn" class="btn btn-purple">
+                        <button id="restartBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
                             <i class="fas fa-redo mr-2"></i>${t.restart_btn}
                         </button>
                     </div>
@@ -1120,6 +1077,7 @@
             `;
         }
 
+        // ===== RENDER =====
         function render() {
             const t = translations[state.lang];
             document.documentElement.lang = state.lang;
@@ -1127,7 +1085,7 @@
 
             let html = `
                 <div class="fixed top-4 right-4 z-50">
-                    <button id="langToggle" class="btn btn-yellow text-sm py-1 px-3">
+                    <button id="langToggle" class="bg-yellow-400 text-slate-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors">
                         ${state.lang === 'ar' ? 'EN' : 'AR'}
                     </button>
                 </div>
@@ -1159,6 +1117,7 @@
             setupEventListeners();
         }
 
+        // ===== EVENT LISTENERS =====
         function setupEventListeners() {
             document.addEventListener('click', handleClick);
             const dobInput = document.getElementById('dob');
@@ -1264,38 +1223,10 @@
             }
         }
 
-        // ===== SERVICE WORKER (Offline Support) =====
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {
-                // Fallback if sw.js not available
-            });
-        }
-
         // ===== INIT =====
         document.addEventListener('DOMContentLoaded', () => {
             render();
         });
-    </script>
-
-    <!-- Inline Service Worker -->
-    <script id="sw">
-        self.addEventListener('install', (e) => {
-            e.waitUntil(caches.open('chamber-of-secrets').then(cache => {
-                return cache.addAll(['./']);
-            }));
-        });
-        self.addEventListener('fetch', (e) => {
-            e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-        });
-    </script>
-    <script>
-        // Inject service worker inline
-        const swScript = document.getElementById('sw').textContent;
-        const blob = new Blob([swScript], { type: 'application/javascript' });
-        const swURL = URL.createObjectURL(blob);
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(swURL).catch(() => {});
-        }
     </script>
 </body>
 </html>
