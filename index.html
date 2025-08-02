@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100% );
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             min-height: 100vh;
         }
         .gradient-text {
@@ -111,7 +111,6 @@
                 start_btn: "ابدأ الرحلة",
                 progress: "التقدم:",
                 next_btn: "التالي",
-                final_results_btn: "عرض النتائج",
                 restart_btn: "ابدأ من جديد",
                 share_btn: "مشاركة النتيجة",
                 copy_btn: "نسخ النتيجة",
@@ -134,12 +133,6 @@
                 compatibility_title: "نسبة التوافق",
                 partner_traits: "صفات الشريك المثالي",
                 relationship_advice: "نصائح للعلاقة",
-                analysis_intro: "بعد تحليل إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:",
-                personality_section: "تحليل شخصيتك",
-                zodiac_section: "برجك الفلكي",
-                partner_section: "الشريك المثالي لك",
-                partner_analysis_title: "تحليل مفصل للشريك المثالي",
-                // Questions
                 q1: "عندما تستيقظ في الصباح، ما أول شيء يخطر ببالك؟",
                 o1_1: "أنا متحمس لأبدأ يومي!",
                 o1_2: "هل كل شيء تحت السيطرة؟",
@@ -238,7 +231,7 @@
                 q20: "ما هو أسلوبك في حل المشاكل؟",
                 o20_1: "أتخذ قرارات سريعة وأتحمل المسؤولية",
                 o20_2: "أبحث عن آراء الآخرين وأبني حلول جماعية",
-                o20_3: "أتأنى وأفكر في تأثير الحل على الجميع",
+                o20_3: "أتأني وأفكر في تأثير الحل على الجميع",
                 o20_4: "أبحث وأحلل حتى أجد الحل الأمثل"
             },
             en: {
@@ -257,7 +250,6 @@
                 start_btn: "Start Journey",
                 progress: "Progress:",
                 next_btn: "Next",
-                final_results_btn: "Show Results",
                 restart_btn: "Start Over",
                 share_btn: "Share Result",
                 copy_btn: "Copy Result",
@@ -280,191 +272,248 @@
                 compatibility_title: "Compatibility Score",
                 partner_traits: "Ideal Partner Traits",
                 relationship_advice: "Relationship Advice",
-                analysis_intro: "Based on your answers, here's a detailed analysis of your personality:",
-                personality_section: "Your Personality",
-                zodiac_section: "Your Zodiac Sign",
-                partner_section: "Your Ideal Partner",
-                partner_analysis_title: "Detailed Partner Analysis",
-                // English Questions
-                q1: "When you wake up in the morning, what's the first thing on your mind?",
+                q1: "When you wake up in the morning, what's the first thing that comes to mind?",
                 o1_1: "I'm excited to start my day!",
                 o1_2: "Is everything under control?",
                 o1_3: "Will I be enough today?",
-                o1_4: "I want to understand the meaning of this day.",
+                o1_4: "I want to understand the meaning of this day",
                 q2: "In a new social gathering, what do you do?",
-                o2_1: "I quickly start talking to everyone.",
-                o2_2: "I observe first, then talk to one person.",
-                o2_3: "I focus on who can benefit me or whom I can benefit.",
-                o2_4: "I try to quickly understand others' feelings.",
-                q3: "What kind of task makes you 'lose yourself'?",
-                o3_1: "Fast-paced, time-bound challenges.",
-                o3_2: "Deep analysis of data or systems.",
-                o3_3: "Helping someone through a crisis.",
-                o3_4: "Organizing a team to achieve a structured goal.",
+                o2_1: "I start talking to everyone quickly",
+                o2_2: "I observe first, then talk to one person",
+                o2_3: "I focus on who can benefit me or I can benefit from",
+                o2_4: "I try to understand others' feelings quickly",
+                q3: "What type of task makes you 'forget yourself'?",
+                o3_1: "Fast-paced, time-bound challenges",
+                o3_2: "Deep analysis of data or systems",
+                o3_3: "Helping someone overcome a crisis",
+                o3_4: "Organizing a team to achieve an organized goal",
                 q4: "What do you look for most in friendships?",
-                o4_1: "Fun and energy.",
-                o4_2: "Loyalty and stability.",
-                o4_3: "Depth and meaning.",
-                o4_4: "Intellectual challenge.",
-                q5: "How do you handle mistakes?",
-                o5_1: "I learn and move on quickly.",
-                o5_2: "I analyze what happened in detail.",
-                o5_3: "I feel guilty, but I forgive myself.",
-                o5_4: "I wonder: does this prove I'm not good enough?",
+                o4_1: "Fun and energy",
+                o4_2: "Loyalty and stability",
+                o4_3: "Depth and meaning",
+                o4_4: "Intellectual challenge",
+                q5: "How do you deal with mistakes?",
+                o5_1: "I learn and move quickly",
+                o5_2: "I analyze what happened in detail",
+                o5_3: "I feel guilty, but I forgive myself",
+                o5_4: "I wonder: does this prove I'm not enough?",
                 q6: "What makes you feel proud?",
-                o6_1: "Achieving tangible results.",
-                o6_2: "Supporting someone in a crisis.",
-                o6_3: "Innovating a new idea.",
-                o6_4: "Sticking to duties and responsibilities.",
+                o6_1: "Achieving tangible results",
+                o6_2: "Supporting someone in a crisis",
+                o6_3: "Creating a new idea",
+                o6_4: "Fulfilling duties and responsibilities",
                 q7: "What do you look for in an important decision?",
-                o7_1: "Speed and results.",
-                o7_2: "Inspiration and first impression.",
-                o7_3: "Team stability and relationships.",
-                o7_4: "Deep analysis and logic.",
-                q8: "What do you do when you feel stressed?",
-                o8_1: "I confront the situation directly.",
-                o8_2: "I seek support from others.",
-                o8_3: "I step back temporarily to rethink.",
-                o8_4: "I analyze the problem from all angles.",
-                q9: "What kind of books or content do you prefer?",
-                o9_1: "Success stories, leadership, influence.",
-                o9_2: "Novels, philosophy, existential thoughts.",
-                o9_3: "Jokes, funny videos, entertainment.",
-                o9_4: "Practical guides, how-tos, techniques.",
+                o7_1: "Speed and results",
+                o7_2: "Inspiration and first impression",
+                o7_3: "Team stability and relationships",
+                o7_4: "Deep analysis and logic",
+                q8: "What do you do when you feel under pressure?",
+                o8_1: "I confront the situation directly",
+                o8_2: "I seek support from others",
+                o8_3: "I step back temporarily to rethink",
+                o8_4: "I analyze the problem from all angles",
+                q9: "What type of books or content do you prefer?",
+                o9_1: "Success stories, leadership, impact",
+                o9_2: "Novels, philosophy, existential reflections",
+                o9_3: "Jokes, funny videos, entertainment",
+                o9_4: "Practical guides, steps, techniques",
                 q10: "What gives you a sense of meaning?",
-                o10_1: "Achieving great accomplishments.",
-                o10_2: "Serving others.",
-                o10_3: "Understanding the universe or a cosmic system.",
-                o10_4: "Stability and belonging.",
+                o10_1: "Achieving great accomplishments",
+                o10_2: "Serving others",
+                o10_3: "Understanding the universe or cosmic system",
+                o10_4: "Stability and belonging",
                 q11: "How often do you change your mind based on new information?",
-                o11_1: "Rarely, I'm confident in my decisions.",
-                o11_2: "Sometimes, if the argument is strong.",
-                o11_3: "Often, because I love to learn.",
-                o11_4: "Always, because I hate being rigid.",
+                o11_1: "Rarely, I'm confident in my decisions",
+                o11_2: "Sometimes, if the argument is strong",
+                o11_3: "Often, because I love learning",
+                o11_4: "Always, because I hate rigidity",
                 q12: "What makes you feel comfortable?",
-                o12_1: "Achieving a goal.",
-                o12_2: "Laughter and interaction.",
-                o12_3: "Calm and stability.",
-                o12_4: "Order and complete understanding.",
-                q13: "What is your motto in life?",
-                o13_1: "The result is more important than the method.",
-                o13_2: "Life is for fun and experience.",
-                o13_3: "Relationships are built with patience and loyalty.",
-                o13_4: "Understanding precedes everything.",
+                o12_1: "Achieving the goal",
+                o12_2: "Laughing and interacting",
+                o12_3: "Calm and stability",
+                o12_4: "Order and complete understanding",
+                q13: "What's your motto in life?",
+                o13_1: "Results matter more than methods",
+                o13_2: "Life is for fun and experience",
+                o13_3: "Relationships are built on patience and loyalty",
+                o13_4: "Understanding comes before everything",
                 q14: "How do you handle criticism?",
-                o14_1: "I challenge it and prove myself.",
-                o14_2: "I laugh and turn it into a joke.",
-                o14_3: "It hurts, but I forgive.",
-                o14_4: "I analyze it logically and rationally.",
-                q15: "What makes you feel afraid?",
-                o15_1: "Failure and lack of control.",
-                o15_2: "Loneliness and rejection.",
-                o15_3: "Conflict and separation.",
-                o15_4: "Ambiguity and lack of understanding.",
+                o14_1: "I challenge it and prove myself",
+                o14_2: "I laugh and turn it into a joke",
+                o14_3: "I suffer but forgive",
+                o14_4: "I analyze it logically and rationally",
+                q15: "What makes you feel fear?",
+                o15_1: "Failure and lack of control",
+                o15_2: "Loneliness and rejection",
+                o15_3: "Conflict and separation",
+                o15_4: "Ambiguity and lack of understanding",
                 q16: "What type of leadership do you prefer?",
-                o16_1: "Decisive and fast-paced leadership.",
-                o16_2: "Inspiring and motivating leadership.",
-                o16_3: "Supportive and stable leadership.",
-                o16_4: "Organized and analytical leadership.",
+                o16_1: "Decisive and fast leadership",
+                o16_2: "Inspiring and motivating leadership",
+                o16_3: "Supportive and stable leadership",
+                o16_4: "Organized and analytical leadership",
                 q17: "What makes you feel free?",
-                o17_1: "Controlling my own destiny.",
-                o17_2: "Expressing myself freely.",
-                o17_3: "Living in peace with myself.",
-                o17_4: "Deep understanding of the world.",
+                o17_1: "Controlling my destiny",
+                o17_2: "Expressing myself freely",
+                o17_3: "Living in peace with myself",
+                o17_4: "Deep understanding of the world",
                 q18: "How do you deal with change?",
-                o18_1: "I challenge and lead it.",
-                o18_2: "I celebrate and immerse myself in it.",
-                o18_3: "I adapt slowly and cautiously.",
-                o18_4: "I analyze and understand it first.",
+                o18_1: "I challenge it and lead it",
+                o18_2: "I celebrate it and immerse myself in it",
+                o18_3: "I adapt slowly and cautiously",
+                o18_4: "I analyze and understand it first",
                 q19: "What motivates you to keep going?",
-                o19_1: "Achieving my personal goals.",
-                o19_2: "Making others happy and seeing them smile.",
-                o19_3: "Maintaining stability and security.",
-                o19_4: "Understanding the truth and reaching perfection.",
-                q20: "What is your problem-solving style?",
-                o20_1: "I make quick decisions and take responsibility.",
-                o20_2: "I seek others' opinions and build collective solutions.",
-                o20_3: "I take my time and consider the impact on everyone.",
-                o20_4: "I research and analyze until I find the optimal solution."
+                o19_1: "Achieving my personal goals",
+                o19_2: "Making others happy and seeing them smile",
+                o19_3: "Maintaining stability and safety",
+                o19_4: "Understanding the truth and reaching perfection",
+                q20: "What's your approach to solving problems?",
+                o20_1: "I make quick decisions and take responsibility",
+                o20_2: "I seek others' opinions and build collective solutions",
+                o20_3: "I take my time and consider the impact on everyone",
+                o20_4: "I research and analyze until I find the optimal solution"
             }
         };
 
         // ===== QUESTIONS (20 كاملة) =====
         const questions = {
-            ar: [
-                { id: 1, text: translations.ar.q1, options: [ { text: translations.ar.o1_1, trait: "I", score: 4 }, { text: translations.ar.o1_2, trait: "C", score: 3 }, { text: translations.ar.o1_3, trait: "S", score: 2 }, { text: translations.ar.o1_4, trait: "C", score: 3 } ] },
-                { id: 2, text: translations.ar.q2, options: [ { text: translations.ar.o2_1, trait: "I", score: 4 }, { text: translations.ar.o2_2, trait: "S", score: 4 }, { text: translations.ar.o2_3, trait: "D", score: 3 }, { text: translations.ar.o2_4, trait: "S", score: 4 } ] },
-                { id: 3, text: translations.ar.q3, options: [ { text: translations.ar.o3_1, trait: "D", score: 4 }, { text: translations.ar.o3_2, trait: "C", score: 4 }, { text: translations.ar.o3_3, trait: "S", score: 4 }, { text: translations.ar.o3_4, trait: "I", score: 3 } ] },
-                { id: 4, text: translations.ar.q4, options: [ { text: translations.ar.o4_1, trait: "I", score: 4 }, { text: translations.ar.o4_2, trait: "S", score: 4 }, { text: translations.ar.o4_3, trait: "C", score: 4 }, { text: translations.ar.o4_4, trait: "D", score: 3 } ] },
-                { id: 5, text: translations.ar.q5, options: [ { text: translations.ar.o5_1, trait: "D", score: 4 }, { text: translations.ar.o5_2, trait: "C", score: 4 }, { text: translations.ar.o5_3, trait: "S", score: 3 }, { text: translations.ar.o5_4, trait: "S", score: 2 } ] },
-                { id: 6, text: translations.ar.q6, options: [ { text: translations.ar.o6_1, trait: "D", score: 4 }, { text: translations.ar.o6_2, trait: "S", score: 4 }, { text: translations.ar.o6_3, trait: "I", score: 4 }, { text: translations.ar.o6_4, trait: "C", score: 3 } ] },
-                { id: 7, text: translations.ar.q7, options: [ { text: translations.ar.o7_1, trait: "D", score: 4 }, { text: translations.ar.o7_2, trait: "I", score: 3 }, { text: translations.ar.o7_3, trait: "S", score: 4 }, { text: translations.ar.o7_4, trait: "C", score: 4 } ] },
-                { id: 8, text: translations.ar.q8, options: [ { text: translations.ar.o8_1, trait: "D", score: 4 }, { text: translations.ar.o8_2, trait: "I", score: 3 }, { text: translations.ar.o8_3, trait: "S", score: 3 }, { text: translations.ar.o8_4, trait: "C", score: 4 } ] },
-                { id: 9, text: translations.ar.q9, options: [ { text: translations.ar.o9_1, trait: "D", score: 4 }, { text: translations.ar.o9_2, trait: "C", score: 4 }, { text: translations.ar.o9_3, trait: "I", score: 3 }, { text: translations.ar.o9_4, trait: "S", score: 3 } ] },
-                { id: 10, text: translations.ar.q10, options: [ { text: translations.ar.o10_1, trait: "D", score: 4 }, { text: translations.ar.o10_2, trait: "S", score: 4 }, { text: translations.ar.o10_3, trait: "C", score: 4 }, { text: translations.ar.o10_4, trait: "S", score: 3 } ] },
-                { id: 11, text: translations.ar.q11, options: [ { text: translations.ar.o11_1, trait: "D", score: 4 }, { text: translations.ar.o11_2, trait: "C", score: 4 }, { text: translations.ar.o11_3, trait: "I", score: 4 }, { text: translations.ar.o11_4, trait: "I", score: 3 } ] },
-                { id: 12, text: translations.ar.q12, options: [ { text: translations.ar.o12_1, trait: "D", score: 4 }, { text: translations.ar.o12_2, trait: "I", score: 4 }, { text: translations.ar.o12_3, trait: "S", score: 4 }, { text: translations.ar.o12_4, trait: "C", score: 4 } ] },
-                { id: 13, text: translations.ar.q13, options: [ { text: translations.ar.o13_1, trait: "D", score: 4 }, { text: translations.ar.o13_2, trait: "I", score: 4 }, { text: translations.ar.o13_3, trait: "S", score: 4 }, { text: translations.ar.o13_4, trait: "C", score: 4 } ] },
-                { id: 14, text: translations.ar.q14, options: [ { text: translations.ar.o14_1, trait: "D", score: 4 }, { text: translations.ar.o14_2, trait: "I", score: 3 }, { text: translations.ar.o14_3, trait: "S", score: 3 }, { text: translations.ar.o14_4, trait: "C", score: 4 } ] },
-                { id: 15, text: translations.ar.q15, options: [ { text: translations.ar.o15_1, trait: "D", score: 3 }, { text: translations.ar.o15_2, trait: "I", score: 3 }, { text: translations.ar.o15_3, trait: "S", score: 3 }, { text: translations.ar.o15_4, trait: "C", score: 3 } ] },
-                { id: 16, text: translations.ar.q16, options: [ { text: translations.ar.o16_1, trait: "D", score: 4 }, { text: translations.ar.o16_2, trait: "I", score: 4 }, { text: translations.ar.o16_3, trait: "S", score: 4 }, { text: translations.ar.o16_4, trait: "C", score: 4 } ] },
-                { id: 17, text: translations.ar.q17, options: [ { text: translations.ar.o17_1, trait: "D", score: 4 }, { text: translations.ar.o17_2, trait: "
-// ... (تكملة من النقطة التي توقفنا عندها)
-                { id: 17, text: translations.ar.q17, options: [ { text: translations.ar.o17_1, trait: "D", score: 4 }, { text: translations.ar.o17_2, trait: "I", score: 4 }, { text: translations.ar.o17_3, trait: "S", score: 4 }, { text: translations.ar.o17_4, trait: "C", score: 4 } ] },
-                { id: 18, text: translations.ar.q18, options: [ { text: translations.ar.o18_1, trait: "D", score: 4 }, { text: translations.ar.o18_2, trait: "I", score: 4 }, { text: translations.ar.o18_3, trait: "S", score: 3 }, { text: translations.ar.o18_4, trait: "C", score: 4 } ] },
-                { id: 19, text: translations.ar.q19, options: [ { text: translations.ar.o19_1, trait: "D", score: 4 }, { text: translations.ar.o19_2, trait: "I", score: 4 }, { text: translations.ar.o19_3, trait: "S", score: 4 }, { text: translations.ar.o19_4, trait: "C", score: 4 } ] },
-                { id: 20, text: translations.ar.q20, options: [ { text: translations.ar.o20_1, trait: "D", score: 4 }, { text: translations.ar.o20_2, trait: "I", score: 4 }, { text: translations.ar.o20_3, trait: "S", score: 4 }, { text: translations.ar.o20_4, trait: "C", score: 4 } ] }
-            ],
-            en: [
-                { id: 1, text: translations.en.q1, options: [ { text: translations.en.o1_1, trait: "I", score: 4 }, { text: translations.en.o1_2, trait: "C", score: 3 }, { text: translations.en.o1_3, trait: "S", score: 2 }, { text: translations.en.o1_4, trait: "C", score: 3 } ] },
-                { id: 2, text: translations.en.q2, options: [ { text: translations.en.o2_1, trait: "I", score: 4 }, { text: translations.en.o2_2, trait: "S", score: 4 }, { text: translations.en.o2_3, trait: "D", score: 3 }, { text: translations.en.o2_4, trait: "S", score: 4 } ] },
-                { id: 3, text: translations.en.q3, options: [ { text: translations.en.o3_1, trait: "D", score: 4 }, { text: translations.en.o3_2, trait: "C", score: 4 }, { text: translations.en.o3_3, trait: "S", score: 4 }, { text: translations.en.o3_4, trait: "I", score: 3 } ] },
-                { id: 4, text: translations.en.q4, options: [ { text: translations.en.o4_1, trait: "I", score: 4 }, { text: translations.en.o4_2, trait: "S", score: 4 }, { text: translations.en.o4_3, trait: "C", score: 4 }, { text: translations.en.o4_4, trait: "D", score: 3 } ] },
-                { id: 5, text: translations.en.q5, options: [ { text: translations.en.o5_1, trait: "D", score: 4 }, { text: translations.en.o5_2, trait: "C", score: 4 }, { text: translations.en.o5_3, trait: "S", score: 3 }, { text: translations.en.o5_4, trait: "S", score: 2 } ] },
-                { id: 6, text: translations.en.q6, options: [ { text: translations.en.o6_1, trait: "D", score: 4 }, { text: translations.en.o6_2, trait: "S", score: 4 }, { text: translations.en.o6_3, trait: "I", score: 4 }, { text: translations.en.o6_4, trait: "C", score: 3 } ] },
-                { id: 7, text: translations.en.q7, options: [ { text: translations.en.o7_1, trait: "D", score: 4 }, { text: translations.en.o7_2, trait: "I", score: 3 }, { text: translations.en.o7_3, trait: "S", score: 4 }, { text: translations.en.o7_4, trait: "C", score: 4 } ] },
-                { id: 8, text: translations.en.q8, options: [ { text: translations.en.o8_1, trait: "D", score: 4 }, { text: translations.en.o8_2, trait: "I", score: 3 }, { text: translations.en.o8_3, trait: "S", score: 3 }, { text: translations.en.o8_4, trait: "C", score: 4 } ] },
-                { id: 9, text: translations.en.q9, options: [ { text: translations.en.o9_1, trait: "D", score: 4 }, { text: translations.en.o9_2, trait: "C", score: 4 }, { text: translations.en.o9_3, trait: "I", score: 3 }, { text: translations.en.o9_4, trait: "S", score: 3 } ] },
-                { id: 10, text: translations.en.q10, options: [ { text: translations.en.o10_1, trait: "D", score: 4 }, { text: translations.en.o10_2, trait: "S", score: 4 }, { text: translations.en.o10_3, trait: "C", score: 4 }, { text: translations.en.o10_4, trait: "S", score: 3 } ] },
-                { id: 11, text: translations.en.q11, options: [ { text: translations.en.o11_1, trait: "D", score: 4 }, { text: translations.en.o11_2, trait: "C", score: 4 }, { text: translations.en.o11_3, trait: "I", score: 4 }, { text: translations.en.o11_4, trait: "I", score: 3 } ] },
-                { id: 12, text: translations.en.q12, options: [ { text: translations.en.o12_1, trait: "D", score: 4 }, { text: translations.en.o12_2, trait: "I", score: 4 }, { text: translations.en.o12_3, trait: "S", score: 4 }, { text: translations.en.o12_4, trait: "C", score: 4 } ] },
-                { id: 13, text: translations.en.q13, options: [ { text: translations.en.o13_1, trait: "D", score: 4 }, { text: translations.en.o13_2, trait: "I", score: 4 }, { text: translations.en.o13_3, trait: "S", score: 4 }, { text: translations.en.o13_4, trait: "C", score: 4 } ] },
-                { id: 14, text: translations.en.q14, options: [ { text: translations.en.o14_1, trait: "D", score: 4 }, { text: translations.en.o14_2, trait: "I", score: 3 }, { text: translations.en.o14_3, trait: "S", score: 3 }, { text: translations.en.o14_4, trait: "C", score: 4 } ] },
-                { id: 15, text: translations.en.q15, options: [ { text: translations.en.o15_1, trait: "D", score: 3 }, { text: translations.en.o15_2, trait: "I", score: 3 }, { text: translations.en.o15_3, trait: "S", score: 3 }, { text: translations.en.o15_4, trait: "C", score: 3 } ] },
-                { id: 16, text: translations.en.q16, options: [ { text: translations.en.o16_1, trait: "D", score: 4 }, { text: translations.en.o16_2, trait: "I", score: 4 }, { text: translations.en.o16_3, trait: "S", score: 4 }, { text: translations.en.o16_4, trait: "C", score: 4 } ] },
-                { id: 17, text: translations.en.q17, options: [ { text: translations.en.o17_1, trait: "D", score: 4 }, { text: translations.en.o17_2, trait: "I", score: 4 }, { text: translations.en.o17_3, trait: "S", score: 4 }, { text: translations.en.o17_4, trait: "C", score: 4 } ] },
-                { id: 18, text: translations.en.q18, options: [ { text: translations.en.o18_1, trait: "D", score: 4 }, { text: translations.en.o18_2, trait: "I", score: 4 }, { text: translations.en.o18_3, trait: "S", score: 3 }, { text: translations.en.o18_4, trait: "C", score: 4 } ] },
-                { id: 19, text: translations.en.q19, options: [ { text: translations.en.o19_1, trait: "D", score: 4 }, { text: translations.en.o19_2, trait: "I", score: 4 }, { text: translations.en.o19_3, trait: "S", score: 4 }, { text: translations.en.o19_4, trait: "C", score: 4 } ] },
-                { id: 20, text: translations.en.q20, options: [ { text: translations.en.o20_1, trait: "D", score: 4 }, { text: translations.en.o20_2, trait: "I", score: 4 }, { text: translations.en.o20_3, trait: "S", score: 4 }, { text: translations.en.o20_4, trait: "C", score: 4 } ] }
-            ]
+            ar: Array.from({ length: 20 }, (_, i) => ({
+                id: i + 1,
+                text: translations.ar[`q${i + 1}`],
+                options: [
+                    { text: translations.ar[`o${i + 1}_1`], trait: getTrait(i + 1, 1), score: getScore(i + 1, 1) },
+                    { text: translations.ar[`o${i + 1}_2`], trait: getTrait(i + 1, 2), score: getScore(i + 1, 2) },
+                    { text: translations.ar[`o${i + 1}_3`], trait: getTrait(i + 1, 3), score: getScore(i + 1, 3) },
+                    { text: translations.ar[`o${i + 1}_4`], trait: getTrait(i + 1, 4), score: getScore(i + 1, 4) }
+                ]
+            })),
+            en: Array.from({ length: 20 }, (_, i) => ({
+                id: i + 1,
+                text: translations.en[`q${i + 1}`],
+                options: [
+                    { text: translations.en[`o${i + 1}_1`], trait: getTrait(i + 1, 1), score: getScore(i + 1, 1) },
+                    { text: translations.en[`o${i + 1}_2`], trait: getTrait(i + 1, 2), score: getScore(i + 1, 2) },
+                    { text: translations.en[`o${i + 1}_3`], trait: getTrait(i + 1, 3), score: getScore(i + 1, 3) },
+                    { text: translations.en[`o${i + 1}_4`], trait: getTrait(i + 1, 4), score: getScore(i + 1, 4) }
+                ]
+            }))
         };
 
+        // ===== دوال مساعدة لتحديد الصفات والدرجات =====
+        function getTrait(questionId, optionId) {
+            const map = {
+                1: ['I', 'C', 'S', 'C'],
+                2: ['I', 'S', 'D', 'S'],
+                3: ['D', 'C', 'S', 'I'],
+                4: ['I', 'S', 'C', 'D'],
+                5: ['D', 'C', 'S', 'S'],
+                6: ['D', 'S', 'I', 'C'],
+                7: ['D', 'I', 'S', 'C'],
+                8: ['D', 'I', 'S', 'C'],
+                9: ['D', 'C', 'I', 'S'],
+                10: ['D', 'S', 'C', 'S'],
+                11: ['D', 'C', 'I', 'I'],
+                12: ['D', 'I', 'S', 'C'],
+                13: ['D', 'I', 'S', 'C'],
+                14: ['D', 'I', 'S', 'C'],
+                15: ['D', 'I', 'S', 'C'],
+                16: ['D', 'I', 'S', 'C'],
+                17: ['D', 'I', 'S', 'C'],
+                18: ['D', 'I', 'S', 'C'],
+                19: ['D', 'I', 'S', 'C'],
+                20: ['D', 'I', 'S', 'C']
+            };
+            return map[questionId] ? map[questionId][optionId - 1] : 'D';
+        }
+
+        function getScore(questionId, optionId) {
+            const scores = {
+                1: [4, 3, 2, 3],
+                2: [4, 4, 3, 4],
+                3: [4, 4, 4, 3],
+                4: [4, 4, 4, 3],
+                5: [4, 4, 3, 2],
+                6: [4, 4, 4, 3],
+                7: [4, 3, 4, 4],
+                8: [4, 3, 3, 4],
+                9: [4, 4, 3, 3],
+                10: [4, 4, 4, 3],
+                11: [4, 4, 4, 3],
+                12: [4, 4, 4, 4],
+                13: [4, 4, 4, 4],
+                14: [4, 3, 3, 4],
+                15: [3, 3, 3, 3],
+                16: [4, 4, 4, 4],
+                17: [4, 4, 4, 4],
+                18: [4, 4, 3, 4],
+                19: [4, 4, 4, 4],
+                20: [4, 4, 4, 4]
+            };
+            return scores[questionId] ? scores[questionId][optionId - 1] : 4;
+        }
+
         // ===== ZODIAC SIGNS =====
-        const zodiacSignsData = {
+        const zodiacSigns = {
             ar: {
-                'الحمل': { dates: [3, 21, 4, 19], element: 'نار' }, 'الثور': { dates: [4, 20, 5, 20], element: 'أرض' },
-                'الجوزاء': { dates: [5, 21, 6, 20], element: 'هواء' }, 'السرطان': { dates: [6, 21, 7, 22], element: 'ماء' },
-                'الأسد': { dates: [7, 23, 8, 22], element: 'نار' }, 'العذراء': { dates: [8, 23, 9, 22], element: 'أرض' },
-                'الميزان': { dates: [9, 23, 10, 22], element: 'هواء' }, 'العقرب': { dates: [10, 23, 11, 21], element: 'ماء' },
-                'القوس': { dates: [11, 22, 12, 21], element: 'نار' }, 'الجدي': { dates: [12, 22, 1, 19], element: 'أرض' },
-                'الدلو': { dates: [1, 20, 2, 18], element: 'هواء' }, 'الحوت': { dates: [2, 19, 3, 20], element: 'ماء' }
+                'الحمل': { dates: [3, 21, 4, 19], traits: ['قيادي', 'متحمس', 'مغامر', 'مستقل'], element: 'نار' },
+                'الثور': { dates: [4, 20, 5, 20], traits: ['مستقر', 'موثوق', 'صبور', 'عملي'], element: 'أرض' },
+                'الجوزاء': { dates: [5, 21, 6, 20], traits: ['فضولي', 'تواصلي', 'ذكي', 'متكيف'], element: 'هواء' },
+                'السرطان': { dates: [6, 21, 7, 22], traits: ['حساس', 'حنون', 'حدسي', 'محب للعائلة'], element: 'ماء' },
+                'الأسد': { dates: [7, 23, 8, 22], traits: ['واثق', 'كريم', 'درامي', 'دافء القلب'], element: 'نار' },
+                'العذراء': { dates: [8, 23, 9, 22], traits: ['دقيق', 'عملي', 'متواضع', 'مفيد'], element: 'أرض' },
+                'الميزان': { dates: [9, 23, 10, 22], traits: ['دبلوماسي', 'ساحر', 'عادل', 'اجتماعي'], element: 'هواء' },
+                'العقرب': { dates: [10, 23, 11, 21], traits: ['عميق', 'شغوف', 'حدسي', 'غامض'], element: 'ماء' },
+                'القوس': { dates: [11, 22, 12, 21], traits: ['فيلسوف', 'متفائل', 'مغامر', 'صادق'], element: 'نار' },
+                'الجدي': { dates: [12, 22, 1, 19], traits: ['طموح', 'منضبط', 'صبور', 'مسؤول'], element: 'أرض' },
+                'الدلو': { dates: [1, 20, 2, 18], traits: ['مبتكر', 'مستقل', 'إنساني', 'أصيل'], element: 'هواء' },
+                'الحوت': { dates: [2, 19, 3, 20], traits: ['حدسي', 'رحيم', 'فني', 'حساس'], element: 'ماء' }
             },
             en: {
-                'Aries': { dates: [3, 21, 4, 19], element: 'Fire' }, 'Taurus': { dates: [4, 20, 5, 20], element: 'Earth' },
-                'Gemini': { dates: [5, 21, 6, 20], element: 'Air' }, 'Cancer': { dates: [6, 21, 7, 22], element: 'Water' },
-                'Leo': { dates: [7, 23, 8, 22], element: 'Fire' }, 'Virgo': { dates: [8, 23, 9, 22], element: 'Earth' },
-                'Libra': { dates: [9, 23, 10, 22], element: 'Air' }, 'Scorpio': { dates: [10, 23, 11, 21], element: 'Water' },
-                'Sagittarius': { dates: [11, 22, 12, 21], element: 'Fire' }, 'Capricorn': { dates: [12, 22, 1, 19], element: 'Earth' },
-                'Aquarius': { dates: [1, 20, 2, 18], element: 'Air' }, 'Pisces': { dates: [2, 19, 3, 20], element: 'Water' }
+                'Aries': { dates: [3, 21, 4, 19], traits: ['Leader', 'Enthusiastic', 'Adventurous', 'Independent'], element: 'Fire' },
+                'Taurus': { dates: [4, 20, 5, 20], traits: ['Stable', 'Trustworthy', 'Patient', 'Practical'], element: 'Earth' },
+                'Gemini': { dates: [5, 21, 6, 20], traits: ['Curious', 'Communicative', 'Intelligent', 'Adaptable'], element: 'Air' },
+                'Cancer': { dates: [6, 21, 7, 22], traits: ['Sensitive', 'Affectionate', 'Intuitive', 'Family-oriented'], element: 'Water' },
+                'Leo': { dates: [7, 23, 8, 22], traits: ['Confident', 'Generous', 'Dramatic', 'Warm-hearted'], element: 'Fire' },
+                'Virgo': { dates: [8, 23, 9, 22], traits: ['Precise', 'Practical', 'Humble', 'Helpful'], element: 'Earth' },
+                'Libra': { dates: [9, 23, 10, 22], traits: ['Diplomatic', 'Charming', 'Fair', 'Social'], element: 'Air' },
+                'Scorpio': { dates: [10, 23, 11, 21], traits: ['Deep', 'Passionate', 'Intuitive', 'Mysterious'], element: 'Water' },
+                'Sagittarius': { dates: [11, 22, 12, 21], traits: ['Philosopher', 'Optimistic', 'Adventurous', 'Honest'], element: 'Fire' },
+                'Capricorn': { dates: [12, 22, 1, 19], traits: ['Ambitious', 'Disciplined', 'Patient', 'Responsible'], element: 'Earth' },
+                'Aquarius': { dates: [1, 20, 2, 18], traits: ['Innovative', 'Independent', 'Humanitarian', 'Authentic'], element: 'Air' },
+                'Pisces': { dates: [2, 19, 3, 20], traits: ['Intuitive', 'Compassionate', 'Artistic', 'Sensitive'], element: 'Water' }
             }
         };
 
         // ===== COMPATIBILITY MATRIX =====
-        const compatibilityMatrix = {
-            'D': { 'D': 75, 'I': 90, 'S': 65, 'C': 80 },
-            'I': { 'D': 90, 'I': 85, 'S': 95, 'C': 70 },
-            'S': { 'D': 65, 'I': 95, 'S': 80, 'C': 85 },
-            'C': { 'D': 80, 'I': 70, 'S': 85, 'C': 90 }
+        const zodiacCompatibility = {
+            ar: {
+                'الحمل': ['الأسد', 'القوس'],
+                'الثور': ['العذراء', 'الجدي'],
+                'الجوزاء': ['الميزان', 'الدلو'],
+                'السرطان': ['العقرب', 'الحوت'],
+                'الأسد': ['الحمل', 'القوس'],
+                'العذراء': ['الثور', 'الجدي'],
+                'الميزان': ['الجوزاء', 'الدلو'],
+                'العقرب': ['السرطان', 'الحوت'],
+                'القوس': ['الحمل', 'الأسد'],
+                'الجدي': ['الثور', 'العذراء'],
+                'الدلو': ['الجوزاء', 'الميزان'],
+                'الحوت': ['السرطان', 'العقرب']
+            },
+            en: {
+                'Aries': ['Leo', 'Sagittarius'],
+                'Taurus': ['Virgo', 'Capricorn'],
+                'Gemini': ['Libra', 'Aquarius'],
+                'Cancer': ['Scorpio', 'Pisces'],
+                'Leo': ['Aries', 'Sagittarius'],
+                'Virgo': ['Taurus', 'Capricorn'],
+                'Libra': ['Gemini', 'Aquarius'],
+                'Scorpio': ['Cancer', 'Pisces'],
+                'Sagittarius': ['Aries', 'Leo'],
+                'Capricorn': ['Taurus', 'Virgo'],
+                'Aquarius': ['Gemini', 'Libra'],
+                'Pisces': ['Cancer', 'Scorpio']
+            }
         };
 
         // ===== APP STATE =====
@@ -476,8 +525,7 @@
             userAnswers: [],
             personalityScore: {},
             zodiacSign: '',
-            partnerAnalysis: null,
-            resultText: ''
+            partnerAnalysis: null
         };
 
         // ===== UTILITY FUNCTIONS =====
@@ -496,16 +544,12 @@
             const date = new Date(birthDate);
             const month = date.getMonth() + 1;
             const day = date.getDate();
-            const signs = zodiacSignsData[state.lang];
-            for (let sign in signs) {
-                const [startMonth, startDay, endMonth, endDay] = signs[sign].dates;
+            const signs = Object.keys(zodiacSigns[state.lang]);
+            for (let sign of signs) {
+                const [startMonth, startDay, endMonth, endDay] = zodiacSigns[state.lang][sign].dates;
                 if ((month === startMonth && day >= startDay) || (month === endMonth && day <= endDay)) {
                     return sign;
                 }
-            }
-            // Capricorn edge case (Dec-Jan)
-            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
-                return state.lang === 'ar' ? 'الجدي' : 'Capricorn';
             }
             return state.lang === 'ar' ? 'الحمل' : 'Aries';
         }
@@ -525,9 +569,7 @@
 
         function copyToClipboard(text) {
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast(translations[state.lang].alert_copied);
-                });
+                navigator.clipboard.writeText(text);
             } else {
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
@@ -535,19 +577,24 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showToast(translations[state.lang].alert_copied);
             }
+            const t = translations[state.lang];
+            showToast(t.alert_copied);
         }
 
         // ===== PERSONALITY ANALYSIS =====
         function analyzePersonality(answers) {
-            const scores = { 'D': 0, 'I': 0, 'S': 0, 'C': 0 };
+            const scores = {};
             const questionsData = questions[state.lang];
             answers.forEach((answerIndex, questionIndex) => {
                 if (answerIndex !== undefined && questionsData[questionIndex]) {
                     const option = questionsData[questionIndex].options[answerIndex];
                     if (option && option.trait) {
-                        scores[option.trait] = (scores[option.trait] || 0) + (option.score || 1);
+                        const traits = option.trait.split(',');
+                        traits.forEach(trait => {
+                            trait = trait.trim();
+                            scores[trait] = (scores[trait] || 0) + (option.score || 1);
+                        });
                     }
                 }
             });
@@ -556,257 +603,193 @@
 
         function generatePersonalityAnalysis(answers, userData) {
             const scores = analyzePersonality(answers);
-            state.personalityScore = scores;
             const primaryTrait = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            
-            const personalityTypes = {
-                ar: {
-                    'D': { name: 'القائد المهيمن (الأحمر)', description: `أنت شخصية قيادية بطبيعتك، تمتلك إرادة قوية وتحب التحكم في الأمور. لا تهاب التحديات، وتميل إلى اتخاذ القرارات بسرعة وثقة. أنت موجه نحو النتائج، وتحب أن ترى تقدماً ملموساً. قد تبدو أحياناً حازماً أكثر من اللازم، لكن دافعك هو إحداث تأثير حقيقي.` },
-                    'I': { name: 'الشخصية المؤثرة (الأصفر)', description: `أنت شخصية اجتماعية، محبوبة، ومحفزة. تمتلك طاقة إيجابية عالية، وتحب أن تكون محور الاهتمام. تُحدث تأثيراً من خلال كلماتك وحماسك، وتميل إلى بناء العلاقات بسهولة. قد تفتقر أحياناً للتنظيم، لكنك تُكمل ذلك بقدرتك على إلهام الآخرين وتحفيزهم.` },
-                    'S': { name: 'الشخصية المستقرة (الأخضر)', description: `أنت شخصية هادئة، موثوقة، وداعمة. تكره التوتر والصراع، وتحب الاستقرار والانسجام. أنت صبور، وفيّ، وتحافظ على العلاقات لفترة طويلة. قد تقاوم التغيير في البداية، لكنك تُحدث تأثيراً عميقاً من خلال ولائك وثباتك.` },
-                    'C': { name: 'الشخصية الواعية (الأزرق)', description: `أنت شخصية تحليلية، دقيقة، ومنطقية. تهتم بالتفاصيل، وتسعى لتحقيق الجودة في كل ما تفعل. تتخذ قراراتك بناءً على التفكير العميق، وتحب أن يكون كل شيء منظمًا. قد تبدو بارداً أحياناً، لكن دافعك هو السعي نحو الكمال والدقة.` }
-                },
-                en: {
-                    'D': { name: 'Dominant Leader (Red)', description: `You are a natural leader with a strong will, loving to be in control. You don't fear challenges and tend to make decisions quickly and confidently. You are results-oriented and love to see tangible progress. You might seem overly assertive at times, but your drive is to make a real impact.` },
-                    'I': { name: 'Influential Personality (Yellow)', description: `You are a social, beloved, and motivating person. You have high positive energy and love being the center of attention. You make an impact through your words and enthusiasm, and you build relationships easily. You might sometimes lack organization, but you compensate with your ability to inspire and motivate others.` },
-                    'S': { name: 'Stable Personality (Green)', description: `You are a calm, reliable, and supportive person. You dislike stress and conflict, preferring stability and harmony. You are patient, loyal, and maintain long-term relationships. You might resist change initially, but you make a deep impact through your loyalty and steadfastness.` },
-                    'C': { name: 'Conscientious Personality (Blue)', description: `You are an analytical, precise, and logical person. You care about details and strive for quality in everything you do. You make decisions based on deep thought and like everything to be organized. You might seem cold at times, but your drive is the pursuit of perfection and accuracy.` }
-                }
-            };
-
-            const strengths = {
-                ar: {
-                    'D': ['اتخاذ قرارات سريعة', 'قيادة الفرق', 'التركيز على النتائج', 'الثقة بالنفس'],
-                    'I': ['التواصل والتأثير', 'تحفيز الآخرين', 'المرونة العالية', 'بناء العلاقات'],
-                    'S': ['الاستماع الجيد', 'الوفاء والالتزام', 'تهدئة المواقف', 'العمل الجماعي'],
-                    'C': ['الدقة والانتباه', 'التفكير المنطقي', 'الالتزام بالجودة', 'التنظيم الممتاز']
-                },
-                en: {
-                    'D': ['Quick decision-making', 'Leading teams', 'Focus on results', 'Self-confidence'],
-                    'I': ['Communication & influence', 'Motivating others', 'High flexibility', 'Building relationships'],
-                    'S': ['Good listening', 'Loyalty & commitment', 'Calming situations', 'Teamwork'],
-                    'C': ['Precision & attention', 'Logical thinking', 'Commitment to quality', 'Excellent organization']
-                }
-            };
-
-            const growthAreas = {
-                ar: {
-                    'D': ['الاستماع أكثر للآخرين', 'منح مساحة للقرارات', 'التعامل بلطف أكبر', 'الاعتراف بالمشاعر'],
-                    'I': ['التركيز على المهام', 'اتباع خطة منظمة', 'التعامل مع النقد', 'تطوير الصبر'],
-                    'S': ['التحدث عن احتياجاتك', 'اتخاذ موقف حاسم', 'الانفتاح على التغيير', 'الاعتناء بنفسك أولاً'],
-                    'C': ['التحدث عن المشاعر', 'اتخاذ قرارات أسرع', 'التعامل مع الأخطاء', 'الثقة بالآخرين']
-                },
-                en: {
-                    'D': ['Listen more to others', 'Give space for decisions', 'Be more gentle', 'Acknowledge feelings'],
-                    'I': ['Focus on tasks', 'Follow an organized plan', 'Handle criticism', 'Develop patience'],
-                    'S': ['Speak up for your needs', 'Take a firm stance', 'Be open to change', 'Prioritize self-care'],
-                    'C': ['Talk about feelings', 'Make faster decisions', 'Handle mistakes as learning', 'Trust others with tasks']
-                }
-            };
-
-            const mainType = personalityTypes[state.lang][primaryTrait];
             const t = translations[state.lang];
+
+            const personalityTypes = {
+                'D': {
+                    name: 'القائد المهيمن (الأحمر)',
+                    color: 'red',
+                    description: `أنت شخصية قيادية بطبيعتك، تمتلك إرادة قوية وتحب التحكم في الأمور. لا تهاب التحديات، وتميل إلى اتخاذ القرارات بسرعة وثقة. أنت موجه نحو النتائج، وتحب أن ترى تقدماً ملموساً. قد تبدو أحياناً حازماً أكثر من اللازم، لكن دافعك هو إحداث تأثير حقيقي.`
+                },
+                'I': {
+                    name: 'الشخصية المؤثرة (الأصفر)',
+                    color: 'yellow',
+                    description: `أنت شخصية اجتماعية، محبوبة، ومحفزة. تمتلك طاقة إيجابية عالية، وتحب أن تكون محور الاهتمام. تُحدث تأثيراً من خلال كلماتك وحماسك، وتميل إلى بناء العلاقات بسهولة. قد تفتقر أحياناً للتنظيم، لكنك تُكمل ذلك بقدرتك على إلهام الآخرين وتحفيزهم.`
+                },
+                'S': {
+                    name: 'الشخصية المستقرة (الأخضر)',
+                    color: 'green',
+                    description: `أنت شخصية هادئة، موثوقة، وداعمة. تكره التوتر والصراع، وتحب الاستقرار والانسجام. أنت صبور، وفيّ، وتحافظ على العلاقات لفترة طويلة. قد تقاوم التغيير في البداية، لكنك تُحدث تأثيراً عميقاً من خلال ولائك وثباتك.`
+                },
+                'C': {
+                    name: 'الشخصية الواعية (الأزرق)',
+                    color: 'blue',
+                    description: `أنت شخصية تحليلية، دقيقة، ومنطقية. تهتم بالتفاصيل، وتسعى لتحقيق الجودة في كل ما تفعل. تتخذ قراراتك بناءً على التفكير العميق، وتحب أن يكون كل شيء منظمًا. قد تبدو بارداً أحياناً، لكن دافعك هو السعي نحو الكمال والدقة.`
+                }
+            };
+
+            const mainType = personalityTypes[primaryTrait] || personalityTypes['D'];
 
             let html = `
                 <div class="glass-card rounded-xl p-6 mb-6">
-                    <h3 class="text-2xl font-bold gradient-text mb-4">${t.personality_section}</h3>
-                    <p class="text-gray-300 mb-4">${t.analysis_intro}</p>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">تحليل شخصيتك</h3>
                     <div class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-4 mb-4">
-                        <h4 class="text-xl font-bold text-yellow-400 mb-2">${mainType.name}</h4>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-4 h-4 rounded-full color-${mainType.color}"></div>
+                            <h4 class="text-xl font-bold text-${mainType.color}-400">${mainType.name}</h4>
+                        </div>
                         <p class="text-gray-300 leading-relaxed">${mainType.description}</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <h5 class="font-semibold text-green-400 mb-2">${state.lang === 'ar' ? 'نقاط قوتك:' : 'Your Strengths:'}</h5>
+                            <h5 class="font-semibold text-green-400 mb-2">نقاط قوتك:</h5>
                             <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                ${strengths[state.lang][primaryTrait].map(s => `<li>${s}</li>`).join('')}
+                                ${getStrengths(primaryTrait).map(s => `<li>${s}</li>`).join('')}
                             </ul>
                         </div>
                         <div>
-                            <h5 class="font-semibold text-orange-400 mb-2">${state.lang === 'ar' ? 'مجالات النمو:' : 'Growth Areas:'}</h5>
+                            <h5 class="font-semibold text-orange-400 mb-2">مجالات النمو:</h5>
                             <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                ${growthAreas[state.lang][primaryTrait].map(g => `<li>${g}</li>`).join('')}
+                                ${getGrowthAreas(primaryTrait).map(g => `<li>${g}</li>`).join('')}
                             </ul>
                         </div>
                     </div>
                 </div>
             `;
 
-            return { html, primaryTrait, mainTypeName: mainType.name, mainTypeDesc: mainType.description };
+            return { html, primaryTrait };
         }
 
-        function generatePartnerAnalysis(userPrimaryTrait, userZodiac) {
-            const partnerTraitsData = {
-                ar: {
-                    'D': { ideal: 'I', name: 'الشخصية المؤثرة', desc: 'يحتاج القائد لشريك يوازن قوته بالدفء والتفاعل.', traits: ['مرح', 'يقدر الإنجاز', 'مرن', 'يشارك بالأهداف'], advice: ['امنحه مساحة للتعبير', 'تعلم الاستماع', 'اهتم بالعاطفة'] },
-                    'I': { ideal: 'S', name: 'الشخصية المستقرة', desc: 'تحتاج الشخصية المؤثرة لشريك يوفر الاستقرار والأمان.', traits: ['صبور', 'يقدر التفاعل', 'مخلص', 'يوفر الاستقرار'], advice: ['قدر حاجته للهدوء', 'لا تضغط للتغيير', 'أظهر التقدير'] },
-                    'S': { ideal: 'I', name: 'الشخصية المؤثرة', desc: 'تحتاج الشخصية المستقرة لشريك يجلب الحيوية والطاقة.', traits: ['نشيط', 'مرح', 'اجتماعي', 'متفائل'], advice: ['كن صبوراً', 'شاركه اجتماعياً', 'أظهر التقدير'] },
-                    'C': { ideal: 'D', name: 'القائد المهيمن', desc: 'تحتاج الشخصية الواعية لشريك يقدر دقتها ويوفر الدعم.', traits: ['حاسم', 'يقدر الجودة', 'سريع القرار', 'يوفر الحماية'], advice: ['احترم حاجته للتفكير', 'قدر التفاصيل', 'كن واضحاً'] }
+        function getStrengths(trait) {
+            return {
+                'D': [
+                    'اتخاذ قرارات سريعة وحاسمة',
+                    'القدرة على قيادة الفرق بنجاح',
+                    'التركيز على النتائج والإنجازات',
+                    'الثقة بالنفس والجرأة في المواقف الصعبة'
+                ],
+                'I': [
+                    'ممتاز في التواصل والتأثير',
+                    'يُشعر الآخرين بالتحفيز والتقدير',
+                    'مرونة عالية في التعامل مع التغيير',
+                    'يُبقي الفريق في معنويات عالية'
+                ],
+                'S': [
+                    'الاستماع الجيد وفهم مشاعر الآخرين',
+                    'الوفاء والالتزام بالعلاقات',
+                    'القدرة على تهدئة المواقف المتوترة',
+                    'العمل الجماعي والانسجام مع الفريق'
+                ],
+                'C': [
+                    'الدقة والانتباه للتفاصيل',
+                    'التفكير المنطقي والتحليل العميق',
+                    'الالتزام بالجودة والمواعيد',
+                    'التنظيم الممتاز ووضع الخطط'
+                ]
+            }[trait] || [];
+        }
+
+        function getGrowthAreas(trait) {
+            return {
+                'D': [
+                    'الاستماع أكثر لمشاعر الفريق',
+                    'منح الآخرين مساحة لاتخاذ القرارات',
+                    'التعامل بلطف مع من يختلفون معك',
+                    'الاعتراف بالمشاعر بدل تجاهلها'
+                ],
+                'I': [
+                    'التركيز على المهام بدلاً من الحديث عنها فقط',
+                    'اتباع خطة منظمة للإنجاز',
+                    'التعامل مع الانتقادات بعقلانية',
+                    'العمل على تطوير الصبر والمثابرة'
+                ],
+                'S': [
+                    'التحدث عن احتياجاتك بوضوح',
+                    'اتخاذ موقف حاسم عند الضرورة',
+                    'الانفتاح على التغيير والجديد',
+                    'الاعتناء بنفسك أولاً قبل الآخرين'
+                ],
+                'C': [
+                    'التحدث عن المشاعر بحرية',
+                    'اتخاذ قرارات أسرع دون تردد مفرط',
+                    'التعامل مع الأخطاء كفرص للتعلم',
+                    'الثقة بالآخرين في إنجاز المهام'
+                ]
+            }[trait] || [];
+        }
+
+        function generatePartnerAnalysis(userScores, userZodiac) {
+            const t = translations[state.lang];
+            const userPrimaryTrait = Object.keys(userScores).reduce((a, b) => userScores[a] > userScores[b] ? a : b);
+
+            const partnerTraits = {
+                'D': {
+                    idealPartner: 'I',
+                    name: 'الشخصية المؤثرة (الأصفر)',
+                    description: 'يحتاج القائد إلى شريك يوازن قوته بالدفء والتفاعل الاجتماعي، ويُكمل طاقته بالحماس والمرح.',
+                    traits: ['مرح ومتفاعل', 'يقدر الإنجازات', 'مرن في التعامل', 'يشارك في الأهداف'],
+                    advice: ['امنح شريكك مساحة للتعبير', 'تعلم الاستماع أكثر', 'اهتم بالجانب العاطفي']
                 },
-                en: {
-                    'D': { ideal: 'I', name: 'The Influential', desc: 'The leader needs a partner who balances their strength with warmth and social interaction.', traits: ['Fun-loving', 'Appreciates achievement', 'Flexible', 'Shares goals'], advice: ['Give them space to express', 'Learn to listen more', 'Care for the emotional side'] },
-                    'I': { ideal: 'S', name: 'The Stable', desc: 'The influential personality needs a partner who provides stability and emotional security.', traits: ['Patient', 'Values social interaction', 'Loyal', 'Provides stability'], advice: ['Respect their need for calm', 'Don’t push for quick change', 'Show continuous appreciation'] },
-                    'S': { ideal: 'I', name: 'The Influential', desc: 'The stable personality needs a partner who brings vitality and energy to life.', traits: ['Energetic', 'Fun', 'Social', 'Optimistic'], advice: ['Be patient', 'Join them socially', 'Show appreciation'] },
-                    'C': { ideal: 'D', name: 'The Dominant', desc: 'The conscientious personality needs a partner who appreciates their precision and provides support.', traits: ['Decisive', 'Values quality', 'Quick decision-maker', 'Provides protection'], advice: ['Respect their need to think', 'Appreciate details', 'Be clear in communication'] }
+                'I': {
+                    idealPartner: 'S',
+                    name: 'الشخصية المستقرة (الأخضر)',
+                    description: 'تحتاج الشخصية المؤثرة إلى شريك يوفر الاستقرار والأمان العاطفي، ويُكمل حماسك بالهدوء والولاء.',
+                    traits: ['صبور ومتفهم', 'يقدر التفاعل الاجتماعي', 'مخلص وموثوق', 'يوفر الاستقرار'],
+                    advice: ['قدر حاجة شريكك للهدوء', 'لا تضغط عليه للتغيير السريع', 'أظهر التقدير المستمر']
+                },
+                'S': {
+                    idealPartner: 'I',
+                    name: 'الشخصية المؤثرة (الأصفر)',
+                    description: 'تحتاج الشخصية المستقرة إلى شريك يجلب الحيوية والطاقة للحياة، ويُكمل استقرارك بالحماس والتفاعل.',
+                    traits: ['نشيط ومحفز', 'يجلب المرح', 'اجتماعي ومقبول', 'متفائل ومشجع'],
+                    advice: ['كن صبوراً مع حاجة شريكك للوقت', 'شاركه في الأنشطة الاجتماعية', 'أظهر التقدير باستمرار']
+                },
+                'C': {
+                    idealPartner: 'D',
+                    name: 'القائد (الأحمر)',
+                    description: 'تحتاج الشخصية الواعية إلى شريك يقدر دقتها ويوفر الدعم في اتخاذ القرارات، ويُكمل تحليلك بالجرأة والقيادة.',
+                    traits: ['حاسم وواثق', 'يقدر الجودة', 'يتخذ قرارات سريعة', 'يوفر الحماية'],
+                    advice: ['احترم حاجة شريكك للوقت في التفكير', 'قدر اهتمامه بالتفاصيل', 'كن واضحاً في التواصل']
                 }
             };
 
-            const zodiacCompatibility = {
-                ar: { 'الحمل': ['الأسد', 'القوس'], 'الثور': ['العذراء', 'الجدي'], 'الجوزاء': ['الميزان', 'الدلو'], 'السرطان': ['العقرب', 'الحوت'], 'الأسد': ['الحمل', 'القوس'], 'العذراء': ['الثور', 'الجدي'], 'الميزان': ['الجوزاء', 'الدلو'], 'العقرب': ['السرطان', 'الحوت'], 'القوس': ['الحمل', 'الأسد'], 'الجدي': ['الثور', 'العذراء'], 'الدلو': ['الجوزاء', 'الميزان'], 'الحوت': ['السرطان', 'العقرب'] },
-                en: { 'Aries': ['Leo', 'Sagittarius'], 'Taurus': ['Virgo', 'Capricorn'], 'Gemini': ['Libra', 'Aquarius'], 'Cancer': ['Scorpio', 'Pisces'], 'Leo': ['Aries', 'Sagittarius'], 'Virgo': ['Taurus', 'Capricorn'], 'Scorpio': ['Cancer', 'Pisces'], 'Libra': ['Gemini', 'Aquarius'], 'Sagittarius': ['Aries', 'Leo'], 'Capricorn': ['Taurus', 'Virgo'], 'Aquarius': ['Gemini', 'Libra'], 'Pisces': ['Cancer', 'Scorpio'] }
-            };
+            const partnerInfo = partnerTraits[userPrimaryTrait] || partnerTraits['C'];
 
-            const partnerInfo = partnerTraitsData[state.lang][userPrimaryTrait];
-            const personalityCompatibility = compatibilityMatrix[userPrimaryTrait][partnerInfo.ideal];
             const compatibleSigns = zodiacCompatibility[state.lang][userZodiac] || [];
-            const overallScore = Math.round(personalityCompatibility);
+            const primaryCompatibleSign = compatibleSigns[0] || (state.lang === 'ar' ? 'الحمل' : 'Aries');
+            const personalityCompatibility = 85;
+            const zodiacCompatibilityScore = 85;
+            const overallScore = Math.round((personalityCompatibility + zodiacCompatibilityScore) / 2);
 
             return {
                 partnerPersonality: partnerInfo,
                 compatibleZodiacSigns: compatibleSigns,
-                primaryZodiacMatch: compatibleSigns[0] || (state.lang === 'ar' ? 'غير محدد' : 'Not specified'),
+                primaryZodiacMatch: primaryCompatibleSign,
                 compatibilityScore: overallScore
             };
         }
 
-        // ===== RENDER RESULT =====
-        function renderResult() {
-            const t = translations[state.lang];
-            const { html: personalityHtml, primaryTrait, mainTypeName, mainTypeDesc } = generatePersonalityAnalysis(state.userAnswers, state.userData);
-            const zodiacSign = getZodiacSign(state.userData.dob);
-            state.zodiacSign = zodiacSign;
-            const partnerAnalysis = generatePartnerAnalysis(primaryTrait, zodiacSign);
-            state.partnerAnalysis = partnerAnalysis;
-
-            // Generate text for sharing/copying
-            const resultSummary = `
-${t.welcome_title}
---------------------
-${t.personality_section}: ${mainTypeName}
-${mainTypeDesc}
---------------------
-${t.partner_section}: ${partnerAnalysis.partnerPersonality.name}
-${t.compatibility_title}: ${partnerAnalysis.compatibilityScore}%
-${t.zodiac_section}: ${zodiacSign}
---------------------
-اكتشف شخصيتك أنت أيضاً! ${window.location.href}
-            `.trim();
-            state.resultText = resultSummary;
-
-            return `
-                <div class="animate-fade-in space-y-8">
-                    <div class="text-center mb-10">
-                        <h2 class="text-3xl font-bold gradient-text mb-2">${t.welcome_title}</h2>
-                        <p class="text-gray-300">${t.lang === 'ar' ? 'تحليل شامل لشخصيتك وشريك حياتك المثالي' : 'A comprehensive analysis of your personality and ideal partner'}</p>
-                    </div>
-
-                    ${personalityHtml}
-
-                    <div class="glass-card rounded-xl p-6 mb-6">
-                        <h3 class="text-2xl font-bold gradient-text mb-4">${t.partner_analysis_title}</h3>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="text-xl font-bold text-pink-400 mb-3">${t.lang === 'ar' ? 'شخصية الشريك المثالي:' : 'Ideal Partner Personality:'}</h4>
-                                <p class="text-gray-300 mb-2 font-semibold">${partnerAnalysis.partnerPersonality.name}</p>
-                                <p class="text-gray-400 text-sm mb-4">${partnerAnalysis.partnerPersonality.desc}</p>
-                                <h5 class="font-semibold text-green-400 mb-2">${t.partner_traits}:</h5>
-                                <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                    ${partnerAnalysis.partnerPersonality.traits.map(trait => `<li>${trait}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold
-// ... (تكملة من منتصف دالة renderResult)
-                                <h4 class="text-xl font-bold text-blue-400 mb-3">${t.lang === 'ar' ? 'التوافق الفلكي:' : 'Zodiac Compatibility:'}</h4>
-                                <p class="text-gray-300 mb-2"><strong>${t.lang === 'ar' ? 'برجك:' : 'Your Sign:'}</strong> ${zodiacSign}</p>
-                                <p class="text-gray-300 mb-4"><strong>${t.lang === 'ar' ? 'الأبراج الأكثر توافقًا:' : 'Most Compatible Signs:'}</strong> ${partnerAnalysis.compatibleZodiacSigns.join('، ')}</p>
-                                <div class="text-center mb-4">
-                                    <div class="compatibility-score">${partnerAnalysis.compatibilityScore}%</div>
-                                    <p class="text-sm text-gray-400">${t.compatibility_title}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 border-t border-slate-700 pt-4">
-                            <h5 class="font-semibold text-purple-400 mb-2">${t.relationship_advice}:</h5>
-                            <ul class="list-disc list-inside text-gray-300 space-y-1">
-                                ${partnerAnalysis.partnerPersonality.advice.map(advice => `<li>${advice}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-4 justify-center">
-                        <button id="copyBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-copy mr-2"></i>${t.copy_btn}
-                        </button>
-                        <button id="shareBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-share-alt mr-2"></i>${t.share_btn}
-                        </button>
-                        <button id="restartBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                            <i class="fas fa-redo mr-2"></i>${t.restart_btn}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
         // ===== RENDER FUNCTIONS =====
-        function render() {
-            const t = translations[state.lang];
-            document.documentElement.lang = state.lang;
-            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
-            let html = `
-                <div class="fixed top-4 ${state.lang === 'ar' ? 'left-4' : 'right-4'} z-50">
-                    <button id="langToggle" class="bg-yellow-400 text-slate-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors">
-                        ${state.lang === 'ar' ? 'EN' : 'AR'}
-                    </button>
-                </div>
-            `;
-
-            switch (state.page) {
-                case 'userInfo':
-                    html += renderUserInfo();
-                    break;
-                case 'intro':
-                    html += renderIntro();
-                    break;
-                case 'quiz':
-                    html += renderQuiz();
-                    break;
-                case 'result':
-                    html += renderResult();
-                    break;
-            }
-
-            html += `
-                <footer class="mt-16 text-center text-gray-400 space-y-2 text-sm">
-                    <p class="font-semibold">${t.lang === 'ar' ? `جميع الحقوق محفوظة © ${new Date().getFullYear()} | تم التطوير بواسطة` : `All rights reserved © ${new Date().getFullYear()} | Developed by`} <strong>Mohammed Tarek</strong></p>
-                    <p>${t.footer2}</p>
-                </footer>
-            `;
-
-            document.getElementById('app').innerHTML = html;
-            setupEventListeners();
-        }
-
         function renderUserInfo() {
             const t = translations[state.lang];
             return `
                 <div class="animate-fade-in">
                     <div class="text-center mb-8">
                         <h1 class="text-4xl font-bold gradient-text mb-4">${t.welcome_title}</h1>
-                        <p class="text-gray-300 text-lg">${t.lang === 'ar' ? 'اكتشف شخصيتك الحقيقية ورفيق دربك المثالي' : 'Discover your true personality and ideal partner'}</p>
+                        <p class="text-gray-300 text-lg">اكتشف شخصيتك الحقيقية ورفيق دربك المثالي</p>
                     </div>
                     <div class="flex flex-col lg:flex-row gap-8 items-start">
-                        <div class="lg:w-1/3 w-full">
+                        <div class="lg:w-1/3">
                             <div id="ageCard" class="glass-card rounded-2xl p-6 text-center border-2 border-yellow-400/30">
                                 <div class="text-lg font-semibold mb-2">${t.age_label}</div>
                                 <div id="calculatedAge" class="text-5xl font-bold gradient-text mb-2">
                                     ${state.userData.age || '-'}
                                 </div>
-                                <div class="text-gray-400">${t.lang === 'ar' ? 'سنة' : 'Years'}</div>
+                                <div class="text-gray-400">سنة</div>
                             </div>
                         </div>
-                        <div class="lg:w-2/3 w-full">
+                        <div class="lg:w-2/3">
                             <div class="glass-card rounded-xl p-6">
                                 <h3 class="text-2xl font-bold mb-4">${t.user_info_title}</h3>
                                 <p class="text-gray-300 mb-6">${t.user_info_desc}</p>
@@ -814,7 +797,7 @@ ${t.zodiac_section}: ${zodiacSign}
                                     <div>
                                         <label class="block text-sm font-semibold mb-2">${t.gender_label}</label>
                                         <select id="gender" class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:border-yellow-400 focus:outline-none">
-                                            <option value="">${t.lang === 'ar' ? 'اختر الجنس' : 'Select Gender'}</option>
+                                            <option value="">اختر الجنس</option>
                                             <option value="male" ${state.userData.gender === 'male' ? 'selected' : ''}>${t.male}</option>
                                             <option value="female" ${state.userData.gender === 'female' ? 'selected' : ''}>${t.female}</option>
                                             <option value="other" ${state.userData.gender === 'other' ? 'selected' : ''}>${t.other}</option>
@@ -823,8 +806,7 @@ ${t.zodiac_section}: ${zodiacSign}
                                     <div>
                                         <label class="block text-sm font-semibold mb-2">${t.dob_label}</label>
                                         <input type="date" id="dob" value="${state.userData.dob || ''}" 
-                                               class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:border-yellow-400 focus:outline-none"
-                                               style="color-scheme: dark;">
+                                               class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg focus:border-yellow-400 focus:outline-none">
                                     </div>
                                     <button id="submitUserInfo" class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all transform hover:scale-105">
                                         ${t.submit_user_info}
@@ -851,7 +833,7 @@ ${t.zodiac_section}: ${zodiacSign}
                             <p>${t.intro_p2}</p>
                         </div>
                         <button id="startBtn" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg text-xl hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105">
-                            <i class="fas fa-rocket ${state.lang === 'ar' ? 'ml-2' : 'mr-2'}"></i>${t.start_btn}
+                            <i class="fas fa-rocket mr-2"></i>${t.start_btn}
                         </button>
                     </div>
                 </div>
@@ -862,7 +844,7 @@ ${t.zodiac_section}: ${zodiacSign}
             const t = translations[state.lang];
             const questionsData = questions[state.lang];
             const q = questionsData[state.currentQ];
-            const progress = Math.floor(((state.currentQ + 1) / questionsData.length) * 100);
+            const progress = Math.floor((state.currentQ / questionsData.length) * 100);
             return `
                 <div class="animate-fade-in">
                     <div class="mb-6">
@@ -878,33 +860,134 @@ ${t.zodiac_section}: ${zodiacSign}
                         <h3 class="text-2xl font-bold mb-6 text-center">${state.currentQ + 1}. ${q.text}</h3>
                         <div class="space-y-3">
                             ${q.options.map((opt, idx) => `
-                                <button class="option-btn w-full p-4 rounded-lg text-${state.lang === 'ar' ? 'right' : 'left'} transition-all ${
+                                <button class="option-btn w-full p-4 rounded-lg text-right transition-all ${
                                     state.userAnswers[state.currentQ] === idx ? 'selected' : ''
                                 }" data-opt="${idx}">
                                     <div class="flex items-center justify-between">
+                                        <i class="fas fa-circle text-xs ${state.userAnswers[state.currentQ] === idx ? 'text-yellow-400' : 'text-gray-500'}"></i>
                                         <span>${opt.text}</span>
-                                        <i class="fas fa-check-circle text-lg ${state.userAnswers[state.currentQ] === idx ? 'text-yellow-400' : 'text-transparent'}"></i>
                                     </div>
                                 </button>
                             `).join('')}
                         </div>
                         <button id="nextBtn" class="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all">
-                            ${state.currentQ === questionsData.length - 1 ? t.final_results_btn : t.next_btn}
-                            <i class="fas ${state.lang === 'ar' ? 'fa-arrow-left mr-2' : 'fa-arrow-right ml-2'}"></i>
+                            ${state.currentQ === questionsData.length - 1 ? 'عرض النتائج' : t.next_btn}
+                            <i class="fas fa-arrow-left mr-2"></i>
                         </button>
                     </div>
                 </div>
             `;
         }
 
+        function renderResult() {
+            const t = translations[state.lang];
+            const { html: personalityHtml, primaryTrait } = generatePersonalityAnalysis(state.userAnswers, state.userData);
+            const zodiacSign = getZodiacSign(state.userData.dob);
+            const partnerAnalysis = generatePartnerAnalysis(state.personalityScore, zodiacSign);
+
+            return `
+                <div class="animate-fade-in space-y-8">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold gradient-text mb-2">${t.welcome_title}</h2>
+                        <p class="text-gray-300">تحليل شامل لشخصيتك وشريك حياتك المثالي</p>
+                    </div>
+
+                    ${personalityHtml}
+
+                    <div class="glass-card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold gradient-text mb-4">تحليل مفصل للشريك المثالي</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-xl font-bold text-pink-400 mb-3">نوع شخصية الشريك المثالي:</h4>
+                                <p class="text-gray-300 mb-4">${partnerAnalysis.partnerPersonality.name}</p>
+                                <p class="text-gray-300 mb-4">${partnerAnalysis.partnerPersonality.description}</p>
+                                <h5 class="font-semibold text-green-400 mb-2">صفاته المثالية:</h5>
+                                <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                    ${partnerAnalysis.partnerPersonality.traits.map(trait => `<li>${trait}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-blue-400 mb-3">التوافق الفلكي مع برجك:</h4>
+                                <p class="text-gray-300 mb-2"><strong>برجك:</strong> ${zodiacSign}</p>
+                                <p class="text-gray-300 mb-2"><strong>البرج الأكثر توافقًا:</strong> ${partnerAnalysis.primaryZodiacMatch}</p>
+                                <p class="text-gray-300 mb-4">الأبراج المتوافقة: ${partnerAnalysis.compatibleZodiacSigns.join('، ')}</p>
+                                <div class="text-center mb-4">
+                                    <div class="compatibility-score">${partnerAnalysis.compatibilityScore}%</div>
+                                    <p class="text-sm text-gray-400">نسبة التوافق الكلية</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h5 class="font-semibold text-blue-400 mb-2">نصائح للعلاقة:</h5>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                ${partnerAnalysis.partnerPersonality.advice.map(advice => `<li>${advice}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <button id="shareBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                            <i class="fas fa-share mr-2"></i>${t.share_btn}
+                        </button>
+                        <button id="copyBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                            <i class="fas fa-copy mr-2"></i>${t.copy_btn}
+                        </button>
+                        <button id="restartBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                            <i class="fas fa-redo mr-2"></i>${t.restart_btn}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== RENDER =====
+        function render() {
+            const t = translations[state.lang];
+            document.documentElement.lang = state.lang;
+            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+
+            let html = `
+                <div class="fixed top-4 right-4 z-50">
+                    <button id="langToggle" class="bg-yellow-400 text-slate-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors">
+                        ${state.lang === 'ar' ? 'EN' : 'AR'}
+                    </button>
+                </div>
+            `;
+
+            switch (state.page) {
+                case 'userInfo':
+                    html += renderUserInfo();
+                    break;
+                case 'intro':
+                    html += renderIntro();
+                    break;
+                case 'quiz':
+                    html += renderQuiz();
+                    break;
+                case 'result':
+                    html += renderResult();
+                    break;
+            }
+
+            html += `
+                <footer class="mt-16 text-center text-gray-400 space-y-2">
+                    <p class="font-semibold">${t.footer1}</p>
+                    <p>${t.footer2}</p>
+                </footer>
+            `;
+
+            document.getElementById('app').innerHTML = html;
+            setupEventListeners();
+        }
+
         // ===== EVENT LISTENERS =====
         function setupEventListeners() {
-            document.getElementById('app').addEventListener('click', handleClick);
+            document.addEventListener('click', handleClick);
             const dobInput = document.getElementById('dob');
             if (dobInput) {
                 dobInput.addEventListener('input', function() {
                     const date = this.value;
-                    if (date && new Date(date) < new Date()) {
+                    if (date && new Date(date) <= new Date()) {
                         const age = calculateAge(date);
                         document.getElementById('calculatedAge').textContent = age;
                         state.userData.dob = date;
@@ -913,7 +996,7 @@ ${t.zodiac_section}: ${zodiacSign}
                         document.getElementById('calculatedAge').textContent = '-';
                         state.userData.dob = '';
                         state.userData.age = '';
-                        if (date) showToast(translations[state.lang].alert_invalid_dob);
+                        if (date) showToast('تاريخ ميلاد غير صحيح');
                     }
                 });
             }
@@ -927,14 +1010,11 @@ ${t.zodiac_section}: ${zodiacSign}
 
         function handleClick(e) {
             const t = translations[state.lang];
-            const target = e.target.closest('button');
-            if (!target) return;
-
-            if (target.id === 'langToggle') {
+            if (e.target.id === 'langToggle') {
                 state.lang = state.lang === 'ar' ? 'en' : 'ar';
                 render();
             }
-            if (target.id === 'submitUserInfo') {
+            if (e.target.id === 'submitUserInfo') {
                 const { age, gender, dob } = state.userData;
                 if (!age || !gender || !dob) {
                     showToast(t.alert_missing_fields);
@@ -943,18 +1023,18 @@ ${t.zodiac_section}: ${zodiacSign}
                 state.page = 'intro';
                 render();
             }
-            if (target.id === 'startBtn') {
+            if (e.target.id === 'startBtn') {
                 state.page = 'quiz';
                 state.currentQ = 0;
                 state.userAnswers = [];
                 render();
             }
-            if (target.classList.contains('option-btn')) {
-                const idx = parseInt(target.getAttribute('data-opt'));
+            if (e.target.classList.contains('option-btn')) {
+                const idx = parseInt(e.target.getAttribute('data-opt'));
                 state.userAnswers[state.currentQ] = idx;
                 render();
             }
-            if (target.id === 'nextBtn') {
+            if (e.target.id === 'nextBtn') {
                 const questionsData = questions[state.lang];
                 if (state.userAnswers[state.currentQ] === undefined) {
                     showToast(t.alert_no_answer);
@@ -964,13 +1044,14 @@ ${t.zodiac_section}: ${zodiacSign}
                     state.currentQ++;
                     render();
                 } else {
+                    state.personalityScore = analyzePersonality(state.userAnswers);
                     state.page = 'result';
                     render();
                 }
             }
-            if (target.id === 'restartBtn') {
+            if (e.target.id === 'restartBtn') {
                 state = {
-                    ...state, // keep lang
+                    lang: state.lang,
                     page: 'userInfo',
                     userData: { age: '', gender: '', dob: '' },
                     currentQ: 0,
@@ -981,19 +1062,27 @@ ${t.zodiac_section}: ${zodiacSign}
                 };
                 render();
             }
-            if (target.id === 'copyBtn') {
-                copyToClipboard(state.resultText);
-            }
-            if (target.id === 'shareBtn') {
+            if (e.target.id === 'shareBtn') {
+                const analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
+                const textContent = analysis.html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                const shareText = `${t.welcome_title}\n${textContent}\n\nاكتشف شخصيتك في: ${window.location.href}`;
                 if (navigator.share) {
                     navigator.share({
                         title: t.welcome_title,
-                        text: state.resultText,
+                        text: shareText,
                         url: window.location.href
+                    }).catch(() => {
+                        copyToClipboard(shareText);
                     });
                 } else {
-                    copyToClipboard(state.resultText);
+                    copyToClipboard(shareText);
                 }
+            }
+            if (e.target.id === 'copyBtn') {
+                const analysis = generatePersonalityAnalysis(state.userAnswers, state.userData);
+                const textContent = analysis.html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                const copyText = `${t.welcome_title}\n${textContent}\n\nاكتشف شخصيتك في: ${window.location.href}`;
+                copyToClipboard(copyText);
             }
         }
 
