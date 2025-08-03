@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>غرفة الأسرار | اكتشف شخصيتك</title>
-
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
@@ -118,9 +118,11 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 1rem;
             padding: 2rem;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             color: white;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .toggle-switch {
             position: relative;
@@ -155,6 +157,10 @@
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
         }
         .btn-secondary {
             background: transparent;
@@ -164,18 +170,112 @@
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
+        .btn-secondary:hover {
+            background: rgba(203, 213, 225, 0.1);
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fbbf24;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .history-item {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .history-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateX(8px);
+        }
+        .ad-preview {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            min-height: 80px;
+            overflow: auto;
+        }
+        .zodiac-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .compatibility-meter {
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .compatibility-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        .analysis-section {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        .analysis-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+        .analysis-section ul {
+            list-style-type: none;
+            padding-right: 0;
+        }
+        .analysis-section li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-right: 20px;
+        }
+        .analysis-section li:before {
+            content: "•";
+            position: absolute;
+            right: 0;
+            color: #fbbf24;
+        }
+        .section-d { border-left-color: #ef4444; }
+        .section-i { border-left-color: #f59e0b; }
+        .section-s { border-left-color: #10b981; }
+        .section-c { border-left-color: #3b82f6; }
+        .section-partner { border-left-color: #8b5cf6; }
+        .section-zodiac { border-left-color: #ec4899; }
         @media print {
             body { background: white !important; color: black !important; }
-            .glass-card { background: white !important; border: 1px solid #ccc !important; }
-            .ad-banner, .btn-primary, .btn-secondary, #settingsBtn, #langToggle { display: none !important; }
+            .glass-card { background: white !important; border: 1px solid #ccc !important; color: black !important; }
+            .ad-banner, .btn-primary, .btn-secondary, #settingsBtn, #langToggle, .history-item { display: none !important; }
+            .chart-container { display: block !important; }
+            .gradient-text { -webkit-text-fill-color: #d97706 !important; }
+            .analysis-section { border: 1px solid #ccc !important; }
         }
     </style>
 </head>
 <body class="text-white">
     <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
     <div id="toast"></div>
-
+    
     <!-- لوحة الإدارة -->
     <div id="settingsOverlay" class="settings-overlay">
         <div class="settings-panel">
@@ -186,57 +286,93 @@
                 <input type="password" id="adminPassword" class="w-full px-3 py-2 bg-slate-700 rounded border border-slate-600" placeholder="أدخل كلمة المرور">
                 <button id="loginBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 mt-2 rounded">دخول</button>
             </div>
-
             <div id="adminPanel" style="display: none;">
-                <h4 class="font-semibold mb-3">أدخل كود الإعلانات</h4>
-
+                <h4 class="font-semibold mb-3">إدارة الإعلانات</h4>
+                
                 <!-- الإعلان العلوي -->
-                <div class="mb-4">
-                    <label class="block mb-2 text-sm">الإعلان العلوي (Top)</label>
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium">الإعلان العلوي (Top)</label>
+                        <div class="flex items-center">
+                            <div class="toggle-switch" id="topAdToggle"></div>
+                            <span class="text-sm mr-2">إظهار</span>
+                        </div>
+                    </div>
                     <textarea id="topAdCode" class="w-full px-3 py-2 bg-slate-800 text-white border border-slate-600 rounded h-24 font-mono text-sm" placeholder="<script src='...'></script>"></textarea>
-                    <div class="flex items-center mt-2">
-                        <div class="toggle-switch" id="topAdToggle"></div>
-                        <span class="text-sm mr-2">إظهار</span>
+                    <div class="mt-2">
+                        <label class="text-xs text-gray-400">معاينة:</label>
+                        <div id="topAdPreview" class="ad-preview"></div>
                     </div>
                 </div>
-
+                
                 <!-- الإعلان الجانبي -->
-                <div class="mb-4">
-                    <label class="block mb-2 text-sm">الإعلان الجانبي (Side)</label>
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium">الإعلان الجانبي (Side)</label>
+                        <div class="flex items-center">
+                            <div class="toggle-switch" id="sideAdToggle"></div>
+                            <span class="text-sm mr-2">إظهار</span>
+                        </div>
+                    </div>
                     <textarea id="sideAdCode" class="w-full px-3 py-2 bg-slate-800 text-white border border-slate-600 rounded h-24 font-mono text-sm" placeholder="<script src='...'></script>"></textarea>
-                    <div class="flex items-center mt-2">
-                        <div class="toggle-switch" id="sideAdToggle"></div>
-                        <span class="text-sm mr-2">إظهار</span>
+                    <div class="mt-2">
+                        <label class="text-xs text-gray-400">معاينة:</label>
+                        <div id="sideAdPreview" class="ad-preview"></div>
                     </div>
                 </div>
-
+                
                 <!-- الإعلان السفلي -->
-                <div class="mb-4">
-                    <label class="block mb-2 text-sm">الإعلان السفلي (Bottom)</label>
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium">الإعلان السفلي (Bottom)</label>
+                        <div class="flex items-center">
+                            <div class="toggle-switch" id="bottomAdToggle"></div>
+                            <span class="text-sm mr-2">إظهار</span>
+                        </div>
+                    </div>
                     <textarea id="bottomAdCode" class="w-full px-3 py-2 bg-slate-800 text-white border border-slate-600 rounded h-24 font-mono text-sm" placeholder="<script src='...'></script>"></textarea>
-                    <div class="flex items-center mt-2">
-                        <div class="toggle-switch" id="bottomAdToggle"></div>
-                        <span class="text-sm mr-2">إظهار</span>
+                    <div class="mt-2">
+                        <label class="text-xs text-gray-400">معاينة:</label>
+                        <div id="bottomAdPreview" class="ad-preview"></div>
                     </div>
                 </div>
-
+                
+                <!-- إضافة إعلان جديد -->
+                <div class="mb-6 p-4 bg-slate-800 rounded-lg">
+                    <h5 class="font-semibold mb-3">إضافة إعلان جديد</h5>
+                    <div class="mb-3">
+                        <label class="block text-sm mb-1">موضع الإعلان</label>
+                        <select id="newAdPosition" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded">
+                            <option value="top">الإعلان العلوي</option>
+                            <option value="side">الإعلان الجانبي</option>
+                            <option value="bottom">الإعلان السفلي</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-sm mb-1">كود الإعلان</label>
+                        <textarea id="newAdCode" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded h-24 font-mono text-sm" placeholder="أدخل كود الإعلان هنا"></textarea>
+                    </div>
+                    <button id="addNewAd" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded">إضافة الإعلان</button>
+                </div>
+                
                 <button id="saveSettings" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded mt-4">حفظ الإعدادات</button>
                 <button id="closeSettings" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded mt-2">إغلاق</button>
             </div>
         </div>
     </div>
-
+    
     <script>
         // ===== الحالة =====
         const state = {
             currentQ: 0,
             userAnswers: [],
-            userData: { age: null, gender: '', dob: '' },
+            userData: { gender: '', dob: '' },
             lang: 'ar',
             page: 'userInfo',
-            resultText: ''
+            resultText: '',
+            resultData: null
         };
-
+        
         // ===== إعدادات الإعلانات =====
         const defaultAdSettings = {
             top: true,
@@ -246,23 +382,85 @@
             sideCode: '',
             bottomCode: ''
         };
-
+        
         function saveAdSettings(settings) {
             localStorage.setItem('adSettings', JSON.stringify(settings));
         }
-
+        
         function getAdSettings() {
             const saved = localStorage.getItem('adSettings');
             return saved ? JSON.parse(saved) : defaultAdSettings;
         }
-
+        
+        // ===== تخزين النتائج =====
+        function saveResult(resultData) {
+            const results = getSavedResults();
+            results.push({
+                ...resultData,
+                date: new Date().toISOString(),
+                userData: { ...state.userData }
+            });
+            localStorage.setItem('personalityResults', JSON.stringify(results));
+        }
+        
+        function getSavedResults() {
+            const saved = localStorage.getItem('personalityResults');
+            return saved ? JSON.parse(saved) : [];
+        }
+        
+        // ===== تجزئة كلمة المرور =====
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return hash.toString();
+        }
+        
+        // ===== حساب العمر من تاريخ الميلاد =====
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+        
+        // ===== حساب البرج الفلكي =====
+        function calculateZodiac(birthDate) {
+            const date = new Date(birthDate);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'aries';
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'taurus';
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'gemini';
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'cancer';
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'leo';
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'virgo';
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'libra';
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'scorpio';
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'sagittarius';
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'pisces';
+            
+            return 'unknown';
+        }
+        
         // ===== الترجمات =====
         const translations = {
             ar: {
                 welcome_title: "مرحباً في غرفة الأسرار",
                 user_info_title: "معلوماتك الشخصية",
                 user_info_desc: "دعنا نتعرف عليك أكثر لنقدم لك تحليلاً دقيقاً",
-                age_label: "العمر",
                 gender_label: "الجنس",
                 dob_label: "تاريخ الميلاد",
                 submit_user_info: "التالي",
@@ -278,10 +476,16 @@
                 restart_btn: "ابدأ من جديد",
                 share_btn: "مشاركة النتيجة",
                 copy_btn: "نسخ النتيجة",
+                history_btn: "سجل النتائج",
+                print_btn: "طباعة النتيجة",
+                settings_btn: "الإعدادات",
+                lang_btn: "English",
                 alert_missing_fields: "يرجى ملء جميع الحقول",
                 alert_invalid_dob: "تاريخ ميلاد غير صحيح",
                 alert_no_answer: "يرجى اختيار إجابة",
                 alert_copied: "تم نسخ النتيجة بنجاح!",
+                alert_shared: "تمت مشاركة النتيجة بنجاح!",
+                loading_analysis: "جاري تحليل شخصيتك...",
                 footer1: "جميع الحقوق محفوظة © 2025 | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong>",
                 footer2: "مطور بحب ❤️ لمساعدتك في فهم نفسك أكثر",
                 male: "ذكر",
@@ -293,13 +497,41 @@
                 analysis_intro: "بعد تحليل إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:",
                 personality_section: "تحليل شخصيتك",
                 partner_section: "الشريك المثالي لك",
-                partner_analysis_title: "تحليل مفصل للشريك المثالي"
+                partner_analysis_title: "تحليل مفصل للشريك المثالي",
+                history_title: "سجل النتائج السابقة",
+                no_history: "لا توجد نتائج سابقة",
+                chart_title: "تحليل الشخصية (نموذج DISC)",
+                age_label: "العمر",
+                zodiac_sign: "برجك",
+                
+                // أقسام التحليل المفصل
+                overview: "نظرة عامة",
+                core_traits: "السمات الأساسية",
+                psychological_profile: "الملف النفسي",
+                work_behavior: "السلوك في العمل",
+                relationship_behavior: "السلوك في العلاقات",
+                challenges: "التحديات",
+                development_tips: "نصائح للتنمية",
+                stress_management: "إدارة الضغط",
+                learning_style: "أسلوب التعلم",
+                values_principles: "القيم والمبادئ",
+                communication_patterns: "أنماط التواصل",
+                decision_making: "اتخاذ القرار",
+                leadership_style: "أسلوب القيادة",
+                conflict_resolution: "حل النزاعات",
+                motivation_factors: "عوامل التحفيز",
+                ideal_environment: "البيئة المثالية",
+                growth_areas: "مجالات النمو",
+                life_balance: "توازن الحياة",
+                career_paths: "المسارات المهنية",
+                relationship_needs: "احتياجات العلاقة",
+                compatibility_factors: "عوامل التوافق",
+                long_term_potential: "الإمكانات طويلة الأمد"
             },
             en: {
                 welcome_title: "Welcome to Chamber of Secrets",
                 user_info_title: "Your Personal Information",
                 user_info_desc: "Let us know you better to provide accurate analysis",
-                age_label: "Age",
                 gender_label: "Gender",
                 dob_label: "Date of Birth",
                 submit_user_info: "Next",
@@ -315,10 +547,16 @@
                 restart_btn: "Start Over",
                 share_btn: "Share Result",
                 copy_btn: "Copy Result",
+                history_btn: "Result History",
+                print_btn: "Print Result",
+                settings_btn: "Settings",
+                lang_btn: "العربية",
                 alert_missing_fields: "Please fill all fields",
                 alert_invalid_dob: "Invalid date of birth",
                 alert_no_answer: "Please select an answer",
                 alert_copied: "Result copied successfully!",
+                alert_shared: "Result shared successfully!",
+                loading_analysis: "Analyzing your personality...",
                 footer1: "All rights reserved © 2025 | Designed and developed by <strong>Mohammed Tarek</strong>",
                 footer2: "Developed with love ❤️ to help you understand yourself better",
                 male: "Male",
@@ -330,10 +568,303 @@
                 analysis_intro: "After analyzing your answers, your personality type is:",
                 personality_section: "Your Personality Analysis",
                 partner_section: "Your Ideal Partner",
-                partner_analysis_title: "Detailed Partner Analysis"
+                partner_analysis_title: "Detailed Partner Analysis",
+                history_title: "Previous Results History",
+                no_history: "No previous results found",
+                chart_title: "Personality Analysis (DISC Model)",
+                age_label: "Age",
+                zodiac_sign: "Your Zodiac",
+                
+                // أقسام التحليل المفصل
+                overview: "Overview",
+                core_traits: "Core Traits",
+                psychological_profile: "Psychological Profile",
+                work_behavior: "Work Behavior",
+                relationship_behavior: "Relationship Behavior",
+                challenges: "Challenges",
+                development_tips: "Development Tips",
+                stress_management: "Stress Management",
+                learning_style: "Learning Style",
+                values_principles: "Values & Principles",
+                communication_patterns: "Communication Patterns",
+                decision_making: "Decision Making",
+                leadership_style: "Leadership Style",
+                conflict_resolution: "Conflict Resolution",
+                motivation_factors: "Motivation Factors",
+                ideal_environment: "Ideal Environment",
+                growth_areas: "Growth Areas",
+                life_balance: "Life Balance",
+                career_paths: "Career Paths",
+                relationship_needs: "Relationship Needs",
+                compatibility_factors: "Compatibility Factors",
+                long_term_potential: "Long-term Potential"
             }
         };
-
+        
+        // ===== بيانات الأبراج الفلكية =====
+        const zodiacData = {
+            ar: {
+                aries: { name: "الحمل", icon: "♈", dates: "21 مارس - 19 أبريل", element: "نار", traits: "شجاع، طموح، مغامر" },
+                taurus: { name: "الثور", icon: "♉", dates: "20 أبريل - 20 مايو", element: "أرض", traits: "مثابر، موثوق، عملي" },
+                gemini: { name: "الجوزاء", icon: "♊", dates: "21 مايو - 20 يونيو", element: "هواء", traits: "ذكي، متكيف، اجتماعي" },
+                cancer: { name: "السرطان", icon: "♋", dates: "21 يونيو - 22 يوليو", element: "ماء", traits: "حنون، وقائي، بديهي" },
+                leo: { name: "الأسد", icon: "♌", dates: "23 يوليو - 22 أغسطس", element: "نار", traits: "واثق، كريم، قيادي" },
+                virgo: { name: "العذراء", icon: "♍", dates: "23 أغسطس - 22 سبتمبر", element: "أرض", traits: "دقيق، عملي، مساعد" },
+                libra: { name: "الميزان", icon: "♎", dates: "23 سبتمبر - 22 أكتوبر", element: "هواء", traits: "متناغم، عادل، اجتماعي" },
+                scorpio: { name: "العقرب", icon: "♏", dates: "23 أكتوبر - 21 نوفمبر", element: "ماء", traits: "شغوف، كثيف، محول" },
+                sagittarius: { name: "القوس", icon: "♐", dates: "22 نوفمبر - 21 ديسمبر", element: "نار", traits: "متفائل، حر، فلسفي" },
+                capricorn: { name: "الجدي", icon: "♑", dates: "22 ديسمبر - 19 يناير", element: "أرض", traits: "مسؤول، منضبط، طموح" },
+                aquarius: { name: "الدلو", icon: "♒", dates: "20 يناير - 18 فبراير", element: "هواء", traits: "مبتكر، مستقل، إنساني" },
+                pisces: { name: "الحوت", icon: "♓", dates: "19 فبراير - 20 مارس", element: "ماء", traits: "حساس، بديهي، فني" }
+            },
+            en: {
+                aries: { name: "Aries", icon: "♈", dates: "Mar 21 - Apr 19", element: "Fire", traits: "Brave, ambitious, adventurous" },
+                taurus: { name: "Taurus", icon: "♉", dates: "Apr 20 - May 20", element: "Earth", traits: "Persistent, reliable, practical" },
+                gemini: { name: "Gemini", icon: "♊", dates: "May 21 - Jun 20", element: "Air", traits: "Intelligent, adaptable, social" },
+                cancer: { name: "Cancer", icon: "♋", dates: "Jun 21 - Jul 22", element: "Water", traits: "Caring, protective, intuitive" },
+                leo: { name: "Leo", icon: "♌", dates: "Jul 23 - Aug 22", element: "Fire", traits: "Confident, generous, leader" },
+                virgo: { name: "Virgo", icon: "♍", dates: "Aug 23 - Sep 22", element: "Earth", traits: "Precise, practical, helpful" },
+                libra: { name: "Libra", icon: "♎", dates: "Sep 23 - Oct 22", element: "Air", traits: "Harmonious, fair, social" },
+                scorpio: { name: "Scorpio", icon: "♏", dates: "Oct 23 - Nov 21", element: "Water", traits: "Passionate, intense, transformative" },
+                sagittarius: { name: "Sagittarius", icon: "♐", dates: "Nov 22 - Dec 21", element: "Fire", traits: "Optimistic, free, philosophical" },
+                capricorn: { name: "Capricorn", icon: "♑", dates: "Dec 22 - Jan 19", element: "Earth", traits: "Responsible, disciplined, ambitious" },
+                aquarius: { name: "Aquarius", icon: "♒", dates: "Jan 20 - Feb 18", element: "Air", traits: "Innovative, independent, humanitarian" },
+                pisces: { name: "Pisces", icon: "♓", dates: "Feb 19 - Mar 20", element: "Water", traits: "Sensitive, intuitive, artistic" }
+            }
+        };
+        
+        // ===== توافق الأبراج =====
+        const zodiacCompatibility = {
+            ar: {
+                aries: ["leo", "sagittarius", "gemini", "aquarius"],
+                taurus: ["virgo", "capricorn", "cancer", "pisces"],
+                gemini: ["libra", "aquarius", "aries", "leo"],
+                cancer: ["scorpio", "pisces", "taurus", "virgo"],
+                leo: ["aries", "sagittarius", "gemini", "libra"],
+                virgo: ["taurus", "capricorn", "cancer", "scorpio"],
+                libra: ["gemini", "aquarius", "leo", "sagittarius"],
+                scorpio: ["cancer", "pisces", "virgo", "capricorn"],
+                sagittarius: ["aries", "leo", "libra", "aquarius"],
+                capricorn: ["taurus", "virgo", "scorpio", "pisces"],
+                aquarius: ["gemini", "libra", "aries", "sagittarius"],
+                pisces: ["cancer", "scorpio", "taurus", "capricorn"]
+            },
+            en: {
+                aries: ["leo", "sagittarius", "gemini", "aquarius"],
+                taurus: ["virgo", "capricorn", "cancer", "pisces"],
+                gemini: ["libra", "aquarius", "aries", "leo"],
+                cancer: ["scorpio", "pisces", "taurus", "virgo"],
+                leo: ["aries", "sagittarius", "gemini", "libra"],
+                virgo: ["taurus", "capricorn", "cancer", "scorpio"],
+                libra: ["gemini", "aquarius", "leo", "sagittarius"],
+                scorpio: ["cancer", "pisces", "virgo", "capricorn"],
+                sagittarius: ["aries", "leo", "libra", "aquarius"],
+                capricorn: ["taurus", "virgo", "scorpio", "pisces"],
+                aquarius: ["gemini", "libra", "aries", "sagittarius"],
+                pisces: ["cancer", "scorpio", "taurus", "capricorn"]
+            }
+        };
+        
+        // ===== تحليل الشخصية المفصل =====
+        const personalityAnalysis = {
+            ar: {
+                D: {
+                    overview: "شخصية قيادية طبيعية تمتلك رؤية واضحة وقدرة على تحقيق الأهداف. تتميز بالثقة العالية في النفس والقدرة على اتخاذ قرارات حاسمة. تسعى دائماً للسيطرة والقيادة وتحقيق النتائج الملموسة.",
+                    core_traits: "قيادي، حاسم، مبادر، تنافسي، مستقل، جريء، طموح، عملي، نتيجي، مباشر",
+                    psychological_profile: "يمتلك عقلية تحليلية سريعة وقدرة على رؤية الصورة الكبيرة. يميل إلى التفكير الاستراتيجي والتخطيط طويل الأمد. يشعر بالراحة عندما يكون في موقع السلطة والتحكم. قد يكون أحياناً صبوراً لكنه يكره التأخير والمماطلة.",
+                    work_behavior: "في بيئة العمل، يكون شخصاً فعالاً ومنتجاً يركز على تحقيق الأهداف. يفضل بيئة العمل سريعة الخطى والتحديات. يميل إلى إدارة الفرق وتوجيهها نحو تحقيق النتائج. قد يكون صارماً في توقعاته لكنه عادل وموضوعي.",
+                    relationship_behavior: "في العلاقات الشخصية، يكون شريكاً قوياً وداعماً لكنه يحتاج إلى مساحة شخصية. يقدر الشريك المستقل والواثق الذي يفهم طبيعته التنافسية. قد يكون أحياناً مشغولاً بأهدافه المهنية مما يؤثر على وقت العلاقة.",
+                    challenges: "أبرز التحديات التي تواجه هذه الشخصية include الميل إلى السيطرة الزائدة، قلة الصبر أحياناً، صعوبة الاستماع للآخرين، والتركيز المفرط على النتائج على حساب العلاقات.",
+                    development_tips: "للتنمية الشخصية، يجب العمل على تطوير مهارات الاستماع الفعال، تعلم التعاطف، ممارسة الصبر، والتوازن بين العمل والحياة الشخصية. كما ينصح بتطوير مهارات العمل الجماعي وتقدير مساهمات الآخرين.",
+                    stress_management: "عند الضغط، يميل إلى مواجهة المواقف مباشرة والعمل بجدية لحلها. قد يكون عرضة للإرهاق بسبب إصراره على تحقيق النتائج. يحتاج إلى تعلم تقنيات الاسترخاء وتخصيص وقت للراحة.",
+                    learning_style: "يتعلم بشكل أفضل من خلال التجربة العملية والتحديات. يفضل التعلم السريع والموجه نحو النتائج. يستفيد من التدريب العملي وورش العمل التفاعلية.",
+                    values_principles: "يقدر الكفاءة، النتائج، الاستقلالية، القيادة، الإنجاز، النزاهة، الشجاعة، والابتكار. يؤمن بأهمية تحقيق الأهداف والتميز في كل ما يفعله.",
+                    communication_patterns: "يتسم تواصله بالوضوح والمباشرة. يفضل الرسائل المختصرة والمحددة. قد يكون أحياناً حاداً في تعبيره لكنه صادق وواضح. يستخدم لغة الجسد القوية للتعبير عن ثقته.",
+                    decision_making: "يتخذ قرارات سريعة وحاسمة بناءً على الحقائق والمنطق. يعتمد على حدسه وخبرته. لا يخاف من المخاطر المحسوبة ويستعد لتحمل المسؤولية عن قراراته.",
+                    leadership_style: "قيادته مباشرة وتوجيهية. يوضح التوقعات ويعطي تعليمات واضحة. يشجع على المبادرة ويكافئ الإنجاز. قد يكون صارماً لكنه عادل ويقدر الكفاءة.",
+                    conflict_resolution: "يواجه النزاعات مباشرة وبشجاعة. يفضل حل المشكلات بسرعة والانتقال إلى الأمام. قد يكون أحياناً غير مرن في البحث عن حلول وسطى.",
+                    motivation_factors: "يتحفزه التحدي، السلطة، النتائج، الاعتراف بإنجازاته، الفرص للتقدم، والمنافسة. يشعر بالرضا عندما يحقق أهدافه ويؤثر على الآخرين.",
+                    ideal_environment: "بيئة عمل ديناميكية وسريعة الخطى توفر له فرصاً للقيادة والتحدي. يفضل العمل مع أشخاص أكفاء ومستقلين. يحتاج إلى مساحة عمل خاصة واستقلالية في اتخاذ القرار.",
+                    growth_areas: "مجالات النمو الرئيسية include تطوير المهارات الشخصية، التعاطف، الصبر، العمل الجماعي، والتوازن بين العمل والحياة. كما يحتاج إلى تعلم فنون التفاوض والتأثير.",
+                    life_balance: "يميل إلى التركيز المفرط على العمل على حساب الحياة الشخصية. يحتاج إلى بذل جهد واعٍ لتحقيق توازن صحي بين المهام المهنية والعلاقات الشخصية والصحة.",
+                    career_paths: "المسارات المهنية المناسبة include الإدارة التنفيذية، ريادة الأعمال، المبيعات، القيادة العسكرية، الاستشارات الإدارية، والتدريب على القيادة.",
+                    relationship_needs: "في العلاقة، يحتاج إلى شريك مستقل وواثق يدعم طموحاته. يقدر الشريك الذي يفهم حاجته للمساحة الشخصية ويحترم تركيزه على العمل. يحتاج إلى تقدير وإعجاب بإنجازاته.",
+                    compatibility_factors: "عوامل التوافق الرئيسية include الاستقلالية، الثقة، الطموح، الدعم المتبادل، الفهم لطبيعة العمل، والقدرة على التواصل المباشر. التوافق الجيد يتطلب شريكاً لا يشعر بالتهديد من نجاحاته.",
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يفهم ويقدر طبيعته القيادية. النجاح يتطلب توازناً بين الطموحات المهنية والحياة الشخصية، واحتراماً متبادلاً للاستقلالية والإنجازات."
+                },
+                I: {
+                    overview: "شخصية اجتماعية ومؤثرة تمتلك طاقة إيجابية وقدرة على إلهام الآخرين. تتميز بالتفاؤل والحماس والقدرة على بناء العلاقات. تسعى دائماً للتواصل مع الآخرين وخلق بيئة إيجابية.",
+                    core_traits: "اجتماعي، مؤثر، متفائل، مقنع، حماسي، ودود، كاريزمي، مبدع، مرن، متحدث لبق",
+                    psychological_profile: "يمتلك عقلية اجتماعية وقدرة على قراءة المشاعر وفهم الآخرين. يميل إلى التفكير الإبداعي والخيال. يشعر بالسعادة عندما يكون محط اهتمام الآخرين ويؤثر فيهم. قد يكون أحياناً عاطفياً في قراراته.",
+                    work_behavior: "في بيئة العمل، يكون شخصاً محبوباً ومؤثراً قادراً على تحفيز الفرق. يفضل بيئة عمل اجتماعية وتفاعلية. يميل إلى الأدوار التي تتطلب التواصل مع الآخرين والتأثير فيهم. قد يكون أحياناً غير منظم في إدارته للوقت.",
+                    relationship_behavior: "في العلاقات الشخصية، يكون شريكاً ممتعاً وداعماً يحتاج إلى التقدير والتشجيع المستمر. يقدر الشريك الاجتماعي الذي يشاركه حماسه واهتماماته. قد يكون أحياناً معتمداً عاطفياً على الشريك.",
+                    challenges: "أبرز التحديات التي تواجه هذه الشخصية include الميل إلى التشتت، صعوبة التركيز على المهام الروتينية، المبالغة في التفاؤل، والتجنب أحياناً للمواجهة الصعبة.",
+                    development_tips: "للتنمية الشخصية، يجب العمل على تطوير مهارات إدارة الوقت، التركيز، الموضوعية، والتعامل مع النقد. كما ينصح بتعلم تقنيات الاستماع الفعال وتطوير الجانب العملي من الشخصية.",
+                    stress_management: "عند الضغط، يميل إلى البحث عن دعم اجتماعي وتجنب المواجهة. قد يشعر بالقلق عند عدم الحصول على التقدير الكافي. يحتاج إلى تعلم تقنيات إدارة الضغط والاعتماد على النفس.",
+                    learning_style: "يتعلم بشكل أفضل من خلال التفاعل الاجتماعي والمناقشات الجماعية. يفضل التعلم المرح والمليء بالطاقة. يستفيد من القصص والأمثلة والتعلم من خلال التجربة.",
+                    values_principles: "يقدر العلاقات، التأثير، الإيجابية، الإبداع، التقدير، المرح، الحرية، والتعبير عن الذات. يؤمن بأهمية بناء روابط قوية مع الآخرين وإحداث تأثير إيجابي.",
+                    communication_patterns: "يتسم تواصله بالدفء والعاطفة. يستخدم القصص والأمثلة لإيضاح الأفكار. قد يكون أحياناً مطيلاً في حديثه لكنه جذاب ومؤثر. يستخدم لغة الجسد التعبيرية لإظهار حماسه.",
+                    decision_making: "يتخذ قراراته بناءً على المشاعر وتأثيرها على الآخرين. يستشير الآخرين ويقدر آراءهم. قد يكون أحياناً متسرعاً في قراراته بسبب حماسه.",
+                    leadership_style: "قيادته ملهمة وتحفيزية. يخلق بيئة إيجابية ويشجع على الإبداع. يقدر المساهمة الفردية ويحتفل بالإنجازات. قد يكون أحياناً غير حاسم في اتخاذ القرارات الصعبة.",
+                    conflict_resolution: "يحاول تجنب النزاعات والحفاظ على العلاقات الإيجابية. يفضل الحلول الوسطى والمصالحة. قد يكون أحياناً غير مباشر في التعبير عن مشاعره السلبية.",
+                    motivation_factors: "يتحفزه التقدير، الاعتراف، التفاعل الاجتماعي، الفرص للتعبير عن الذات، البيئة الإيجابية، والقدرة على التأثير في الآخرين. يشعر بالرضا عندما يكون محبوباً ومؤثراً.",
+                    ideal_environment: "بيئة عمل اجتماعية ومرحة توفر له فرصاً للتفاعل والتأثير. يفضل العمل مع فريق متعاون وداعم. يحتاج إلى تنوع في المهام وتحديات إبداعية.",
+                    growth_areas: "مجالات النمو الرئيسية include تطوير الانضباط، إدارة الوقت، التركيز، الموضوعية، والتعامل مع النقد. كما يحتاج إلى تعلم موازنة العاطفة مع المنطق في اتخاذ القرارات.",
+                    life_balance: "يميل إلى التركيز على العلاقات الاجتماعية على حساب الجوانب الأخرى. يحتاج إلى تطوير توازن بين الحياة الاجتماعية والمسؤوليات العملية والاحتياجات الشخصية.",
+                    career_paths: "المسارات المهنية المناسبة include التسويق، العلاقات العامة، التدريب، المبيعات، الترفيه، الإعلام، والأدوار التي تتطلب التفاعل مع الجمهور.",
+                    relationship_needs: "في العلاقة، يحتاج إلى شريك اجتماعي وداعم يقدر حماسه ويشاركه اهتماماته. يحتاج إلى تقدير مستمر وتشجيع على إنجازاته. يقدر الشريك الذي يستمع إليه باهتمام.",
+                    compatibility_factors: "عوامل التوافق الرئيسية include الاجتماعية، الدعم العاطفي، التقدير المتبادل، التواصل الجيد، المرونة، والقدرة على الاستمتاع بالحياة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من طاقته.",
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يشاركه حماسه الاجتماعي ويقدر حاجته للتقدير. النجاح يتطلب توازناً بين الحياة الاجتماعية والاحتياجات الشخصية، وفهماً متبادلاً لأساليب التعبير عن الحب."
+                },
+                S: {
+                    overview: "شخصية مستقرة وداعمة تمتلك قدرة فطرية على بناء الثقة والعلاقات العميقة. تتميز بالصبر والولاء والقدرة على الاستماع. تسعى دائماً لخلق بيئة آمنة ومستقرة للآخرين.",
+                    core_traits: "مستقر، داعم، موثوق، صبور، تعاوني، لطيف، متعاطف، مخلص، منظم، مساعد",
+                    psychological_profile: "يمتلك عقلية عملية وقدرة على فهم مشاعر الآخرين. يميل إلى التفكير المنطقي والخطوات المدروسة. يشعر بالراحة عندما يكون في بيئة مستقرة ويمكنه الاعتماد على الآخرين. قد يكون أحياناً متردداً في اتخاذ القرارات.",
+                    work_behavior: "في بيئة العمل، يكون شخصاً موثوقاً ومنتظماً قادراً على العمل الجماعي بفعالية. يفضل بيئة عمل مستقرة وواضحة المعالم. يميل إلى الأدوار التي تتطلب الدعم والمساعدة والتنظيم. قد يكون أحياناً مقاوماً للتغيير.",
+                    relationship_behavior: "في العلاقات الشخصية، يكون شريكاً مخلصاً وداعماً يحتاج إلى الأمان والاستقرار. يقدر الشريك الموثوق الذي يظهر له الاهتمام والحنان. قد يكون أحياناً خائفاً من المواجهة الصعبة في العلاقة.",
+                    challenges: "أبرز التحديات التي تواجه هذه الشخصية include المقاومة للتغيير، الخوف من المخاطر، صعوبة قول لا، والتجنب أحياناً للمواجهة المباشرة.",
+                    development_tips: "للتنمية الشخصية، يجب العمل على تطوير المرونة، الشجاعة، الثقة بالنفس، القدرة على اتخاذ القرارات الصعبة، والمبادرة. كما ينصح بتعلم تقنيات التعامل مع التغيير والمخاطر المحسوبة.",
+                    stress_management: "عند الضغط، يميل إلى البحث عن الدعم العاطفي وتجنب المواجهة. قد يشعر بالقلق عند حدوث تغييرات مفاجئة. يحتاج إلى تعلم تقنيات المواجهة المباشرة والتكيف مع التغيير.",
+                    learning_style: "يتعلم بشكل أفضل من خلال التعلم العملي والتدريب خطوة بخطوة. يفضل التعلم المنظم والواضح. يستفيد من الأمثلة العملية والتوجيه المباشر.",
+                    values_principles: "يقدر الاستقرار، الأمان، الولاء، الثقة، التعاون، المساعدة، النظام، الجودة، والإنصاف. يؤمن بأهمية بناء علاقات قوية ومستقرة قائمة على الثقة المتبادلة.",
+                    communication_patterns: "يتسم تواصله بالهدوء والاستماع الجيد. يستخدم لغة داعمة ومطمئنة. قد يكون أحياناً بطيئاً في التعبير عن رأيه لكنه صادق وموثوق. يستخدم لغة الجسد الهادئة لإظهار اهتمامه.",
+                    decision_making: "يتخذ قراراته ببطء وحذر بعد دراسة جميع الجوانب. يستشير الآخرين ويقدر آراءهم. قد يكون أحياناً متردداً بسبب خوفه من اتخاذ القرار الخاطئ.",
+                    leadership_style: "قيادته داعمة وخدمية. يخلق بيئة آمنة ومستقرة. يقدر العمل الجماعي والمساعدة المتبادلة. قد يكون أحياناً غير حازم في اتخاذ القرارات الصعبة.",
+                    conflict_resolution: "يحاول تجنب النزاعات والحفاظ على السلام. يفضل الحلول التي ترضي جميع الأطراف. قد يكون أحياناً غير مباشر في التعبير عن عدم موافقته.",
+                    motivation_factors: "يتحفزه الأمان، الاستقرار، التقدير، الفرص لمساعدة الآخرين، البيئة الداعمة، والاعتراف بجهوده. يشعر بالرضا عندما يشعر بأنه مفيد ومحبوب.",
+                    ideal_environment: "بيئة عمل مستقرة وداعمة توفر له فرصاً للعمل الجماعي والمساعدة. يفضل العمل مع فريق متماسك ومتعاون. يحتاج إلى توقعات واضحة وتعليمات محددة.",
+                    growth_areas: "مجالات النمو الرئيسية include تطوير الشجاعة، المبادرة، الثقة بالنفس، المرونة، والقدرة على التعامل مع التغيير. كما يحتاج إلى تعلم قول لا والمواجهة عند الحاجة.",
+                    life_balance: "يميل إلى التركيز على تلبية احتياجات الآخرين على حساب احتياجاته الشخصية. يحتاج إلى تعلم تحقيق توازن بين العطاء للآخرين والاهتمام بنفسه.",
+                    career_paths: "المسارات المهنية المناسبة include الموارد البشرية، الرعاية الصحية، التعليم، الخدمات الاجتماعية، الإدارة، والأدوار التي تتطلب الدعم والمساعدة.",
+                    relationship_needs: "في العلاقة، يحتاج إلى شريك موثوق وداعم يوفر له الأمان والاستقرار. يحتاج إلى اهتمام مستمر وتقدير لجهوده. يقدر الشريك الذي يستمع إليه باهتمام ويظهر له الحنان.",
+                    compatibility_factors: "عوامل التوافق الرئيسية include الاستقرار، الأمان، الولاء، الدعم المتبادل، التواصل الجيد، والقدرة على بناء علاقة عميقة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من روتين العلاقة.",
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يقدر الاستقرار ويوفر الأمان العاطفي. النجاح يتطلب توازناً بين الحاجة للأمان والنمو الشخصي، وفهماً متبادلاً لطرق التعبير عن الحب."
+                },
+                C: {
+                    overview: "شخصية تحليلية ودقيقة تمتلك قدرة فطرية على فهم الأنظمة وحل المشكلات المعقدة. تتميز بالدقة والمنطق والقدرة على التخطيط. تسعى دائماً للكمال والجودة في كل ما تفعله.",
+                    core_traits: "دقيق، محلل، منظم، منهجي، محايد، ذكي، فضولي، مثالي، حكيم، متعلم",
+                    psychological_profile: "يمتلك عقلية تحليلية وقدرة على فهم التفاصيل الدقيقة. يميل إلى التفكير المنطقي والمنهجي. يشعر بالراحة عندما يكون في بيئة منظمة ويمكنه التنبؤ بالنتائج. قد يكون أحياناً متطلباً جداً في معاييره.",
+                    work_behavior: "في بيئة العمل، يكون شخصاً دقيقاً ومنتجاً قادراً على حل المشكلات المعقدة. يفضل بيئة عمل منظمة وهادئة. يميل إلى الأدوار التي تتطلب التحليل والتخطيط والاهتمام بالتفاصيل. قد يكون أحياناً بطيئاً في اتخاذ القرارات.",
+                    relationship_behavior: "في العلاقات الشخصية، يكون شريكاً مخلصاً وموثوقاً لكنه يحتاج إلى الوضوح والمنطق. يقدر الشريك الذكي والمنظم الذي يفهم حاجته للمساحة الشخصية. قد يكون أحياناً بارداً عاطفياً في التعبير عن مشاعره.",
+                    challenges: "أبرز التحديات التي تواجه هذه الشخصية include المثالية المفرطة، التردد، القلق من الأخطاء، صعوبة التقبل للقصور، والتركيز المفرط على التفاصيل على حساب الصورة الكبيرة.",
+                    development_tips: "للتنمية الشخصية، يجب العمل على تطوير المرونة، تقبل النقص، الثقة في الحدس، التعبير عن المشاعر، والتعامل مع عدم اليقين. كما ينصح بتعلم الموازنة بين التحليل والحدس في اتخاذ القرارات.",
+                    stress_management: "عند الضغط، يميل إلى تحليل الموقف بشكل مفرط والبحث عن حلول مثالية. قد يشعر بالقلق عند عدم وجود معلومات كافية. يحتاج إلى تعلم تقنيات الاسترخاء وتقبل عدم الكمال.",
+                    learning_style: "يتعلم بشكل أفضل من خلال البحث والتحليل ودراسة الحقائق. يفضل التعلم المنهجي والمفصل. يستفيد من الكتب، الدورات، والمواد التعليمية عالية الجودة.",
+                    values_principles: "يقدر الدقة، الجودة، المعرفة، المنطق، النظام، الكفاءة، الحقيقة، والكمال. يؤمن بأهمية فهم الأنظمة وتحسينها باستمرار.",
+                    communication_patterns: "يتسم تواصله بالدقة والمنطق. يستخدم الحقائق والأدلة لدعم آرائه. قد يكون أحياناً فنياً جداً في شرحه. يستخدم لغة الجسد المحايدة لإظهار تركيزه.",
+                    decision_making: "يتخذ قراراته بعد تحليل دقيق وجمع معلومات كافية. يعتمد على المنطق والأدلة. قد يكون أحياناً متردداً بسبب رغبته في الوصول للقرار المثالي.",
+                    leadership_style: "قيادته تحليلية وتوجيهية. يوضح الإجراءات والمعايير بدقة. يقدر الجودة والكفاءة. قد يكون أحياناً غير مرن في التعامل مع المواقف غير المتوقعة.",
+                    conflict_resolution: "يحل النزاعات من خلال التحليل الموضوعي والبحث عن حلول منطقية. يفضل الحلول القائمة على الحقائق والأدلة. قد يكون أحياناً غير حساس للمشاعر المعنية.",
+                    motivation_factors: "يتحفزه المعرفة، التحدي الفكري، الفرص للتحسين، الاعتراف بذكائه، البيئة المنظمة، والقدرة على حل المشكلات المعقدة. يشعر بالرضا عندما يحل مشكلة أو يكتشف شيئاً جديداً.",
+                    ideal_environment: "بيئة عمل هادئة ومنظمة توفر له فرصاً للتحليل والتحسين. يفضل العمل مع أشخاص أكفاء ودقيقين. يحتاج إلى معلومات كافية ووقت كافٍ للتحليل.",
+                    growth_areas: "مجالات النمو الرئيسية include تطوير المهارات الاجتماعية، التعبير عن المشاعر، المرونة، الثقة في الحدس، وتقبل عدم الكمال. كما يحتاج إلى تعلم الموازنة بين العمل والحياة الشخصية.",
+                    life_balance: "يميل إلى التركيز المفرط على العمل والتحليل على حساب الجوانب الأخرى. يحتاج إلى بذل جهد واعٍ لتحقيق توازن صحي بين العمل والعلاقات والصحة والاهتمامات الشخصية.",
+                    career_paths: "المسارات المهنية المناسبة include البحث العلمي، الهندسة، المحاسبة، تكنولوجيا المعلومات، الجودة، التحليل المالي، والأدوار التي تتطلب دقة وتحليلاً.",
+                    relationship_needs: "في العلاقة، يحتاج إلى شريك ذكي ومنظم يفهم حاجته للمساحة الشخصية والوضوح. يحتاج إلى احترام لذكائه وقدراته. يقدر الشريك الذي يتواصل بوضح ومنطق.",
+                    compatibility_factors: "عوامل التوافق الرئيسية include الذكاء، النظام، الوضوح، الاحترام المتبادل، التواصل الجيد، والقدرة على فهم الاحتياجات. التوافق الجيد يتطلب شريكاً لا يشعر بالإحباط من بطء وتيرة العلاقة أحياناً.",
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يقدر الذكاء والمنطق ويوفر الاستقرار العاطفي. النجاح يتطلب توازناً بين الحاجة للتحليل والتعبير عن المشاعر، وفهماً متبادلاً لطرق إظهار الحب."
+                }
+            },
+            en: {
+                D: {
+                    overview: "A natural leader with a clear vision and ability to achieve goals. Characterized by high self-confidence and decisive decision-making. Always seeks control and leadership to achieve tangible results.",
+                    core_traits: "Leader, decisive, initiator, competitive, independent, brave, ambitious, practical, results-oriented, direct",
+                    psychological_profile: "Possesses a quick analytical mind and ability to see the big picture. Tends to strategic thinking and long-term planning. Feels comfortable when in a position of power and control. May sometimes be patient but hates delay and procrastination.",
+                    work_behavior: "In the work environment, is an effective and productive person focused on achieving goals. Prefers a fast-paced work environment with challenges. Tends to manage teams and direct them toward achieving results. May be strict in expectations but fair and objective.",
+                    relationship_behavior: "In personal relationships, is a strong and supportive partner but needs personal space. Values an independent and confident partner who understands their competitive nature. May sometimes be busy with career goals affecting relationship time.",
+                    challenges: "Key challenges include excessive control tendency, occasional impatience, difficulty listening to others, and excessive focus on results at the expense of relationships.",
+                    development_tips: "For personal development, work on developing active listening skills, learning empathy, practicing patience, and balancing work with personal life. Also advised to develop teamwork skills and appreciate others' contributions.",
+                    stress_management: "Under pressure, tends to face situations directly and work seriously to solve them. May be prone to burnout due to insistence on achieving results. Needs to learn relaxation techniques and allocate time for rest.",
+                    learning_style: "Learns best through practical experience and challenges. Prefers fast, results-oriented learning. Benefits from practical training and interactive workshops.",
+                    values_principles: "Values efficiency, results, independence, leadership, achievement, integrity, courage, and innovation. Believes in the importance of achieving goals and excellence in everything they do.",
+                    communication_patterns: "Communication is characterized by clarity and directness. Prefers concise and specific messages. May sometimes be harsh in expression but is honest and clear. Uses strong body language to express confidence.",
+                    decision_making: "Makes quick and decisive decisions based on facts and logic. Relies on intuition and experience. Not afraid of calculated risks and is prepared to take responsibility for decisions.",
+                    leadership_style: "Leadership is direct and directive. Clarifies expectations and gives clear instructions. Encourages initiative and rewards achievements. May be strict but fair and values competence.",
+                    conflict_resolution: "Faces conflicts directly and courageously. Prefers to solve problems quickly and move forward. May sometimes be inflexible in seeking compromise solutions.",
+                    motivation_factors: "Motivated by challenge, authority, results, recognition of achievements, opportunities for advancement, and competition. Feels satisfied when achieving goals and influencing others.",
+                    ideal_environment: "A dynamic, fast-paced work environment that provides leadership and challenge opportunities. Prefers working with competent and independent people. Needs personal workspace and independence in decision-making.",
+                    growth_areas: "Key growth areas include developing personal skills, empathy, patience, teamwork, and work-life balance. Also needs to learn negotiation and influence techniques.",
+                    life_balance: "Tends to focus excessively on work at the expense of personal life. Needs conscious effort to achieve healthy balance between professional tasks, personal relationships, and health.",
+                    career_paths: "Suitable career paths include executive management, entrepreneurship, sales, military leadership, management consulting, and leadership training.",
+                    relationship_needs: "In a relationship, needs an independent and confident partner who supports their ambitions. Values a partner who understands their need for personal space and respects their work focus. Needs appreciation and admiration for achievements.",
+                    compatibility_factors: "Key compatibility factors include independence, confidence, ambition, mutual support, understanding of work nature, and ability for direct communication. Good compatibility requires a partner who doesn't feel threatened by their successes.",
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who understands and appreciates their leadership nature. Success requires balance between career ambitions and personal life, and mutual respect for independence and achievements."
+                },
+                I: {
+                    overview: "A social and influential personality with positive energy and ability to inspire others. Characterized by optimism and enthusiasm and ability to build relationships. Always seeks to communicate with others and create a positive environment.",
+                    core_traits: "Social, influential, optimistic, persuasive, enthusiastic, friendly, charismatic, creative, flexible, eloquent speaker",
+                    psychological_profile: "Possesses a social mind and ability to read emotions and understand others. Tends to creative and imaginative thinking. Feels happy when being the center of attention and influencing others. May sometimes be emotional in decisions.",
+                    work_behavior: "In the work environment, is a popular and influential person able to motivate teams. Prefers a social and interactive work environment. Tends to roles that require communication with and influencing others. May sometimes be disorganized in time management.",
+                    relationship_behavior: "In personal relationships, is a fun and supportive partner who needs continuous appreciation and encouragement. Values a social partner who shares their enthusiasm and interests. May sometimes be emotionally dependent on the partner.",
+                    challenges: "Key challenges include tendency to distraction, difficulty focusing on routine tasks, excessive optimism, and sometimes avoiding difficult confrontation.",
+                    development_tips: "For personal development, work on developing time management skills, focus, objectivity, and dealing with criticism. Also advised to learn active listening techniques and develop the practical side of personality.",
+                    stress_management: "Under pressure, tends to seek social support and avoid confrontation. May feel anxious when not receiving sufficient appreciation. Needs to learn stress management techniques and self-reliance.",
+                    learning_style: "Learns best through social interaction and group discussions. Prefers fun and energetic learning. Benefits from stories, examples, and experiential learning.",
+                    values_principles: "Values relationships, influence, positivity, creativity, appreciation, fun, freedom, and self-expression. Believes in the importance of building strong bonds with others and making a positive impact.",
+                    communication_patterns: "Communication is characterized by warmth and emotion. Uses stories and examples to illustrate ideas. May sometimes be lengthy in speech but is charming and influential. Uses expressive body language to show enthusiasm.",
+                    decision_making: "Makes decisions based on emotions and their impact on others. Consults others and values their opinions. May sometimes be hasty in decisions due to enthusiasm.",
+                    leadership_style: "Leadership is inspiring and motivating. Creates a positive environment and encourages creativity. Values individual contribution and celebrates achievements. May sometimes be indecisive in making difficult decisions.",
+                    conflict_resolution: "Tries to avoid conflicts and maintain positive relationships. Prefers compromise and reconciliation. May sometimes be indirect in expressing negative feelings.",
+                    motivation_factors: "Motivated by appreciation, recognition, social interaction, opportunities for self-expression, positive environment, and ability to influence others. Feels satisfied when being loved and influential.",
+                    ideal_environment: "A social and fun work environment that provides interaction and influence opportunities. Prefers working with a cooperative and supportive team. Needs variety in tasks and creative challenges.",
+                    growth_areas: "Key growth areas include developing discipline, time management, focus, objectivity, and dealing with criticism. Also needs to learn to balance emotion with logic in decision-making.",
+                    life_balance: "Tends to focus on social relationships at the expense of other aspects. Needs to develop balance between social life, work responsibilities, and personal needs.",
+                    career_paths: "Suitable career paths include marketing, public relations, training, sales, entertainment, media, and roles requiring audience interaction.",
+                    relationship_needs: "In a relationship, needs a social and supportive partner who appreciates their enthusiasm and shares their interests. Needs continuous appreciation and encouragement for achievements. Values a partner who listens with interest.",
+                    compatibility_factors: "Key compatibility factors include sociability, emotional support, mutual appreciation, good communication, flexibility, and ability to enjoy life. Good compatibility requires a partner who doesn't get bored by their energy.",
+                    long_term_potential: "Long-term relationship potential is good with a partner who shares their social enthusiasm and appreciates their need for appreciation. Success requires balance between social life and personal needs, and mutual understanding of love expression styles."
+                },
+                S: {
+                    overview: "A stable and supportive personality with a natural ability to build trust and deep relationships. Characterized by patience, loyalty, and listening ability. Always seeks to create a safe and stable environment for others.",
+                    core_traits: "Stable, supportive, reliable, patient, cooperative, kind, empathetic, loyal, organized, helpful",
+                    psychological_profile: "Possesses a practical mind and ability to understand others' emotions. Tends to logical thinking and planned steps. Feels comfortable in a stable environment where they can rely on others. May sometimes be hesitant in decision-making.",
+                    work_behavior: "In the work environment, is a reliable and organized person able to work effectively in teams. Prefers a stable and clear work environment. Tends to roles that require support, assistance, and organization. May sometimes be resistant to change.",
+                    relationship_behavior: "In personal relationships, is a loyal and supportive partner who needs security and stability. Values a reliable partner who shows interest and affection. May sometimes be afraid of difficult confrontation in the relationship.",
+                    challenges: "Key challenges include resistance to change, fear of risks, difficulty saying no, and sometimes avoiding direct confrontation.",
+                    development_tips: "For personal development, work on developing flexibility, courage, self-confidence, ability to make difficult decisions, and initiative. Also advised to learn techniques for dealing with change and calculated risks.",
+                    stress_management: "Under pressure, tends to seek emotional support and avoid confrontation. May feel anxious during sudden changes. Needs to learn direct confrontation techniques and adaptation to change.",
+                    learning_style: "Learns best through practical learning and step-by-step training. Prefers organized and clear learning. Benefits from practical examples and direct guidance.",
+                    values_principles: "Values stability, security, loyalty, trust, cooperation, assistance, order, quality, and fairness. Believes in the importance of building strong and stable relationships based on mutual trust.",
+                    communication_patterns: "Communication is characterized by calmness and good listening. Uses supportive and reassuring language. May sometimes be slow in expressing opinion but is honest and reliable. Uses calm body language to show interest.",
+                    decision_making: "Makes decisions slowly and cautiously after studying all aspects. Consults others and values their opinions. May sometimes be hesitant due to fear of making the wrong decision.",
+                    leadership_style: "Leadership is supportive and service-oriented. Creates a safe and stable environment. Values teamwork and mutual assistance. May sometimes be non-assertive in making difficult decisions.",
+                    conflict_resolution: "Tries to avoid conflicts and maintain peace. Prefers solutions that satisfy all parties. May sometimes be indirect in expressing disagreement.",
+                    motivation_factors: "Motivated by security, stability, appreciation, opportunities to help others, supportive environment, and recognition of efforts. Feels satisfied when feeling useful and loved.",
+                    ideal_environment: "A stable and supportive work environment that provides teamwork and assistance opportunities. Prefers working with a cohesive and cooperative team. Needs clear expectations and specific instructions.",
+                    growth_areas: "Key growth areas include developing courage, initiative, self-confidence, flexibility, and ability to deal with change. Also needs to learn to say no and confront when necessary.",
+                    life_balance: "Tends to focus on meeting others' needs at the expense of personal needs. Needs to learn to balance giving to others with self-care.",
+                    career_paths: "Suitable career paths include human resources, healthcare, education, social services, administration, and roles requiring support and assistance.",
+                    relationship_needs: "In a relationship, needs a reliable and supportive partner who provides emotional security and stability. Needs continuous interest and appreciation for efforts. Values a partner who listens with interest and shows affection.",
+                    compatibility_factors: "Key compatibility factors include stability, security, loyalty, mutual support, good communication, and ability to build a deep relationship. Good compatibility requires a partner who doesn't get bored by relationship routines.",
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who values stability and provides emotional security. Success requires balance between need for security and personal growth, and mutual understanding of love expression methods."
+                },
+                C: {
+                    overview: "An analytical and precise personality with a natural ability to understand systems and solve complex problems. Characterized by precision, logic, and planning ability. Always seeks perfection and quality in everything they do.",
+                    core_traits: "Precise, analytical, organized, methodical, neutral, intelligent, curious, perfectionist, wise, learner",
+                    psychological_profile: "Possesses an analytical mind and ability to understand fine details. Tends to logical and methodical thinking. Feels comfortable in an organized environment where they can predict outcomes. May sometimes be very demanding in their standards.",
+                    work_behavior: "In the work environment, is a precise and productive person able to solve complex problems. Prefers an organized and quiet work environment. Tends to roles requiring analysis, planning, and attention to detail. May sometimes be slow in decision-making.",
+                    relationship_behavior: "In personal relationships, is a loyal and reliable partner but needs clarity and logic. Values an intelligent and organized partner who understands their need for personal space. May sometimes be emotionally cold in expressing feelings.",
+                    challenges: "Key challenges include excessive perfectionism, hesitation, anxiety about mistakes, difficulty accepting shortcomings, and excessive focus on details at the expense of the big picture.",
+                    development_tips: "For personal development, work on developing flexibility, accepting imperfection, trusting intuition, expressing emotions, and dealing with uncertainty. Also advised to learn to balance analysis with intuition in decision-making.",
+                    stress_management: "Under pressure, tends to over-analyze the situation and seek perfect solutions. May feel anxious when there isn't enough information. Needs to learn relaxation techniques and accept imperfection.",
+                    learning_style: "Learns best through research, analysis, and studying facts. Prefers methodical and detailed learning. Benefits from books, courses, and high-quality educational materials.",
+                    values_principles: "Values precision, quality, knowledge, logic, order, efficiency, truth, and perfection. Believes in the importance of understanding systems and continuously improving them.",
+                    communication_patterns: "Communication is characterized by precision and logic. Uses facts and evidence to support opinions. May sometimes be too technical in explanation. Uses neutral body language to show focus.",
+                    decision_making: "Makes decisions after detailed analysis and gathering sufficient information. Relies on logic and evidence. May sometimes be hesitant due to desire to reach the perfect decision.",
+                    leadership_style: "Leadership is analytical and directive. Clarifies procedures and standards precisely. Values quality and efficiency. May sometimes be inflexible in dealing with unexpected situations.",
+                    conflict_resolution: "Resolves conflicts through objective analysis and seeking logical solutions. Prefers solutions based on facts and evidence. May sometimes be insensitive to emotions involved.",
+                    motivation_factors: "Motivated by knowledge, intellectual challenge, improvement opportunities, recognition of intelligence, organized environment, and ability to solve complex problems. Feels satisfied when solving a problem or discovering something new.",
+                    ideal_environment: "A quiet and organized work environment that provides analysis and improvement opportunities. Prefers working with competent and precise people. Needs sufficient information and time for analysis.",
+                    growth_areas: "Key growth areas include developing social skills, expressing emotions, flexibility, trusting intuition, and accepting imperfection. Also needs to learn to balance work with personal life.",
+                    life_balance: "Tends to focus excessively on work and analysis at the expense of other aspects. Needs conscious effort to achieve healthy balance between work, relationships, health, and personal interests.",
+                    career_paths: "Suitable career paths include scientific research, engineering, accounting, information technology, quality, financial analysis, and roles requiring precision and analysis.",
+                    relationship_needs: "In a relationship, needs an intelligent and organized partner who understands their need for personal space and clarity. Needs respect for their intelligence and abilities. Values a partner who communicates clearly and logically.",
+                    compatibility_factors: "Key compatibility factors include intelligence, order, clarity, mutual respect, good communication, and ability to understand needs. Good compatibility requires a partner who doesn't feel frustrated by the sometimes slow pace of the relationship.",
+                    long_term_potential: "Long-term relationship potential is good with a partner who appreciates intelligence and logic and provides emotional stability. Success requires balance between need for analysis and emotional expression, and mutual understanding of love demonstration methods."
+                }
+            }
+        };
+        
         // ===== الأسئلة =====
         const questions = {
             ar: [
@@ -581,7 +1112,7 @@
                 ]}
             ]
         };
-
+        
         // ===== تحليل الشخصية =====
         function analyzePersonality() {
             const scores = { D: 0, I: 0, S: 0, C: 0 };
@@ -594,7 +1125,7 @@
             const primary = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             return { scores, primary };
         }
-
+        
         // ===== عرض النتائج =====
         function renderResult() {
             const { scores, primary } = analyzePersonality();
@@ -603,38 +1134,385 @@
                 ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
                 en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
             };
-            const desc = {
-                ar: {
-                    D: "أنت شخصية قيادية بطبيعتك، تمتلك إرادة قوية وتحب التحكم في الأمور. لا تهاب التحديات، وتميل إلى اتخاذ القرارات بسرعة وثقة. أنت موجه نحو النتائج، وتحب أن ترى تقدماً ملموساً.",
-                    I: "أنت شخصية اجتماعية، مليئة بالحيوية والتفاؤل. تمتلك مهارات تواصل استثنائية، وتحب أن تكون محط الأنظار. تُلهم الآخرين بسهولة، وتحب المغامرة والتجارب الجديدة.",
-                    S: "أنت شخصية هادئة، ودودة، ومستقرة. تُقدّر العلاقات العميقة والولاء. تُعتبر مستمعًا جيدًا، وتدعم من حولك بثبات. تكره التغيير المفاجئ، لكنك تحافظ على التوازن والانسجام في كل الظروف.",
-                    C: "أنت شخصية تحليلية، دقيقة، ومنظمة. تهتم بالجودة والدقة في كل ما تفعله. تُفضل اتخاذ قرارات مدروسة بناءً على البيانات. قد تبدو باردة أحيانًا، لكنك تسعى دائمًا للوصول إلى الكمال."
-                },
-                en: {
-                    D: "You are a natural-born leader, strong-willed and love taking control. You don't fear challenges and tend to make quick, confident decisions. Goal-oriented and results-driven, you thrive on tangible progress.",
-                    I: "You are social, energetic, and optimistic. You have exceptional communication skills and enjoy being in the spotlight. You easily inspire others and love adventure and new experiences.",
-                    S: "You are calm, friendly, and stable. You value deep relationships and loyalty. A great listener, you support those around you consistently. You dislike sudden change, but you maintain balance and harmony in all circumstances.",
-                    C: "You are analytical, precise, and organized. You care about quality and accuracy in everything you do. You prefer making well-thought decisions based on data. You may seem reserved at times, but you always strive for excellence."
-                }
-            };
-
+            
+            // حساب العمر من تاريخ الميلاد
+            const age = calculateAge(state.userData.dob);
+            
+            // حساب البرج تلقائياً
+            const userZodiac = calculateZodiac(state.userData.dob);
+            const zodiacInfo = zodiacData[state.lang][userZodiac];
+            const compatibleZodiacs = zodiacCompatibility[state.lang][userZodiac] || [];
+            
+            // الحصول على تحليل الشخصية المفصل
+            const analysis = personalityAnalysis[state.lang][primary];
+            
+            // حفظ النتائج
+            const resultData = { scores, primary, date: new Date().toISOString() };
+            state.resultData = resultData;
+            saveResult(resultData);
+            
+            // إنشاء قائمة الأبراج المتوافقة
+            const compatibleZodiacsHTML = compatibleZodiacs.map(z => {
+                const zData = zodiacData[state.lang][z];
+                return `
+                <div class="flex items-center mb-2">
+                    <span class="zodiac-icon mr-3">${zData.icon}</span>
+                    <div>
+                        <div class="font-bold">${zData.name}</div>
+                        <div class="text-sm text-gray-400">${zData.dates} • ${zData.element}</div>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            // بناء أقسام التحليل المفصل
+            const analysisSections = `
+            <!-- نظرة عامة -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.overview}</h3>
+                <p class="text-gray-300">${analysis.overview}</p>
+            </div>
+            
+            <!-- السمات الأساسية -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.core_traits}</h3>
+                <p class="text-gray-300">${analysis.core_traits}</p>
+            </div>
+            
+            <!-- الملف النفسي -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.psychological_profile}</h3>
+                <p class="text-gray-300">${analysis.psychological_profile}</p>
+            </div>
+            
+            <!-- السلوك في العمل -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.work_behavior}</h3>
+                <p class="text-gray-300">${analysis.work_behavior}</p>
+            </div>
+            
+            <!-- السلوك في العلاقات -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.relationship_behavior}</h3>
+                <p class="text-gray-300">${analysis.relationship_behavior}</p>
+            </div>
+            
+            <!-- التحديات -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.challenges}</h3>
+                <p class="text-gray-300">${analysis.challenges}</p>
+            </div>
+            
+            <!-- نصائح للتنمية -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.development_tips}</h3>
+                <p class="text-gray-300">${analysis.development_tips}</p>
+            </div>
+            
+            <!-- إدارة الضغط -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.stress_management}</h3>
+                <p class="text-gray-300">${analysis.stress_management}</p>
+            </div>
+            
+            <!-- أسلوب التعلم -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.learning_style}</h3>
+                <p class="text-gray-300">${analysis.learning_style}</p>
+            </div>
+            
+            <!-- القيم والمبادئ -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.values_principles}</h3>
+                <p class="text-gray-300">${analysis.values_principles}</p>
+            </div>
+            
+            <!-- أنماط التواصل -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.communication_patterns}</h3>
+                <p class="text-gray-300">${analysis.communication_patterns}</p>
+            </div>
+            
+            <!-- اتخاذ القرار -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.decision_making}</h3>
+                <p class="text-gray-300">${analysis.decision_making}</p>
+            </div>
+            
+            <!-- أسلوب القيادة -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.leadership_style}</h3>
+                <p class="text-gray-300">${analysis.leadership_style}</p>
+            </div>
+            
+            <!-- حل النزاعات -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.conflict_resolution}</h3>
+                <p class="text-gray-300">${analysis.conflict_resolution}</p>
+            </div>
+            
+            <!-- عوامل التحفيز -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.motivation_factors}</h3>
+                <p class="text-gray-300">${analysis.motivation_factors}</p>
+            </div>
+            
+            <!-- البيئة المثالية -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.ideal_environment}</h3>
+                <p class="text-gray-300">${analysis.ideal_environment}</p>
+            </div>
+            
+            <!-- مجالات النمو -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.growth_areas}</h3>
+                <p class="text-gray-300">${analysis.growth_areas}</p>
+            </div>
+            
+            <!-- توازن الحياة -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.life_balance}</h3>
+                <p class="text-gray-300">${analysis.life_balance}</p>
+            </div>
+            
+            <!-- المسارات المهنية -->
+            <div class="analysis-section section-${primary.toLowerCase()}">
+                <h3 class="text-xl font-bold mb-3">${t.career_paths}</h3>
+                <p class="text-gray-300">${analysis.career_paths}</p>
+            </div>`;
+            
             const result = `
             <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6">${t.personality_section}</h2>
+                <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
                 <p class="text-gray-300 mb-6">${t.analysis_intro}</p>
+                
+                <!-- معلومات المستخدم -->
                 <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
-                    <h3 class="text-2xl font-bold mb-2">${types[state.lang][primary]}</h3>
-                    <p class="text-gray-200">${desc[state.lang][primary]}</p>
+                    <div class="flex flex-wrap justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold">${types[state.lang][primary]}</h3>
+                        <div class="flex flex-wrap gap-4 text-lg">
+                            <div>
+                                <span class="text-gray-300">${t.age_label}:</span> 
+                                <span class="font-bold">${age}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-300">${t.zodiac_sign}:</span> 
+                                <span class="font-bold">${zodiacInfo.icon} ${zodiacInfo.name}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-400">
+                        ${zodiacInfo.dates} • ${zodiacInfo.element} • ${zodiacInfo.traits}
+                    </div>
                 </div>
+                
+                <!-- الرسم البياني -->
+                <div class="chart-container mb-8">
+                    <canvas id="personalityChart"></canvas>
+                </div>
+                
+                <!-- تحليل الشخصية المفصل -->
+                <div class="mb-8">
+                    ${analysisSections}
+                </div>
+                
+                <!-- الشريك المثالي -->
+                <div class="bg-gradient-to-r from-purple-900 to-pink-900 p-6 rounded-lg mb-8">
+                    <h3 class="text-2xl font-bold mb-6">${t.partner_section}</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-bold mb-3">${t.relationship_needs}</h4>
+                            <p class="text-gray-300 mb-4">${analysis.relationship_needs}</p>
+                            
+                            <h4 class="text-lg font-bold mb-3">${t.compatible_zodiacs}</h4>
+                            <div class="mb-4">
+                                ${compatibleZodiacsHTML}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold mb-3">${t.compatibility_factors}</h4>
+                            <p class="text-gray-300 mb-4">${analysis.compatibility_factors}</p>
+                            
+                            <h4 class="text-lg font-bold mb-3">${t.long_term_potential}</h4>
+                            <p class="text-gray-300 mb-4">${analysis.long_term_potential}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <div class="flex justify-between mb-2">
+                            <span>${t.compatibility_title}</span>
+                            <span class="font-bold">85%</span>
+                        </div>
+                        <div class="compatibility-meter">
+                            <div class="compatibility-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="mt-8 text-center">
                     <button id="restartBtn" class="btn-secondary mr-4">${t.restart_btn}</button>
-                    <button id="copyBtn" class="btn-primary">${t.copy_btn}</button>
+                    <button id="copyBtn" class="btn-primary mr-4">${t.copy_btn}</button>
+                    <button id="shareBtn" class="btn-primary mr-4">${t.share_btn}</button>
+                    <button id="printBtn" class="btn-secondary mr-4">${t.print_btn}</button>
+                    <button id="historyBtn" class="btn-secondary">${t.history_btn}</button>
                 </div>
             </div>`;
+            
             state.resultText = result;
             return result;
         }
-
+        
+        // ===== إنشاء رسم بياني للنتائج =====
+        function createPersonalityChart(scores) {
+            const ctx = document.getElementById('personalityChart');
+            if (!ctx) return;
+            
+            const t = translations[state.lang];
+            const labels = {
+                ar: ['D (الهيمنة)', 'I (التأثير)', 'S (الثبات)', 'C (الوعي)'],
+                en: ['D (Dominance)', 'I (Influence)', 'S (Steadiness)', 'C (Conscientiousness)']
+            };
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels[state.lang],
+                    datasets: [{
+                        label: t.chart_title,
+                        data: [scores.D, scores.I, scores.S, scores.C],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.6)',
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ===== عرض سجل النتائج =====
+        function renderHistory() {
+            const t = translations[state.lang];
+            const results = getSavedResults();
+            
+            if (results.length === 0) {
+                return `
+                <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
+                    <p class="text-gray-300">${t.no_history}</p>
+                    <button id="backBtn" class="btn-primary mt-6">العودة</button>
+                </div>`;
+            }
+            
+            let historyHTML = '';
+            results.forEach((result, index) => {
+                const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
+                const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
+                const zodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
+                const zodiacInfo = zodiac ? zodiacData[state.lang][zodiac] : null;
+                const types = {
+                    ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
+                    en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
+                };
+                
+                historyHTML += `
+                <div class="history-item" data-index="${index}">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-xl font-bold">${types[state.lang][result.primary]}</h3>
+                            <p class="text-gray-400">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
+                        </div>
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                </div>`;
+            });
+            
+            return `
+            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
+                <div class="space-y-4">
+                    ${historyHTML}
+                </div>
+                <button id="backBtn" class="btn-secondary mt-6">العودة</button>
+            </div>`;
+        }
+        
+        // ===== عرض تفاصيل نتيجة من السجل =====
+        function renderHistoryResult(index) {
+            const t = translations[state.lang];
+            const results = getSavedResults();
+            const result = results[index];
+            
+            if (!result) return renderHistory();
+            
+            const types = {
+                ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
+                en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
+            };
+            
+            const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
+            const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
+            const userZodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
+            const zodiacInfo = userZodiac ? zodiacData[state.lang][userZodiac] : null;
+            
+            return `
+            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
+                <p class="text-gray-300 mb-2">${t.analysis_intro}</p>
+                <p class="text-gray-400 mb-6">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
+                
+                <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
+                    <h3 class="text-2xl font-bold mb-2">${types[state.lang][result.primary]}</h3>
+                </div>
+                
+                <div class="chart-container mb-8">
+                    <canvas id="personalityChart"></canvas>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button id="backBtn" class="btn-secondary mr-4">العودة</button>
+                    <button id="printBtn" class="btn-secondary">${t.print_btn}</button>
+                </div>
+            </div>`;
+        }
+        
         // ===== وظائف العرض =====
         function renderUserInfo() {
             const t = translations[state.lang];
@@ -644,7 +1522,6 @@
                     <h1 class="text-4xl font-bold gradient-text mb-4">${t.welcome_title}</h1>
                     <p class="text-gray-300 text-lg mb-6">${t.user_info_desc}</p>
                     <div class="space-y-6 text-right">
-                        <div><label class="block mb-2">${t.age_label}</label><input type="number" id="age" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" /></div>
                         <div><label class="block mb-2">${t.gender_label}</label><select id="gender" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600"><option value="male">${t.male}</option><option value="female">${t.female}</option><option value="other">${t.other}</option></select></div>
                         <div><label class="block mb-2">${t.dob_label}</label><input type="date" id="dob" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" /></div>
                         <button id="submitUserInfo" class="btn-primary">${t.submit_user_info}</button>
@@ -652,7 +1529,7 @@
                 </div>
             </div>`;
         }
-
+        
         function renderIntro() {
             const t = translations[state.lang];
             return `
@@ -669,16 +1546,16 @@
                 </div>
             </div>`;
         }
-
+        
         function renderQuiz() {
             const q = questions[state.lang][state.currentQ];
+            const t = translations[state.lang];
             const progress = ((state.currentQ + 1) / questions[state.lang].length * 100).toFixed(0);
-
             let optionsHTML = '';
             q.options.forEach((opt, idx) => {
-                optionsHTML += `<div class="option-btn" onclick="selectAnswer(${idx})">${opt.text}</div>`;
+                const selected = state.userAnswers[state.currentQ] === idx ? 'selected' : '';
+                optionsHTML += `<div class="option-btn ${selected}" data-index="${idx}">${opt.text}</div>`;
             });
-
             return `
             <div>
                 <div class="progress-container">
@@ -694,66 +1571,234 @@
                 </div>
             </div>`;
         }
-
+        
+        function renderLoading() {
+            const t = translations[state.lang];
+            return `
+            <div class="text-center py-12">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <p class="text-gray-300">${t.loading_analysis}</p>
+            </div>`;
+        }
+        
+        // ===== عرض الإعلانات =====
+        function renderAds() {
+            const settings = getAdSettings();
+            const adPositions = ['top', 'side', 'bottom'];
+            
+            const ads = {};
+            adPositions.forEach(position => {
+                ads[position] = settings[position] && settings[`${position}Code`] 
+                    ? `<div class="ad-container">${settings[`${position}Code`]}</div>` 
+                    : '';
+            });
+            
+            return ads;
+        }
+        
+        // ===== تحديث معاينة الإعلان =====
+        function updateAdPreview(position, code) {
+            const preview = document.getElementById(`${position}AdPreview`);
+            if (preview) {
+                preview.innerHTML = code;
+            }
+        }
+        
+        // ===== العرض الرئيسي =====
+        function render() {
+            document.documentElement.lang = state.lang;
+            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+            const t = translations[state.lang];
+            const { top: adTop, side: adSide, bottom: adBottom } = renderAds();
+            
+            let content = '';
+            switch (state.page) {
+                case 'userInfo': content = renderUserInfo(); break;
+                case 'intro': content = renderIntro(); break;
+                case 'quiz': content = renderQuiz(); break;
+                case 'loading': content = renderLoading(); break;
+                case 'result': content = renderResult(); break;
+                case 'history': content = renderHistory(); break;
+                case 'historyResult': content = renderHistoryResult(state.historyIndex); break;
+            }
+            
+            const html = `
+                ${adTop}
+                <div class="container mx-auto px-4 py-8 max-w-4xl">
+                    ${content}
+                </div>
+                ${adBottom}
+                <footer class="mt-16 text-center text-gray-400 space-y-2 text-sm">
+                    <p class="font-semibold">${t.footer1}</p>
+                    <p>${t.footer2}</p>
+                </footer>`;
+            
+            document.getElementById('app').innerHTML = html;
+            
+            // إنشاء الرسم البياني بعد عرض النتائج
+            if (state.page === 'result' && state.resultData) {
+                setTimeout(() => createPersonalityChart(state.resultData.scores), 100);
+            } else if (state.page === 'historyResult' && state.historyIndex !== undefined) {
+                const results = getSavedResults();
+                if (results[state.historyIndex]) {
+                    setTimeout(() => createPersonalityChart(results[state.historyIndex].scores), 100);
+                }
+            }
+        }
+        
         // ===== معالجة الأحداث =====
         function setupEventListeners() {
-            const t = translations[state.lang];
-
-            document.addEventListener('click', (e) => {
+            const app = document.getElementById('app');
+            
+            app.addEventListener('click', (e) => {
+                const t = translations[state.lang];
+                
+                // معالج صفحة معلومات المستخدم
                 if (e.target.id === 'submitUserInfo') {
-                    const age = document.getElementById('age').value;
                     const gender = document.getElementById('gender').value;
                     const dob = document.getElementById('dob').value;
-                    if (!age || !gender || !dob) return alert(t.alert_missing_fields);
-                    if (new Date(dob) > new Date()) return alert(t.alert_invalid_dob);
-                    state.userData = { age, gender, dob };
+                    if (!gender || !dob) return showToast(t.alert_missing_fields);
+                    if (new Date(dob) > new Date()) return showToast(t.alert_invalid_dob);
+                    
+                    // حساب البرج تلقائياً
+                    const zodiac = calculateZodiac(dob);
+                    state.userData = { gender, dob, zodiac };
                     state.page = 'intro';
                     render();
                 }
+                
+                // معالج صفحة المقدمة
                 if (e.target.id === 'startBtn') {
                     state.currentQ = 0;
                     state.userAnswers = Array(questions[state.lang].length).fill(null);
                     state.page = 'quiz';
                     render();
                 }
+                
+                // معالج اختيار الإجابة
+                if (e.target.classList.contains('option-btn')) {
+                    const index = parseInt(e.target.dataset.index);
+                    state.userAnswers[state.currentQ] = index;
+                    document.querySelectorAll('.option-btn').forEach(el => el.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                }
+                
+                // معالج الزر التالي
                 if (e.target.id === 'nextBtn') {
-                    if (state.userAnswers[state.currentQ] === null) return alert(t.alert_no_answer);
+                    if (state.userAnswers[state.currentQ] === null) return showToast(t.alert_no_answer);
                     if (state.currentQ < questions[state.lang].length - 1) {
                         state.currentQ++;
                         render();
                     } else {
-                        state.page = 'result';
+                        state.page = 'loading';
                         render();
+                        setTimeout(() => {
+                            state.page = 'result';
+                            render();
+                        }, 1500);
                     }
                 }
+                
+                // معالج زر إعادة البدء
                 if (e.target.id === 'restartBtn') {
                     state.page = 'userInfo';
-                    state.userData = { age: null, gender: '', dob: '' };
+                    state.userData = { gender: '', dob: '' };
                     state.currentQ = 0;
                     state.userAnswers = [];
                     render();
                 }
+                
+                // معالج زر النسخ
                 if (e.target.id === 'copyBtn') {
-                    navigator.clipboard.writeText(state.resultText).then(() => {
+                    const resultText = document.querySelector('.glass-card').innerText;
+                    navigator.clipboard.writeText(resultText).then(() => {
                         showToast(t.alert_copied);
                     });
                 }
+                
+                // معالج زر المشاركة
+                if (e.target.id === 'shareBtn') {
+                    const { primary } = analyzePersonality();
+                    const types = {
+                        ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
+                        en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
+                    };
+                    
+                    const shareText = `لقد اكتشفت شخصيتي في غرفة الأسرار! شخصيتي هي: ${types[state.lang][primary]}`;
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'غرفة الأسرار - اكتشاف الشخصية',
+                            text: shareText,
+                            url: window.location.href
+                        }).then(() => {
+                            showToast(t.alert_shared);
+                        });
+                    } else {
+                        navigator.clipboard.writeText(`${shareText}\n${window.location.href}`).then(() => {
+                            showToast(t.alert_copied);
+                        });
+                    }
+                }
+                
+                // معالج زر الطباعة
+                if (e.target.id === 'printBtn') {
+                    window.print();
+                }
+                
+                // معالج زر السجل
+                if (e.target.id === 'historyBtn') {
+                    state.page = 'history';
+                    render();
+                }
+                
+                // معالج زر العودة
+                if (e.target.id === 'backBtn') {
+                    if (state.page === 'historyResult') {
+                        state.page = 'history';
+                    } else {
+                        state.page = 'result';
+                    }
+                    render();
+                }
+                
+                // معالج عناصر السجل
+                if (e.target.closest('.history-item')) {
+                    const index = parseInt(e.target.closest('.history-item').dataset.index);
+                    state.historyIndex = index;
+                    state.page = 'historyResult';
+                    render();
+                }
+                
+                // معالج زر الإعدادات
                 if (e.target.id === 'settingsBtn') {
                     document.getElementById('settingsOverlay').style.display = 'flex';
                 }
+                
+                // معالج زر إغلاق الإعدادات
                 if (e.target.id === 'closeSettings') {
                     document.getElementById('settingsOverlay').style.display = 'none';
                 }
+                
+                // معالج زر تبديل اللغة
+                if (e.target.id === 'langToggle') {
+                    state.lang = state.lang === 'ar' ? 'en' : 'ar';
+                    render();
+                }
+                
+                // معالج زر تسجيل الدخول
                 if (e.target.id === 'loginBtn') {
                     const pass = document.getElementById('adminPassword').value;
-                    if (pass === 'Farida') {
+                    if (simpleHash(pass) === '-899142845') { // تجزئة "Farida"
                         document.getElementById('passwordSection').style.display = 'none';
                         document.getElementById('adminPanel').style.display = 'block';
                         loadAdSettings();
                     } else {
-                        alert('كلمة المرور خاطئة');
+                        showToast('كلمة المرور خاطئة');
                     }
                 }
+                
+                // معالج زر حفظ الإعدادات
                 if (e.target.id === 'saveSettings') {
                     const settings = {
                         top: document.getElementById('topAdToggle').classList.contains('checked'),
@@ -767,68 +1812,49 @@
                     showToast('تم حفظ الإعدادات');
                     render();
                 }
+                
+                // معالج زر إضافة إعلان جديد
+                if (e.target.id === 'addNewAd') {
+                    const position = document.getElementById('newAdPosition').value;
+                    const code = document.getElementById('newAdCode').value.trim();
+                    
+                    if (!code) {
+                        showToast('يرجى إدخال كود الإعلان');
+                        return;
+                    }
+                    
+                    // إضافة الكود إلى المكان المناسب
+                    const codeField = document.getElementById(`${position}AdCode`);
+                    if (codeField) {
+                        codeField.value = code;
+                        updateAdPreview(position, code);
+                        showToast(`تمت إضافة الإعلان إلى الموضع: ${position}`);
+                        
+                        // مسح الحقول
+                        document.getElementById('newAdCode').value = '';
+                    }
+                }
             });
-
-            document.querySelectorAll('.toggle-switch').forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    toggle.classList.toggle('checked');
-                });
+            
+            // معالج تغيير كود الإعلان
+            app.addEventListener('input', (e) => {
+                if (e.target.id === 'topAdCode') {
+                    updateAdPreview('top', e.target.value);
+                } else if (e.target.id === 'sideAdCode') {
+                    updateAdPreview('side', e.target.value);
+                } else if (e.target.id === 'bottomAdCode') {
+                    updateAdPreview('bottom', e.target.value);
+                }
+            });
+            
+            // معالج مفاتيح التبديل
+            app.addEventListener('click', (e) => {
+                if (e.target.classList.contains('toggle-switch')) {
+                    e.target.classList.toggle('checked');
+                }
             });
         }
-
-        function selectAnswer(index) {
-            state.userAnswers[state.currentQ] = index;
-            document.querySelectorAll('.option-btn').forEach(el => el.classList.remove('selected'));
-            event.target.classList.add('selected');
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerHTML = `<div class="toast">${message}</div>`;
-            setTimeout(() => toast.innerHTML = '', 3000);
-        }
-
-        // ===== عرض الإعلانات =====
-        function renderAds() {
-            const settings = getAdSettings();
-            const t = translations[state.lang];
-            return {
-                top: settings.top && settings.topCode ? `<div class="ad-container">${settings.topCode}</div>` : '',
-                side: settings.side && settings.sideCode ? `<div class="ad-container">${settings.sideCode}</div>` : '',
-                bottom: settings.bottom && settings.bottomCode ? `<div class="ad-container">${settings.bottomCode}</div>` : ''
-            };
-        }
-
-        // ===== العرض الرئيسي =====
-        function render() {
-            document.documentElement.lang = state.lang;
-            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
-            const t = translations[state.lang];
-            const { top: adTop, side: adSide, bottom: adBottom } = renderAds();
-
-            let content = '';
-            switch (state.page) {
-                case 'userInfo': content = renderUserInfo(); break;
-                case 'intro': content = renderIntro(); break;
-                case 'quiz': content = renderQuiz(); break;
-                case 'result': content = renderResult(); break;
-            }
-
-            const html = `
-                ${adTop}
-                <div class="container mx-auto px-4 py-8 max-w-4xl">
-                    ${content}
-                </div>
-                ${adBottom}
-                <footer class="mt-16 text-center text-gray-400 space-y-2 text-sm">
-                    <p class="font-semibold">${t.footer1}</p>
-                    <p>${t.footer2}</p>
-                </footer>
-            `;
-            document.getElementById('app').innerHTML = html;
-            setupEventListeners();
-        }
-
+        
         // ===== تحميل إعدادات الإعلانات =====
         function loadAdSettings() {
             const settings = getAdSettings();
@@ -838,10 +1864,48 @@
             document.getElementById('topAdToggle').classList.toggle('checked', settings.top);
             document.getElementById('sideAdToggle').classList.toggle('checked', settings.side);
             document.getElementById('bottomAdToggle').classList.toggle('checked', settings.bottom);
+            
+            // تحديث المعاينات
+            updateAdPreview('top', settings.topCode);
+            updateAdPreview('side', settings.sideCode);
+            updateAdPreview('bottom', settings.bottomCode);
         }
-
+        
+        // ===== عرض الرسائل =====
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<div class="toast">${message}</div>`;
+            setTimeout(() => toast.innerHTML = '', 3000);
+        }
+        
         // ===== التهيئة =====
         document.addEventListener('DOMContentLoaded', () => {
+            // إضافة أزرار التحكم
+            const controlsContainer = document.createElement('div');
+            controlsContainer.className = 'fixed top-4 left-4 z-50 flex space-x-2';
+            
+            // زر الإعدادات
+            const settingsBtn = document.createElement('button');
+            settingsBtn.id = 'settingsBtn';
+            settingsBtn.className = 'bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full';
+            settingsBtn.innerHTML = '<i class="fas fa-cog"></i>';
+            settingsBtn.title = translations[state.lang].settings_btn;
+            controlsContainer.appendChild(settingsBtn);
+            
+            // زر تبديل اللغة
+            const langBtn = document.createElement('button');
+            langBtn.id = 'langToggle';
+            langBtn.className = 'bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full';
+            langBtn.innerHTML = '<i class="fas fa-language ml-2"></i>' + translations[state.lang].lang_btn;
+            langBtn.title = 'Change Language';
+            controlsContainer.appendChild(langBtn);
+            
+            document.body.appendChild(controlsContainer);
+            
+            // إعداد مستمعي الأحداث
+            setupEventListeners();
+            
+            // العرض الأولي
             render();
         });
     </script>
