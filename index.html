@@ -262,6 +262,100 @@
         .section-c { border-left-color: #3b82f6; }
         .section-partner { border-left-color: #8b5cf6; }
         .section-zodiac { border-left-color: #ec4899; }
+        
+        /* أنماط جديدة للإضافات */
+        .personality-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .color-red { background-color: #ef4444; }
+        .color-yellow { background-color: #f59e0b; }
+        .color-green { background-color: #10b981; }
+        .color-blue { background-color: #3b82f6; }
+        
+        .stats-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .stats-label {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
+        .rating-section {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            margin: 16px 0;
+        }
+        .rating-star {
+            font-size: 2rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .rating-star:hover,
+        .rating-star.active {
+            color: #fbbf24;
+        }
+        .comment-section {
+            margin-top: 16px;
+        }
+        .comment-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .comment-submit {
+            margin-top: 12px;
+        }
+        
+        .famous-person {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .famous-person-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 16px;
+        }
+        .famous-person-info h4 {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+        .famous-person-info p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
         @media print {
             body { background: white !important; color: black !important; }
             .glass-card { background: white !important; border: 1px solid #ccc !important; color: black !important; }
@@ -269,6 +363,7 @@
             .chart-container { display: block !important; }
             .gradient-text { -webkit-text-fill-color: #d97706 !important; }
             .analysis-section { border: 1px solid #ccc !important; }
+            .rating-section, .comment-section { display: none !important; }
         }
     </style>
 </head>
@@ -383,7 +478,12 @@
             lang: 'ar',
             page: 'userInfo',
             resultText: '',
-            resultData: null
+            resultData: null,
+            historyIndex: null,
+            siteStats: {
+                visitors: 0,
+                analyses: 0
+            }
         };
         
         // ===== إعدادات الإعلانات =====
@@ -414,10 +514,53 @@
                 userData: { ...state.userData }
             });
             localStorage.setItem('personalityResults', JSON.stringify(results));
+            
+            // تحديث عدد التحليلات
+            updateSiteStats('analyses');
         }
         
         function getSavedResults() {
             const saved = localStorage.getItem('personalityResults');
+            return saved ? JSON.parse(saved) : [];
+        }
+        
+        // ===== إحصائيات الموقع =====
+        function updateSiteStats(type) {
+            const stats = getSiteStats();
+            if (type === 'visitors') {
+                stats.visitors++;
+            } else if (type === 'analyses') {
+                stats.analyses++;
+            }
+            localStorage.setItem('siteStats', JSON.stringify(stats));
+            state.siteStats = stats;
+        }
+        
+        function getSiteStats() {
+            const saved = localStorage.getItem('siteStats');
+            if (saved) {
+                return JSON.parse(saved);
+            } else {
+                const defaultStats = { visitors: 1250, analyses: 890 };
+                localStorage.setItem('siteStats', JSON.stringify(defaultStats));
+                return defaultStats;
+            }
+        }
+        
+        // ===== تخزين التقييمات والتعليقات =====
+        function saveRating(rating, comment) {
+            const ratings = getRatings();
+            ratings.push({
+                rating,
+                comment,
+                date: new Date().toISOString(),
+                personalityType: state.resultData ? state.resultData.primary : 'unknown'
+            });
+            localStorage.setItem('siteRatings', JSON.stringify(ratings));
+        }
+        
+        function getRatings() {
+            const saved = localStorage.getItem('siteRatings');
             return saved ? JSON.parse(saved) : [];
         }
         
@@ -498,6 +641,7 @@
                 alert_no_answer: "يرجى اختيار إجابة",
                 alert_copied: "تم نسخ النتيجة بنجاح!",
                 alert_shared: "تمت مشاركة النتيجة بنجاح!",
+                alert_rating_saved: "تم حفظ تقييمك بنجاح!",
                 loading_analysis: "جاري تحليل شخصيتك...",
                 footer1: "جميع الحقوق محفوظة © 2025 | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong>",
                 footer2: "مطور بحب ❤️ لمساعدتك في فهم نفسك أكثر",
@@ -516,6 +660,12 @@
                 chart_title: "تحليل الشخصية (نموذج DISC)",
                 age_label: "العمر",
                 zodiac_sign: "برجك",
+                visitors_count: "عدد الزوار",
+                analyses_count: "عدد التحليلات",
+                rate_site: "قيم الموقع",
+                write_comment: "اكتب تعليقك",
+                submit_rating: "إرسال التقييم",
+                famous_personality: "شخصية مشهورة تشبهك",
                 
                 // أقسام التحليل المفصل
                 overview: "نظرة عامة",
@@ -570,6 +720,7 @@
                 alert_no_answer: "Please select an answer",
                 alert_copied: "Result copied successfully!",
                 alert_shared: "Result shared successfully!",
+                alert_rating_saved: "Your rating has been saved successfully!",
                 loading_analysis: "Analyzing your personality...",
                 footer1: "All rights reserved © 2025 | Designed and developed by <strong>Mohammed Tarek</strong>",
                 footer2: "Developed with love ❤️ to help you understand yourself better",
@@ -588,6 +739,12 @@
                 chart_title: "Personality Analysis (DISC Model)",
                 age_label: "Age",
                 zodiac_sign: "Your Zodiac",
+                visitors_count: "Visitors Count",
+                analyses_count: "Analyses Count",
+                rate_site: "Rate the Site",
+                write_comment: "Write Your Comment",
+                submit_rating: "Submit Rating",
+                famous_personality: "Famous Personality Like You",
                 
                 // أقسام التحليل المفصل
                 overview: "Overview",
@@ -680,6 +837,54 @@
             }
         };
         
+        // ===== بيانات الشخصيات المشهورة =====
+        const famousPersonalities = {
+            ar: {
+                D: [
+                    { name: "ستيف جوبز", description: "مؤسس شركة آبل، قائد ورؤيوي", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP.jpg/220px-Steve_Jobs_Headshot_2010-CROP.jpg" },
+                    { name: "أوباما وينستون", description: "رئيس وزراء المملكة المتحدة، قائد حاسم", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Winston_Churchill_in_1942.jpg/220px-Winston_Churchill_in_1942.jpg" },
+                    { name: "مارغريت ثاتشر", description: "رئيسة وزراء المملكة المتحدة، امرأة حديدية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Margaret_Thatcher_in_1983.jpg/220px-Margaret_Thatcher_in_1983.jpg" }
+                ],
+                I: [
+                    { name: "أوباما باراك", description: "رئيس الولايات المتحدة، خطيب مفوه", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Barack_Obama_portrait.jpg/220px-Barack_Obama_portrait.jpg" },
+                    { name: "أوبرا وينفري", description: "إعلامية ومؤثرة، شخصية كاريزمية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
+                    { name: "ويل سميث", description: "ممثل ومنتج، شخصية محبوبة", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Will_Smith_2016.png/220px-Will_Smith_2016.png" }
+                ],
+                S: [
+                    { name: "الأم تيريزا", description: "راهبة ومؤسسة منظمة الإرساليات الخيرية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mother_Teresa_3.jpg/220px-Mother_Teresa_3.jpg" },
+                    { name: "نيلسون مانديلا", description: "رئيس جنوب أفريقيا، رمز السلام", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" },
+                    { name: "ألبرت آينشتاين", description: "عالم فيزياء، شخصية هادئة ومتفكرة", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg/220px-Einstein_1921_by_F_Schmutzer_-_restoration.jpg" }
+                ],
+                C: [
+                    { name: "بيل جيتس", description: "مؤسس مايكروسوفت، مفكر ومنظم", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
+                    { name: "مارك زوكربيرج", description: "مؤسس فيسبوك، مبرمج ومحلل", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" },
+                    { name: "إيلون ماسك", description: "رئيس تسلا وسبايس إكس، مخترع ومبتكر", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" }
+                ]
+            },
+            en: {
+                D: [
+                    { name: "Steve Jobs", description: "Apple co-founder, visionary leader", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP.jpg/220px-Steve_Jobs_Headshot_2010-CROP.jpg" },
+                    { name: "Winston Churchill", description: "UK Prime Minister, decisive leader", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Winston_Churchill_in_1942.jpg/220px-Winston_Churchill_in_1942.jpg" },
+                    { name: "Margaret Thatcher", description: "UK Prime Minister, Iron Lady", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Margaret_Thatcher_in_1983.jpg/220px-Margaret_Thatcher_in_1983.jpg" }
+                ],
+                I: [
+                    { name: "Barack Obama", description: "US President, eloquent speaker", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Barack_Obama_portrait.jpg/220px-Barack_Obama_portrait.jpg" },
+                    { name: "Oprah Winfrey", description: "Media mogul, influential personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
+                    { name: "Will Smith", description: "Actor and producer, beloved personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Will_Smith_2016.png/220px-Will_Smith_2016.png" }
+                ],
+                S: [
+                    { name: "Mother Teresa", description: "Nun and founder of Missionaries of Charity", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mother_Teresa_3.jpg/220px-Mother_Teresa_3.jpg" },
+                    { name: "Nelson Mandela", description: "South African President, symbol of peace", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" },
+                    { name: "Albert Einstein", description: "Physicist, calm and thoughtful personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg/220px-Einstein_1921_by_F_Schmutzer_-_restoration.jpg" }
+                ],
+                C: [
+                    { name: "Bill Gates", description: "Microsoft co-founder, thinker and organizer", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
+                    { name: "Mark Zuckerberg", description: "Facebook founder, programmer and analyst", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" },
+                    { name: "Elon Musk", description: "Tesla and SpaceX CEO, inventor and innovator", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" }
+                ]
+            }
+        };
+        
         // ===== تحليل الشخصية المفصل =====
         const personalityAnalysis = {
             ar: {
@@ -705,7 +910,9 @@
                     career_paths: "المسارات المهنية المناسبة include الإدارة التنفيذية، ريادة الأعمال، المبيعات، القيادة العسكرية، الاستشارات الإدارية، والتدريب على القيادة.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك مستقل وواثق يدعم طموحاته. يقدر الشريك الذي يفهم حاجته للمساحة الشخصية ويحترم تركيزه على العمل. يحتاج إلى تقدير وإعجاب بإنجازاته.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاستقلالية، الثقة، الطموح، الدعم المتبادل، الفهم لطبيعة العمل، والقدرة على التواصل المباشر. التوافق الجيد يتطلب شريكاً لا يشعر بالتهديد من نجاحاته.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يفهم ويقدر طبيعته القيادية. النجاح يتطلب توازناً بين الطموحات المهنية والحياة الشخصية، واحتراماً متبادلاً للاستقلالية والإنجازات."
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يفهم ويقدر طبيعته القيادية. النجاح يتطلب توازناً بين الطموحات المهنية والحياة الشخصية، واحتراماً متبادلاً للاستقلالية والإنجازات.",
+                    partner_type: "شريك مستقل وواثق، يدعم الطموحات المهنية، يفهم الحاجة للمساحة الشخصية، يقدر الإنجازات، قادر على التواصل المباشر",
+                    partner_color: "أحمر"
                 },
                 I: {
                     overview: "شخصية اجتماعية ومؤثرة تمتلك طاقة إيجابية وقدرة على إلهام الآخرين. تتميز بالتفاؤل والحماس والقدرة على بناء العلاقات. تسعى دائماً للتواصل مع الآخرين وخلق بيئة إيجابية.",
@@ -729,7 +936,9 @@
                     career_paths: "المسارات المهنية المناسبة include التسويق، العلاقات العامة، التدريب، المبيعات، الترفيه، الإعلام، والأدوار التي تتطلب التفاعل مع الجمهور.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك اجتماعي وداعم يقدر حماسه ويشاركه اهتماماته. يحتاج إلى تقدير مستمر وتشجيع على إنجازاته. يقدر الشريك الذي يستمع إليه باهتمام.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاجتماعية، الدعم العاطفي، التقدير المتبادل، التواصل الجيد، المرونة، والقدرة على الاستمتاع بالحياة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من طاقته.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يشاركه حماسه الاجتماعي ويقدر حاجته للتقدير. النجاح يتطلب توازناً بين الحياة الاجتماعية والاحتياجات الشخصية، وفهماً متبادلاً لأساليب التعبير عن الحب."
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يشاركه حماسه الاجتماعي ويقدر حاجته للتقدير. النجاح يتطلب توازناً بين الحياة الاجتماعية والاحتياجات الشخصية، وفهماً متبادلاً لأساليب التعبير عن الحب.",
+                    partner_type: "شريك اجتماعي وداعم، يشارك الاهتمامات، يقدر الحماس، يستمع باهتمام، مرن وممتع",
+                    partner_color: "أصفر"
                 },
                 S: {
                     overview: "شخصية مستقرة وداعمة تمتلك قدرة فطرية على بناء الثقة والعلاقات العميقة. تتميز بالصبر والولاء والقدرة على الاستماع. تسعى دائماً لخلق بيئة آمنة ومستقرة للآخرين.",
@@ -753,7 +962,9 @@
                     career_paths: "المسارات المهنية المناسبة include الموارد البشرية، الرعاية الصحية، التعليم، الخدمات الاجتماعية، الإدارة، والأدوار التي تتطلب الدعم والمساعدة.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك موثوق وداعم يوفر له الأمان والاستقرار. يحتاج إلى اهتمام مستمر وتقدير لجهوده. يقدر الشريك الذي يستمع إليه باهتمام ويظهر له الحنان.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاستقرار، الأمان، الولاء، الدعم المتبادل، التواصل الجيد، والقدرة على بناء علاقة عميقة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من روتين العلاقة.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يقدر الاستقرار ويوفر الأمان العاطفي. النجاح يتطلب توازناً بين الحاجة للأمان والنمو الشخصي، وفهماً متبادلاً لطرق التعبير عن الحب."
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يقدر الاستقرار ويوفر الأمان العاطفي. النجاح يتطلب توازناً بين الحاجة للأمان والنمو الشخصي، وفهماً متبادلاً لطرق التعبير عن الحب.",
+                    partner_type: "شريك موثوق وداعم، يوفر الأمان والاستقرار، يظهر الاهتمام والحنان، مستمع جيد",
+                    partner_color: "أخضر"
                 },
                 C: {
                     overview: "شخصية تحليلية ودقيقة تمتلك قدرة فطرية على فهم الأنظمة وحل المشكلات المعقدة. تتميز بالدقة والمنطق والقدرة على التخطيط. تسعى دائماً للكمال والجودة في كل ما تفعله.",
@@ -777,7 +988,9 @@
                     career_paths: "المسارات المهنية المناسبة include البحث العلمي، الهندسة، المحاسبة، تكنولوجيا المعلومات، الجودة، التحليل المالي، والأدوار التي تتطلب دقة وتحليلاً.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك ذكي ومنظم يفهم حاجته للمساحة الشخصية والوضوح. يحتاج إلى احترام لذكائه وقدراته. يقدر الشريك الذي يتواصل بوضح ومنطق.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الذكاء، النظام، الوضوح، الاحترام المتبادل، التواصل الجيد، والقدرة على فهم الاحتياجات. التوافق الجيد يتطلب شريكاً لا يشعر بالإحباط من بطء وتيرة العلاقة أحياناً.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يقدر الذكاء والمنطق ويوفر الاستقرار العاطفي. النجاح يتطلب توازناً بين الحاجة للتحليل والتعبير عن المشاعر، وفهماً متبادلاً لطرق إظهار الحب."
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يقدر الذكاء والمنطق ويوفر الاستقرار العاطفي. النجاح يتطلب توازناً بين الحاجة للتحليل والتعبير عن المشاعر، وفهماً متبادلاً لطرق إظهار الحب.",
+                    partner_type: "شريك ذكي ومنظم، يفهم الحاجة للمساحة الشخصية، يتواصل بوضح ومنطق، يحترم الذكاء",
+                    partner_color: "أزرق"
                 }
             },
             en: {
@@ -803,7 +1016,9 @@
                     career_paths: "Suitable career paths include executive management, entrepreneurship, sales, military leadership, management consulting, and leadership training.",
                     relationship_needs: "In a relationship, needs an independent and confident partner who supports their ambitions. Values a partner who understands their need for personal space and respects their work focus. Needs appreciation and admiration for achievements.",
                     compatibility_factors: "Key compatibility factors include independence, confidence, ambition, mutual support, understanding of work nature, and ability for direct communication. Good compatibility requires a partner who doesn't feel threatened by their successes.",
-                    long_term_potential: "Long-term relationship potential is excellent with a partner who understands and appreciates their leadership nature. Success requires balance between career ambitions and personal life, and mutual respect for independence and achievements."
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who understands and appreciates their leadership nature. Success requires balance between career ambitions and personal life, and mutual respect for independence and achievements.",
+                    partner_type: "Independent and confident partner, supports career ambitions, understands need for personal space, respects work focus",
+                    partner_color: "Red"
                 },
                 I: {
                     overview: "A social and influential personality with positive energy and ability to inspire others. Characterized by optimism and enthusiasm and ability to build relationships. Always seeks to communicate with others and create a positive environment.",
@@ -827,7 +1042,9 @@
                     career_paths: "Suitable career paths include marketing, public relations, training, sales, entertainment, media, and roles requiring audience interaction.",
                     relationship_needs: "In a relationship, needs a social and supportive partner who appreciates their enthusiasm and shares their interests. Needs continuous appreciation and encouragement for achievements. Values a partner who listens with interest.",
                     compatibility_factors: "Key compatibility factors include sociability, emotional support, mutual appreciation, good communication, flexibility, and ability to enjoy life. Good compatibility requires a partner who doesn't get bored by their energy.",
-                    long_term_potential: "Long-term relationship potential is good with a partner who shares their social enthusiasm and appreciates their need for appreciation. Success requires balance between social life and personal needs, and mutual understanding of love expression styles."
+                    long_term_potential: "Long-term relationship potential is good with a partner who shares their social enthusiasm and appreciates their need for appreciation. Success requires balance between social life and personal needs, and mutual understanding of love expression styles.",
+                    partner_type: "Social and supportive partner, shares interests, appreciates enthusiasm, listens attentively, flexible and fun",
+                    partner_color: "Yellow"
                 },
                 S: {
                     overview: "A stable and supportive personality with a natural ability to build trust and deep relationships. Characterized by patience, loyalty, and listening ability. Always seeks to create a safe and stable environment for others.",
@@ -851,7 +1068,9 @@
                     career_paths: "Suitable career paths include human resources, healthcare, education, social services, administration, and roles requiring support and assistance.",
                     relationship_needs: "In a relationship, needs a reliable and supportive partner who provides emotional security and stability. Needs continuous interest and appreciation for efforts. Values a partner who listens with interest and shows affection.",
                     compatibility_factors: "Key compatibility factors include stability, security, loyalty, mutual support, good communication, and ability to build a deep relationship. Good compatibility requires a partner who doesn't get bored by relationship routines.",
-                    long_term_potential: "Long-term relationship potential is excellent with a partner who values stability and provides emotional security. Success requires balance between need for security and personal growth, and mutual understanding of love expression methods."
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who values stability and provides emotional security. Success requires balance between need for security and personal growth, and mutual understanding of love expression methods.",
+                    partner_type: "Reliable and supportive partner, provides emotional security and stability, shows interest and affection, good listener",
+                    partner_color: "Green"
                 },
                 C: {
                     overview: "An analytical and precise personality with a natural ability to understand systems and solve complex problems. Characterized by precision, logic, and planning ability. Always seeks perfection and quality in everything they do.",
@@ -875,7 +1094,9 @@
                     career_paths: "Suitable career paths include scientific research, engineering, accounting, information technology, quality, financial analysis, and roles requiring precision and analysis.",
                     relationship_needs: "In a relationship, needs an intelligent and organized partner who understands their need for personal space and clarity. Needs respect for their intelligence and abilities. Values a partner who communicates clearly and logically.",
                     compatibility_factors: "Key compatibility factors include intelligence, order, clarity, mutual respect, good communication, and ability to understand needs. Good compatibility requires a partner who doesn't feel frustrated by the sometimes slow pace of the relationship.",
-                    long_term_potential: "Long-term relationship potential is good with a partner who appreciates intelligence and logic and provides emotional stability. Success requires balance between need for analysis and emotional expression, and mutual understanding of love demonstration methods."
+                    long_term_potential: "Long-term relationship potential is good with a partner who appreciates intelligence and logic and provides emotional stability. Success requires balance between need for analysis and emotional expression, and mutual understanding of love demonstration methods.",
+                    partner_type: "Intelligent and organized partner, understands need for personal space, communicates clearly and logically, respects intelligence",
+                    partner_color: "Blue"
                 }
             }
         };
@@ -1161,6 +1382,10 @@
             // الحصول على تحليل الشخصية المفصل
             const analysis = personalityAnalysis[state.lang][primary];
             
+            // الحصول على الشخصية المشهورة
+            const famousPersonalitiesList = famousPersonalities[state.lang][primary];
+            const randomFamous = famousPersonalitiesList[Math.floor(Math.random() * famousPersonalitiesList.length)];
+            
             // حفظ النتائج
             const resultData = { scores, primary, date: new Date().toISOString() };
             state.resultData = resultData;
@@ -1303,7 +1528,10 @@
                 <!-- معلومات المستخدم -->
                 <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
                     <div class="flex flex-wrap justify-between items-center mb-4">
-                        <h3 class="text-2xl font-bold">${types[state.lang][primary]}</h3>
+                        <h3 class="text-2xl font-bold">
+                            ${types[state.lang][primary]}
+                            <span class="personality-color color-${primary.toLowerCase()}"></span>
+                        </h3>
                         <div class="flex flex-wrap gap-4 text-lg">
                             <div>
                                 <span class="text-gray-300">${t.age_label}:</span> 
@@ -1317,6 +1545,15 @@
                     </div>
                     <div class="text-sm text-gray-400">
                         ${zodiacInfo.dates} • ${zodiacInfo.element} • ${zodiacInfo.traits}
+                    </div>
+                </div>
+                
+                <!-- الشخصية المشهورة -->
+                <div class="famous-person">
+                    <img src="${randomFamous.image}" alt="${randomFamous.name}" class="famous-person-image">
+                    <div class="famous-person-info">
+                        <h4>${t.famous_personality}: ${randomFamous.name}</h4>
+                        <p>${randomFamous.description}</p>
                     </div>
                 </div>
                 
@@ -1362,6 +1599,33 @@
                         <div class="compatibility-meter">
                             <div class="compatibility-fill" style="width: 85%"></div>
                         </div>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-gray-800 bg-opacity-50 rounded-lg">
+                        <h4 class="font-bold mb-2">${t.partner_traits}:</h4>
+                        <p class="text-gray-300">${analysis.partner_type}</p>
+                        <div class="mt-2">
+                            <span class="text-gray-400">${t.partner_color}:</span>
+                            <span class="personality-color color-${analysis.partner_color.toLowerCase()}"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم التقييم والتعليقات -->
+                <div class="rating-section">
+                    <h3 class="text-2xl font-bold mb-4">${t.rate_site}</h3>
+                    <div class="rating-stars">
+                        <i class="fas fa-star rating-star" data-rating="1"></i>
+                        <i class="fas fa-star rating-star" data-rating="2"></i>
+                        <i class="fas fa-star rating-star" data-rating="3"></i>
+                        <i class="fas fa-star rating-star" data-rating="4"></i>
+                        <i class="fas fa-star rating-star" data-rating="5"></i>
+                    </div>
+                    
+                    <div class="comment-section">
+                        <h4 class="text-lg font-bold mb-2">${t.write_comment}</h4>
+                        <textarea id="commentInput" class="comment-input" placeholder="${t.write_comment}..."></textarea>
+                        <button id="submitRating" class="btn-primary comment-submit">${t.submit_rating}</button>
                     </div>
                 </div>
                 
@@ -1531,11 +1795,26 @@
         // ===== وظائف العرض =====
         function renderUserInfo() {
             const t = translations[state.lang];
+            const stats = getSiteStats();
+            
             return `
             <div class="text-center">
                 <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
                     <h1 class="text-4xl font-bold gradient-text mb-4">${t.welcome_title}</h1>
                     <p class="text-gray-300 text-lg mb-6">${t.user_info_desc}</p>
+                    
+                    <!-- إحصائيات الموقع -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="stats-card">
+                            <div class="stats-number">${stats.visitors.toLocaleString()}</div>
+                            <div class="stats-label">${t.visitors_count}</div>
+                        </div>
+                        <div class="stats-card">
+                            <div class="stats-number">${stats.analyses.toLocaleString()}</div>
+                            <div class="stats-label">${t.analyses_count}</div>
+                        </div>
+                    </div>
+                    
                     <div class="space-y-6 text-right">
                         <div><label class="block mb-2">${t.gender_label}</label><select id="gender" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600"><option value="male">${t.male}</option><option value="female">${t.female}</option><option value="other">${t.other}</option></select></div>
                         <div><label class="block mb-2">${t.dob_label}</label><input type="date" id="dob" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" /></div>
@@ -1665,6 +1944,64 @@
                     setTimeout(() => createPersonalityChart(results[state.historyIndex].scores), 100);
                 }
             }
+            
+            // إعداد مستمعي أحداث التقييم والتعليقات
+            if (state.page === 'result') {
+                setupRatingEventListeners();
+            }
+        }
+        
+        // ===== إعداد مستمعي أحداث التقييم =====
+        function setupRatingEventListeners() {
+            const ratingStars = document.querySelectorAll('.rating-star');
+            const submitRatingBtn = document.getElementById('submitRating');
+            const commentInput = document.getElementById('commentInput');
+            let selectedRating = 0;
+            
+            ratingStars.forEach(star => {
+                star.addEventListener('click', () => {
+                    selectedRating = parseInt(star.dataset.rating);
+                    updateRatingDisplay(selectedRating);
+                });
+                
+                star.addEventListener('mouseenter', () => {
+                    const rating = parseInt(star.dataset.rating);
+                    updateRatingDisplay(rating);
+                });
+            });
+            
+            document.querySelector('.rating-stars').addEventListener('mouseleave', () => {
+                updateRatingDisplay(selectedRating);
+            });
+            
+            submitRatingBtn.addEventListener('click', () => {
+                const comment = commentInput.value.trim();
+                
+                if (selectedRating === 0) {
+                    showToast('يرجى اختيار تقييم');
+                    return;
+                }
+                
+                saveRating(selectedRating, comment);
+                showToast(translations[state.lang].alert_rating_saved);
+                
+                // إعادة تعيين النموذج
+                selectedRating = 0;
+                updateRatingDisplay(0);
+                commentInput.value = '';
+            });
+        }
+        
+        // ===== تحديث عرض التقييم =====
+        function updateRatingDisplay(rating) {
+            const ratingStars = document.querySelectorAll('.rating-star');
+            ratingStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
         }
         
         // ===== معالجة الأحداث =====
@@ -1796,18 +2133,6 @@
                     document.getElementById('settingsOverlay').style.display = 'none';
                 }
                 
-                // معالج زر تسجيل الدخول
-                if (e.target.id === 'loginBtn') {
-                    const pass = document.getElementById('adminPassword').value;
-                    if (simpleHash(pass) === '-899142845') { // تجزئة "Farida"
-                        document.getElementById('passwordSection').style.display = 'none';
-                        document.getElementById('adminPanel').style.display = 'block';
-                        loadAdSettings();
-                    } else {
-                        showToast('كلمة المرور خاطئة');
-                    }
-                }
-                
                 // معالج زر حفظ الإعدادات
                 if (e.target.id === 'saveSettings') {
                     const settings = {
@@ -1890,6 +2215,10 @@
         
         // ===== التهيئة =====
         document.addEventListener('DOMContentLoaded', () => {
+            // تحديث إحصائيات الموقع
+            updateSiteStats('visitors');
+            state.siteStats = getSiteStats();
+            
             // إعداد مستمعي الأحداث
             setupEventListeners();
             
@@ -1901,6 +2230,34 @@
             document.getElementById('langToggle').addEventListener('click', () => {
                 state.lang = state.lang === 'ar' ? 'en' : 'ar';
                 render();
+            });
+            
+            // إعداد مستمع حدث لزر تسجيل الدخول
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const pass = document.getElementById('adminPassword').value;
+                
+                if (!pass) {
+                    showToast('يرجى إدخال كلمة المرور');
+                    return;
+                }
+                
+                // حساب تجزئة كلمة المرور المدخلة
+                const hashedPass = simpleHash(pass);
+                const correctHash = simpleHash("Farida"); // حساب التجزئة الصحيحة
+                
+                console.log("كلمة المرور المدخلة:", pass);
+                console.log("تجزئة المدخلة:", hashedPass);
+                console.log("تجزئة الصحيحة:", correctHash);
+                
+                if (hashedPass === correctHash) {
+                    // إخفاء قسم كلمة المرور وإظهار لوحة الإدارة
+                    document.getElementById('passwordSection').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadAdSettings();
+                    showToast('تم تسجيل الدخول بنجاح');
+                } else {
+                    showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
+                }
             });
             
             // العرض الأولي
