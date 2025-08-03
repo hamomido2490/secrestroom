@@ -273,6 +273,19 @@
     </style>
 </head>
 <body class="text-white">
+    <!-- أزرار التحكم -->
+    <div class="fixed top-4 left-4 z-50 flex space-x-2">
+        <!-- زر الإعدادات -->
+        <button id="settingsBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full">
+            <i class="fas fa-cog"></i>
+        </button>
+        
+        <!-- زر تبديل اللغة -->
+        <button id="langToggle" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full">
+            <i class="fas fa-language ml-2"></i>English
+        </button>
+    </div>
+    
     <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
     <div id="toast"></div>
     
@@ -526,7 +539,8 @@
                 career_paths: "المسارات المهنية",
                 relationship_needs: "احتياجات العلاقة",
                 compatibility_factors: "عوامل التوافق",
-                long_term_potential: "الإمكانات طويلة الأمد"
+                long_term_potential: "الإمكانات طويلة الأمد",
+                compatible_zodiacs: "الأبراج المتوافقة"
             },
             en: {
                 welcome_title: "Welcome to Chamber of Secrets",
@@ -597,7 +611,8 @@
                 career_paths: "Career Paths",
                 relationship_needs: "Relationship Needs",
                 compatibility_factors: "Compatibility Factors",
-                long_term_potential: "Long-term Potential"
+                long_term_potential: "Long-term Potential",
+                compatible_zodiacs: "Compatible Zodiacs"
             }
         };
         
@@ -1611,6 +1626,12 @@
             const t = translations[state.lang];
             const { top: adTop, side: adSide, bottom: adBottom } = renderAds();
             
+            // تحديث نص زر اللغة
+            const langBtn = document.getElementById('langToggle');
+            if (langBtn) {
+                langBtn.innerHTML = `<i class="fas fa-language ml-2"></i>${t.lang_btn}`;
+            }
+            
             let content = '';
             switch (state.page) {
                 case 'userInfo': content = renderUserInfo(); break;
@@ -1770,20 +1791,9 @@
                     render();
                 }
                 
-                // معالج زر الإعدادات
-                if (e.target.id === 'settingsBtn') {
-                    document.getElementById('settingsOverlay').style.display = 'flex';
-                }
-                
                 // معالج زر إغلاق الإعدادات
                 if (e.target.id === 'closeSettings') {
                     document.getElementById('settingsOverlay').style.display = 'none';
-                }
-                
-                // معالج زر تبديل اللغة
-                if (e.target.id === 'langToggle') {
-                    state.lang = state.lang === 'ar' ? 'en' : 'ar';
-                    render();
                 }
                 
                 // معالج زر تسجيل الدخول
@@ -1880,30 +1890,18 @@
         
         // ===== التهيئة =====
         document.addEventListener('DOMContentLoaded', () => {
-            // إضافة أزرار التحكم
-            const controlsContainer = document.createElement('div');
-            controlsContainer.className = 'fixed top-4 left-4 z-50 flex space-x-2';
-            
-            // زر الإعدادات
-            const settingsBtn = document.createElement('button');
-            settingsBtn.id = 'settingsBtn';
-            settingsBtn.className = 'bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full';
-            settingsBtn.innerHTML = '<i class="fas fa-cog"></i>';
-            settingsBtn.title = translations[state.lang].settings_btn;
-            controlsContainer.appendChild(settingsBtn);
-            
-            // زر تبديل اللغة
-            const langBtn = document.createElement('button');
-            langBtn.id = 'langToggle';
-            langBtn.className = 'bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full';
-            langBtn.innerHTML = '<i class="fas fa-language ml-2"></i>' + translations[state.lang].lang_btn;
-            langBtn.title = 'Change Language';
-            controlsContainer.appendChild(langBtn);
-            
-            document.body.appendChild(controlsContainer);
-            
             // إعداد مستمعي الأحداث
             setupEventListeners();
+            
+            // إعداد مستمعي الأحداث للأزرار الثابتة
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                document.getElementById('settingsOverlay').style.display = 'flex';
+            });
+            
+            document.getElementById('langToggle').addEventListener('click', () => {
+                state.lang = state.lang === 'ar' ? 'en' : 'ar';
+                render();
+            });
             
             // العرض الأولي
             render();
