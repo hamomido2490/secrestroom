@@ -4,27 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>غرفة الأسرار | اكتشف شخصيتك</title>
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
-    <!-- Google Fonts -->
+    
+    <!-- تحسين تحميل المكتبات الخارجية -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
+        /* إضافة أنماط أساسية لضمان العمل حتى لو لم يتم تحميل Tailwind */
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             min-height: 100vh;
             color: white;
+            margin: 0;
+            padding: 0;
         }
+        
         .gradient-text {
             background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        
         .glass-card {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(10px);
@@ -32,7 +36,10 @@
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 1200px;
         }
+        
         .option-btn {
             display: block;
             width: 100%;
@@ -46,19 +53,55 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+        
         .option-btn:hover, .option-btn.selected {
             border-color: #3b82f6;
             background: rgba(59, 130, 246, 0.2);
             transform: translateX(8px);
         }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ec4899, #fbbf24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 10px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #cbd5e1;
+            border: 1px solid #cbd5e1;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(203, 213, 225, 0.1);
+        }
+        
         .progress-container {
             margin: 16px 0 24px;
             text-align: left;
         }
+        
         .progress-container span {
             font-size: 0.875rem;
             color: #94a3b8;
         }
+        
         .progress-container .w-full {
             width: 100%;
             background: #334155;
@@ -67,12 +110,14 @@
             overflow: hidden;
             margin-top: 8px;
         }
+        
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6);
             border-radius: 999px;
             transition: width 0.4s ease;
         }
+        
         .toast {
             position: fixed;
             top: 20px;
@@ -87,22 +132,11 @@
             opacity: 0;
             animation: toastSlide 0.4s ease forwards;
         }
+        
         @keyframes toastSlide {
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
-        .ad-banner {
-            background: linear-gradient(45deg, #f59e0b, #ef4444);
-            border-radius: 12px;
-            padding: 16px;
-            margin: 16px 0;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .ad-banner:hover { transform: scale(1.02); }
-        .star-rating { color: #fbbf24; }
+        
         .settings-overlay {
             display: none;
             position: fixed;
@@ -112,6 +146,7 @@
             align-items: center;
             z-index: 1000;
         }
+        
         .settings-panel {
             background: rgba(30, 41, 59, 0.9);
             backdrop-filter: blur(10px);
@@ -124,6 +159,7 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+        
         .toggle-switch {
             position: relative;
             width: 50px;
@@ -132,6 +168,7 @@
             border-radius: 999px;
             cursor: pointer;
         }
+        
         .toggle-switch::after {
             content: '';
             position: absolute;
@@ -143,38 +180,15 @@
             border-radius: 50%;
             transition: transform 0.3s ease;
         }
+        
         .toggle-switch.checked {
             background: #3b82f6;
         }
+        
         .toggle-switch.checked::after {
             transform: translateX(26px);
         }
-        .btn-primary {
-            background: linear-gradient(45deg, #ec4899, #fbbf24);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-        }
-        .btn-secondary {
-            background: transparent;
-            color: #cbd5e1;
-            border: 1px solid #cbd5e1;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-secondary:hover {
-            background: rgba(203, 213, 225, 0.1);
-        }
+        
         .loading-spinner {
             display: inline-block;
             width: 3rem;
@@ -184,14 +198,17 @@
             border-top-color: #fbbf24;
             animation: spin 1s ease-in-out infinite;
         }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
         .chart-container {
             position: relative;
             height: 300px;
             margin: 20px 0;
         }
+        
         .history-item {
             background: rgba(30, 41, 59, 0.6);
             border-radius: 12px;
@@ -200,10 +217,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+        
         .history-item:hover {
             background: rgba(30, 41, 59, 0.8);
             transform: translateX(8px);
         }
+        
         .ad-preview {
             background: rgba(15, 23, 42, 0.8);
             border: 1px solid rgba(59, 130, 246, 0.3);
@@ -213,10 +232,12 @@
             min-height: 80px;
             overflow: auto;
         }
+        
         .zodiac-icon {
             font-size: 2rem;
             margin-bottom: 8px;
         }
+        
         .compatibility-meter {
             height: 20px;
             background: #334155;
@@ -224,12 +245,14 @@
             overflow: hidden;
             margin: 10px 0;
         }
+        
         .compatibility-fill {
             height: 100%;
             background: linear-gradient(90deg, #10b981, #34d399);
             border-radius: 10px;
             transition: width 1s ease;
         }
+        
         .analysis-section {
             background: rgba(30, 41, 59, 0.6);
             border-radius: 12px;
@@ -237,33 +260,17 @@
             margin-bottom: 20px;
             border-left: 4px solid;
         }
+        
         .analysis-section h3 {
             margin-bottom: 15px;
             font-size: 1.25rem;
         }
-        .analysis-section ul {
-            list-style-type: none;
-            padding-right: 0;
-        }
-        .analysis-section li {
-            margin-bottom: 8px;
-            position: relative;
-            padding-right: 20px;
-        }
-        .analysis-section li:before {
-            content: "•";
-            position: absolute;
-            right: 0;
-            color: #fbbf24;
-        }
+        
         .section-d { border-left-color: #ef4444; }
         .section-i { border-left-color: #f59e0b; }
         .section-s { border-left-color: #10b981; }
         .section-c { border-left-color: #3b82f6; }
-        .section-partner { border-left-color: #8b5cf6; }
-        .section-zodiac { border-left-color: #ec4899; }
         
-        /* أنماط جديدة للإضافات */
         .personality-color {
             display: inline-block;
             width: 20px;
@@ -272,98 +279,344 @@
             margin-left: 8px;
             vertical-align: middle;
         }
-        .color-red { background-color: #ef4444; }
-        .color-yellow { background-color: #f59e0b; }
-        .color-green { background-color: #10b981; }
-        .color-blue { background-color: #3b82f6; }
         
-        .stats-card {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 12px;
-            padding: 16px;
+        .similar-personality {
             text-align: center;
-            margin-bottom: 16px;
-        }
-        .stats-number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        .stats-label {
-            color: #94a3b8;
-            font-size: 0.875rem;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
         }
         
-        .rating-section {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 24px;
-        }
-        .rating-stars {
-            display: flex;
-            justify-content: center;
-            margin: 16px 0;
-        }
-        .rating-star {
-            font-size: 2rem;
-            color: #4b5563;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .rating-star:hover,
-        .rating-star.active {
-            color: #fbbf24;
-        }
-        .comment-section {
-            margin-top: 16px;
-        }
-        .comment-input {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            color: white;
-            resize: vertical;
-            min-height: 100px;
-        }
-        .comment-submit {
-            margin-top: 12px;
+        .similar-personality:hover {
+            transform: translateY(-5px);
         }
         
-        .famous-person {
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-        }
-        .famous-person-image {
+        .similar-personality img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
+            margin-bottom: 10px;
             object-fit: cover;
-            margin-left: 16px;
         }
-        .famous-person-info h4 {
-            font-size: 1.25rem;
-            margin-bottom: 4px;
+        
+        .feedback-section {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
         }
-        .famous-person-info p {
+        
+        .feedback-stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-stars i {
+            font-size: 1.5rem;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .feedback-stars i:hover,
+        .feedback-stars i.active {
+            color: #fbbf24;
+        }
+        
+        .stats-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
             color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .shared-feedback {
+            margin-top: 20px;
+        }
+        
+        .feedback-item {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .feedback-rating {
+            color: #fbbf24;
+        }
+        
+        .feedback-date {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+        
+        .feedback-comment {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+        
+        /* أنماط إضافية للتوافق */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .text-left {
+            text-align: left;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+        
+        .mt-8 {
+            margin-top: 2rem;
+        }
+        
+        .mt-16 {
+            margin-top: 4rem;
+        }
+        
+        .p-3 {
+            padding: 0.75rem;
+        }
+        
+        .p-6 {
+            padding: 1.5rem;
+        }
+        
+        .p-8 {
+            padding: 2rem;
+        }
+        
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        
+        .rounded-xl {
+            border-radius: 0.75rem;
+        }
+        
+        .border {
+            border: 1px solid #e5e7eb;
+        }
+        
+        .bg-gray-800 {
+            background-color: #1f2937;
+        }
+        
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        
+        .text-gray-400 {
+            color: #9ca3af;
+        }
+        
+        .text-xl {
+            font-size: 1.25rem;
+        }
+        
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+        
+        .text-3xl {
+            font-size: 1.875rem;
+        }
+        
+        .text-4xl {
+            font-size: 2.25rem;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .grid {
+            display: grid;
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        
+        .gap-4 {
+            gap: 1rem;
+        }
+        
+        .space-y-2 > * + * {
+            margin-top: 0.5rem;
+        }
+        
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+        
+        .space-y-6 > * + * {
+            margin-top: 1.5rem;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .max-w-3xl {
+            max-width: 48rem;
+        }
+        
+        .max-w-4xl {
+            max-width: 56rem;
+        }
+        
+        .relative {
+            position: relative;
+        }
+        
+        .fixed {
+            position: fixed;
+        }
+        
+        .top-4 {
+            top: 1rem;
+        }
+        
+        .left-4 {
+            left: 1rem;
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        .space-x-2 > * + * {
+            margin-left: 0.5rem;
+        }
+        
+        .p-3 {
+            padding: 0.75rem;
+        }
+        
+        .rounded-full {
+            border-radius: 9999px;
+        }
+        
+        .bg-gray-800 {
+            background-color: #1f2937;
+        }
+        
+        .hover\:bg-gray-700:hover {
+            background-color: #374151;
+        }
+        
+        .text-white {
+            color: white;
+        }
+        
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        
+        .ml-2 {
+            margin-left: 0.5rem;
+        }
+        
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: #9ca3af;
             font-size: 0.875rem;
+        }
+        
+        .footer p {
+            margin: 0.5rem 0;
+        }
+        
+        .footer strong {
+            font-weight: 700;
         }
         
         @media print {
             body { background: white !important; color: black !important; }
             .glass-card { background: white !important; border: 1px solid #ccc !important; color: black !important; }
-            .ad-banner, .btn-primary, .btn-secondary, #settingsBtn, #langToggle, .history-item { display: none !important; }
+            .btn-primary, .btn-secondary, #settingsBtn, #langToggle, .history-item { display: none !important; }
             .chart-container { display: block !important; }
             .gradient-text { -webkit-text-fill-color: #d97706 !important; }
             .analysis-section { border: 1px solid #ccc !important; }
-            .rating-section, .comment-section { display: none !important; }
         }
     </style>
 </head>
@@ -396,6 +649,25 @@
             </div>
             <div id="adminPanel" style="display: none;">
                 <h4 class="font-semibold mb-3">إدارة الإعلانات</h4>
+                
+                <!-- حالة الإعلانات الحالية -->
+                <div class="mb-6 p-4 bg-slate-800 rounded-lg">
+                    <h5 class="font-semibold mb-3">حالة الإعلانات الحالية</h5>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="bg-slate-700 p-3 rounded">
+                            <div class="text-lg font-bold text-green-400" id="topStatus">معطل</div>
+                            <div class="text-sm text-gray-400">الإعلان العلوي</div>
+                        </div>
+                        <div class="bg-slate-700 p-3 rounded">
+                            <div class="text-lg font-bold text-green-400" id="sideStatus">معطل</div>
+                            <div class="text-sm text-gray-400">الإعلان الجانبي</div>
+                        </div>
+                        <div class="bg-slate-700 p-3 rounded">
+                            <div class="text-lg font-bold text-green-400" id="bottomStatus">معطل</div>
+                            <div class="text-sm text-gray-400">الإعلان السفلي</div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- الإعلان العلوي -->
                 <div class="mb-6">
@@ -445,24 +717,6 @@
                     </div>
                 </div>
                 
-                <!-- إضافة إعلان جديد -->
-                <div class="mb-6 p-4 bg-slate-800 rounded-lg">
-                    <h5 class="font-semibold mb-3">إضافة إعلان جديد</h5>
-                    <div class="mb-3">
-                        <label class="block text-sm mb-1">موضع الإعلان</label>
-                        <select id="newAdPosition" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded">
-                            <option value="top">الإعلان العلوي</option>
-                            <option value="side">الإعلان الجانبي</option>
-                            <option value="bottom">الإعلان السفلي</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="block text-sm mb-1">كود الإعلان</label>
-                        <textarea id="newAdCode" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded h-24 font-mono text-sm" placeholder="أدخل كود الإعلان هنا"></textarea>
-                    </div>
-                    <button id="addNewAd" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded">إضافة الإعلان</button>
-                </div>
-                
                 <button id="saveSettings" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded mt-4">حفظ الإعدادات</button>
                 <button id="closeSettings" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded mt-2">إغلاق</button>
             </div>
@@ -479,299 +733,401 @@
             page: 'userInfo',
             resultText: '',
             resultData: null,
-            historyIndex: null,
-            siteStats: {
-                visitors: 0,
-                analyses: 0
-            }
+            historyIndex: null
         };
         
         // ===== إعدادات الإعلانات =====
         const defaultAdSettings = {
-            top: true,
-            side: true,
-            bottom: true,
+            top: false,
+            side: false,
+            bottom: false,
             topCode: '',
             sideCode: '',
             bottomCode: ''
         };
         
         function saveAdSettings(settings) {
-            localStorage.setItem('adSettings', JSON.stringify(settings));
+            try {
+                localStorage.setItem('adSettings', JSON.stringify(settings));
+                updateAdStatus();
+                showToast('تم حفظ إعدادات الإعلانات بنجاح');
+                setTimeout(() => {
+                    if (state.page !== 'loading') {
+                        render();
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error('Error saving ad settings:', error);
+                showToast('حدث خطأ في حفظ الإعدادات');
+            }
         }
         
         function getAdSettings() {
-            const saved = localStorage.getItem('adSettings');
-            return saved ? JSON.parse(saved) : defaultAdSettings;
+            try {
+                const saved = localStorage.getItem('adSettings');
+                return saved ? JSON.parse(saved) : defaultAdSettings;
+            } catch (error) {
+                console.error('Error getting ad settings:', error);
+                return defaultAdSettings;
+            }
+        }
+        
+        // ===== تحديث حالة الإعلانات =====
+        function updateAdStatus() {
+            const settings = getAdSettings();
+            const topStatus = document.getElementById('topStatus');
+            const sideStatus = document.getElementById('sideStatus');
+            const bottomStatus = document.getElementById('bottomStatus');
+            
+            if (topStatus) {
+                topStatus.textContent = settings.top ? 'مفعل' : 'معطل';
+                topStatus.className = settings.top ? 'text-lg font-bold text-green-400' : 'text-lg font-bold text-red-400';
+            }
+            if (sideStatus) {
+                sideStatus.textContent = settings.side ? 'مفعل' : 'معطل';
+                sideStatus.className = settings.side ? 'text-lg font-bold text-green-400' : 'text-lg font-bold text-red-400';
+            }
+            if (bottomStatus) {
+                bottomStatus.textContent = settings.bottom ? 'مفعل' : 'معطل';
+                bottomStatus.className = settings.bottom ? 'text-lg font-bold text-green-400' : 'text-lg font-bold text-red-400';
+            }
+        }
+        
+        // ===== نظام العدادات المشترك =====
+        function updateCounters() {
+            try {
+                // زيادة عدد الزوار (مرة واحدة لكل جلسة)
+                if (!sessionStorage.getItem('visitorCounted')) {
+                    let visitors = parseInt(localStorage.getItem('shared_visitors') || '0');
+                    visitors++;
+                    localStorage.setItem('shared_visitors', visitors.toString());
+                    sessionStorage.setItem('visitorCounted', 'true');
+                }
+                
+                // زيادة عدد التحليلات عند إتمام تحليل جديد
+                if (state.page === 'result' && state.resultData && !state.resultData.counted) {
+                    let analyses = parseInt(localStorage.getItem('shared_analyses') || '0');
+                    analyses++;
+                    localStorage.setItem('shared_analyses', analyses.toString());
+                    state.resultData.counted = true;
+                }
+                
+                return {
+                    visitors: parseInt(localStorage.getItem('shared_visitors') || '0'),
+                    analyses: parseInt(localStorage.getItem('shared_analyses') || '0')
+                };
+            } catch (error) {
+                console.error('Error updating counters:', error);
+                return { visitors: 0, analyses: 0 };
+            }
+        }
+        
+        function getCounters() {
+            try {
+                return {
+                    visitors: parseInt(localStorage.getItem('shared_visitors') || '0'),
+                    analyses: parseInt(localStorage.getItem('shared_analyses') || '0')
+                };
+            } catch (error) {
+                console.error('Error getting counters:', error);
+                return { visitors: 0, analyses: 0 };
+            }
         }
         
         // ===== تخزين النتائج =====
         function saveResult(resultData) {
-            const results = getSavedResults();
-            results.push({
-                ...resultData,
-                date: new Date().toISOString(),
-                userData: { ...state.userData }
-            });
-            localStorage.setItem('personalityResults', JSON.stringify(results));
-            
-            // تحديث عدد التحليلات
-            updateSiteStats('analyses');
+            try {
+                const results = getSavedResults();
+                results.push({
+                    ...resultData,
+                    date: new Date().toISOString(),
+                    userData: { ...state.userData }
+                });
+                localStorage.setItem('personalityResults', JSON.stringify(results));
+            } catch (error) {
+                console.error('Error saving result:', error);
+                showToast('حدث خطأ في حفظ النتيجة');
+            }
         }
         
         function getSavedResults() {
-            const saved = localStorage.getItem('personalityResults');
-            return saved ? JSON.parse(saved) : [];
-        }
-        
-        // ===== إحصائيات الموقع =====
-        function updateSiteStats(type) {
-            const stats = getSiteStats();
-            if (type === 'visitors') {
-                stats.visitors++;
-            } else if (type === 'analyses') {
-                stats.analyses++;
-            }
-            localStorage.setItem('siteStats', JSON.stringify(stats));
-            state.siteStats = stats;
-        }
-        
-        function getSiteStats() {
-            const saved = localStorage.getItem('siteStats');
-            if (saved) {
-                return JSON.parse(saved);
-            } else {
-                const defaultStats = { visitors: 1250, analyses: 890 };
-                localStorage.setItem('siteStats', JSON.stringify(defaultStats));
-                return defaultStats;
+            try {
+                const saved = localStorage.getItem('personalityResults');
+                return saved ? JSON.parse(saved) : [];
+            } catch (error) {
+                console.error('Error getting saved results:', error);
+                return [];
             }
         }
         
-        // ===== تخزين التقييمات والتعليقات =====
-        function saveRating(rating, comment) {
-            const ratings = getRatings();
-            ratings.push({
-                rating,
-                comment,
-                date: new Date().toISOString(),
-                personalityType: state.resultData ? state.resultData.primary : 'unknown'
-            });
-            localStorage.setItem('siteRatings', JSON.stringify(ratings));
+        // ===== حفظ التقييمات والتعليقات (مشتركة) =====
+        function saveFeedback(type, rating, comment) {
+            try {
+                const feedback = {
+                    type: type,
+                    rating: rating,
+                    comment: comment,
+                    date: new Date().toISOString(),
+                    id: Date.now() + Math.random()
+                };
+                
+                let allFeedback = JSON.parse(localStorage.getItem('shared_feedback') || '[]');
+                allFeedback.push(feedback);
+                
+                if (allFeedback.length > 50) {
+                    allFeedback = allFeedback.slice(-50);
+                }
+                
+                localStorage.setItem('shared_feedback', JSON.stringify(allFeedback));
+            } catch (error) {
+                console.error('Error saving feedback:', error);
+                showToast('حدث خطأ في حفظ التقييم');
+            }
         }
         
-        function getRatings() {
-            const saved = localStorage.getItem('siteRatings');
-            return saved ? JSON.parse(saved) : [];
+        // ===== جلب التقييمات والتعليقات المشتركة =====
+        function getSharedFeedback(type = null) {
+            try {
+                const allFeedback = JSON.parse(localStorage.getItem('shared_feedback') || '[]');
+                
+                allFeedback.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                if (type) {
+                    return allFeedback.filter(item => item.type === type);
+                }
+                
+                return allFeedback;
+            } catch (error) {
+                console.error('Error getting shared feedback:', error);
+                return [];
+            }
+        }
+        
+        // ===== حساب متوسط التقييم =====
+        function getAverageRating(type) {
+            try {
+                const feedback = getSharedFeedback(type);
+                if (feedback.length === 0) return 0;
+                
+                const sum = feedback.reduce((total, item) => total + item.rating, 0);
+                return (sum / feedback.length).toFixed(1);
+            } catch (error) {
+                console.error('Error calculating average rating:', error);
+                return 0;
+            }
+        }
+        
+        // ===== عرض التعليقات المشتركة =====
+        function renderSharedFeedback(containerId, type = null, limit = 5) {
+            try {
+                const feedback = getSharedFeedback(type);
+                const container = document.getElementById(containerId);
+                
+                if (!container) {
+                    return;
+                }
+                
+                if (feedback.length === 0) {
+                    container.innerHTML = '<p class="text-gray-400 text-center">لا توجد تعليقات بعد</p>';
+                    return;
+                }
+                
+                const limitedFeedback = feedback.slice(0, limit);
+                const t = translations[state.lang];
+                
+                const feedbackHTML = limitedFeedback.map(item => {
+                    const date = new Date(item.date).toLocaleDateString(
+                        state.lang === 'ar' ? 'ar-SA' : 'en-US',
+                        { year: 'numeric', month: 'short', day: 'numeric' }
+                    );
+                    
+                    const stars = Array(5).fill(0).map((_, i) => 
+                        `<i class="fas fa-star ${i < item.rating ? 'text-yellow-400' : 'text-gray-600'}"></i>`
+                    ).join('');
+                    
+                    const comment = item.comment ? `<div class="feedback-comment">${item.comment}</div>` : '';
+                    
+                    return `
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <div class="feedback-rating">${stars}</div>
+                            <div class="feedback-date">${date}</div>
+                        </div>
+                        ${comment}
+                    </div>`;
+                }).join('');
+                
+                container.innerHTML = feedbackHTML;
+            } catch (error) {
+                console.error('Error rendering shared feedback:', error);
+            }
         }
         
         // ===== تجزئة كلمة المرور =====
         function simpleHash(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32-bit integer
+            try {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash).toString();
+            } catch (error) {
+                console.error('Error hashing password:', error);
+                return '0';
             }
-            return hash.toString();
         }
         
         // ===== حساب العمر من تاريخ الميلاد =====
         function calculateAge(birthDate) {
-            const today = new Date();
-            const birth = new Date(birthDate);
-            let age = today.getFullYear() - birth.getFullYear();
-            const monthDiff = today.getMonth() - birth.getMonth();
-            
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                age--;
+            try {
+                const today = new Date();
+                const birth = new Date(birthDate);
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            } catch (error) {
+                console.error('Error calculating age:', error);
+                return 0;
             }
-            
-            return age;
         }
         
         // ===== حساب البرج الفلكي =====
         function calculateZodiac(birthDate) {
-            const date = new Date(birthDate);
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            
-            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'aries';
-            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'taurus';
-            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'gemini';
-            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'cancer';
-            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'leo';
-            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'virgo';
-            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'libra';
-            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'scorpio';
-            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'sagittarius';
-            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
-            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
-            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'pisces';
-            
-            return 'unknown';
+            try {
+                const date = new Date(birthDate);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                
+                if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'aries';
+                if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'taurus';
+                if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'gemini';
+                if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'cancer';
+                if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'leo';
+                if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'virgo';
+                if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'libra';
+                if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'scorpio';
+                if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'sagittarius';
+                if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
+                if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
+                if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'pisces';
+                
+                return 'unknown';
+            } catch (error) {
+                console.error('Error calculating zodiac:', error);
+                return 'unknown';
+            }
         }
         
-        // ===== الترجمات =====
-        const translations = {
-            ar: {
-                welcome_title: "مرحباً في غرفة الأسرار",
-                user_info_title: "معلوماتك الشخصية",
-                user_info_desc: "دعنا نتعرف عليك أكثر لنقدم لك تحليلاً دقيقاً",
-                gender_label: "الجنس",
-                dob_label: "تاريخ الميلاد",
-                submit_user_info: "التالي",
-                intro_title: "استعد لرحلة اكتشاف الذات",
-                intro_subtitle: "تحليل شخصيتك ومعرفة رفيق دربك",
-                intro_desc: "ستخوض رحلة من 20 سؤالاً مصممة خصيصاً لكشف أعماق شخصيتك",
-                intro_p1: "سنحلل شخصيتك وفقاً لأحدث النظريات النفسية",
-                intro_p2: "وسنساعدك في اكتشاف الشريك المثالي لك",
-                start_btn: "ابدأ الرحلة",
-                progress: "التقدم:",
-                next_btn: "التالي",
-                final_results_btn: "عرض النتائج",
-                restart_btn: "ابدأ من جديد",
-                share_btn: "مشاركة النتيجة",
-                copy_btn: "نسخ النتيجة",
-                history_btn: "سجل النتائج",
-                print_btn: "طباعة النتيجة",
-                settings_btn: "الإعدادات",
-                lang_btn: "English",
-                alert_missing_fields: "يرجى ملء جميع الحقول",
-                alert_invalid_dob: "تاريخ ميلاد غير صحيح",
-                alert_no_answer: "يرجى اختيار إجابة",
-                alert_copied: "تم نسخ النتيجة بنجاح!",
-                alert_shared: "تمت مشاركة النتيجة بنجاح!",
-                alert_rating_saved: "تم حفظ تقييمك بنجاح!",
-                loading_analysis: "جاري تحليل شخصيتك...",
-                footer1: "جميع الحقوق محفوظة © 2025 | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong>",
-                footer2: "مطور بحب ❤️ لمساعدتك في فهم نفسك أكثر",
-                male: "ذكر",
-                female: "أنثى",
-                other: "آخر",
-                compatibility_title: "نسبة التوافق",
-                partner_traits: "صفات الشريك المثالي",
-                relationship_advice: "نصائح للعلاقة",
-                analysis_intro: "بعد تحليل إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:",
-                personality_section: "تحليل شخصيتك",
-                partner_section: "الشريك المثالي لك",
-                partner_analysis_title: "تحليل مفصل للشريك المثالي",
-                history_title: "سجل النتائج السابقة",
-                no_history: "لا توجد نتائج سابقة",
-                chart_title: "تحليل الشخصية (نموذج DISC)",
-                age_label: "العمر",
-                zodiac_sign: "برجك",
-                visitors_count: "عدد الزوار",
-                analyses_count: "عدد التحليلات",
-                rate_site: "قيم الموقع",
-                write_comment: "اكتب تعليقك",
-                submit_rating: "إرسال التقييم",
-                famous_personality: "شخصية مشهورة تشبهك",
-                
-                // أقسام التحليل المفصل
-                overview: "نظرة عامة",
-                core_traits: "السمات الأساسية",
-                psychological_profile: "الملف النفسي",
-                work_behavior: "السلوك في العمل",
-                relationship_behavior: "السلوك في العلاقات",
-                challenges: "التحديات",
-                development_tips: "نصائح للتنمية",
-                stress_management: "إدارة الضغط",
-                learning_style: "أسلوب التعلم",
-                values_principles: "القيم والمبادئ",
-                communication_patterns: "أنماط التواصل",
-                decision_making: "اتخاذ القرار",
-                leadership_style: "أسلوب القيادة",
-                conflict_resolution: "حل النزاعات",
-                motivation_factors: "عوامل التحفيز",
-                ideal_environment: "البيئة المثالية",
-                growth_areas: "مجالات النمو",
-                life_balance: "توازن الحياة",
-                career_paths: "المسارات المهنية",
-                relationship_needs: "احتياجات العلاقة",
-                compatibility_factors: "عوامل التوافق",
-                long_term_potential: "الإمكانات طويلة الأمد",
-                compatible_zodiacs: "الأبراج المتوافقة"
-            },
-            en: {
-                welcome_title: "Welcome to Chamber of Secrets",
-                user_info_title: "Your Personal Information",
-                user_info_desc: "Let us know you better to provide accurate analysis",
-                gender_label: "Gender",
-                dob_label: "Date of Birth",
-                submit_user_info: "Next",
-                intro_title: "Get Ready for a Journey of Self-Discovery",
-                intro_subtitle: "Analyze Your Personality & Find Your Ideal Partner",
-                intro_desc: "You will take a 20-question journey designed to uncover the depths of your personality",
-                intro_p1: "We will analyze your personality using the latest psychological theories",
-                intro_p2: "And help you discover your ideal partner",
-                start_btn: "Start Journey",
-                progress: "Progress:",
-                next_btn: "Next",
-                final_results_btn: "Show Results",
-                restart_btn: "Start Over",
-                share_btn: "Share Result",
-                copy_btn: "Copy Result",
-                history_btn: "Result History",
-                print_btn: "Print Result",
-                settings_btn: "Settings",
-                lang_btn: "العربية",
-                alert_missing_fields: "Please fill all fields",
-                alert_invalid_dob: "Invalid date of birth",
-                alert_no_answer: "Please select an answer",
-                alert_copied: "Result copied successfully!",
-                alert_shared: "Result shared successfully!",
-                alert_rating_saved: "Your rating has been saved successfully!",
-                loading_analysis: "Analyzing your personality...",
-                footer1: "All rights reserved © 2025 | Designed and developed by <strong>Mohammed Tarek</strong>",
-                footer2: "Developed with love ❤️ to help you understand yourself better",
-                male: "Male",
-                female: "Female",
-                other: "Other",
-                compatibility_title: "Compatibility Rate",
-                partner_traits: "Ideal Partner Traits",
-                relationship_advice: "Relationship Advice",
-                analysis_intro: "After analyzing your answers, your personality type is:",
-                personality_section: "Your Personality Analysis",
-                partner_section: "Your Ideal Partner",
-                partner_analysis_title: "Detailed Partner Analysis",
-                history_title: "Previous Results History",
-                no_history: "No previous results found",
-                chart_title: "Personality Analysis (DISC Model)",
-                age_label: "Age",
-                zodiac_sign: "Your Zodiac",
-                visitors_count: "Visitors Count",
-                analyses_count: "Analyses Count",
-                rate_site: "Rate the Site",
-                write_comment: "Write Your Comment",
-                submit_rating: "Submit Rating",
-                famous_personality: "Famous Personality Like You",
-                
-                // أقسام التحليل المفصل
-                overview: "Overview",
-                core_traits: "Core Traits",
-                psychological_profile: "Psychological Profile",
-                work_behavior: "Work Behavior",
-                relationship_behavior: "Relationship Behavior",
-                challenges: "Challenges",
-                development_tips: "Development Tips",
-                stress_management: "Stress Management",
-                learning_style: "Learning Style",
-                values_principles: "Values & Principles",
-                communication_patterns: "Communication Patterns",
-                decision_making: "Decision Making",
-                leadership_style: "Leadership Style",
-                conflict_resolution: "Conflict Resolution",
-                motivation_factors: "Motivation Factors",
-                ideal_environment: "Ideal Environment",
-                growth_areas: "Growth Areas",
-                life_balance: "Life Balance",
-                career_paths: "Career Paths",
-                relationship_needs: "Relationship Needs",
-                compatibility_factors: "Compatibility Factors",
-                long_term_potential: "Long-term Potential",
-                compatible_zodiacs: "Compatible Zodiacs"
-            }
-        };
+        // ===== الحصول على معلومات الشريك المثالي =====
+        function getPartnerInfo(personalityType, lang) {
+            const partnerData = {
+                ar: {
+                    D: { 
+                        type: "الشريك الداعم والمستقل", 
+                        traits: "صبور، متفهم، يحترم طموحاتك، يدعم قراراتك، يقدر استقلالك",
+                        color: "#10b981"
+                    },
+                    I: { 
+                        type: "الشريك المستمع والمشجع", 
+                        traits: "صبور، داعم، يقدر طاقتك، يستمع باهتمام، يشاركك حماسك",
+                        color: "#3b82f6"
+                    },
+                    S: { 
+                        type: "الشريك الموثوق والمستقر", 
+                        traits: "مخلص، داعم، يقدر الولاء، يوفر الأمان، متعاطف",
+                        color: "#f59e0b"
+                    },
+                    C: { 
+                        type: "الشريك الذكي والمنظم", 
+                        traits: "منطقي، دقيق، يحترم ذكاءك، يقدر التخطيط، عملي",
+                        color: "#ec4899"
+                    }
+                },
+                en: {
+                    D: { 
+                        type: "Supportive and Independent Partner", 
+                        traits: "Patient, understanding, respects your ambitions, supports your decisions, values your independence",
+                        color: "#10b981"
+                    },
+                    I: { 
+                        type: "Listening and Encouraging Partner", 
+                        traits: "Patient, supportive, values your energy, listens attentively, shares your enthusiasm",
+                        color: "#3b82f6"
+                    },
+                    S: { 
+                        type: "Reliable and Stable Partner", 
+                        traits: "Loyal, supportive, values loyalty, provides security, empathetic",
+                        color: "#f59e0b"
+                    },
+                    C: { 
+                        type: "Intelligent and Organized Partner", 
+                        traits: "Logical, precise, respects your intelligence, values planning, practical",
+                        color: "#ec4899"
+                    }
+                }
+            };
+            
+            return partnerData[lang] && partnerData[lang][personalityType] || partnerData[lang].D;
+        }
+        
+        // ===== الحصول على الشخصيات المشابهة =====
+        function getSimilarPersonalities(personalityType, lang) {
+            const personalities = {
+                ar: {
+                    D: [
+                        { name: "ستيف جوبز", description: "قائد ورائد أعمال", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Steve_Jobs_WWDC_2010.jpg/220px-Steve_Jobs_WWDC_2010.jpg" },
+                        { name: "أوباما وينفري", description: "إعلامية ورائدة أعمال", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
+                        { name: "نيلسون مانديلا", description: "زعيم سياسي", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" }
+                    ],
+                    I: [
+                        { name: "ويل سميث", description: "ممثل ومنتج", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Will_Smith_2019_by_Glenn_Francis.jpg/220px-Will_Smith_2019_by_Glenn_Francis.jpg" },
+                        { name: "إلين ديجينيريس", description: "مقدمة برامج", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ellen_DeGeneres_2011.jpg/220px-Ellen_DeGeneres_2011.jpg" },
+                        { name: "جيم كاري", description: "ممثل كوميدي", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Jim_Carry_1996.jpg/220px-Jim_Carry_1996.jpg" }
+                    ],
+                    S: [
+                        { name: "مادونا", description: "مغنية ورائدة أعمال", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Madonna_at_the_Met_Gala_2018.jpg/220px-Madonna_at_the_Met_Gala_2018.jpg" },
+                        { name: "بيل غيتس", description: "رائد أعمال ومحسن", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
+                        { name: "أنجيلينا جولي", description: "ممثلة وناشطة", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Angelina_Jolie_2_June_2014.jpg/220px-Angelina_Jolie_2_June_2014.jpg" }
+                    ],
+                    C: [
+                        { name: "مارك زوكربيرغ", description: "مؤسس فيسبوك", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29.jpg" },
+                        { name: "إيلون ماسك", description: "رائد أعمال", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" },
+                        { name: "بيل غيتس", description: "مؤسس مايكروسوفت", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" }
+                    ]
+                },
+                en: {
+                    D: [
+                        { name: "Steve Jobs", description: "Leader and entrepreneur", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Steve_Jobs_WWDC_2010.jpg/220px-Steve_Jobs_WWDC_2010.jpg" },
+                        { name: "Oprah Winfrey", description: "Media personality and entrepreneur", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
+                        { name: "Nelson Mandela", description: "Political leader", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" }
+                    ],
+                    I: [
+                        { name: "Will Smith", description: "Actor and producer", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Will_Smith_2019_by_Glenn_Francis.jpg/220px-Will_Smith_2019_by_Glenn_Francis.jpg" },
+                        { name: "Ellen DeGeneres", description: "TV host", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ellen_DeGeneres_2011.jpg/220px-Ellen_DeGeneres_2011.jpg" },
+                        { name: "Jim Carrey", description: "Comedian actor", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Jim_Carry_1996.jpg/220px-Jim_Carry_1996.jpg" }
+                    ],
+                    S: [
+                        { name: "Madonna", description: "Singer and entrepreneur", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Madonna_at_the_Met_Gala_2018.jpg/220px-Madonna_at_the_Met_Gala_2018.jpg" },
+                        { name: "Bill Gates", description: "Entrepreneur and philanthropist", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
+                        { name: "Angelina Jolie", description: "Actress and activist", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Angelina_Jolie_2_June_2014.jpg/220px-Angelina_Jolie_2_June_2014.jpg" }
+                    ],
+                    C: [
+                        { name: "Mark Zuckerberg", description: "Facebook founder", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29.jpg" },
+                        { name: "Elon Musk", description: "Entrepreneur", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" },
+                        { name: "Bill Gates", description: "Microsoft founder", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" }
+                    ]
+                }
+            };
+            
+            return personalities[lang] && personalities[lang][personalityType] || personalities[lang].D;
+        }
         
         // ===== بيانات الأبراج الفلكية =====
         const zodiacData = {
@@ -837,54 +1193,6 @@
             }
         };
         
-        // ===== بيانات الشخصيات المشهورة =====
-        const famousPersonalities = {
-            ar: {
-                D: [
-                    { name: "ستيف جوبز", description: "مؤسس شركة آبل، قائد ورؤيوي", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP.jpg/220px-Steve_Jobs_Headshot_2010-CROP.jpg" },
-                    { name: "أوباما وينستون", description: "رئيس وزراء المملكة المتحدة، قائد حاسم", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Winston_Churchill_in_1942.jpg/220px-Winston_Churchill_in_1942.jpg" },
-                    { name: "مارغريت ثاتشر", description: "رئيسة وزراء المملكة المتحدة، امرأة حديدية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Margaret_Thatcher_in_1983.jpg/220px-Margaret_Thatcher_in_1983.jpg" }
-                ],
-                I: [
-                    { name: "أوباما باراك", description: "رئيس الولايات المتحدة، خطيب مفوه", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Barack_Obama_portrait.jpg/220px-Barack_Obama_portrait.jpg" },
-                    { name: "أوبرا وينفري", description: "إعلامية ومؤثرة، شخصية كاريزمية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
-                    { name: "ويل سميث", description: "ممثل ومنتج، شخصية محبوبة", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Will_Smith_2016.png/220px-Will_Smith_2016.png" }
-                ],
-                S: [
-                    { name: "الأم تيريزا", description: "راهبة ومؤسسة منظمة الإرساليات الخيرية", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mother_Teresa_3.jpg/220px-Mother_Teresa_3.jpg" },
-                    { name: "نيلسون مانديلا", description: "رئيس جنوب أفريقيا، رمز السلام", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" },
-                    { name: "ألبرت آينشتاين", description: "عالم فيزياء، شخصية هادئة ومتفكرة", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg/220px-Einstein_1921_by_F_Schmutzer_-_restoration.jpg" }
-                ],
-                C: [
-                    { name: "بيل جيتس", description: "مؤسس مايكروسوفت، مفكر ومنظم", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
-                    { name: "مارك زوكربيرج", description: "مؤسس فيسبوك، مبرمج ومحلل", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" },
-                    { name: "إيلون ماسك", description: "رئيس تسلا وسبايس إكس، مخترع ومبتكر", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" }
-                ]
-            },
-            en: {
-                D: [
-                    { name: "Steve Jobs", description: "Apple co-founder, visionary leader", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP.jpg/220px-Steve_Jobs_Headshot_2010-CROP.jpg" },
-                    { name: "Winston Churchill", description: "UK Prime Minister, decisive leader", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Winston_Churchill_in_1942.jpg/220px-Winston_Churchill_in_1942.jpg" },
-                    { name: "Margaret Thatcher", description: "UK Prime Minister, Iron Lady", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Margaret_Thatcher_in_1983.jpg/220px-Margaret_Thatcher_in_1983.jpg" }
-                ],
-                I: [
-                    { name: "Barack Obama", description: "US President, eloquent speaker", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Barack_Obama_portrait.jpg/220px-Barack_Obama_portrait.jpg" },
-                    { name: "Oprah Winfrey", description: "Media mogul, influential personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Oprah_Winfrey_2014.jpg/220px-Oprah_Winfrey_2014.jpg" },
-                    { name: "Will Smith", description: "Actor and producer, beloved personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Will_Smith_2016.png/220px-Will_Smith_2016.png" }
-                ],
-                S: [
-                    { name: "Mother Teresa", description: "Nun and founder of Missionaries of Charity", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mother_Teresa_3.jpg/220px-Mother_Teresa_3.jpg" },
-                    { name: "Nelson Mandela", description: "South African President, symbol of peace", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/220px-Nelson_Mandela_1994.jpg" },
-                    { name: "Albert Einstein", description: "Physicist, calm and thoughtful personality", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg/220px-Einstein_1921_by_F_Schmutzer_-_restoration.jpg" }
-                ],
-                C: [
-                    { name: "Bill Gates", description: "Microsoft co-founder, thinker and organizer", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Bill_Gates_2017.jpg/220px-Bill_Gates_2017.jpg" },
-                    { name: "Mark Zuckerberg", description: "Facebook founder, programmer and analyst", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/220px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" },
-                    { name: "Elon Musk", description: "Tesla and SpaceX CEO, inventor and innovator", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society.jpg/220px-Elon_Musk_Royal_Society.jpg" }
-                ]
-            }
-        };
-        
         // ===== تحليل الشخصية المفصل =====
         const personalityAnalysis = {
             ar: {
@@ -910,9 +1218,7 @@
                     career_paths: "المسارات المهنية المناسبة include الإدارة التنفيذية، ريادة الأعمال، المبيعات، القيادة العسكرية، الاستشارات الإدارية، والتدريب على القيادة.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك مستقل وواثق يدعم طموحاته. يقدر الشريك الذي يفهم حاجته للمساحة الشخصية ويحترم تركيزه على العمل. يحتاج إلى تقدير وإعجاب بإنجازاته.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاستقلالية، الثقة، الطموح، الدعم المتبادل، الفهم لطبيعة العمل، والقدرة على التواصل المباشر. التوافق الجيد يتطلب شريكاً لا يشعر بالتهديد من نجاحاته.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يفهم ويقدر طبيعته القيادية. النجاح يتطلب توازناً بين الطموحات المهنية والحياة الشخصية، واحتراماً متبادلاً للاستقلالية والإنجازات.",
-                    partner_type: "شريك مستقل وواثق، يدعم الطموحات المهنية، يفهم الحاجة للمساحة الشخصية، يقدر الإنجازات، قادر على التواصل المباشر",
-                    partner_color: "أحمر"
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يفهم ويقدر طبيعته القيادية. النجاح يتطلب توازناً بين الطموحات المهنية والحياة الشخصية، واحتراماً متبادلاً للاستقلالية والإنجازات."
                 },
                 I: {
                     overview: "شخصية اجتماعية ومؤثرة تمتلك طاقة إيجابية وقدرة على إلهام الآخرين. تتميز بالتفاؤل والحماس والقدرة على بناء العلاقات. تسعى دائماً للتواصل مع الآخرين وخلق بيئة إيجابية.",
@@ -936,9 +1242,7 @@
                     career_paths: "المسارات المهنية المناسبة include التسويق، العلاقات العامة، التدريب، المبيعات، الترفيه، الإعلام، والأدوار التي تتطلب التفاعل مع الجمهور.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك اجتماعي وداعم يقدر حماسه ويشاركه اهتماماته. يحتاج إلى تقدير مستمر وتشجيع على إنجازاته. يقدر الشريك الذي يستمع إليه باهتمام.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاجتماعية، الدعم العاطفي، التقدير المتبادل، التواصل الجيد، المرونة، والقدرة على الاستمتاع بالحياة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من طاقته.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يشاركه حماسه الاجتماعي ويقدر حاجته للتقدير. النجاح يتطلب توازناً بين الحياة الاجتماعية والاحتياجات الشخصية، وفهماً متبادلاً لأساليب التعبير عن الحب.",
-                    partner_type: "شريك اجتماعي وداعم، يشارك الاهتمامات، يقدر الحماس، يستمع باهتمام، مرن وممتع",
-                    partner_color: "أصفر"
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يشاركه حماسه الاجتماعي ويقدر حاجته للتقدير. النجاح يتطلب توازناً بين الحياة الاجتماعية والاحتياجات الشخصية، وفهماً متبادلاً لأساليب التعبير عن الحب."
                 },
                 S: {
                     overview: "شخصية مستقرة وداعمة تمتلك قدرة فطرية على بناء الثقة والعلاقات العميقة. تتميز بالصبر والولاء والقدرة على الاستماع. تسعى دائماً لخلق بيئة آمنة ومستقرة للآخرين.",
@@ -962,9 +1266,7 @@
                     career_paths: "المسارات المهنية المناسبة include الموارد البشرية، الرعاية الصحية، التعليم، الخدمات الاجتماعية، الإدارة، والأدوار التي تتطلب الدعم والمساعدة.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك موثوق وداعم يوفر له الأمان والاستقرار. يحتاج إلى اهتمام مستمر وتقدير لجهوده. يقدر الشريك الذي يستمع إليه باهتمام ويظهر له الحنان.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الاستقرار، الأمان، الولاء، الدعم المتبادل، التواصل الجيد، والقدرة على بناء علاقة عميقة. التوافق الجيد يتطلب شريكاً لا يشعر بالملل من روتين العلاقة.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يقدر الاستقرار ويوفر الأمان العاطفي. النجاح يتطلب توازناً بين الحاجة للأمان والنمو الشخصي، وفهماً متبادلاً لطرق التعبير عن الحب.",
-                    partner_type: "شريك موثوق وداعم، يوفر الأمان والاستقرار، يظهر الاهتمام والحنان، مستمع جيد",
-                    partner_color: "أخضر"
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد ممتازة مع شريك يقدر الاستقرار ويوفر الأمان العاطفي. النجاح يتطلب توازناً بين الحاجة للأمان والنمو الشخصي، وفهماً متبادلاً لطرق التعبير عن الحب."
                 },
                 C: {
                     overview: "شخصية تحليلية ودقيقة تمتلك قدرة فطرية على فهم الأنظمة وحل المشكلات المعقدة. تتميز بالدقة والمنطق والقدرة على التخطيط. تسعى دائماً للكمال والجودة في كل ما تفعله.",
@@ -988,9 +1290,7 @@
                     career_paths: "المسارات المهنية المناسبة include البحث العلمي، الهندسة، المحاسبة، تكنولوجيا المعلومات، الجودة، التحليل المالي، والأدوار التي تتطلب دقة وتحليلاً.",
                     relationship_needs: "في العلاقة، يحتاج إلى شريك ذكي ومنظم يفهم حاجته للمساحة الشخصية والوضوح. يحتاج إلى احترام لذكائه وقدراته. يقدر الشريك الذي يتواصل بوضح ومنطق.",
                     compatibility_factors: "عوامل التوافق الرئيسية include الذكاء، النظام، الوضوح، الاحترام المتبادل، التواصل الجيد، والقدرة على فهم الاحتياجات. التوافق الجيد يتطلب شريكاً لا يشعر بالإحباط من بطء وتيرة العلاقة أحياناً.",
-                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يقدر الذكاء والمنطق ويوفر الاستقرار العاطفي. النجاح يتطلب توازناً بين الحاجة للتحليل والتعبير عن المشاعر، وفهماً متبادلاً لطرق إظهار الحب.",
-                    partner_type: "شريك ذكي ومنظم، يفهم الحاجة للمساحة الشخصية، يتواصل بوضح ومنطق، يحترم الذكاء",
-                    partner_color: "أزرق"
+                    long_term_potential: "إمكانات العلاقة طويلة الأمد جيدة مع شريك يقدر الذكاء والمنطق ويوفر الاستقرار العاطفي. النجاح يتطلب توازناً بين الحاجة للتحليل والتعبير عن المشاعر، وفهماً متبادلاً لطرق إظهار الحب."
                 }
             },
             en: {
@@ -1016,9 +1316,7 @@
                     career_paths: "Suitable career paths include executive management, entrepreneurship, sales, military leadership, management consulting, and leadership training.",
                     relationship_needs: "In a relationship, needs an independent and confident partner who supports their ambitions. Values a partner who understands their need for personal space and respects their work focus. Needs appreciation and admiration for achievements.",
                     compatibility_factors: "Key compatibility factors include independence, confidence, ambition, mutual support, understanding of work nature, and ability for direct communication. Good compatibility requires a partner who doesn't feel threatened by their successes.",
-                    long_term_potential: "Long-term relationship potential is excellent with a partner who understands and appreciates their leadership nature. Success requires balance between career ambitions and personal life, and mutual respect for independence and achievements.",
-                    partner_type: "Independent and confident partner, supports career ambitions, understands need for personal space, respects work focus",
-                    partner_color: "Red"
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who understands and appreciates their leadership nature. Success requires balance between career ambitions and personal life, and mutual respect for independence and achievements."
                 },
                 I: {
                     overview: "A social and influential personality with positive energy and ability to inspire others. Characterized by optimism and enthusiasm and ability to build relationships. Always seeks to communicate with others and create a positive environment.",
@@ -1042,9 +1340,7 @@
                     career_paths: "Suitable career paths include marketing, public relations, training, sales, entertainment, media, and roles requiring audience interaction.",
                     relationship_needs: "In a relationship, needs a social and supportive partner who appreciates their enthusiasm and shares their interests. Needs continuous appreciation and encouragement for achievements. Values a partner who listens with interest.",
                     compatibility_factors: "Key compatibility factors include sociability, emotional support, mutual appreciation, good communication, flexibility, and ability to enjoy life. Good compatibility requires a partner who doesn't get bored by their energy.",
-                    long_term_potential: "Long-term relationship potential is good with a partner who shares their social enthusiasm and appreciates their need for appreciation. Success requires balance between social life and personal needs, and mutual understanding of love expression styles.",
-                    partner_type: "Social and supportive partner, shares interests, appreciates enthusiasm, listens attentively, flexible and fun",
-                    partner_color: "Yellow"
+                    long_term_potential: "Long-term relationship potential is good with a partner who shares their social enthusiasm and appreciates their need for appreciation. Success requires balance between social life and personal needs, and mutual understanding of love expression styles."
                 },
                 S: {
                     overview: "A stable and supportive personality with a natural ability to build trust and deep relationships. Characterized by patience, loyalty, and listening ability. Always seeks to create a safe and stable environment for others.",
@@ -1068,9 +1364,7 @@
                     career_paths: "Suitable career paths include human resources, healthcare, education, social services, administration, and roles requiring support and assistance.",
                     relationship_needs: "In a relationship, needs a reliable and supportive partner who provides emotional security and stability. Needs continuous interest and appreciation for efforts. Values a partner who listens with interest and shows affection.",
                     compatibility_factors: "Key compatibility factors include stability, security, loyalty, mutual support, good communication, and ability to build a deep relationship. Good compatibility requires a partner who doesn't get bored by relationship routines.",
-                    long_term_potential: "Long-term relationship potential is excellent with a partner who values stability and provides emotional security. Success requires balance between need for security and personal growth, and mutual understanding of love expression methods.",
-                    partner_type: "Reliable and supportive partner, provides emotional security and stability, shows interest and affection, good listener",
-                    partner_color: "Green"
+                    long_term_potential: "Long-term relationship potential is excellent with a partner who values stability and provides emotional security. Success requires balance between need for security and personal growth, and mutual understanding of love expression methods."
                 },
                 C: {
                     overview: "An analytical and precise personality with a natural ability to understand systems and solve complex problems. Characterized by precision, logic, and planning ability. Always seeks perfection and quality in everything they do.",
@@ -1094,10 +1388,200 @@
                     career_paths: "Suitable career paths include scientific research, engineering, accounting, information technology, quality, financial analysis, and roles requiring precision and analysis.",
                     relationship_needs: "In a relationship, needs an intelligent and organized partner who understands their need for personal space and clarity. Needs respect for their intelligence and abilities. Values a partner who communicates clearly and logically.",
                     compatibility_factors: "Key compatibility factors include intelligence, order, clarity, mutual respect, good communication, and ability to understand needs. Good compatibility requires a partner who doesn't feel frustrated by the sometimes slow pace of the relationship.",
-                    long_term_potential: "Long-term relationship potential is good with a partner who appreciates intelligence and logic and provides emotional stability. Success requires balance between need for analysis and emotional expression, and mutual understanding of love demonstration methods.",
-                    partner_type: "Intelligent and organized partner, understands need for personal space, communicates clearly and logically, respects intelligence",
-                    partner_color: "Blue"
+                    long_term_potential: "Long-term relationship potential is good with a partner who appreciates intelligence and logic and provides emotional stability. Success requires balance between need for analysis and emotional expression, and mutual understanding of love demonstration methods."
                 }
+            }
+        };
+        
+        // ===== الترجمات =====
+        const translations = {
+            ar: {
+                welcome_title: "مرحباً في غرفة الأسرار",
+                user_info_title: "معلوماتك الشخصية",
+                user_info_desc: "دعنا نتعرف عليك أكثر لنقدم لك تحليلاً دقيقاً",
+                gender_label: "الجنس",
+                dob_label: "تاريخ الميلاد",
+                submit_user_info: "التالي",
+                intro_title: "استعد لرحلة اكتشاف الذات",
+                intro_subtitle: "تحليل شخصيتك ومعرفة رفيق دربك",
+                intro_desc: "ستخوض رحلة من 20 سؤالاً مصممة خصيصاً لكشف أعماق شخصيتك",
+                intro_p1: "سنحلل شخصيتك وفقاً لأحدث النظريات النفسية",
+                intro_p2: "وسنساعدك في اكتشاف الشريك المثالي لك",
+                start_btn: "ابدأ الرحلة",
+                progress: "التقدم:",
+                next_btn: "التالي",
+                final_results_btn: "عرض النتائج",
+                restart_btn: "ابدأ من جديد",
+                share_btn: "مشاركة النتيجة",
+                copy_btn: "نسخ النتيجة",
+                history_btn: "سجل النتائج",
+                print_btn: "طباعة النتيجة",
+                settings_btn: "الإعدادات",
+                lang_btn: "English",
+                alert_missing_fields: "يرجى ملء جميع الحقول",
+                alert_invalid_dob: "تاريخ ميلاد غير صحيح",
+                alert_no_answer: "يرجى اختيار إجابة",
+                alert_copied: "تم نسخ النتيجة بنجاح!",
+                alert_shared: "تمت مشاركة النتيجة بنجاح!",
+                loading_analysis: "جاري تحليل شخصيتك...",
+                footer1: "جميع الحقوق محفوظة © 2025 | تم التصميم والتطوير بواسطة <strong>Mohammed Tarek</strong>",
+                footer2: "مطور بحب ❤️ لمساعدتك في فهم نفسك أكثر",
+                male: "ذكر",
+                female: "أنثى",
+                other: "آخر",
+                compatibility_title: "نسبة التوافق",
+                partner_traits: "صفات الشريك المثالي",
+                relationship_advice: "نصائح للعلاقة",
+                analysis_intro: "بعد تحليل إجاباتك، تم تحديد طبيعة شخصيتك على النحو التالي:",
+                personality_section: "تحليل شخصيتك",
+                partner_section: "الشريك المثالي لك",
+                partner_analysis_title: "تحليل مفصل للشريك المثالي",
+                history_title: "سجل النتائج السابقة",
+                no_history: "لا توجد نتائج سابقة",
+                chart_title: "تحليل الشخصية (نموذج DISC)",
+                age_label: "العمر",
+                zodiac_sign: "برجك",
+                
+                // أقسام التحليل المفصل
+                overview: "نظرة عامة",
+                core_traits: "السمات الأساسية",
+                psychological_profile: "الملف النفسي",
+                work_behavior: "السلوك في العمل",
+                relationship_behavior: "السلوك في العلاقات",
+                challenges: "التحديات",
+                development_tips: "نصائح للتنمية",
+                stress_management: "إدارة الضغط",
+                learning_style: "أسلوب التعلم",
+                values_principles: "القيم والمبادئ",
+                communication_patterns: "أنماط التواصل",
+                decision_making: "اتخاذ القرار",
+                leadership_style: "أسلوب القيادة",
+                conflict_resolution: "حل النزاعات",
+                motivation_factors: "عوامل التحفيز",
+                ideal_environment: "البيئة المثالية",
+                growth_areas: "مجالات النمو",
+                life_balance: "توازن الحياة",
+                career_paths: "المسارات المهنية",
+                relationship_needs: "احتياجات العلاقة",
+                compatibility_factors: "عوامل التوافق",
+                long_term_potential: "الإمكانات طويلة الأمد",
+                compatible_zodiacs: "الأبراج المتوافقة",
+                
+                // الميزات الجديدة
+                visitors_count: "عدد الزوار",
+                analyses_count: "عدد التحليلات",
+                rate_site: "قيم موقعنا",
+                rate_analysis: "قيم تحليلك",
+                write_comment: "اكتب تعليقك هنا...",
+                submit_feedback: "إرسال التقييم",
+                ideal_partner: "الشريك المثالي لك",
+                partner_type: "نوع الشريك",
+                partner_traits: "صفات الشريك",
+                similar_personalities: "شخصيات مشابهة لك",
+                personality_color: "لون شخصيتك",
+                colors: {
+                    D: "الأحمر",
+                    I: "الأصفر",
+                    S: "الأخضر",
+                    C: "الأزرق"
+                },
+                shared_feedback: "آراء المستخدمين",
+                no_feedback: "لا توجد تعليقات بعد",
+                average_rating: "متوسط التقييم"
+            },
+            en: {
+                welcome_title: "Welcome to Chamber of Secrets",
+                user_info_title: "Your Personal Information",
+                user_info_desc: "Let us know you better to provide accurate analysis",
+                gender_label: "Gender",
+                dob_label: "Date of Birth",
+                submit_user_info: "Next",
+                intro_title: "Get Ready for a Journey of Self-Discovery",
+                intro_subtitle: "Analyze Your Personality & Find Your Ideal Partner",
+                intro_desc: "You will take a 20-question journey designed to uncover the depths of your personality",
+                intro_p1: "We will analyze your personality using the latest psychological theories",
+                intro_p2: "And help you discover your ideal partner",
+                start_btn: "Start Journey",
+                progress: "Progress:",
+                next_btn: "Next",
+                final_results_btn: "Show Results",
+                restart_btn: "Start Over",
+                share_btn: "Share Result",
+                copy_btn: "Copy Result",
+                history_btn: "Result History",
+                print_btn: "Print Result",
+                settings_btn: "Settings",
+                lang_btn: "العربية",
+                alert_missing_fields: "Please fill all fields",
+                alert_invalid_dob: "Invalid date of birth",
+                alert_no_answer: "Please select an answer",
+                alert_copied: "Result copied successfully!",
+                alert_shared: "Result shared successfully!",
+                loading_analysis: "Analyzing your personality...",
+                footer1: "All rights reserved © 2025 | Designed and developed by <strong>Mohammed Tarek</strong>",
+                footer2: "Developed with love ❤️ to help you understand yourself better",
+                male: "Male",
+                female: "Female",
+                other: "Other",
+                compatibility_title: "Compatibility Rate",
+                partner_traits: "Ideal Partner Traits",
+                relationship_advice: "Relationship Advice",
+                analysis_intro: "After analyzing your answers, your personality type is:",
+                personality_section: "Your Personality Analysis",
+                partner_section: "Your Ideal Partner",
+                partner_analysis_title: "Detailed Partner Analysis",
+                history_title: "Previous Results History",
+                no_history: "No previous results found",
+                chart_title: "Personality Analysis (DISC Model)",
+                age_label: "Age",
+                zodiac_sign: "Your Zodiac",
+                
+                // أقسام التحليل المفصل
+                overview: "Overview",
+                core_traits: "Core Traits",
+                psychological_profile: "Psychological Profile",
+                work_behavior: "Work Behavior",
+                relationship_behavior: "Relationship Behavior",
+                challenges: "Challenges",
+                development_tips: "Development Tips",
+                stress_management: "Stress Management",
+                learning_style: "Learning Style",
+                values_principles: "Values & Principles",
+                communication_patterns: "Communication Patterns",
+                decision_making: "Decision Making",
+                leadership_style: "Leadership Style",
+                conflict_resolution: "Conflict Resolution",
+                motivation_factors: "Motivation Factors",
+                ideal_environment: "Ideal Environment",
+                growth_areas: "Growth Areas",
+                life_balance: "Life Balance",
+                career_paths: "Career Paths",
+                relationship_needs: "Relationship Needs",
+                compatibility_factors: "Compatibility Factors",
+                long_term_potential: "Long-term Potential",
+                compatible_zodiacs: "Compatible Zodiacs",
+                
+                // الميزات الجديدة
+                visitors_count: "Visitors Count",
+                analyses_count: "Analyses Count",
+                rate_site: "Rate Our Site",
+                rate_analysis: "Rate Your Analysis",
+                write_comment: "Write your comment here...",
+                submit_feedback: "Submit Rating",
+                ideal_partner: "Your Ideal Partner",
+                partner_type: "Partner Type",
+                partner_traits: "Partner Traits",
+                similar_personalities: "Similar Personalities",
+                personality_color: "Your Personality Color",
+                colors: {
+                    D: "Red",
+                    I: "Yellow",
+                    S: "Green",
+                    C: "Blue"
+                },
+                shared_feedback: "User Reviews",
+                no_feedback: "No comments yet",
+                average_rating: "Average Rating"
             }
         };
         
@@ -1158,7 +1642,7 @@
                     { text: "نكت، فيديوهات مضحكة، ترفيه", trait: "I", score: 3 },
                     { text: "أدلة عملية، خطوات، تقنيات", trait: "S", score: 3 }
                 ]},
-                { id: 10, text: "ما الذي يعطيك إحساسًا بالمعنى؟", options: [
+                { id: 10, text: "ما الذي يُشعرك بالمعنى؟", options: [
                     { text: "تحقيق إنجازات كبيرة", trait: "D", score: 4 },
                     { text: "خدمة الآخرين", trait: "S", score: 4 },
                     { text: "فهم الكون أو النظام الكوني", trait: "C", score: 4 },
@@ -1351,917 +1835,1074 @@
         
         // ===== تحليل الشخصية =====
         function analyzePersonality() {
-            const scores = { D: 0, I: 0, S: 0, C: 0 };
-            state.userAnswers.forEach((answerIndex, index) => {
-                const q = questions[state.lang][index];
-                if (q && q.options[answerIndex]) {
-                    scores[q.options[answerIndex].trait] += q.options[answerIndex].score;
-                }
-            });
-            const primary = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-            return { scores, primary };
+            try {
+                const scores = { D: 0, I: 0, S: 0, C: 0 };
+                state.userAnswers.forEach((answerIndex, index) => {
+                    const q = questions[state.lang] && questions[state.lang][index];
+                    if (q && q.options && q.options[answerIndex]) {
+                        const trait = q.options[answerIndex].trait;
+                        const score = q.options[answerIndex].score;
+                        if (trait && score && scores[trait] !== undefined) {
+                            scores[trait] += score;
+                        }
+                    }
+                });
+                const primary = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+                return { scores, primary };
+            } catch (error) {
+                console.error('Error analyzing personality:', error);
+                return { scores: { D: 0, I: 0, S: 0, C: 0 }, primary: 'D' };
+            }
         }
         
         // ===== عرض النتائج =====
         function renderResult() {
-            const { scores, primary } = analyzePersonality();
-            const t = translations[state.lang];
-            const types = {
-                ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
-                en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
-            };
-            
-            // حساب العمر من تاريخ الميلاد
-            const age = calculateAge(state.userData.dob);
-            
-            // حساب البرج تلقائياً
-            const userZodiac = calculateZodiac(state.userData.dob);
-            const zodiacInfo = zodiacData[state.lang][userZodiac];
-            const compatibleZodiacs = zodiacCompatibility[state.lang][userZodiac] || [];
-            
-            // الحصول على تحليل الشخصية المفصل
-            const analysis = personalityAnalysis[state.lang][primary];
-            
-            // الحصول على الشخصية المشهورة
-            const famousPersonalitiesList = famousPersonalities[state.lang][primary];
-            const randomFamous = famousPersonalitiesList[Math.floor(Math.random() * famousPersonalitiesList.length)];
-            
-            // حفظ النتائج
-            const resultData = { scores, primary, date: new Date().toISOString() };
-            state.resultData = resultData;
-            saveResult(resultData);
-            
-            // إنشاء قائمة الأبراج المتوافقة
-            const compatibleZodiacsHTML = compatibleZodiacs.map(z => {
-                const zData = zodiacData[state.lang][z];
-                return `
-                <div class="flex items-center mb-2">
-                    <span class="zodiac-icon mr-3">${zData.icon}</span>
-                    <div>
-                        <div class="font-bold">${zData.name}</div>
-                        <div class="text-sm text-gray-400">${zData.dates} • ${zData.element}</div>
-                    </div>
-                </div>`;
-            }).join('');
-            
-            // بناء أقسام التحليل المفصل
-            const analysisSections = `
-            <!-- نظرة عامة -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.overview}</h3>
-                <p class="text-gray-300">${analysis.overview}</p>
-            </div>
-            
-            <!-- السمات الأساسية -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.core_traits}</h3>
-                <p class="text-gray-300">${analysis.core_traits}</p>
-            </div>
-            
-            <!-- الملف النفسي -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.psychological_profile}</h3>
-                <p class="text-gray-300">${analysis.psychological_profile}</p>
-            </div>
-            
-            <!-- السلوك في العمل -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.work_behavior}</h3>
-                <p class="text-gray-300">${analysis.work_behavior}</p>
-            </div>
-            
-            <!-- السلوك في العلاقات -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.relationship_behavior}</h3>
-                <p class="text-gray-300">${analysis.relationship_behavior}</p>
-            </div>
-            
-            <!-- التحديات -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.challenges}</h3>
-                <p class="text-gray-300">${analysis.challenges}</p>
-            </div>
-            
-            <!-- نصائح للتنمية -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.development_tips}</h3>
-                <p class="text-gray-300">${analysis.development_tips}</p>
-            </div>
-            
-            <!-- إدارة الضغط -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.stress_management}</h3>
-                <p class="text-gray-300">${analysis.stress_management}</p>
-            </div>
-            
-            <!-- أسلوب التعلم -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.learning_style}</h3>
-                <p class="text-gray-300">${analysis.learning_style}</p>
-            </div>
-            
-            <!-- القيم والمبادئ -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.values_principles}</h3>
-                <p class="text-gray-300">${analysis.values_principles}</p>
-            </div>
-            
-            <!-- أنماط التواصل -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.communication_patterns}</h3>
-                <p class="text-gray-300">${analysis.communication_patterns}</p>
-            </div>
-            
-            <!-- اتخاذ القرار -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.decision_making}</h3>
-                <p class="text-gray-300">${analysis.decision_making}</p>
-            </div>
-            
-            <!-- أسلوب القيادة -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.leadership_style}</h3>
-                <p class="text-gray-300">${analysis.leadership_style}</p>
-            </div>
-            
-            <!-- حل النزاعات -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.conflict_resolution}</h3>
-                <p class="text-gray-300">${analysis.conflict_resolution}</p>
-            </div>
-            
-            <!-- عوامل التحفيز -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.motivation_factors}</h3>
-                <p class="text-gray-300">${analysis.motivation_factors}</p>
-            </div>
-            
-            <!-- البيئة المثالية -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.ideal_environment}</h3>
-                <p class="text-gray-300">${analysis.ideal_environment}</p>
-            </div>
-            
-            <!-- مجالات النمو -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.growth_areas}</h3>
-                <p class="text-gray-300">${analysis.growth_areas}</p>
-            </div>
-            
-            <!-- توازن الحياة -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.life_balance}</h3>
-                <p class="text-gray-300">${analysis.life_balance}</p>
-            </div>
-            
-            <!-- المسارات المهنية -->
-            <div class="analysis-section section-${primary.toLowerCase()}">
-                <h3 class="text-xl font-bold mb-3">${t.career_paths}</h3>
-                <p class="text-gray-300">${analysis.career_paths}</p>
-            </div>`;
-            
-            const result = `
-            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
-                <p class="text-gray-300 mb-6">${t.analysis_intro}</p>
+            try {
+                const { scores, primary } = analyzePersonality();
+                const t = translations[state.lang];
+                const types = {
+                    ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
+                    en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
+                };
                 
-                <!-- معلومات المستخدم -->
-                <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
-                    <div class="flex flex-wrap justify-between items-center mb-4">
-                        <h3 class="text-2xl font-bold">
-                            ${types[state.lang][primary]}
-                            <span class="personality-color color-${primary.toLowerCase()}"></span>
-                        </h3>
-                        <div class="flex flex-wrap gap-4 text-lg">
-                            <div>
-                                <span class="text-gray-300">${t.age_label}:</span> 
-                                <span class="font-bold">${age}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-300">${t.zodiac_sign}:</span> 
-                                <span class="font-bold">${zodiacInfo.icon} ${zodiacInfo.name}</span>
+                // حساب العمر من تاريخ الميلاد
+                const age = calculateAge(state.userData.dob);
+                
+                // حساب البرج تلقائياً
+                const userZodiac = calculateZodiac(state.userData.dob);
+                const zodiacInfo = zodiacData[state.lang][userZodiac];
+                const compatibleZodiacs = zodiacCompatibility[state.lang][userZodiac] || [];
+                
+                // الحصول على تحليل الشخصية المفصل
+                const analysis = personalityAnalysis[state.lang][primary];
+                
+                // الحصول على معلومات الشريك المثالي
+                const partnerInfo = getPartnerInfo(primary, state.lang);
+                
+                // الحصول على الشخصيات المشابهة
+                const similarPersonalities = getSimilarPersonalities(primary, state.lang);
+                
+                // إضافة لون الشخصية
+                const personalityColors = {
+                    D: '#ef4444', // أحمر
+                    I: '#f59e0b', // أصفر
+                    S: '#10b981', // أخضر
+                    C: '#3b82f6'  // أزرق
+                };
+                
+                // حفظ النتائج
+                const resultData = { 
+                    scores, 
+                    primary, 
+                    date: new Date().toISOString(),
+                    age: age,
+                    zodiac: userZodiac,
+                    partnerType: partnerInfo.type,
+                    personalityColor: personalityColors[primary],
+                    similarPersonality: similarPersonalities[0]
+                };
+                state.resultData = resultData;
+                saveResult(resultData);
+                
+                // تحديث العدادات
+                updateCounters();
+                
+                // إنشاء قائمة الأبراج المتوافقة
+                const compatibleZodiacsHTML = compatibleZodiacs.map(z => {
+                    const zData = zodiacData[state.lang][z];
+                    return `
+                    <div class="flex items-center mb-2">
+                        <span class="zodiac-icon mr-3">${zData.icon}</span>
+                        <div>
+                            <div class="font-bold">${zData.name}</div>
+                            <div class="text-sm text-gray-400">${zData.dates} • ${zData.element}</div>
+                        </div>
+                    </div>`;
+                }).join('');
+                
+                // بناء أقسام التحليل المفصل
+                const analysisSections = `
+                <!-- نظرة عامة -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.overview}</h3>
+                    <p class="text-gray-300">${analysis.overview}</p>
+                </div>
+                
+                <!-- السمات الأساسية -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.core_traits}</h3>
+                    <p class="text-gray-300">${analysis.core_traits}</p>
+                </div>
+                
+                <!-- الملف النفسي -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.psychological_profile}</h3>
+                    <p class="text-gray-300">${analysis.psychological_profile}</p>
+                </div>
+                
+                <!-- السلوك في العمل -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.work_behavior}</h3>
+                    <p class="text-gray-300">${analysis.work_behavior}</p>
+                </div>
+                
+                <!-- السلوك في العلاقات -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.relationship_behavior}</h3>
+                    <p class="text-gray-300">${analysis.relationship_behavior}</p>
+                </div>
+                
+                <!-- التحديات -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.challenges}</h3>
+                    <p class="text-gray-300">${analysis.challenges}</p>
+                </div>
+                
+                <!-- نصائح للتنمية -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.development_tips}</h3>
+                    <p class="text-gray-300">${analysis.development_tips}</p>
+                </div>
+                
+                <!-- إدارة الضغط -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.stress_management}</h3>
+                    <p class="text-gray-300">${analysis.stress_management}</p>
+                </div>
+                
+                <!-- أسلوب التعلم -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.learning_style}</h3>
+                    <p class="text-gray-300">${analysis.learning_style}</p>
+                </div>
+                
+                <!-- القيم والمبادئ -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.values_principles}</h3>
+                    <p class="text-gray-300">${analysis.values_principles}</p>
+                </div>
+                
+                <!-- أنماط التواصل -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.communication_patterns}</h3>
+                    <p class="text-gray-300">${analysis.communication_patterns}</p>
+                </div>
+                
+                <!-- اتخاذ القرار -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.decision_making}</h3>
+                    <p class="text-gray-300">${analysis.decision_making}</p>
+                </div>
+                
+                <!-- أسلوب القيادة -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.leadership_style}</h3>
+                    <p class="text-gray-300">${analysis.leadership_style}</p>
+                </div>
+                
+                <!-- حل النزاعات -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.conflict_resolution}</h3>
+                    <p class="text-gray-300">${analysis.conflict_resolution}</p>
+                </div>
+                
+                <!-- عوامل التحفيز -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.motivation_factors}</h3>
+                    <p class="text-gray-300">${analysis.motivation_factors}</p>
+                </div>
+                
+                <!-- البيئة المثالية -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.ideal_environment}</h3>
+                    <p class="text-gray-300">${analysis.ideal_environment}</p>
+                </div>
+                
+                <!-- مجالات النمو -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.growth_areas}</h3>
+                    <p class="text-gray-300">${analysis.growth_areas}</p>
+                </div>
+                
+                <!-- توازن الحياة -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.life_balance}</h3>
+                    <p class="text-gray-300">${analysis.life_balance}</p>
+                </div>
+                
+                <!-- المسارات المهنية -->
+                <div class="analysis-section section-${primary.toLowerCase()}">
+                    <h3 class="text-xl font-bold mb-3">${t.career_paths}</h3>
+                    <p class="text-gray-300">${analysis.career_paths}</p>
+                </div>`;
+                
+                const result = `
+                <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
+                    <p class="text-gray-300 mb-6">${t.analysis_intro}</p>
+                    
+                    <!-- معلومات المستخدم -->
+                    <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
+                        <div class="flex flex-wrap justify-between items-center mb-4">
+                            <h3 class="text-2xl font-bold">${types[state.lang][primary]}</h3>
+                            <div class="flex flex-wrap gap-4 text-lg">
+                                <div>
+                                    <span class="text-gray-300">${t.age_label}:</span> 
+                                    <span class="font-bold">${age}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-300">${t.zodiac_sign}:</span> 
+                                    <span class="font-bold">${zodiacInfo.icon} ${zodiacInfo.name}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-300">${t.personality_color}:</span> 
+                                    <span class="font-bold" style="color: ${personalityColors[primary]}">${t.colors[primary]}</span>
+                                    <span class="personality-color" style="background-color: ${personalityColors[primary]}"></span>
+                                </div>
                             </div>
                         </div>
+                        <div class="text-sm text-gray-400">
+                            ${zodiacInfo.dates} • ${zodiacInfo.element} • ${zodiacInfo.traits}
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-400">
-                        ${zodiacInfo.dates} • ${zodiacInfo.element} • ${zodiacInfo.traits}
-                    </div>
-                </div>
-                
-                <!-- الشخصية المشهورة -->
-                <div class="famous-person">
-                    <img src="${randomFamous.image}" alt="${randomFamous.name}" class="famous-person-image">
-                    <div class="famous-person-info">
-                        <h4>${t.famous_personality}: ${randomFamous.name}</h4>
-                        <p>${randomFamous.description}</p>
-                    </div>
-                </div>
-                
-                <!-- الرسم البياني -->
-                <div class="chart-container mb-8">
-                    <canvas id="personalityChart"></canvas>
-                </div>
-                
-                <!-- تحليل الشخصية المفصل -->
-                <div class="mb-8">
-                    ${analysisSections}
-                </div>
-                
-                <!-- الشريك المثالي -->
-                <div class="bg-gradient-to-r from-purple-900 to-pink-900 p-6 rounded-lg mb-8">
-                    <h3 class="text-2xl font-bold mb-6">${t.partner_section}</h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="text-lg font-bold mb-3">${t.relationship_needs}</h4>
-                            <p class="text-gray-300 mb-4">${analysis.relationship_needs}</p>
+                    <!-- الشريك المثالي -->
+                    <div class="bg-gradient-to-r from-purple-900 to-pink-900 p-6 rounded-lg mb-8">
+                        <h3 class="text-2xl font-bold mb-6">${t.ideal_partner}</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-bold mb-3">${t.partner_type}</h4>
+                                <p class="text-gray-300 mb-4">${partnerInfo.type}</p>
+                                
+                                <h4 class="text-lg font-bold mb-3">${t.partner_traits}</h4>
+                                <p class="text-gray-300 mb-4">${partnerInfo.traits}</p>
+                            </div>
                             
-                            <h4 class="text-lg font-bold mb-3">${t.compatible_zodiacs}</h4>
-                            <div class="mb-4">
-                                ${compatibleZodiacsHTML}
+                            <div>
+                                <h4 class="text-lg font-bold mb-3">${t.relationship_needs}</h4>
+                                <p class="text-gray-300 mb-4">${analysis.relationship_needs}</p>
+                                
+                                <h4 class="text-lg font-bold mb-3">${t.compatible_zodiacs}</h4>
+                                <div class="mb-4">
+                                    ${compatibleZodiacsHTML}
+                                </div>
                             </div>
                         </div>
                         
-                        <div>
-                            <h4 class="text-lg font-bold mb-3">${t.compatibility_factors}</h4>
-                            <p class="text-gray-300 mb-4">${analysis.compatibility_factors}</p>
-                            
-                            <h4 class="text-lg font-bold mb-3">${t.long_term_potential}</h4>
-                            <p class="text-gray-300 mb-4">${analysis.long_term_potential}</p>
+                        <div class="mt-6">
+                            <div class="flex justify-between mb-2">
+                                <span>${t.compatibility_title}</span>
+                                <span class="font-bold">85%</span>
+                            </div>
+                            <div class="compatibility-meter">
+                                <div class="compatibility-fill" style="width: 85%"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="mt-6">
-                        <div class="flex justify-between mb-2">
-                            <span>${t.compatibility_title}</span>
-                            <span class="font-bold">85%</span>
-                        </div>
-                        <div class="compatibility-meter">
-                            <div class="compatibility-fill" style="width: 85%"></div>
+                    <!-- الشخصيات المشابهة -->
+                    <div class="bg-gradient-to-r from-indigo-900 to-purple-900 p-6 rounded-lg mb-8">
+                        <h3 class="text-2xl font-bold mb-6">${t.similar_personalities}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            ${similarPersonalities.map(person => `
+                            <div class="similar-personality">
+                                <img src="${person.image}" alt="${person.name}" class="w-24 h-24 rounded-full mx-auto mb-2">
+                                <h4 class="font-bold">${person.name}</h4>
+                                <p class="text-sm text-gray-400">${person.description}</p>
+                            </div>`).join('')}
                         </div>
                     </div>
                     
-                    <div class="mt-4 p-4 bg-gray-800 bg-opacity-50 rounded-lg">
-                        <h4 class="font-bold mb-2">${t.partner_traits}:</h4>
-                        <p class="text-gray-300">${analysis.partner_type}</p>
-                        <div class="mt-2">
-                            <span class="text-gray-400">${t.partner_color}:</span>
-                            <span class="personality-color color-${analysis.partner_color.toLowerCase()}"></span>
+                    <!-- الرسم البياني -->
+                    <div class="chart-container mb-8">
+                        <canvas id="personalityChart"></canvas>
+                    </div>
+                    
+                    <!-- تحليل الشخصية المفصل -->
+                    <div class="mb-8">
+                        ${analysisSections}
+                    </div>
+                    
+                    <!-- قسم التقييم والتعليقات -->
+                    <div class="feedback-section">
+                        <h3 class="text-xl font-bold mb-4">${t.rate_analysis}</h3>
+                        <div class="feedback-stars" id="analysisRating">
+                            <i class="fas fa-star" data-rating="1"></i>
+                            <i class="fas fa-star" data-rating="2"></i>
+                            <i class="fas fa-star" data-rating="3"></i>
+                            <i class="fas fa-star" data-rating="4"></i>
+                            <i class="fas fa-star" data-rating="5"></i>
+                        </div>
+                        <textarea id="analysisComment" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 mb-4" rows="3" placeholder="${t.write_comment}"></textarea>
+                        <button id="submitAnalysisFeedback" class="btn-primary">${t.submit_feedback}</button>
+                        
+                        <!-- عرض التعليقات المشتركة -->
+                        <div class="shared-feedback">
+                            <h4 class="text-lg font-bold mb-4">${t.shared_feedback}</h4>
+                            <div id="sharedAnalysisFeedback"></div>
                         </div>
                     </div>
-                </div>
+                    
+                    <div class="mt-8 text-center">
+                        <button id="restartBtn" class="btn-secondary mr-4">${t.restart_btn}</button>
+                        <button id="copyBtn" class="btn-primary mr-4">${t.copy_btn}</button>
+                        <button id="shareBtn" class="btn-primary mr-4">${t.share_btn}</button>
+                        <button id="printBtn" class="btn-secondary mr-4">${t.print_btn}</button>
+                        <button id="historyBtn" class="btn-secondary">${t.history_btn}</button>
+                    </div>
+                </div>`;
                 
-                <!-- قسم التقييم والتعليقات -->
-                <div class="rating-section">
-                    <h3 class="text-2xl font-bold mb-4">${t.rate_site}</h3>
-                    <div class="rating-stars">
-                        <i class="fas fa-star rating-star" data-rating="1"></i>
-                        <i class="fas fa-star rating-star" data-rating="2"></i>
-                        <i class="fas fa-star rating-star" data-rating="3"></i>
-                        <i class="fas fa-star rating-star" data-rating="4"></i>
-                        <i class="fas fa-star rating-star" data-rating="5"></i>
-                    </div>
-                    
-                    <div class="comment-section">
-                        <h4 class="text-lg font-bold mb-2">${t.write_comment}</h4>
-                        <textarea id="commentInput" class="comment-input" placeholder="${t.write_comment}..."></textarea>
-                        <button id="submitRating" class="btn-primary comment-submit">${t.submit_rating}</button>
-                    </div>
-                </div>
-                
-                <div class="mt-8 text-center">
-                    <button id="restartBtn" class="btn-secondary mr-4">${t.restart_btn}</button>
-                    <button id="copyBtn" class="btn-primary mr-4">${t.copy_btn}</button>
-                    <button id="shareBtn" class="btn-primary mr-4">${t.share_btn}</button>
-                    <button id="printBtn" class="btn-secondary mr-4">${t.print_btn}</button>
-                    <button id="historyBtn" class="btn-secondary">${t.history_btn}</button>
-                </div>
-            </div>`;
-            
-            state.resultText = result;
-            return result;
+                state.resultText = result;
+                return result;
+            } catch (error) {
+                console.error('Error rendering result:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض النتائج</h2></div>';
+            }
         }
         
         // ===== إنشاء رسم بياني للنتائج =====
         function createPersonalityChart(scores) {
-            const ctx = document.getElementById('personalityChart');
-            if (!ctx) return;
-            
-            const t = translations[state.lang];
-            const labels = {
-                ar: ['D (الهيمنة)', 'I (التأثير)', 'S (الثبات)', 'C (الوعي)'],
-                en: ['D (Dominance)', 'I (Influence)', 'S (Steadiness)', 'C (Conscientiousness)']
-            };
-            
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: labels[state.lang],
-                    datasets: [{
-                        label: t.chart_title,
-                        data: [scores.D, scores.I, scores.S, scores.C],
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(255, 255, 255, 0.2)'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.2)'
-                            },
-                            pointLabels: {
-                                color: 'rgba(255, 255, 255, 0.8)',
-                                font: {
-                                    size: 14
-                                }
-                            },
-                            ticks: {
-                                color: 'rgba(255, 255, 255, 0.6)',
-                                backdropColor: 'transparent'
-                            }
-                        }
+            try {
+                const ctx = document.getElementById('personalityChart');
+                if (!ctx) return;
+                
+                const t = translations[state.lang];
+                const labels = {
+                    ar: ['D (الهيمنة)', 'I (التأثير)', 'S (الثبات)', 'C (الوعي)'],
+                    en: ['D (Dominance)', 'I (Influence)', 'S (Steadiness)', 'C (Conscientiousness)']
+                };
+                
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels[state.lang],
+                        datasets: [{
+                            label: t.chart_title,
+                            data: [scores.D, scores.I, scores.S, scores.C],
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'rgba(255, 255, 255, 0.8)',
-                                font: {
-                                    size: 16
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                },
+                                pointLabels: {
+                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    font: {
+                                        size: 14
+                                    }
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.6)',
+                                    backdropColor: 'transparent'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    font: {
+                                        size: 16
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
+                });
+            } catch (error) {
+                console.error('Error creating chart:', error);
+            }
         }
         
         // ===== عرض سجل النتائج =====
         function renderHistory() {
-            const t = translations[state.lang];
-            const results = getSavedResults();
-            
-            if (results.length === 0) {
-                return `
-                <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
-                    <p class="text-gray-300">${t.no_history}</p>
-                    <button id="backBtn" class="btn-primary mt-6">العودة</button>
-                </div>`;
-            }
-            
-            let historyHTML = '';
-            results.forEach((result, index) => {
-                const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
-                const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
-                const zodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
-                const zodiacInfo = zodiac ? zodiacData[state.lang][zodiac] : null;
-                const types = {
-                    ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
-                    en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
-                };
-                
-                historyHTML += `
-                <div class="history-item" data-index="${index}">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-xl font-bold">${types[state.lang][result.primary]}</h3>
-                            <p class="text-gray-400">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
-                        </div>
-                        <i class="fas fa-chevron-left"></i>
-                    </div>
-                </div>`;
-            });
-            
-            return `
-            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
-                <div class="space-y-4">
-                    ${historyHTML}
-                </div>
-                <button id="backBtn" class="btn-secondary mt-6">العودة</button>
-            </div>`;
-        }
-        
-        // ===== عرض تفاصيل نتيجة من السجل =====
-        function renderHistoryResult(index) {
-            const t = translations[state.lang];
-            const results = getSavedResults();
-            const result = results[index];
-            
-            if (!result) return renderHistory();
-            
-            const types = {
-                ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
-                en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
-            };
-            
-            const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
-            const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
-            const userZodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
-            const zodiacInfo = userZodiac ? zodiacData[state.lang][userZodiac] : null;
-            
-            return `
-            <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
-                <p class="text-gray-300 mb-2">${t.analysis_intro}</p>
-                <p class="text-gray-400 mb-6">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
-                
-                <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
-                    <h3 class="text-2xl font-bold mb-2">${types[state.lang][result.primary]}</h3>
-                </div>
-                
-                <div class="chart-container mb-8">
-                    <canvas id="personalityChart"></canvas>
-                </div>
-                
-                <div class="mt-8 text-center">
-                    <button id="backBtn" class="btn-secondary mr-4">العودة</button>
-                    <button id="printBtn" class="btn-secondary">${t.print_btn}</button>
-                </div>
-            </div>`;
-        }
-        
-        // ===== وظائف العرض =====
-        function renderUserInfo() {
-            const t = translations[state.lang];
-            const stats = getSiteStats();
-            
-            return `
-            <div class="text-center">
-                <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
-                    <h1 class="text-4xl font-bold gradient-text mb-4">${t.welcome_title}</h1>
-                    <p class="text-gray-300 text-lg mb-6">${t.user_info_desc}</p>
-                    
-                    <!-- إحصائيات الموقع -->
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="stats-card">
-                            <div class="stats-number">${stats.visitors.toLocaleString()}</div>
-                            <div class="stats-label">${t.visitors_count}</div>
-                        </div>
-                        <div class="stats-card">
-                            <div class="stats-number">${stats.analyses.toLocaleString()}</div>
-                            <div class="stats-label">${t.analyses_count}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-6 text-right">
-                        <div><label class="block mb-2">${t.gender_label}</label><select id="gender" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600"><option value="male">${t.male}</option><option value="female">${t.female}</option><option value="other">${t.other}</option></select></div>
-                        <div><label class="block mb-2">${t.dob_label}</label><input type="date" id="dob" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" /></div>
-                        <button id="submitUserInfo" class="btn-primary">${t.submit_user_info}</button>
-                    </div>
-                </div>
-            </div>`;
-        }
-        
-        function renderIntro() {
-            const t = translations[state.lang];
-            return `
-            <div class="text-center">
-                <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
-                    <h1 class="text-4xl font-bold gradient-text mb-4">${t.intro_title}</h1>
-                    <p class="text-xl text-gray-300 mb-6">${t.intro_subtitle}</p>
-                    <p class="text-gray-400 mb-4">${t.intro_desc}</p>
-                    <div class="text-right text-gray-300 space-y-2 mb-6">
-                        <p>• ${t.intro_p1}</p>
-                        <p>• ${t.intro_p2}</p>
-                    </div>
-                    <button id="startBtn" class="btn-primary">${t.start_btn}</button>
-                </div>
-            </div>`;
-        }
-        
-        function renderQuiz() {
-            const q = questions[state.lang][state.currentQ];
-            const t = translations[state.lang];
-            const progress = ((state.currentQ + 1) / questions[state.lang].length * 100).toFixed(0);
-            let optionsHTML = '';
-            q.options.forEach((opt, idx) => {
-                const selected = state.userAnswers[state.currentQ] === idx ? 'selected' : '';
-                optionsHTML += `<div class="option-btn ${selected}" data-index="${idx}">${opt.text}</div>`;
-            });
-            return `
-            <div>
-                <div class="progress-container">
-                    <div class="flex justify-between"><span>${t.progress} ${state.currentQ + 1}/${questions[state.lang].length}</span></div>
-                    <div class="w-full"><div class="progress-bar" style="width:${progress}%"></div></div>
-                </div>
-                <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-6">${q.text}</h2>
-                    <div class="space-y-4">${optionsHTML}</div>
-                    <button id="nextBtn" class="btn-primary mt-8">
-                        ${state.currentQ === questions[state.lang].length - 1 ? t.final_results_btn : t.next_btn}
-                    </button>
-                </div>
-            </div>`;
-        }
-        
-        function renderLoading() {
-            const t = translations[state.lang];
-            return `
-            <div class="text-center py-12">
-                <div class="loading-spinner mx-auto mb-4"></div>
-                <p class="text-gray-300">${t.loading_analysis}</p>
-            </div>`;
-        }
-        
-        // ===== عرض الإعلانات =====
-        function renderAds() {
-            const settings = getAdSettings();
-            const adPositions = ['top', 'side', 'bottom'];
-            
-            const ads = {};
-            adPositions.forEach(position => {
-                ads[position] = settings[position] && settings[`${position}Code`] 
-                    ? `<div class="ad-container">${settings[`${position}Code`]}</div>` 
-                    : '';
-            });
-            
-            return ads;
-        }
-        
-        // ===== تحديث معاينة الإعلان =====
-        function updateAdPreview(position, code) {
-            const preview = document.getElementById(`${position}AdPreview`);
-            if (preview) {
-                preview.innerHTML = code;
-            }
-        }
-        
-        // ===== العرض الرئيسي =====
-        function render() {
-            document.documentElement.lang = state.lang;
-            document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
-            const t = translations[state.lang];
-            const { top: adTop, side: adSide, bottom: adBottom } = renderAds();
-            
-            // تحديث نص زر اللغة
-            const langBtn = document.getElementById('langToggle');
-            if (langBtn) {
-                langBtn.innerHTML = `<i class="fas fa-language ml-2"></i>${t.lang_btn}`;
-            }
-            
-            let content = '';
-            switch (state.page) {
-                case 'userInfo': content = renderUserInfo(); break;
-                case 'intro': content = renderIntro(); break;
-                case 'quiz': content = renderQuiz(); break;
-                case 'loading': content = renderLoading(); break;
-                case 'result': content = renderResult(); break;
-                case 'history': content = renderHistory(); break;
-                case 'historyResult': content = renderHistoryResult(state.historyIndex); break;
-            }
-            
-            const html = `
-                ${adTop}
-                <div class="container mx-auto px-4 py-8 max-w-4xl">
-                    ${content}
-                </div>
-                ${adBottom}
-                <footer class="mt-16 text-center text-gray-400 space-y-2 text-sm">
-                    <p class="font-semibold">${t.footer1}</p>
-                    <p>${t.footer2}</p>
-                </footer>`;
-            
-            document.getElementById('app').innerHTML = html;
-            
-            // إنشاء الرسم البياني بعد عرض النتائج
-            if (state.page === 'result' && state.resultData) {
-                setTimeout(() => createPersonalityChart(state.resultData.scores), 100);
-            } else if (state.page === 'historyResult' && state.historyIndex !== undefined) {
-                const results = getSavedResults();
-                if (results[state.historyIndex]) {
-                    setTimeout(() => createPersonalityChart(results[state.historyIndex].scores), 100);
-                }
-            }
-            
-            // إعداد مستمعي أحداث التقييم والتعليقات
-            if (state.page === 'result') {
-                setupRatingEventListeners();
-            }
-        }
-        
-        // ===== إعداد مستمعي أحداث التقييم =====
-        function setupRatingEventListeners() {
-            const ratingStars = document.querySelectorAll('.rating-star');
-            const submitRatingBtn = document.getElementById('submitRating');
-            const commentInput = document.getElementById('commentInput');
-            let selectedRating = 0;
-            
-            ratingStars.forEach(star => {
-                star.addEventListener('click', () => {
-                    selectedRating = parseInt(star.dataset.rating);
-                    updateRatingDisplay(selectedRating);
-                });
-                
-                star.addEventListener('mouseenter', () => {
-                    const rating = parseInt(star.dataset.rating);
-                    updateRatingDisplay(rating);
-                });
-            });
-            
-            document.querySelector('.rating-stars').addEventListener('mouseleave', () => {
-                updateRatingDisplay(selectedRating);
-            });
-            
-            submitRatingBtn.addEventListener('click', () => {
-                const comment = commentInput.value.trim();
-                
-                if (selectedRating === 0) {
-                    showToast('يرجى اختيار تقييم');
-                    return;
-                }
-                
-                saveRating(selectedRating, comment);
-                showToast(translations[state.lang].alert_rating_saved);
-                
-                // إعادة تعيين النموذج
-                selectedRating = 0;
-                updateRatingDisplay(0);
-                commentInput.value = '';
-            });
-        }
-        
-        // ===== تحديث عرض التقييم =====
-        function updateRatingDisplay(rating) {
-            const ratingStars = document.querySelectorAll('.rating-star');
-            ratingStars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
-        
-        // ===== معالجة الأحداث =====
-        function setupEventListeners() {
-            const app = document.getElementById('app');
-            
-            app.addEventListener('click', (e) => {
+            try {
                 const t = translations[state.lang];
+                const results = getSavedResults();
                 
-                // معالج صفحة معلومات المستخدم
-                if (e.target.id === 'submitUserInfo') {
-                    const gender = document.getElementById('gender').value;
-                    const dob = document.getElementById('dob').value;
-                    if (!gender || !dob) return showToast(t.alert_missing_fields);
-                    if (new Date(dob) > new Date()) return showToast(t.alert_invalid_dob);
-                    
-                    // حساب البرج تلقائياً
-                    const zodiac = calculateZodiac(dob);
-                    state.userData = { gender, dob, zodiac };
-                    state.page = 'intro';
-                    render();
+                if (results.length === 0) {
+                    return `
+                    <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto text-center">
+                        <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
+                        <p class="text-gray-300">${t.no_history}</p>
+                        <button id="backBtn" class="btn-primary mt-6">العودة</button>
+                    </div>`;
                 }
                 
-                // معالج صفحة المقدمة
-                if (e.target.id === 'startBtn') {
-                    state.currentQ = 0;
-                    state.userAnswers = Array(questions[state.lang].length).fill(null);
-                    state.page = 'quiz';
-                    render();
-                }
-                
-                // معالج اختيار الإجابة
-                if (e.target.classList.contains('option-btn')) {
-                    const index = parseInt(e.target.dataset.index);
-                    state.userAnswers[state.currentQ] = index;
-                    document.querySelectorAll('.option-btn').forEach(el => el.classList.remove('selected'));
-                    e.target.classList.add('selected');
-                }
-                
-                // معالج الزر التالي
-                if (e.target.id === 'nextBtn') {
-                    if (state.userAnswers[state.currentQ] === null) return showToast(t.alert_no_answer);
-                    if (state.currentQ < questions[state.lang].length - 1) {
-                        state.currentQ++;
-                        render();
-                    } else {
-                        state.page = 'loading';
-                        render();
-                        setTimeout(() => {
-                            state.page = 'result';
-                            render();
-                        }, 1500);
-                    }
-                }
-                
-                // معالج زر إعادة البدء
-                if (e.target.id === 'restartBtn') {
-                    state.page = 'userInfo';
-                    state.userData = { gender: '', dob: '' };
-                    state.currentQ = 0;
-                    state.userAnswers = [];
-                    render();
-                }
-                
-                // معالج زر النسخ
-                if (e.target.id === 'copyBtn') {
-                    const resultText = document.querySelector('.glass-card').innerText;
-                    navigator.clipboard.writeText(resultText).then(() => {
-                        showToast(t.alert_copied);
-                    });
-                }
-                
-                // معالج زر المشاركة
-                if (e.target.id === 'shareBtn') {
-                    const { primary } = analyzePersonality();
+                let historyHTML = '';
+                results.forEach((result, index) => {
+                    const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
+                    const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
+                    const zodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
+                    const zodiacInfo = zodiac ? zodiacData[state.lang][zodiac] : null;
                     const types = {
                         ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
                         en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
                     };
                     
-                    const shareText = `لقد اكتشفت شخصيتي في غرفة الأسرار! شخصيتي هي: ${types[state.lang][primary]}`;
+                    historyHTML += `
+                    <div class="history-item" data-index="${index}">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-xl font-bold">${types[state.lang][result.primary]}</h3>
+                                <p class="text-gray-400">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
+                            </div>
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    </div>`;
+                });
+                
+                return `
+                <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6">${t.history_title}</h2>
+                    <div class="space-y-4">
+                        ${historyHTML}
+                    </div>
+                    <button id="backBtn" class="btn-secondary mt-6">العودة</button>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering history:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض السجل</h2></div>';
+            }
+        }
+        
+        // ===== عرض تفاصيل نتيجة من السجل =====
+        function renderHistoryResult(index) {
+            try {
+                const t = translations[state.lang];
+                const results = getSavedResults();
+                const result = results[index];
+                
+                if (!result) return renderHistory();
+                
+                const types = {
+                    ar: { D: "القائد المهيمن (الأحمر)", I: "الشخصية المؤثرة (الأصفر)", S: "الشخصية المستقرة (الأخضر)", C: "الشخصية الواعية (الأزرق)" },
+                    en: { D: "The Dominant Leader (Red)", I: "The Influencer (Yellow)", S: "The Steady Supporter (Green)", C: "The Conscientious Thinker (Blue)" }
+                };
+                
+                const date = new Date(result.date).toLocaleDateString(state.lang === 'ar' ? 'ar-SA' : 'en-US');
+                const age = result.userData.dob ? calculateAge(result.userData.dob) : 'غير محدد';
+                const userZodiac = result.userData.dob ? calculateZodiac(result.userData.dob) : null;
+                const zodiacInfo = userZodiac ? zodiacData[state.lang][userZodiac] : null;
+                
+                return `
+                <div class="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">${t.personality_section}</h2>
+                    <p class="text-gray-300 mb-2">${t.analysis_intro}</p>
+                    <p class="text-gray-400 mb-6">${date} • ${t.age_label}: ${age} ${zodiacInfo ? `• ${zodiacInfo.icon} ${zodiacInfo.name}` : ''}</p>
                     
-                    if (navigator.share) {
-                        navigator.share({
-                            title: 'غرفة الأسرار - اكتشاف الشخصية',
-                            text: shareText,
-                            url: window.location.href
-                        }).then(() => {
-                            showToast(t.alert_shared);
-                        });
-                    } else {
-                        navigator.clipboard.writeText(`${shareText}\n${window.location.href}`).then(() => {
-                            showToast(t.alert_copied);
-                        });
-                    }
-                }
-                
-                // معالج زر الطباعة
-                if (e.target.id === 'printBtn') {
-                    window.print();
-                }
-                
-                // معالج زر السجل
-                if (e.target.id === 'historyBtn') {
-                    state.page = 'history';
-                    render();
-                }
-                
-                // معالج زر العودة
-                if (e.target.id === 'backBtn') {
-                    if (state.page === 'historyResult') {
-                        state.page = 'history';
-                    } else {
-                        state.page = 'result';
-                    }
-                    render();
-                }
-                
-                // معالج عناصر السجل
-                if (e.target.closest('.history-item')) {
-                    const index = parseInt(e.target.closest('.history-item').dataset.index);
-                    state.historyIndex = index;
-                    state.page = 'historyResult';
-                    render();
-                }
-                
-                // معالج زر إغلاق الإعدادات
-                if (e.target.id === 'closeSettings') {
-                    document.getElementById('settingsOverlay').style.display = 'none';
-                }
-                
-                // معالج زر حفظ الإعدادات
-                if (e.target.id === 'saveSettings') {
-                    const settings = {
-                        top: document.getElementById('topAdToggle').classList.contains('checked'),
-                        side: document.getElementById('sideAdToggle').classList.contains('checked'),
-                        bottom: document.getElementById('bottomAdToggle').classList.contains('checked'),
-                        topCode: document.getElementById('topAdCode').value.trim(),
-                        sideCode: document.getElementById('sideAdCode').value.trim(),
-                        bottomCode: document.getElementById('bottomAdCode').value.trim()
-                    };
-                    saveAdSettings(settings);
-                    showToast('تم حفظ الإعدادات');
-                    render();
-                }
-                
-                // معالج زر إضافة إعلان جديد
-                if (e.target.id === 'addNewAd') {
-                    const position = document.getElementById('newAdPosition').value;
-                    const code = document.getElementById('newAdCode').value.trim();
+                    <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-8">
+                        <h3 class="text-2xl font-bold mb-2">${types[state.lang][result.primary]}</h3>
+                    </div>
                     
-                    if (!code) {
-                        showToast('يرجى إدخال كود الإعلان');
-                        return;
-                    }
+                    <div class="chart-container mb-8">
+                        <canvas id="personalityChart"></canvas>
+                    </div>
                     
-                    // إضافة الكود إلى المكان المناسب
-                    const codeField = document.getElementById(`${position}AdCode`);
-                    if (codeField) {
-                        codeField.value = code;
-                        updateAdPreview(position, code);
-                        showToast(`تمت إضافة الإعلان إلى الموضع: ${position}`);
+                    <div class="mt-8 text-center">
+                        <button id="backBtn" class="btn-secondary mr-4">العودة</button>
+                        <button id="printBtn" class="btn-secondary">${t.print_btn}</button>
+                    </div>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering history result:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض النتيجة</h2></div>';
+            }
+        }
+        
+        // ===== وظائف العرض =====
+        function renderUserInfo() {
+            try {
+                const t = translations[state.lang];
+                const counters = getCounters();
+                const avgSiteRating = getAverageRating('site');
+                
+                return `
+                <div class="text-center">
+                    <!-- إحصائيات الموقع -->
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <div class="stats-card">
+                            <div class="stats-number gradient-text">${counters.visitors}</div>
+                            <div class="stats-label">${t.visitors_count}</div>
+                        </div>
+                        <div class="stats-card">
+                            <div class="stats-number gradient-text">${counters.analyses}</div>
+                            <div class="stats-label">${t.analyses_count}</div>
+                        </div>
+                        <div class="stats-card">
+                            <div class="stats-number gradient-text">${avgSiteRating}</div>
+                            <div class="stats-label">${t.average_rating}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
+                        <h1 class="text-4xl font-bold gradient-text mb-4">${t.welcome_title}</h1>
+                        <p class="text-gray-300 text-lg mb-6">${t.user_info_desc}</p>
+                        <div class="space-y-6 text-right">
+                            <div><label class="block mb-2">${t.gender_label}</label><select id="gender" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600"><option value="male">${t.male}</option><option value="female">${t.female}</option><option value="other">${t.other}</option></select></div>
+                            <div><label class="block mb-2">${t.dob_label}</label><input type="date" id="dob" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" /></div>
+                            <button id="submitUserInfo" class="btn-primary">${t.submit_user_info}</button>
+                        </div>
+                    </div>
+                    
+                    <!-- قسم التقييم والتعليقات -->
+                    <div class="feedback-section glass-card rounded-xl p-6 max-w-3xl mx-auto mt-8">
+                        <h3 class="text-xl font-bold mb-4">${t.rate_site}</h3>
+                        <div class="feedback-stars" id="siteRating">
+                            <i class="fas fa-star" data-rating="1"></i>
+                            <i class="fas fa-star" data-rating="2"></i>
+                            <i class="fas fa-star" data-rating="3"></i>
+                            <i class="fas fa-star" data-rating="4"></i>
+                            <i class="fas fa-star" data-rating="5"></i>
+                        </div>
+                        <textarea id="siteComment" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 mb-4" rows="3" placeholder="${t.write_comment}"></textarea>
+                        <button id="submitFeedback" class="btn-primary">${t.submit_feedback}</button>
                         
-                        // مسح الحقول
-                        document.getElementById('newAdCode').value = '';
+                        <!-- عرض التعليقات المشتركة -->
+                        <div class="shared-feedback">
+                            <h4 class="text-lg font-bold mb-4">${t.shared_feedback}</h4>
+                            <div id="sharedSiteFeedback"></div>
+                        </div>
+                    </div>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering user info:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض الصفحة</h2></div>';
+            }
+        }
+        
+        function renderIntro() {
+            try {
+                const t = translations[state.lang];
+                return `
+                <div class="text-center">
+                    <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
+                        <h1 class="text-4xl font-bold gradient-text mb-4">${t.intro_title}</h1>
+                        <p class="text-xl text-gray-300 mb-6">${t.intro_subtitle}</p>
+                        <p class="text-gray-400 mb-4">${t.intro_desc}</p>
+                        <div class="text-right text-gray-300 space-y-2 mb-6">
+                            <p>• ${t.intro_p1}</p>
+                            <p>• ${t.intro_p2}</p>
+                        </div>
+                        <button id="startBtn" class="btn-primary">${t.start_btn}</button>
+                    </div>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering intro:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض الصفحة</h2></div>';
+            }
+        }
+        
+        function renderQuiz() {
+            try {
+                const q = questions[state.lang][state.currentQ];
+                const t = translations[state.lang];
+                const progress = ((state.currentQ + 1) / questions[state.lang].length * 100).toFixed(0);
+                let optionsHTML = '';
+                q.options.forEach((opt, idx) => {
+                    const selected = state.userAnswers[state.currentQ] === idx ? 'selected' : '';
+                    optionsHTML += `<div class="option-btn ${selected}" data-index="${idx}">${opt.text}</div>`;
+                });
+                return `
+                <div>
+                    <div class="progress-container">
+                        <div class="flex justify-between"><span>${t.progress} ${state.currentQ + 1}/${questions[state.lang].length}</span></div>
+                        <div class="w-full"><div class="progress-bar" style="width:${progress}%"></div></div>
+                    </div>
+                    <div class="glass-card rounded-xl p-8 max-w-3xl mx-auto">
+                        <h2 class="text-2xl font-bold mb-6">${q.text}</h2>
+                        <div class="space-y-4">${optionsHTML}</div>
+                        <button id="nextBtn" class="btn-primary mt-8">
+                            ${state.currentQ === questions[state.lang].length - 1 ? t.final_results_btn : t.next_btn}
+                        </button>
+                    </div>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering quiz:', error);
+                return '<div class="glass-card"><h2>حدث خطأ في عرض الاختبار</h2></div>';
+            }
+        }
+        
+        function renderLoading() {
+            try {
+                const t = translations[state.lang];
+                return `
+                <div class="text-center py-12">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p class="text-gray-300">${t.loading_analysis}</p>
+                </div>`;
+            } catch (error) {
+                console.error('Error rendering loading:', error);
+                return '<div class="glass-card"><h2>جاري التحميل...</h2></div>';
+            }
+        }
+        
+        // ===== عرض الإعلانات =====
+        function renderAds() {
+            try {
+                const settings = getAdSettings();
+                const adPositions = ['top', 'side', 'bottom'];
+                
+                const ads = {};
+                adPositions.forEach(position => {
+                    if (settings[position] && settings[`${position}Code`]) {
+                        const adId = `ad-${position}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                        ads[position] = `
+                            <div class="ad-container" id="${adId}">
+                                ${settings[`${position}Code`]}
+                            </div>`;
+                    } else {
+                        ads[position] = '';
+                    }
+                });
+                
+                return ads;
+            } catch (error) {
+                console.error('Error rendering ads:', error);
+                return { top: '', side: '', bottom: '' };
+            }
+        }
+        
+        // ===== تحديث معاينة الإعلان =====
+        function updateAdPreview(position, code) {
+            try {
+                const preview = document.getElementById(`${position}AdPreview`);
+                if (preview) {
+                    const temp = document.createElement('div');
+                    temp.textContent = code;
+                    preview.innerHTML = temp.innerHTML;
+                }
+            } catch (error) {
+                console.error('Error updating ad preview:', error);
+            }
+        }
+        
+        // ===== العرض الرئيسي =====
+        function render() {
+            try {
+                document.documentElement.lang = state.lang;
+                document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+                const t = translations[state.lang];
+                const { top: adTop, side: adSide, bottom: adBottom } = renderAds();
+                
+                // تحديث نص زر اللغة
+                const langBtn = document.getElementById('langToggle');
+                if (langBtn) {
+                    langBtn.innerHTML = `<i class="fas fa-language ml-2"></i>${t.lang_btn}`;
+                }
+                
+                let content = '';
+                switch (state.page) {
+                    case 'userInfo': content = renderUserInfo(); break;
+                    case 'intro': content = renderIntro(); break;
+                    case 'quiz': content = renderQuiz(); break;
+                    case 'loading': content = renderLoading(); break;
+                    case 'result': content = renderResult(); break;
+                    case 'history': content = renderHistory(); break;
+                    case 'historyResult': content = renderHistoryResult(state.historyIndex); break;
+                }
+                
+                const html = `
+                    ${adTop}
+                    <div class="container mx-auto px-4 py-8 max-w-4xl">
+                        ${content}
+                    </div>
+                    ${adBottom}
+                    <footer class="footer">
+                        <p class="font-semibold">${t.footer1}</p>
+                        <p>${t.footer2}</p>
+                    </footer>`;
+                
+                const app = document.getElementById('app');
+                if (app) {
+                    app.innerHTML = html;
+                }
+                
+                // إنشاء الرسم البياني بعد عرض النتائج
+                if (state.page === 'result' && state.resultData) {
+                    setTimeout(() => createPersonalityChart(state.resultData.scores), 100);
+                } else if (state.page === 'historyResult' && state.historyIndex !== undefined) {
+                    const results = getSavedResults();
+                    if (results && results[state.historyIndex]) {
+                        setTimeout(() => createPersonalityChart(results[state.historyIndex].scores), 100);
                     }
                 }
-            });
-            
-            // معالج تغيير كود الإعلان
-            app.addEventListener('input', (e) => {
-                if (e.target.id === 'topAdCode') {
-                    updateAdPreview('top', e.target.value);
-                } else if (e.target.id === 'sideAdCode') {
-                    updateAdPreview('side', e.target.value);
-                } else if (e.target.id === 'bottomAdCode') {
-                    updateAdPreview('bottom', e.target.value);
+                
+                // عرض التعليقات المشتركة بعد العرض
+                if (state.page === 'userInfo') {
+                    setTimeout(() => {
+                        renderSharedFeedback('sharedSiteFeedback', 'site');
+                    }, 100);
+                } else if (state.page === 'result') {
+                    setTimeout(() => {
+                        renderSharedFeedback('sharedAnalysisFeedback', 'analysis');
+                    }, 100);
                 }
-            });
-            
-            // معالج مفاتيح التبديل
-            app.addEventListener('click', (e) => {
-                if (e.target.classList.contains('toggle-switch')) {
-                    e.target.classList.toggle('checked');
+            } catch (error) {
+                console.error('Error rendering page:', error);
+                const app = document.getElementById('app');
+                if (app) {
+                    app.innerHTML = '<div class="glass-card"><h2>حدث خطأ في تحميل الصفحة</h2></div>';
                 }
-            });
+            }
         }
         
         // ===== تحميل إعدادات الإعلانات =====
         function loadAdSettings() {
-            const settings = getAdSettings();
-            document.getElementById('topAdCode').value = settings.topCode;
-            document.getElementById('sideAdCode').value = settings.sideCode;
-            document.getElementById('bottomAdCode').value = settings.bottomCode;
-            document.getElementById('topAdToggle').classList.toggle('checked', settings.top);
-            document.getElementById('sideAdToggle').classList.toggle('checked', settings.side);
-            document.getElementById('bottomAdToggle').classList.toggle('checked', settings.bottom);
-            
-            // تحديث المعاينات
-            updateAdPreview('top', settings.topCode);
-            updateAdPreview('side', settings.sideCode);
-            updateAdPreview('bottom', settings.bottomCode);
+            try {
+                const settings = getAdSettings();
+                const topAdCode = document.getElementById('topAdCode');
+                const sideAdCode = document.getElementById('sideAdCode');
+                const bottomAdCode = document.getElementById('bottomAdCode');
+                const topAdToggle = document.getElementById('topAdToggle');
+                const sideAdToggle = document.getElementById('sideAdToggle');
+                const bottomAdToggle = document.getElementById('bottomAdToggle');
+                
+                if (topAdCode) topAdCode.value = settings.topCode;
+                if (sideAdCode) sideAdCode.value = settings.sideCode;
+                if (bottomAdCode) bottomAdCode.value = settings.bottomCode;
+                if (topAdToggle) topAdToggle.classList.toggle('checked', settings.top);
+                if (sideAdToggle) sideAdToggle.classList.toggle('checked', settings.side);
+                if (bottomAdToggle) bottomAdToggle.classList.toggle('checked', settings.bottom);
+                
+                // تحديث المعاينات
+                updateAdPreview('top', settings.topCode);
+                updateAdPreview('side', settings.sideCode);
+                updateAdPreview('bottom', settings.bottomCode);
+                
+                // تحديث حالة الإعلانات
+                updateAdStatus();
+            } catch (error) {
+                console.error('Error loading ad settings:', error);
+            }
         }
         
         // ===== عرض الرسائل =====
         function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerHTML = `<div class="toast">${message}</div>`;
-            setTimeout(() => toast.innerHTML = '', 3000);
+            try {
+                const toast = document.getElementById('toast');
+                toast.innerHTML = `<div class="toast">${message}</div>`;
+                setTimeout(() => toast.innerHTML = '', 3000);
+            } catch (error) {
+                console.error('Error showing toast:', error);
+            }
+        }
+        
+        // ===== معالجة الأحداث =====
+        function setupEventListeners() {
+            try {
+                const app = document.getElementById('app');
+                
+                app.addEventListener('click', (e) => {
+                    const t = translations[state.lang];
+                    
+                    // معالج صفحة معلومات المستخدم
+                    if (e.target.id === 'submitUserInfo') {
+                        const gender = document.getElementById('gender') ? document.getElementById('gender').value : '';
+                        const dob = document.getElementById('dob') ? document.getElementById('dob').value : '';
+                        if (!gender || !dob) return showToast(t.alert_missing_fields);
+                        if (new Date(dob) > new Date()) return showToast(t.alert_invalid_dob);
+                        
+                        // حساب البرج تلقائياً
+                        const zodiac = calculateZodiac(dob);
+                        state.userData = { gender, dob, zodiac };
+                        state.page = 'intro';
+                        render();
+                    }
+                    
+                    // معالج صفحة المقدمة
+                    if (e.target.id === 'startBtn') {
+                        state.currentQ = 0;
+                        state.userAnswers = Array(questions[state.lang].length).fill(null);
+                        state.page = 'quiz';
+                        render();
+                    }
+                    
+                    // معالج اختيار الإجابة
+                    if (e.target.classList.contains('option-btn')) {
+                        const index = parseInt(e.target.dataset.index);
+                        state.userAnswers[state.currentQ] = index;
+                        document.querySelectorAll('.option-btn').forEach(el => el.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                    }
+                    
+                    // معالج الزر التالي
+                    if (e.target.id === 'nextBtn') {
+                        if (state.userAnswers[state.currentQ] === null) return showToast(t.alert_no_answer);
+                        if (state.currentQ < questions[state.lang].length - 1) {
+                            state.currentQ++;
+                            render();
+                        } else {
+                            state.page = 'loading';
+                            render();
+                            setTimeout(() => {
+                                state.page = 'result';
+                                render();
+                            }, 1500);
+                        }
+                    }
+                    
+                    // معالج زر إعادة البدء
+                    if (e.target.id === 'restartBtn') {
+                        state.page = 'userInfo';
+                        state.userData = { gender: '', dob: '' };
+                        state.currentQ = 0;
+                        state.userAnswers = [];
+                        render();
+                    }
+                    
+                    // معالج زر النسخ
+                    if (e.target.id === 'copyBtn') {
+                        const resultText = document.querySelector('.glass-card') ? document.querySelector('.glass-card').innerText : '';
+                        navigator.clipboard.writeText(resultText).then(() => {
+                            showToast(t.alert_copied);
+                        });
+                    }
+                    
+                    // معالج زر المشاركة
+                    if (e.target.id === 'shareBtn') {
+                        const { primary } = analyzePersonality();
+                        const types = {
+                            ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
+                            en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
+                        };
+                        
+                        const shareText = `لقد اكتشفت شخصيتي في غرفة الأسرار! شخصيتي هي: ${types[state.lang][primary] || 'Unknown'}`;
+                        
+                        if (navigator.share) {
+                            navigator.share({
+                                title: 'غرفة الأسرار - اكتشاف الشخصية',
+                                text: shareText,
+                                url: window.location.href
+                            }).then(() => {
+                                showToast(t.alert_shared);
+                            });
+                        } else {
+                            navigator.clipboard.writeText(`${shareText}\n${window.location.href}`).then(() => {
+                                showToast(t.alert_copied);
+                            });
+                        }
+                    }
+                    
+                    // معالج زر الطباعة
+                    if (e.target.id === 'printBtn') {
+                        window.print();
+                    }
+                    
+                    // معالج زر السجل
+                    if (e.target.id === 'historyBtn') {
+                        state.page = 'history';
+                        render();
+                    }
+                    
+                    // معالج زر العودة
+                    if (e.target.id === 'backBtn') {
+                        if (state.page === 'historyResult') {
+                            state.page = 'history';
+                        } else {
+                            state.page = 'result';
+                        }
+                        render();
+                    }
+                    
+                    // معالج عناصر السجل
+                    if (e.target.closest('.history-item')) {
+                        const index = parseInt(e.target.closest('.history-item').dataset.index);
+                        state.historyIndex = index;
+                        state.page = 'historyResult';
+                        render();
+                    }
+                    
+                    // معالج تقييم النجوم
+                    if (e.target.classList.contains('fa-star')) {
+                        const rating = parseInt(e.target.dataset.rating);
+                        const container = e.target.parentElement;
+                        
+                        // تحديث النجوم
+                        container.querySelectorAll('.fa-star').forEach((star, index) => {
+                            if (index < rating) {
+                                star.classList.add('active');
+                            } else {
+                                star.classList.remove('active');
+                            }
+                        });
+                    }
+                    
+                    // معالج إرسال تقييم الموقع
+                    if (e.target.id === 'submitFeedback') {
+                        const rating = document.querySelectorAll('#siteRating .fa-star.active').length;
+                        const comment = document.getElementById('siteComment') ? document.getElementById('siteComment').value : '';
+                        
+                        if (rating === 0) {
+                            showToast('يرجى اختيار تقييم');
+                            return;
+                        }
+                        
+                        saveFeedback('site', rating, comment);
+                        showToast('شكراً لتقييمك! سيظهر للجميع قريباً');
+                        
+                        // إعادة تعيين الحقول
+                        document.querySelectorAll('#siteRating .fa-star').forEach(star => {
+                            star.classList.remove('active');
+                        });
+                        if (document.getElementById('siteComment')) {
+                            document.getElementById('siteComment').value = '';
+                        }
+                        
+                        // تحديث عرض التعليقات
+                        setTimeout(() => {
+                            renderSharedFeedback('sharedSiteFeedback', 'site');
+                        }, 100);
+                    }
+                    
+                    // معالج إرسال تقييم التحليل
+                    if (e.target.id === 'submitAnalysisFeedback') {
+                        const rating = document.querySelectorAll('#analysisRating .fa-star.active').length;
+                        const comment = document.getElementById('analysisComment') ? document.getElementById('analysisComment').value : '';
+                        
+                        if (rating === 0) {
+                            showToast('يرجى اختيار تقييم');
+                            return;
+                        }
+                        
+                        saveFeedback('analysis', rating, comment);
+                        showToast('شكراً لتقييمك! سيظهر للجميع قريباً');
+                        
+                        // إعادة تعيين الحقول
+                        document.querySelectorAll('#analysisRating .fa-star').forEach(star => {
+                            star.classList.remove('active');
+                        });
+                        if (document.getElementById('analysisComment')) {
+                            document.getElementById('analysisComment').value = '';
+                        }
+                        
+                        // تحديث عرض التعليقات
+                        setTimeout(() => {
+                            renderSharedFeedback('sharedAnalysisFeedback', 'analysis');
+                        }, 100);
+                    }
+                    
+                    // معالج زر إغلاق الإعدادات
+                    if (e.target.id === 'closeSettings') {
+                        document.getElementById('settingsOverlay').style.display = 'none';
+                    }
+                    
+                    // معالج زر تسجيل الدخول
+                    if (e.target.id === 'loginBtn') {
+                        const pass = document.getElementById('adminPassword') ? document.getElementById('adminPassword').value : '';
+                        
+                        if (!pass) {
+                            showToast('يرجى إدخال كلمة المرور');
+                            return;
+                        }
+                        
+                        // حساب تجزئة كلمة المرور المدخلة
+                        const hashedPass = simpleHash(pass);
+                        const correctHash = "719274858"; // تجزئة "Farida" المعدلة
+                        
+                        if (hashedPass === correctHash) {
+                            // إخفاء قسم كلمة المرور وإظهار لوحة الإدارة
+                            if (document.getElementById('passwordSection')) {
+                                document.getElementById('passwordSection').style.display = 'none';
+                            }
+                            if (document.getElementById('adminPanel')) {
+                                document.getElementById('adminPanel').style.display = 'block';
+                            }
+                            loadAdSettings();
+                            showToast('تم تسجيل الدخول بنجاح');
+                        } else {
+                            showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
+                        }
+                    }
+                    
+                    // معالج زر حفظ الإعدادات
+                    if (e.target.id === 'saveSettings') {
+                        const settings = {
+                            top: document.getElementById('topAdToggle') ? document.getElementById('topAdToggle').classList.contains('checked') : false,
+                            side: document.getElementById('sideAdToggle') ? document.getElementById('sideAdToggle').classList.contains('checked') : false,
+                            bottom: document.getElementById('bottomAdToggle') ? document.getElementById('bottomAdToggle').classList.contains('checked') : false,
+                            topCode: document.getElementById('topAdCode') ? document.getElementById('topAdCode').value.trim() : '',
+                            sideCode: document.getElementById('sideAdCode') ? document.getElementById('sideAdCode').value.trim() : '',
+                            bottomCode: document.getElementById('bottomAdCode') ? document.getElementById('bottomAdCode').value.trim() : ''
+                        };
+                        saveAdSettings(settings);
+                    }
+                });
+                
+                // معالج تغيير كود الإعلان
+                app.addEventListener('input', (e) => {
+                    if (e.target.id === 'topAdCode') {
+                        updateAdPreview('top', e.target.value);
+                    } else if (e.target.id === 'sideAdCode') {
+                        updateAdPreview('side', e.target.value);
+                    } else if (e.target.id === 'bottomAdCode') {
+                        updateAdPreview('bottom', e.target.value);
+                    }
+                });
+                
+                // معالج مفاتيح التبديل
+                app.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('toggle-switch')) {
+                        e.target.classList.toggle('checked');
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up event listeners:', error);
+            }
         }
         
         // ===== التهيئة =====
         document.addEventListener('DOMContentLoaded', () => {
-            // تحديث إحصائيات الموقع
-            updateSiteStats('visitors');
-            state.siteStats = getSiteStats();
-            
-            // إعداد مستمعي الأحداث
-            setupEventListeners();
-            
-            // إعداد مستمعي الأحداث للأزرار الثابتة
-            document.getElementById('settingsBtn').addEventListener('click', () => {
-                document.getElementById('settingsOverlay').style.display = 'flex';
-            });
-            
-            document.getElementById('langToggle').addEventListener('click', () => {
-                state.lang = state.lang === 'ar' ? 'en' : 'ar';
+            try {
+                // إعداد مستمعي الأحداث
+                setupEventListeners();
+                
+                // إعداد مستمعي الأحداث للأزرار الثابتة
+                const settingsBtn = document.getElementById('settingsBtn');
+                if (settingsBtn) {
+                    settingsBtn.addEventListener('click', () => {
+                        const settingsOverlay = document.getElementById('settingsOverlay');
+                        if (settingsOverlay) {
+                            settingsOverlay.style.display = 'flex';
+                        }
+                    });
+                }
+                
+                const langToggle = document.getElementById('langToggle');
+                if (langToggle) {
+                    langToggle.addEventListener('click', () => {
+                        state.lang = state.lang === 'ar' ? 'en' : 'ar';
+                        render();
+                    });
+                }
+                
+                // تحديث العدادات عند تحميل الصفحة
+                updateCounters();
+                
+                // العرض الأولي
                 render();
-            });
-            
-            // إعداد مستمع حدث لزر تسجيل الدخول
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                const pass = document.getElementById('adminPassword').value;
-                
-                if (!pass) {
-                    showToast('يرجى إدخال كلمة المرور');
-                    return;
+            } catch (error) {
+                console.error('Error during DOMContentLoaded:', error);
+                const app = document.getElementById('app');
+                if (app) {
+                    app.innerHTML = '<div class="glass-card"><h2>حدث خطأ في تحميل الموقع</h2><p>يرجى تحديث الصفحة والمحاولة مرة أخرى</p></div>';
                 }
-                
-                // حساب تجزئة كلمة المرور المدخلة
-                const hashedPass = simpleHash(pass);
-                const correctHash = simpleHash("Farida"); // حساب التجزئة الصحيحة
-                
-                console.log("كلمة المرور المدخلة:", pass);
-                console.log("تجزئة المدخلة:", hashedPass);
-                console.log("تجزئة الصحيحة:", correctHash);
-                
-                if (hashedPass === correctHash) {
-                    // إخفاء قسم كلمة المرور وإظهار لوحة الإدارة
-                    document.getElementById('passwordSection').style.display = 'none';
-                    document.getElementById('adminPanel').style.display = 'block';
-                    loadAdSettings();
-                    showToast('تم تسجيل الدخول بنجاح');
-                } else {
-                    showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
-                }
-            });
-            
-            // العرض الأولي
-            render();
+            }
         });
     </script>
 </body>
