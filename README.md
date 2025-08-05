@@ -21,16 +21,54 @@
 
 ## هيكل الملفات
 
-- `index.html` — الملف الأساسي (نقطة الدخول)
-- `style.css` — التنسيقات
-- `main.js` — إدارة التطبيق وحالة SPA
-- `lang.js` — الترجمة والدوال المساعدة للغة
-- `questions.js` — الأسئلة والخيارات المدعومة بالترجمة
-- `zodiac.js` — حساب البرج والتنبؤات الفلكية
-- `analysis.js` — منطق التحليل النفسي وتوليد التقارير
-- `ads.js` — نظام الإعلانات الذكي (اختياري)
-- `utils.js` — دوال مساعدة (حساب العمر، نسخ، تنبيهات ...)
-
+personality-analysis-app/
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+├── src/
+│   ├── assets/
+│   │   ├── data/
+│   │   │   ├── questions.js
+│   │   │   ├── translations.js
+│   │   │   ├── zodiacData.js
+│   │   │   └── personalityAnalysis.js
+│   │   └── styles/
+│   │       └── global.css
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Card.jsx
+│   │   │   ├── Input.jsx
+│   │   │   └── Select.jsx
+│   │   ├── layout/
+│   │   │   ├── Header.jsx
+│   │   │   └── Footer.jsx
+│   │   ├── features/
+│   │   │   ├── UserInfo.jsx
+│   │   │   ├── Quiz.jsx
+│   │   │   ├── Result.jsx
+│   │   │   └── History.jsx
+│   │   └── ui/
+│   │       ├── Chart.jsx
+│   │       ├── Toast.jsx
+│   │       └── Settings.jsx
+│   ├── hooks/
+│   │   ├── useLocalStorage.js
+│   │   ├── usePersonalityAnalysis.js
+│   │   └── useFeedback.js
+│   ├── services/
+│   │   ├── adService.js
+│   │   ├── analyticsService.js
+│   │   └── zodiacService.js
+│   ├── utils/
+│   │   ├── helpers.js
+│   │   └── constants.js
+│   ├── App.jsx
+│   └── main.jsx
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+└── postcss.config.js
 ---
 
 ## طريقة التشغيل
