@@ -2796,39 +2796,36 @@
                             renderSharedFeedback('sharedAnalysisFeedback', 'analysis');
                         }, 100);
                     }
-                    
-                    // معالج زر إغلاق الإعدادات
-                    if (e.target.id === 'closeSettings') {
-                        document.getElementById('settingsOverlay').style.display = 'none';
-                    }
-                    
+                  
                     // معالج زر تسجيل الدخول
-                    if (e.target.id === 'loginBtn') {
-                        const pass = document.getElementById('adminPassword') ? document.getElementById('adminPassword').value : '';
-                        
-                        if (!pass) {
-                            showToast('يرجى إدخال كلمة المرور');
-                            return;
-                        }
-                        
-                        // حساب تجزئة كلمة المرور المدخلة
-                        const hashedPass = simpleHash(pass);
-                        const correctHash = "1934780220"; // تجزئة "Farida" المعدلة
-                        
-                        if (hashedPass === correctHash) {
-                            // إخفاء قسم كلمة المرور وإظهار لوحة الإدارة
-                            if (document.getElementById('passwordSection')) {
-                                document.getElementById('passwordSection').style.display = 'none';
-                            }
-                            if (document.getElementById('adminPanel')) {
-                                document.getElementById('adminPanel').style.display = 'block';
-                            }
-                            loadAdSettings();
-                            showToast('تم تسجيل الدخول بنجاح');
-                        } else {
-                            showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
-                        }
-                    }
+if (e.target.id === 'loginBtn') {
+    const pass = document.getElementById('adminPassword') ? document.getElementById('adminPassword').value : '';
+    
+    if (!pass) {
+        showToast('يرجى إدخال كلمة المرور');
+        return;
+    }
+    
+    // حساب تجزئة كلمة المرور المدخلة
+    const hashedPass = simpleHash(pass);
+    const correctHash = "2097122383"; // تجزئة "Farida" الصحيحة
+    
+    if (hashedPass === correctHash) {
+        // إخفاء قسم كلمة المرور وإظهار لوحة الإدارة
+        if (document.getElementById('passwordSection')) {
+            document.getElementById('passwordSection').style.display = 'none';
+        }
+        if (document.getElementById('adminPanel')) {
+            document.getElementById('adminPanel').style.display = 'block';
+        }
+        loadAdSettings();
+        showToast('تم تسجيل الدخول بنجاح');
+    } else {
+        showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
+    }
+}
+                   
+                    
                     
                     // معالج زر حفظ الإعدادات
                     if (e.target.id === 'saveSettings') {
