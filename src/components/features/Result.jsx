@@ -8,6 +8,7 @@ import { zodiacData, zodiacCompatibility } from '../../assets/data/zodiacData';
 import { personalityAnalysis } from '../../assets/data/personalityAnalysis';
 import { ZodiacService } from '../../services/zodiacService';
 import { AnalyticsService } from '../../services/analyticsService';
+import { useFeedback } from '../../hooks/useFeedback';
 
 const Result = ({ 
   state, 
@@ -16,6 +17,7 @@ const Result = ({
   onHistory,
   onBack
 }) => {
+  const { saveFeedback, getFeedback } = useFeedback();
   const t = translations[state.lang];
   const { scores, primary } = state.resultData;
   
@@ -42,14 +44,9 @@ const Result = ({
   };
 
   const handleShare = async () => {
-    const types = {
-      ar: { D: "القائد المهيمن", I: "الشخصية المؤثرة", S: "الشخصية المستقرة", C: "الشخصية الواعية" },
-      en: { D: "Dominant Leader", I: "Influencer", S: "Steady Supporter", C: "Conscientious Thinker" }
-    };
-    
     const shareText = `${state.lang === 'ar' 
       ? 'لقد اكتشفت شخصيتي في غرفة الأسرار! شخصيتي هي: ' 
-      : 'I discovered my personality in Chamber of Secrets! My personality is: '}${types[state.lang][primary]}`;
+      : 'I discovered my personality in Chamber of Secrets! My personality is: '}${PERSONALITY_TYPES[state.lang][primary]}`;
     
     const success = await shareContent(
       state.lang === 'ar' ? 'غرفة الأسرار - اكتشاف الشخصية' : 'Chamber of Secrets - Personality Discovery',
@@ -62,6 +59,28 @@ const Result = ({
     } else {
       alert(t.alert_copied);
     }
+  };
+
+  const handleAnalysisFeedback = () => {
+    const rating = document.querySelectorAll('#analysisRating .fa-star.active').length;
+    const comment = document.getElementById('analysisComment')?.value || '';
+    
+    if (rating === 0) {
+      alert('يرجى اختيار تقييم');
+      return;
+    }
+    
+    saveFeedback('analysis', rating, comment);
+    
+    // إعادة تعيين الحقول
+    document.querySelectorAll('#analysisRating .fa-star').forEach(star => {
+      star.classList.remove('active');
+    });
+    if (document.getElementById('analysisComment')) {
+      document.getElementById('analysisComment').value = '';
+    }
+    
+    alert('شكراً لتقييمك! سيظهر للجميع قريبا');
   };
 
   const compatibleZodiacsHTML = compatibleZodiacs.map(z => {
@@ -232,7 +251,7 @@ const Result = ({
           rows="3" 
           placeholder={t.write_comment}
         />
-        <Button id="submitAnalysisFeedback">
+        <Button onClick={handleAnalysisFeedback}>
           {t.submit_feedback}
         </Button>
         
@@ -240,7 +259,33 @@ const Result = ({
         <div className="shared-feedback">
           <h4 className="text-lg font-bold mb-4">{t.shared_feedback}</h4>
           <div id="sharedAnalysisFeedback">
-            <p className="text-slate-400 text-center">{t.no_feedback}</p>
+            {getFeedback('analysis').length === 0 ? (
+              <p className="text-slate-400 text-center">{t.no_feedback}</p>
+            ) : (
+              getFeedback('analysis').slice(0, 5).map(item => (
+                <div key={item.id} className="feedback-item">
+                  <div className="feedback-header">
+                    <div className="feedback-rating">
+                      {Array(5).fill(0).map((_, i) => (
+                        <i 
+                          key={i} 
+                          className={`fas fa-star ${i < item.rating ? 'text-amber-400' : 'text-slate-600'}`}
+                        />
+                      ))}
+                    </div>
+                    <div className="feedback-date">
+                      {new Date(item.date).toLocaleDateString(
+                        state.lang === 'ar' ? 'ar-SA' : 'en-US',
+                        { year: 'numeric', month: 'short', day: 'numeric' }
+                      )}
+                    </div>
+                  </div>
+                  {item.comment && (
+                    <div className="feedback-comment">{item.comment}</div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
