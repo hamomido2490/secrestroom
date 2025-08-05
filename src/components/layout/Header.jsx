@@ -24,3 +24,5 @@ const Header = ({ lang, onLanguageChange, onSettingsClick }) => {
 };
 
 export default Header;
+
+
