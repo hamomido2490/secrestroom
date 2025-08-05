@@ -2796,38 +2796,38 @@
                             renderSharedFeedback('sharedAnalysisFeedback', 'analysis');
                         }, 100);
                     }
-                  
-             // معالج زر تسجيل الدخول (الحل النهائي)
-if (e.target.id === 'loginBtn') {
-    e.preventDefault(); // منع السلوك الافتراضي
-    
-    const pass = document.getElementById('adminPassword');
-    if (!pass || !pass.value) {
-        showToast('يرجى إدخال كلمة المرور');
-        return;
-    }
-    
-    // حساب التجزئة
-    const hashedPass = simpleHash(pass.value);
-    const correctHash = "2097122383";
-    
-    // التحقق من كلمة المرور
-    if (hashedPass === correctHash || pass.value === "Farida") {
-        // إخفاء قسم كلمة المرور
-        const passwordSection = document.getElementById('passwordSection');
-        const adminPanel = document.getElementById('adminPanel');
-        
-        if (passwordSection) passwordSection.style.display = 'none';
-        if (adminPanel) {
-            adminPanel.style.display = 'block';
-            loadAdSettings();
-        }
-        
-        showToast('تم تسجيل الدخول بنجاح');
-    } else {
-        showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
-    }
-}
+                    
+                    // معالج زر تسجيل الدخول (الحل النهائي)
+                    if (e.target.id === 'loginBtn') {
+                        e.preventDefault(); // منع السلوك الافتراضي
+                        
+                        const pass = document.getElementById('adminPassword');
+                        if (!pass || !pass.value) {
+                            showToast('يرجى إدخال كلمة المرور');
+                            return;
+                        }
+                        
+                        // حساب التجزئة
+                        const hashedPass = simpleHash(pass.value);
+                        const correctHash = "2097122383"; // التجزئة الصحيحة لكلمة "Farida"
+                        
+                        // التحقق من كلمة المرور
+                        if (hashedPass === correctHash || pass.value === "Farida") {
+                            // إخفاء قسم كلمة المرور
+                            const passwordSection = document.getElementById('passwordSection');
+                            const adminPanel = document.getElementById('adminPanel');
+                            
+                            if (passwordSection) passwordSection.style.display = 'none';
+                            if (adminPanel) {
+                                adminPanel.style.display = 'block';
+                                loadAdSettings();
+                            }
+                            
+                            showToast('تم تسجيل الدخول بنجاح');
+                        } else {
+                            showToast('كلمة المرور خاطئة، يرجى المحاولة مرة أخرى');
+                        }
+                    }
                     
                     // معالج زر حفظ الإعدادات
                     if (e.target.id === 'saveSettings') {
