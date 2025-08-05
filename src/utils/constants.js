@@ -38,3 +38,4 @@ export const PAGES = {
   HISTORY: 'history',
   HISTORY_RESULT: 'historyResult'
 };
+
