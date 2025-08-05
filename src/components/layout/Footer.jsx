@@ -12,3 +12,5 @@ const Footer = ({ translations, lang }) => {
 };
 
 export default Footer;
+
+
