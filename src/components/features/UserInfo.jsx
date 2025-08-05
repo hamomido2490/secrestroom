@@ -4,7 +4,6 @@ import Button from '../common/Button';
 import Input from '../common/Input';
 import Select from '../common/Select';
 import { useFeedback } from '../../hooks/useFeedback';
-import { zodiacData } from '../../assets/data/zodiacData';
 import { ZodiacService } from '../../services/zodiacService';
 
 const UserInfo = ({ 
@@ -13,7 +12,7 @@ const UserInfo = ({
   translations, 
   onStartQuiz 
 }) => {
-  const { getAverageRating, getFeedback } = useFeedback();
+  const { getAverageRating, getFeedback, saveFeedback } = useFeedback();
   const t = translations[state.lang];
   const avgSiteRating = getAverageRating('site');
   const siteFeedback = getFeedback('site');
@@ -38,6 +37,28 @@ const UserInfo = ({
       userData: { gender, dob, zodiac },
       page: 'intro'
     });
+  };
+
+  const handleSiteFeedback = () => {
+    const rating = document.querySelectorAll('#siteRating .fa-star.active').length;
+    const comment = document.getElementById('siteComment')?.value || '';
+    
+    if (rating === 0) {
+      alert('يرجى اختيار تقييم');
+      return;
+    }
+    
+    saveFeedback('site', rating, comment);
+    
+    // إعادة تعيين الحقول
+    document.querySelectorAll('#siteRating .fa-star').forEach(star => {
+      star.classList.remove('active');
+    });
+    if (document.getElementById('siteComment')) {
+      document.getElementById('siteComment').value = '';
+    }
+    
+    alert('شكراً لتقييمك! سيظهر للجميع قريبا');
   };
 
   return (
@@ -103,31 +124,7 @@ const UserInfo = ({
           rows="3" 
           placeholder={t.write_comment}
         />
-        <Button 
-          id="submitFeedback"
-          onClick={() => {
-            const rating = document.querySelectorAll('#siteRating .fa-star.active').length;
-            const comment = document.getElementById('siteComment')?.value || '';
-            
-            if (rating === 0) {
-              alert('يرجى اختيار تقييم');
-              return;
-            }
-            
-            // حفظ التقييم
-            // ... الكود الخاص بحفظ التقييم
-            
-            // إعادة تعيين الحقول
-            document.querySelectorAll('#siteRating .fa-star').forEach(star => {
-              star.classList.remove('active');
-            });
-            if (document.getElementById('siteComment')) {
-              document.getElementById('siteComment').value = '';
-            }
-            
-            alert('شكراً لتقييمك! سيظهر للجميع قريبا');
-          }}
-        >
+        <Button onClick={handleSiteFeedback}>
           {t.submit_feedback}
         </Button>
         
@@ -170,3 +167,5 @@ const UserInfo = ({
 };
 
 export default UserInfo;
+
+
