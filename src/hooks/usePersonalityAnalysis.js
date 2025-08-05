@@ -71,3 +71,4 @@ export function usePersonalityAnalysis(questions, translations) {
     changeLanguage
   };
 }
+
