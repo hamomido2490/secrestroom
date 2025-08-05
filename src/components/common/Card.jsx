@@ -9,4 +9,3 @@ const Card = ({ children, className = '', ...props }) => {
 };
 
 export default Card;
-
