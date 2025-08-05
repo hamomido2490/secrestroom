@@ -212,3 +212,5 @@ const Settings = ({ onClose, translations, lang }) => {
 };
 
 export default Settings;
+
+
