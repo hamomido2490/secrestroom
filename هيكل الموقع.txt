@@ -1,31 +1,40 @@
-/chamber-of-secrets/
+chamber-of-secrets-react/
 │
+├── vite.config.js
+├── package.json
 ├── index.html
-├── /css/
-│   └── styles.css
-├── /js/
-│   ├── state.js
-│   ├── data/
-│   │   ├── questions.js
-│   │   ├── translations.js
-│   │   ├── zodiac-data.js
-│   │   └── partner-info.js
-│   ├── utils/
-│   │   ├── analysis.js
-│   │   ├── zodiac.js
-│   │   ├── partner.js
-│   │   ├── storage.js
-│   │   ├── feedback.js
-│   │   └── helpers.js
-│   ├── ui/
-│   │   ├── render.js
-│   │   └── components.js
-│   ├── ad-system.js
-│   └── main.js
-└── /partials/
-    ├── user-info.html
-    ├── intro.html
-    ├── quiz.html
-    ├── result.html
-    ├── history.html
-    └── settings.html
+├── /public/
+│   └── favicon.ico
+└── /src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── /components/
+    │   ├── UserInfoPage.jsx
+    │   ├── IntroPage.jsx
+    │   ├── QuizPage.jsx
+    │   ├── ResultPage.jsx
+    │   ├── HistoryPage.jsx
+    │   ├── HistoryResultPage.jsx
+    │   ├── SettingsModal.jsx
+    │   ├── FeedbackSection.jsx
+    │   ├── Toast.jsx
+    │   └── AdContainer.jsx
+    ├── /data/
+    │   ├── questions.js
+    │   ├── translations.js
+    │   ├── zodiacData.js
+    │   └── partnerInfo.js
+    ├── /utils/
+    │   ├── analysis.js
+    │   ├── zodiac.js
+    │   ├── partner.js
+    │   ├── storage.js
+    │   ├── feedback.js
+    │   ├── helpers.js
+    │   └── reducers.js
+    ├── /context/
+    │   └── AppState.jsx
+    ├── /assets/
+    │   └── styles.css
+    └── /lib/
+        └── ChartWrapper.jsx
