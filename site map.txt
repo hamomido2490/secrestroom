@@ -1,0 +1,40 @@
+chamber-of-secrets-react/
+│
+├── vite.config.js
+├── package.json
+├── index.html
+├── /public/
+│   └── favicon.ico
+└── /src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── /components/
+    │   ├── UserInfoPage.jsx
+    │   ├── IntroPage.jsx
+    │   ├── QuizPage.jsx
+    │   ├── ResultPage.jsx
+    │   ├── HistoryPage.jsx
+    │   ├── HistoryResultPage.jsx
+    │   ├── SettingsModal.jsx
+    │   ├── FeedbackSection.jsx
+    │   ├── Toast.jsx
+    │   └── AdContainer.jsx
+    ├── /data/
+    │   ├── questions.js
+    │   ├── translations.js
+    │   ├── zodiacData.js
+    │   └── partnerInfo.js
+    ├── /utils/
+    │   ├── analysis.js
+    │   ├── zodiac.js
+    │   ├── partner.js
+    │   ├── storage.js
+    │   ├── feedback.js
+    │   ├── helpers.js
+    │   └── reducers.js
+    ├── /context/
+    │   └── AppState.jsx
+    ├── /assets/
+    │   └── styles.css
+    └── /lib/
+        └── ChartWrapper.jsx
