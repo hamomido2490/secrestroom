@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>غرفة الأسرار | اكتشف شخصيتك</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient min-h-screen text-white">
+  <!-- أزرار التحكم -->
+  <div class="fixed top-4 left-4 z-50 flex space-x-2">
+    <button id="settingsBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full"><i class="fas fa-cog"></i></button>
+    <button id="langToggle" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full"><i class="fas fa-language ml-2"></i>English</button>
+  </div>
+
+  <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
+  <div id="toast"></div>
+
+  <!-- لوحة الإدارة -->
+  <div id="settingsOverlay" class="settings-overlay">
+    <div class="settings-panel">
+      <h3 class="text-xl font-bold gradient-text mb-4">لوحة الإدارة</h3>
+      <div id="passwordSection">
+        <label class="block mb-2">كلمة المرور</label>
+        <input type="password" id="adminPassword" class="w-full px-3 py-2 bg-slate-700 rounded border border-slate-600" placeholder="أدخل كلمة المرور">
+        <button id="loginBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 mt-2 rounded">دخول</button>
+      </div>
+      <div id="adminPanel" style="display: none;">
+        <h4 class="font-semibold mb-3">إدارة الإعلانات</h4>
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">الإعلان العلوي (Top)</label>
+            <div class="flex items-center">
+              <div class="toggle-switch" id="topAdToggle"></div>
+              <span class="text-sm mr-2">إظهار</span>
+            </div>
+          </div>
+          <textarea id="topAdCode" class="w-full p-3 bg-slate-700 rounded border border-slate-600 h-20 font-mono text-sm" placeholder="أدخل كود الإعلان العلوي"></textarea>
+        </div>
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">الإعلان الجانبي (Side)</label>
+            <div class="flex items-center">
+              <div class="toggle-switch" id="sideAdToggle"></div>
+              <span class="text-sm mr-2">إظهار</span>
+            </div>
+          </div>
+          <textarea id="sideAdCode" class="w-full p-3 bg-slate-700 rounded border border-slate-600 h-20 font-mono text-sm" placeholder="أدخل كود الإعلان الجانبي"></textarea>
+        </div>
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">الإعلان السفلي (Bottom)</label>
+            <div class="flex items-center">
+              <div class="toggle-switch" id="bottomAdToggle"></div>
+              <span class="text-sm mr-2">إظهار</span>
+            </div>
+          </div>
+          <textarea id="bottomAdCode" class="w-full p-3 bg-slate-700 rounded border border-slate-600 h-20 font-mono text-sm" placeholder="أدخل كود الإعلان السفلي"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <button id="saveSettings" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded">حفظ الإعدادات</button>
+          <button id="closeSettings" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded mt-2">إغلاق</button>
+        </div>
+        <div class="border-t pt-4">
+          <h4 class="font-semibold mb-3">الإحصائيات</h4>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="text-center">
+              <div class="text-lg font-bold text-blue-400" id="visitorsCount">0</div>
+              <div class="text-sm text-gray-400">عدد الزوار</div>
+            </div>
+            <div class="text-center">
+              <div class="text-lg font-bold text-green-400" id="analysesCount">0</div>
+              <div class="text-sm text-gray-400">عدد التحليلات</div>
+            </div>
+          </div>
+          <div class="border-t pt-4">
+            <h4 class="font-semibold mb-3">تقييمات الموقع</h4>
+            <div class="text-center mb-4">
+              <div class="text-lg font-bold text-yellow-400" id="siteRating">0.0</div>
+              <div class="text-sm text-gray-400">متوسط التقييم</div>
+            </div>
+            <div id="sharedSiteFeedback"></div>
+          </div>
+          <div class="border-t pt-4">
+            <h4 class="font-semibold mb-3">تقييمات التحليل</h4>
+            <div class="text-center mb-4">
+              <div class="text-lg font-bold text-yellow-400" id="analysisRating">0.0</div>
+              <div class="text-sm text-gray-400">متوسط التقييم</div>
+            </div>
+            <div id="sharedAnalysisFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+/chamber-of-secrets/
+│
+├── index.html
+├── /css/
+│   └── styles.css
+├── /js/
+│   ├── state.js
+│   ├── data/
+│   │   ├── questions.js
+│   │   ├── translations.js
+│   │   ├── zodiac-data.js
+│   │   └── partner-info.js
+│   ├── utils/
+│   │   ├── analysis.js
+│   │   ├── zodiac.js
+│   │   ├── partner.js
+│   │   ├── storage.js
+│   │   ├── feedback.js
+│   │   └── helpers.js
+│   ├── ui/
+│   │   ├── render.js
+│   │   └── components.js
+│   ├── ad-system.js
+│   └── main.js
+└── /partials/
+    ├── user-info.html
+    ├── intro.html
+    ├── quiz.html
+    ├── result.html
+    ├── history.html
+    └── settings.html
