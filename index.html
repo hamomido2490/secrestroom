@@ -4,317 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>غرفة الأسرار | اكتشف شخصيتك</title>
-
-  <!-- تحميل Tailwind CSS من CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- مكتبات دعم -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- أنماط داخلية أساسية (للتأكد من العمل حتى لو فشل تحميل Tailwind) -->
-  <style>
-    /* خلفية متدرجة */
-    body {
-      font-family: 'Cairo', 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-      min-height: 100vh;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* نص تدريجي (Gradient Text) */
-    .gradient-text {
-      background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* بطاقة شفافة بتأثير الزجاج */
-    .glass-card {
-      background: rgba(30, 41, 59, 0.8);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 24px;
-    }
-
-    /* زر أساسي (Primary) */
-    .btn-primary {
-      background: linear-gradient(45deg, #ec4899, #fbbf24);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
-    }
-
-    /* زر ثانوي */
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 12px 24px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-
-    /* أزرار الخيارات */
-    .option-btn {
-      display: block;
-      width: 100%;
-      text-align: right;
-      padding: 16px;
-      margin: 8px 0;
-      background: rgba(30, 41, 59, 0.6);
-      border: 2px solid rgba(59, 130, 246, 0.3);
-      border-radius: 12px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .option-btn:hover, .option-btn.selected {
-      border-color: #3b82f6;
-      background: rgba(59, 130, 246, 0.2);
-      transform: translateX(8px);
-    }
-
-    /* شريط التقدم */
-    .progress-bar {
-      height: 8px;
-      background: linear-gradient(90deg, #fbbf24, #f59e0b);
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
-    .progress-container {
-      margin-bottom: 24px;
-    }
-
-    /* الإشعار (Toast) */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: white;
-      padding: 16px 24px;
-      border-radius: 12px;
-      z-index: 1000;
-      opacity: 0;
-      animation: toastSlide 0.4s ease forwards;
-    }
-    @keyframes toastSlide {
-      to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    /* لوحة الإعدادات */
-    .settings-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .settings-panel {
-      background: rgba(30, 41, 59, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 1rem;
-      padding: 2rem;
-      max-width: 600px;
-      width: 90%;
-      color: white;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    /* مؤشر التبديل (Toggle Switch) */
-    .toggle-switch {
-      position: relative;
-      width: 50px;
-      height: 24px;
-      background: #334155;
-      border-radius: 999px;
-      cursor: pointer;
-    }
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      transition: transform 0.3s ease;
-    }
-    .toggle-switch.checked {
-      background: #3b82f6;
-    }
-    .toggle-switch.checked::after {
-      transform: translateX(26px);
-    }
-
-    /* مؤشر التحميل */
-    .loading-spinner {
-      display: inline-block;
-      width: 3rem;
-      height: 3rem;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #fbbf24;
-      animation: spin 1s ease-in-out infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* حاوية الرسم البياني */
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin: 20px 0;
-    }
-
-    /* عناصر السجل */
-    .history-item {
-      background: rgba(30, 41, 59, 0.6);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .history-item:hover {
-      background: rgba(30, 41, 59, 0.8);
-      transform: translateX(8px);
-    }
-
-    /* أيقونة البرج */
-    .zodiac-icon {
-      font-size: 1.5rem;
-      margin-right: 8px;
-    }
-
-    /* أقسام التحليل */
-    .analysis-section {
-      padding: 16px;
-      margin-bottom: 16px;
-      border-radius: 12px;
-      border-left: 4px solid #3b82f6;
-    }
-    .section-d { border-left-color: #ef4444; }
-    .section-i { border-left-color: #f59e0b; }
-    .section-s { border-left-color: #10b981; }
-    .section-c { border-left-color: #3b82f6; }
-
-    /* بطاقات الإحصائيات */
-    .stats-card {
-      background: rgba(30, 41, 59, 0.6);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-    .stats-card:hover {
-      transform: translateY(-5px);
-    }
-    .stats-number {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .stats-label {
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
-
-    /* التعليقات المشتركة */
-    .shared-feedback {
-      margin-top: 20px;
-    }
-    .feedback-item {
-      background: rgba(30, 41, 59, 0.6);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 10px;
-    }
-    .feedback-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .feedback-rating {
-      color: #fbbf24;
-    }
-    .feedback-date {
-      color: #94a3b8;
-      font-size: 0.8rem;
-    }
-    .feedback-comment {
-      color: #e2e8f0;
-      font-size: 0.9rem;
-    }
-
-    /* أنماط إضافية لضمان التوافق */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    .text-center { text-align: center; }
-    .text-right { text-align: right; }
-    .text-left { text-align: left; }
-    .mb-4 { margin-bottom: 1rem; }
-    .mb-6 { margin-bottom: 1.5rem; }
-    .mb-8 { margin-bottom: 2rem; }
-    .mt-6 { margin-top: 1.5rem; }
-    .mt-8 { margin-top: 2rem; }
-    .mt-16 { margin-top: 4rem; }
-    .p-3 { padding: 0.75rem; }
-    .p-6 { padding: 1.5rem; }
-    .p-8 { padding: 2rem; }
-    .rounded-lg { border-radius: 0.5rem; }
-    .rounded-xl { border-radius: 0.75rem; }
-    .border { border: 1px solid #e5e7eb; }
-    .bg-gray-800 { background-color: #1f2937; }
-    .text-gray-300 { color: #d1d5db; }
-    .text-gray-400 { color: #9ca3af; }
-  </style>
 </head>
 <body class="bg-gradient min-h-screen text-white">
-  <!-- أزرار التحكم العلوي -->
+  <!-- أزرار التحكم -->
   <div class="fixed top-4 left-4 z-50 flex space-x-2">
-    <button id="settingsBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full">
-      <i class="fas fa-cog"></i>
-    </button>
-    <button id="langToggle" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full">
-      <i class="fas fa-language ml-2"></i> English
-    </button>
+    <button id="settingsBtn" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full"><i class="fas fa-cog"></i></button>
+    <button id="langToggle" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-full"><i class="fas fa-language ml-2"></i>English</button>
   </div>
 
-  <!-- حاوية المحتوى الرئيسي -->
   <div id="app" class="container mx-auto px-4 py-8 max-w-4xl"></div>
-
-  <!-- نافذة الإشعار -->
   <div id="toast"></div>
 
-  <!-- لوحة الإدارة (مخفية افتراضيًا) -->
+  <!-- لوحة الإدارة -->
   <div id="settingsOverlay" class="settings-overlay">
     <div class="settings-panel">
       <h3 class="text-xl font-bold gradient-text mb-4">لوحة الإدارة</h3>
@@ -357,7 +63,7 @@
         </div>
         <div class="grid grid-cols-2 gap-2 mb-4">
           <button id="saveSettings" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded">حفظ الإعدادات</button>
-          <button id="closeSettings" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded">إغلاق</button>
+          <button id="closeSettings" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded mt-2">إغلاق</button>
         </div>
         <div class="border-t pt-4">
           <h4 class="font-semibold mb-3">الإحصائيات</h4>
@@ -392,10 +98,6 @@
     </div>
   </div>
 
-  <!-- تضمين الكود الرئيسي -->
-  <script>
-    // سيتم حقن الكود الرئيسي هنا (main.js أو inline)
-    // تأكد من أن جميع الدوال مثل render(), setupEventListeners() معرفة
-  </script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
