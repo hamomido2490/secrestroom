@@ -1,0 +1,26 @@
+import { useEffect, useState } from 'react'
+import * as api from '../services/api.js'
+
+function SharedFeedback({ type }) {
+  const [feedback, setFeedback] = useState([])
+
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await api.getComments(type)
+      setFeedback(data)
+    }
+    fetch()
+  }, [type])
+
+  return (
+    <div>
+      {feedback.map(item => (
+        <div key={item.id} className="feedback-item">
+          {/* Render rating and comment */}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default SharedFeedback

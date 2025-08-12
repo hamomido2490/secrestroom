@@ -1,0 +1,23 @@
+import { useEffect, useRef } from 'react'
+import DOMPurify from 'dompurify'
+
+function AdPreview({ code }) {
+  const iframeRef = useRef(null)
+
+  useEffect(() => {
+    const sanitizedCode = DOMPurify.sanitize(code, { ALLOWED_TAGS: [] }) // Strict for preview
+    const iframe = iframeRef.current
+    if (iframe) {
+      const doc = iframe.contentDocument
+      doc.open()
+      doc.write(sanitizedCode)
+      doc.close()
+    }
+  }, [code])
+
+  return (
+    <iframe ref={iframeRef} sandbox="allow-scripts" className="ad-preview" title="Ad Preview" />
+  )
+}
+
+export default AdPreview

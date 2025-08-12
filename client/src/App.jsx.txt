@@ -1,0 +1,76 @@
+import { useState, useEffect, lazy } from 'react'
+import { useTranslation } from 'react-i18next'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import UserInfo from './components/UserInfo.jsx'
+import Intro from './components/Intro.jsx'
+import Quiz from './components/Quiz.jsx'
+import Loading from './components/Loading.jsx'
+import Result from './components/Result.jsx'
+import AdminPanel from './components/AdminPanel.jsx'
+import Toast from './components/Toast.jsx'
+import * as api from './services/api.js'
+import questions from './data/questions.js'
+
+// Lazy load chart for performance
+const PersonalityChart = lazy(() => import('./components/PersonalityChart.jsx'))
+
+function App() {
+  const { t, i18n } = useTranslation()
+  const [state, setState] = useState({
+    page: 'userInfo',
+    lang: 'ar',
+    userData: { gender: '', dob: '' },
+    currentQ: 0,
+    currentTheory: 'disc',
+    userAnswers: { disc: Array(questions.ar.disc.length).fill({ most: undefined, least: undefined }),
+                   mbti: Array(questions.ar.mbti.length).fill({ agree: undefined }),
+                   bigFive: Array(questions.ar.bigFive.length).fill({ score: undefined }) },
+    resultData: null,
+    historyIndex: null,
+    toast: ''
+  })
+
+  const [ads, setAds] = useState({ top: '', side: '', bottom: '' })
+  const [stats, setStats] = useState({ visitors: 0, avgRating: 0, commentsCount: 0 })
+
+  useEffect(() => {
+    i18n.changeLanguage(state.lang)
+    api.recordVisit() // Record visit on load
+    fetchStats()
+    fetchAds()
+  }, [state.lang])
+
+  const fetchStats = async () => {
+    const data = await api.getStats()
+    setStats(data)
+  }
+
+  const fetchAds = async () => {
+    const data = await api.getAds()
+    setAds(data)
+  }
+
+  const showToast = (message) => {
+    setState(prev => ({ ...prev, toast: message }))
+    setTimeout(() => setState(prev => ({ ...prev, toast: '' })), 3000)
+  }
+
+  // Render logic similar to original, but in React components
+  return (
+    <Router>
+      <div className="min-h-screen">
+        {state.toast && <Toast message={state.toast} />}
+        <Routes>
+          <Route path="/" element={<UserInfo state={state} setState={setState} stats={stats} showToast={showToast} />} />
+          <Route path="/intro" element={<Intro state={state} setState={setState} />} />
+          <Route path="/quiz" element={<Quiz state={state} setState={setState} showToast={showToast} />} />
+          <Route path="/loading" element={<Loading />} />
+          <Route path="/result" element={<Result state={state} setState={setState} ads={ads} stats={stats} PersonalityChart={PersonalityChart} showToast={showToast} />} />
+          <Route path="/admin" element={<AdminPanel ads={ads} setAds={setAds} showToast={showToast} />} />
+        </Routes>
+      </div>
+    </Router>
+  )
+}
+
+export default App

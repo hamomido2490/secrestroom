@@ -1,0 +1,48 @@
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { Suspense } from 'react'
+import * as api from '../services/api.js'
+import { analyzePersonality, calculateAge, calculateZodiac } from '../data/analysis.js' // Added import
+import FeedbackSection from './FeedbackSection.jsx'
+import SharedFeedback from './SharedFeedback.jsx'
+import ZodiacCompatibility from './ZodiacCompatibility.jsx'
+
+function Result({ state, setState, ads, stats, PersonalityChart, showToast }) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const discResult = analyzePersonality(state.userAnswers.disc, state.lang, 'disc');
+  const mbtiResult = analyzePersonality(state.userAnswers.mbti, state.lang, 'mbti');
+  const bigFiveResult = analyzePersonality(state.userAnswers.bigFive, state.lang, 'bigFive');
+  const age = calculateAge(state.userData.dob);
+  const zodiac = calculateZodiac(state.userData.dob);
+
+  useEffect(() => {
+    api.recordAnalysis();
+  }, []);
+
+  const handleRestart = () => {
+    setState(prev => ({ ...prev, page: 'userInfo', currentTheory: 'disc', currentQ: 0, userAnswers: {} }));
+    navigate('/');
+  };
+
+  return (
+    <div className="glass-card rounded-xl p-8 max-w-4xl mx-auto">
+      <h2>DISC Result: {discResult.primary} - {discResult.description}</h2>
+      <Suspense fallback={<div>Loading chart...</div>}>
+        <PersonalityChart scores={discResult.scores} />
+      </Suspense>
+      <h2>MBTI Result: {mbtiResult.type} - {mbtiResult.description}</h2>
+      <h2>Big Five Results:</h2>
+      <p>Openness: {bigFiveResult.averages.O}% - {bigFiveResult.description.split(' ')[0]}</p>
+      {/* Display other traits similarly */}
+      <p>Age: {age}, Zodiac: {zodiac}</p>
+      <ZodiacCompatibility zodiac={zodiac} />
+      <FeedbackSection type="analysis" showToast={showToast} />
+      <SharedFeedback type="analysis" />
+      <button onClick={handleRestart}>Restart</button>
+      {/* Other buttons */}
+    </div>
+  )
+}
+
+export default Result

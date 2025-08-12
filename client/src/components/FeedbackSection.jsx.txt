@@ -1,0 +1,33 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import * as api from '../services/api.js'
+
+function FeedbackSection({ type, showToast }) {
+  const { t } = useTranslation()
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+
+  const handleSubmit = async () => {
+    if (rating === 0) return showToast('Please select rating')
+    await api.addRating({ type, rating })
+    if (comment) await api.addComment({ type, comment })
+    showToast('Feedback submitted')
+    setRating(0)
+    setComment('')
+  }
+
+  return (
+    <div className="feedback-section">
+      <h3>{t('rate_' + type)}</h3>
+      <div className="feedback-stars">
+        {[1,2,3,4,5].map(i => (
+          <i key={i} className={`fas fa-star ${i <= rating ? 'active' : ''}`} onClick={() => setRating(i)} />
+        ))}
+      </div>
+      <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder={t('write_comment')} />
+      <button onClick={handleSubmit}>{t('submit_feedback')}</button>
+    </div>
+  )
+}
+
+export default FeedbackSection

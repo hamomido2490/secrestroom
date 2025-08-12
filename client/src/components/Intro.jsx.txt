@@ -1,0 +1,29 @@
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+
+function Intro({ state, setState }) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const handleStart = () => {
+    setState(prev => ({ ...prev, currentQ: 0, currentTheory: 'disc', userAnswers: {}, page: 'quiz' }))
+    navigate('/quiz')
+  }
+
+  return (
+    <div className="text-center">
+      <div className="glass-card rounded-xl p-8 max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold gradient-text mb-4">{t('intro_title')}</h1>
+        <p className="text-xl text-gray-300 mb-6">{t('intro_subtitle')}</p>
+        <p className="text-gray-400 mb-4">{t('intro_desc')}</p>
+        <div className="text-right text-gray-300 space-y-2 mb-6">
+          <p>• {t('intro_p1')}</p>
+          <p>• {t('intro_p2')}</p>
+        </div>
+        <button onClick={handleStart} className="btn-primary">{t('start_btn')}</button>
+      </div>
+    </div>
+  )
+}
+
+export default Intro

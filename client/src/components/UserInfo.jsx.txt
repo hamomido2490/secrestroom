@@ -1,0 +1,50 @@
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import StatsCard from './StatsCard.jsx'
+import FeedbackSection from './FeedbackSection.jsx'
+
+function UserInfo({ state, setState, stats, showToast }) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const gender = e.target.gender.value
+    const dob = e.target.dob.value
+    if (!gender || !dob) return showToast(t('alert_missing_fields'))
+    setState(prev => ({ ...prev, userData: { gender, dob }, page: 'intro' }))
+    navigate('/intro')
+  }
+
+  return (
+    <div className="text-center">
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <StatsCard number={stats.visitors} label={t('visitors_count')} />
+        <StatsCard number={stats.analyses || 0} label={t('analyses_count')} />
+        <StatsCard number={stats.avgRating} label={t('average_rating')} />
+      </div>
+      <div className="glass-card rounded-xl p-8 max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold gradient-text mb-4">{t('welcome_title')}</h1>
+        <p className="text-gray-300 text-lg mb-6">{t('user_info_desc')}</p>
+        <form onSubmit={handleSubmit} className="space-y-6 text-right">
+          <div>
+            <label className="block mb-2">{t('gender_label')}</label>
+            <select name="gender" className="w-full p-3 rounded-lg bg-gray-800 border border-gray-600">
+              <option value="male">{t('male')}</option>
+              <option value="female">{t('female')}</option>
+              <option value="other">{t('other')}</option>
+            </select>
+          </div>
+          <div>
+            <label className="block mb-2">{t('dob_label')}</label>
+            <input type="date" name="dob" className="w-full p-3 rounded-lg bg-gray-800 border border-gray-600" />
+          </div>
+          <button type="submit" className="btn-primary">{t('submit_user_info')}</button>
+        </form>
+      </div>
+      <FeedbackSection type="site" showToast={showToast} />
+    </div>
+  )
+}
+
+export default UserInfo

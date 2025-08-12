@@ -1,0 +1,10 @@
+function HistoryItem({ result, index, onClick }) {
+  // Render history item from localStorage or API
+  return (
+    <div className="history-item" onClick={() => onClick(index)}>
+      {result.primary} - {new Date(result.date).toLocaleDateString()}
+    </div>
+  );
+}
+
+export default HistoryItem;

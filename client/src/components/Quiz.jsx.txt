@@ -1,0 +1,71 @@
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import questions from '../data/questions.js' // Added import
+
+function Quiz({ state, setState, showToast }) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const theories = ['disc', 'mbti', 'bigFive']; // Sequence
+  const currentTheory = state.currentTheory || theories[0];
+  const qData = questions[state.lang][currentTheory];
+  const q = qData[state.currentQ];
+  const progress = ((state.currentQ + 1) / qData.length * 100).toFixed(0)
+
+  const handleAnswer = (response) => {
+    const newAnswers = [...state.userAnswers[currentTheory] || []];
+    newAnswers[state.currentQ] = response; // For DISC: {most, least}, MBTI: {agree: true/false}, Big Five: {score: 1-5}
+    setState(prev => ({ ...prev, userAnswers: { ...prev.userAnswers, [currentTheory]: newAnswers } }));
+  }
+
+  const handleNext = () => {
+    if (!state.userAnswers[currentTheory]?.[state.currentQ]) return showToast(t('alert_no_answer'));
+    if (state.currentQ < qData.length - 1) {
+      setState(prev => ({ ...prev, currentQ: prev.currentQ + 1 }));
+    } else if (theories.indexOf(currentTheory) < theories.length - 1) {
+      setState(prev => ({ ...prev, currentTheory: theories[theories.indexOf(currentTheory) + 1], currentQ: 0 }));
+    } else {
+      setState(prev => ({ ...prev, page: 'loading' }));
+      navigate('/loading');
+      setTimeout(() => {
+        setState(prev => ({ ...prev, page: 'result' }));
+        navigate('/result');
+      }, 1500);
+    }
+  }
+
+  let optionsHTML;
+  if (currentTheory === 'disc') {
+    optionsHTML = q.options.map((opt, idx) => (
+      <div key={idx} className="option-btn">
+        {opt}
+        <button onClick={() => handleAnswer({ ...state.userAnswers[currentTheory]?.[state.currentQ], most: idx })}>Most</button>
+        <button onClick={() => handleAnswer({ ...state.userAnswers[currentTheory]?.[state.currentQ], least: idx })}>Least</button>
+      </div>
+    ));
+  } else if (currentTheory === 'mbti') {
+    optionsHTML = (
+      <div>
+        <button onClick={() => handleAnswer({ agree: true })}>Agree</button>
+        <button onClick={() => handleAnswer({ agree: false })}>Disagree</button>
+      </div>
+    );
+  } else if (currentTheory === 'bigFive') {
+    optionsHTML = [1,2,3,4,5].map(score => (
+      <button key={score} onClick={() => handleAnswer({ score })}>{score} (1: Strongly Disagree - 5: Strongly Agree)</button>
+    ));
+  }
+
+  return (
+    <div>
+      <h3>Current Theory: {currentTheory.toUpperCase()}</h3>
+      <div className="progress-container">...{progress}%</div>
+      <div className="glass-card">
+        <h2>{q.text}</h2>
+        {optionsHTML}
+        <button onClick={handleNext}>Next</button>
+      </div>
+    </div>
+  );
+}
+
+export default Quiz

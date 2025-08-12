@@ -1,0 +1,7 @@
+function ToggleSwitch({ checked, onChange }) {
+  return (
+    <div className={`toggle-switch ${checked ? 'checked' : ''}`} onClick={onChange}></div>
+  )
+}
+
+export default ToggleSwitch

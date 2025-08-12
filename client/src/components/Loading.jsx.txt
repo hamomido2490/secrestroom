@@ -1,0 +1,14 @@
+import { useTranslation } from 'react-i18next'
+
+function Loading() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="text-center py-12">
+      <div className="loading-spinner mx-auto mb-4"></div>
+      <p className="text-gray-300">{t('loading_analysis')}</p>
+    </div>
+  )
+}
+
+export default Loading

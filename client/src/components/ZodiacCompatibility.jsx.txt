@@ -1,0 +1,24 @@
+function ZodiacCompatibility({ zodiac }) {
+  const compatibility = {
+    aries: ["leo", "sagittarius", "gemini", "aquarius"],
+    taurus: ["virgo", "capricorn", "cancer", "pisces"],
+    gemini: ["libra", "aquarius", "aries", "leo"],
+    cancer: ["scorpio", "pisces", "taurus", "virgo"],
+    leo: ["aries", "sagittarius", "gemini", "libra"],
+    virgo: ["taurus", "capricorn", "cancer", "scorpio"],
+    libra: ["gemini", "aquarius", "leo", "sagittarius"],
+    scorpio: ["cancer", "pisces", "virgo", "capricorn"],
+    sagittarius: ["aries", "leo", "libra", "aquarius"],
+    capricorn: ["taurus", "virgo", "scorpio", "pisces"],
+    aquarius: ["gemini", "libra", "aries", "sagittarius"],
+    pisces: ["cancer", "scorpio", "taurus", "capricorn"]
+  };
+
+  return (
+    <div>
+      Compatible Zodiacs: {compatibility[zodiac]?.join(', ') || 'Unknown'}
+    </div>
+  );
+}
+
+export default ZodiacCompatibility;
